@@ -1,4 +1,4 @@
-namespace RO_Chapter_Hardware.Models
+namespace IT_Hardware.Models
 {
     public class ErrorViewModel
     {

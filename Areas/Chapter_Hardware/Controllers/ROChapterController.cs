@@ -1,16 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RO_Chapter_Hardware.Areas.Chapter_Hardware.Data;
-using RO_Chapter_Hardware.Areas.Chapter_Hardware.Models;
+using IT_Hardware.Areas.Chapter_Hardware.Data;
+using IT_Hardware.Areas.Chapter_Hardware.Models;
 
-namespace RO_Chapter_Hardware.Areas.Chapter_Hardware.Controllers
+namespace IT_Hardware.Areas.Chapter_Hardware.Controllers
 {
     [Authorize]
     [Area("Chapter_Hardware")]
     public class ROChapterController : Controller
     {
-
-
         public ActionResult Details()
         {
             ROChapter_BL com = new ROChapter_BL();
@@ -31,7 +29,7 @@ namespace RO_Chapter_Hardware.Areas.Chapter_Hardware.Controllers
             Mod_data.Item_Make_List = Make_List.Item_MakeModel_List("Desktop", "MAKE", "");
            // Mod_data.Vendor_Name = Make_List.Vendor_List();
 
-            return View("~/Areas/Admin/Views/Computer/Com_Create_Item.cshtml", Mod_data);
+            return View(Mod_data);
         }
 
 
@@ -46,7 +44,7 @@ namespace RO_Chapter_Hardware.Areas.Chapter_Hardware.Controllers
                 if (ModelState.IsValid)
                 {
                     ROChapter_BL save_data = new ROChapter_BL();
-                    int status = save_data.Save_Computer_data(Get_Data, "Add_new", "");
+                    int status = save_data.Save_data(Get_Data, "Add_new", "");
 
                     if (status < 1)
                     {
@@ -70,7 +68,7 @@ namespace RO_Chapter_Hardware.Areas.Chapter_Hardware.Controllers
 
             }
 
-            return RedirectToAction("Com_Create_Item", "Computer");
+            return RedirectToAction("Create_Item", "ROChapter");
         }
 
 
@@ -90,7 +88,7 @@ namespace RO_Chapter_Hardware.Areas.Chapter_Hardware.Controllers
         }
 
 
-        [Authorize(Roles = "SU, Admin, InventoryManager")]
+        
         public ActionResult Update_Item(ROChapter_Mod Get_Data, string Item_id)
         {
             int status = 0;
@@ -101,7 +99,7 @@ namespace RO_Chapter_Hardware.Areas.Chapter_Hardware.Controllers
                 {
                     ROChapter_BL Md_Asset = new ROChapter_BL();
 
-                    status = Md_Asset.Save_Computer_data(Get_Data, "Update", Item_id);
+                    status = Md_Asset.Save_data(Get_Data, "Update", Item_id);
 
                     if (status > 0)
                     {
@@ -124,7 +122,7 @@ namespace RO_Chapter_Hardware.Areas.Chapter_Hardware.Controllers
 
             }
 
-            return RedirectToAction("Com_Details", "Computer");
+            return RedirectToAction("Details", "ROChapter");
         }
 
 
@@ -140,7 +138,7 @@ namespace RO_Chapter_Hardware.Areas.Chapter_Hardware.Controllers
 
                     ROChapter_BL Md_Asset = new ROChapter_BL();
 
-                    status = Md_Asset.Save_Computer_data(Get_Data, "Delete", Item_id);
+                    status = Md_Asset.Save_data(Get_Data, "Delete", Item_id);
 
                     if (status > 0)
                     {
@@ -159,7 +157,7 @@ namespace RO_Chapter_Hardware.Areas.Chapter_Hardware.Controllers
 
             }
 
-            return RedirectToAction("Com_Details", "Computer");
+            return RedirectToAction("Details", "ROChapter");
         }
 
 
@@ -173,7 +171,7 @@ namespace RO_Chapter_Hardware.Areas.Chapter_Hardware.Controllers
 
         //    Mod_Make.Item_Model_List = Make_List.Item_MakeModel_List("Desktop", "MODEL", Item_Make);
 
-        //    return Json(Mod_Make.Item_Model_List, JsonRequestBehavior.AllowGet);
+        //    return Json(Mod_Make.Item_Model_List);
 
         //}
 

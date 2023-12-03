@@ -1,0 +1,424 @@
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using IT_Hardware.Areas.Admin.Models;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace IT_Hardware.Areas.Admin.Data
+{
+    public class BL_Employee
+    {
+
+        public List<Mod_Employee> Get_EmployeeData()
+        {
+
+            Mod_Employee BL_data;
+            List<Mod_Employee> current_data = new List<Mod_Employee>();
+
+            try
+            {
+                DataTable dt_Comuter;
+                
+                SqlConnection con = new DBConnection().con;
+
+
+                using (SqlCommand cmd = new SqlCommand("sp_Employee"))
+                {
+                    SqlParameter sqlP_type = new SqlParameter("@Type", "Get_List");
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = con;
+                    cmd.Parameters.Add(sqlP_type);
+
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        sda.SelectCommand = cmd;
+                        using (DataTable dt = new DataTable())
+                        {
+                            sda.Fill(dt);
+                            dt_Comuter = dt;
+                        }
+                    }
+                }
+
+
+                foreach (DataRow dr in dt_Comuter.Rows)
+                {
+                    BL_data = new Mod_Employee();
+
+                    BL_data.Emp_Unique_Id = Convert.ToString(dr["Unique_Id"]);
+
+                    BL_data.Emp_Code = Convert.ToString(dr["Emp_Code"]);
+
+                    BL_data.Emp_Name = Convert.ToString(dr["Emp_Name"]);
+
+                    BL_data.Emp_Designation = Convert.ToString(dr["Emp_Designation"]);
+
+                    BL_data.Emp_Type = Convert.ToString(dr["Emp_Type"]);
+
+                    BL_data.Emp_Dept = Convert.ToString(dr["Emp_Dept"]);
+
+                    BL_data.Location = Convert.ToString(dr["Emp_Location"]);
+
+                    BL_data.Emp_Dept_Name = Convert.ToString(dr["Dept_name"]);
+
+                    BL_data.Emp_Designation_Name = Convert.ToString(dr["Designation_name"]);
+
+                    current_data.Add(BL_data);
+                }
+
+            }
+            catch (Exception ex) { }
+
+            return current_data;
+        }
+
+        public int Save_Employee_data(Mod_Employee Data, string type)
+        {
+            int status = 0;
+            
+            SqlConnection con = new DBConnection().con;
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "sp_Employee";
+
+                cmd.Connection = con;
+
+                SqlParameter sqlP_type = new SqlParameter("@Type", type);
+                cmd.Parameters.Add(sqlP_type);
+
+                if (type == "Update" || type == "Delete")
+                {
+                    SqlParameter Emp_Unique_Id = new SqlParameter("@Emp_Unique_Id", Data.Emp_Unique_Id);
+                    cmd.Parameters.Add(Emp_Unique_Id);
+                }
+
+                SqlParameter Emp_Code = new SqlParameter("@Emp_Code", Data.Emp_Code);
+                cmd.Parameters.Add(Emp_Code);
+
+                SqlParameter Emp_Name = new SqlParameter("@Emp_Name", Data.Emp_Name);
+                cmd.Parameters.Add(Emp_Name);
+
+                SqlParameter Emp_Designation = new SqlParameter("@Emp_Designation", Data.Emp_Designation);
+                cmd.Parameters.Add(Emp_Designation);
+
+                SqlParameter Emp_Dept = new SqlParameter("@Emp_Dept", Data.Emp_Dept);
+                cmd.Parameters.Add(Emp_Dept);
+
+                SqlParameter Emp_Type = new SqlParameter("@Emp_Type", Data.Emp_Type);
+                cmd.Parameters.Add(Emp_Type);
+
+                SqlParameter Location = new SqlParameter("@Emp_Location", Data.Location);
+                cmd.Parameters.Add(Location);
+
+                SqlParameter Remarks = new SqlParameter("@Remarks", Data.Remarks);
+                cmd.Parameters.Add(Remarks);
+
+
+                SqlParameter User_Id = new SqlParameter("@Create_Usr_Id", Data.Create_usr_id);
+                cmd.Parameters.Add(User_Id);
+
+                con.Open();
+
+                status= cmd.ExecuteNonQuery();
+
+               
+
+            }
+            catch (Exception ex) { status = -1; }
+            finally { con.Close(); }
+
+            return status;
+        }
+
+        public Mod_Employee Get_Data_By_ID(string Unique_Id , Mod_Employee Data)
+        {
+            
+            try
+            {
+                DataTable dt_Comuter;
+                
+                SqlConnection con = new DBConnection().con;
+
+
+                using (SqlCommand cmd = new SqlCommand("sp_Employee"))
+                {
+                    SqlParameter sqlP_type = new SqlParameter("@Type", "Get_Data_By_ID");
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = con;
+                    cmd.Parameters.Add(sqlP_type);
+
+                    SqlParameter Emp_Unique_Id = new SqlParameter("@Emp_Unique_Id", Unique_Id);
+                    cmd.Parameters.Add(Emp_Unique_Id);
+
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        sda.SelectCommand = cmd;
+                        using (DataTable dt = new DataTable())
+                        {
+                            sda.Fill(dt);
+                            dt_Comuter = dt;
+                        }
+                    }
+                }
+
+                if (dt_Comuter.Rows.Count > 0)
+                {
+                    Data.Emp_Unique_Id = Convert.ToString(dt_Comuter.Rows[0]["Unique_Id"]);
+                    Data.Emp_Code = Convert.ToString(dt_Comuter.Rows[0]["Emp_Code"]);
+                    Data.Emp_Name = Convert.ToString(dt_Comuter.Rows[0]["Emp_Name"]);
+                    Data.Emp_Designation = Convert.ToString(dt_Comuter.Rows[0]["Emp_Designation"]);
+                    Data.Emp_Type = Convert.ToString(dt_Comuter.Rows[0]["Emp_Type"]);
+                    Data.Emp_Dept = Convert.ToString(dt_Comuter.Rows[0]["Emp_Dept"]);
+                    Data.Remarks = Convert.ToString(dt_Comuter.Rows[0]["Remarks"]);
+                    Data.Location = Convert.ToString(dt_Comuter.Rows[0]["Emp_Location"]);
+                    Data.Emp_Dept_Name = Convert.ToString(dt_Comuter.Rows[0]["Dept_name"]);
+                    Data.Emp_Dept_Name = Convert.ToString(dt_Comuter.Rows[0]["Designation_name"]);
+
+                }
+
+            }
+            catch (Exception ex) { }
+
+            return Data;
+        }
+
+        public List<SelectListItem> Bind_EmpType()
+        {
+            List<SelectListItem> Emp_Type = new List<SelectListItem>();
+
+            SelectListItem List2 = new SelectListItem();
+            List2.Value = "1";
+            List2.Text = "Parmanent";
+            Emp_Type.Add(List2);
+
+            SelectListItem List3 = new SelectListItem();
+            List3.Value = "2";
+            List3.Text = "Casual/Consultant";
+            Emp_Type.Add(List3);
+
+
+
+            return Emp_Type;
+        }
+
+        public List<SelectListItem> Bind_Designation(string Emp_Type)
+        {
+            List<SelectListItem> Emp_Desig = new List<SelectListItem>();
+
+            SelectListItem ListItem;
+
+            if (Emp_Type =="2")
+            {
+                ListItem = new SelectListItem();
+                ListItem.Value = "201";
+                ListItem.Text = "Casual";
+                Emp_Desig.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "202";
+                ListItem.Text = "Contractual";
+                Emp_Desig.Add(ListItem);
+
+            }
+            else if (Emp_Type == "1")
+            {
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "1";
+                ListItem.Text = "President";
+                Emp_Desig.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "2";
+                ListItem.Text = "Secretary";
+                Emp_Desig.Add(ListItem);
+
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "3";
+                ListItem.Text = "Joint Secretary(SG)";
+                Emp_Desig.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "4";
+                ListItem.Text = "Joint Secretary";
+                Emp_Desig.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "5";
+                ListItem.Text = "Director";
+                Emp_Desig.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "6";
+                ListItem.Text = "Joint Director";
+                Emp_Desig.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "7";
+                ListItem.Text = "Deputy Director";
+                Emp_Desig.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "8";
+                ListItem.Text = "Assistant Director";
+                Emp_Desig.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "9";
+                ListItem.Text = "Executive All";
+                Emp_Desig.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "10";
+                ListItem.Text = "Senior Executive Assistant";
+                Emp_Desig.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "11";
+                ListItem.Text = "Executive Assistant";
+                Emp_Desig.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "12";
+                ListItem.Text = "Junior Executive Assistant";
+                Emp_Desig.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "13";
+                ListItem.Text = "Senior Office Assistant";
+                Emp_Desig.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "14";
+                ListItem.Text = "Office Assistant";
+                Emp_Desig.Add(ListItem);
+
+            }
+            else
+            {
+                ListItem = new SelectListItem();
+                ListItem.Value = null;
+                ListItem.Text = "Please Select a Type";
+                Emp_Desig.Add(ListItem);
+
+            }
+
+
+            return Emp_Desig;
+        }
+
+        public List<SelectListItem> Bind_Dept()
+        {
+            List<SelectListItem> Emp_Dept = new List<SelectListItem>();
+
+            SelectListItem ListItem;
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "101";
+                ListItem.Text = "President Office";
+            Emp_Dept.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "102";
+                ListItem.Text = "Secretary Office";
+            Emp_Dept.Add(ListItem);
+
+            
+                ListItem = new SelectListItem();
+                ListItem.Value = "103";
+                ListItem.Text = "HR";
+            Emp_Dept.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "104";
+                ListItem.Text = "PFP";
+            Emp_Dept.Add(ListItem);
+
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "105";
+                ListItem.Text = "PMQ";
+            Emp_Dept.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "106";
+                ListItem.Text = "LAW";
+            Emp_Dept.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "107";
+                ListItem.Text = "PRCC";
+            Emp_Dept.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "108";
+                ListItem.Text = "Admin";
+            Emp_Dept.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "108";
+                ListItem.Text = "Infra";
+            Emp_Dept.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "109";
+                ListItem.Text = "Student Service";
+            Emp_Dept.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "110";
+                ListItem.Text = "Training";
+            Emp_Dept.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "111";
+                ListItem.Text = "Membership";
+            Emp_Dept.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "112";
+                ListItem.Text = "IIP";
+            Emp_Dept.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "113";
+                ListItem.Text = "IT";
+            Emp_Dept.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "114";
+                ListItem.Text = "Purchase";
+            Emp_Dept.Add(ListItem);
+
+                ListItem = new SelectListItem();
+                ListItem.Value = "115";
+                ListItem.Text = "F&A";
+            Emp_Dept.Add(ListItem);
+
+            ListItem = new SelectListItem();
+            ListItem.Value = "116";
+            ListItem.Text = "Academics";
+            Emp_Dept.Add(ListItem);
+
+            ListItem = new SelectListItem();
+            ListItem.Value = "117";
+            ListItem.Text = "Exam";
+            Emp_Dept.Add(ListItem);
+
+            ListItem = new SelectListItem();
+            ListItem.Value = "118";
+            ListItem.Text = "Discipline";
+            Emp_Dept.Add(ListItem);
+
+
+            return Emp_Dept;
+        }
+
+    }
+
+}

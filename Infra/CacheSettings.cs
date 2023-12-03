@@ -1,4 +1,4 @@
-namespace RO_Chapter_Hardware.Infra
+namespace IT_Hardware.Infra
 {
     /// <summary>
     /// Contains the cache settings for the memory cache instance used by this app to cache group memberships

@@ -1,0 +1,234 @@
+﻿@model IT_Hardware.Areas.Admin.Models.Mod_AssetMaster
+
+
+
+<link href="~/CSS/RadioButton_Box.css" rel="stylesheet" />
+
+<link href="~/CSS/Submit_button.css" rel="stylesheet" />
+
+
+
+
+<style type="text/css">
+
+    .form-rounded {
+        border-radius: 3rem;
+    }
+</style>
+
+<style type="text/css">
+
+    @@import "compass/css3";
+
+    input[type=text], textarea {
+        @@include transition(all 0.30s ease-in-out);
+        outline: none;
+        padding: 3px 0px 3px 3px;
+        margin: 5px 1px 3px 0px;
+        border: 1px solid #DDDDDD;
+    }
+
+        input[type=text]:focus, textarea:focus {
+            @@include box-shadow(0 0 5px rgba(81, 203, 238, 1));
+            padding: 3px 0px 3px 3px;
+            margin: 5px 1px 3px 0px;
+            border: 1px solid rgba(81, 203, 238, 1);
+        }
+</style>
+
+
+<style type="text/css">
+    html, body {
+        height: 100%;
+    }
+
+    .wrap_but {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .button {
+        width: 140px;
+        height: 45px;
+        font-family: 'Roboto', sans-serif;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 2.5px;
+        font-weight: 500;
+        color: #000;
+        background-color: #fff;
+        border: none;
+        border-radius: 45px;
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease 0s;
+        cursor: pointer;
+        outline: none;
+    }
+
+        .button:hover {
+            background-color: #2EE59D;
+            box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+            color: #fff;
+            transform: translateY(-7px);
+        }
+</style>
+
+
+
+<div style=" margin-top: -50px;  text-align: center; height: 50px; align-content: center; width: 100% " class="card w-100 shadow p-3 mb-5 bg-white rounded">
+
+    <p style="font-size:large; padding-top:-5px; font-weight:400;">Enter Make and Master Data</p>
+
+</div>
+
+
+<div style=" align-content:center; width:100%" class="card w-100 shadow p-3 mb-5 bg-white rounded">
+
+
+    @using (Html.BeginForm("Save_AssetMakeModel", "MasterData", FormMethod.Post))
+    {
+
+    <table class="  table-striped shadow " style="width:100%">
+
+        <tr>
+            <td style="width:15%; height:50px;">
+                Asset Make
+            </td>
+            <td style="width:35%;">
+
+                @Html.TextBoxFor(x => x.Asset_make, new { @class = "form-rounded", @style = " width :90%; " })
+
+            </td>
+            <td style="width:15%;">
+                Asset Model
+            </td>
+            <td style="width:35%;">
+                @Html.TextBoxFor(x => x.Asset_Model, new { @class = "form-rounded", @style = " width :90%; " })
+            </td>
+        </tr>
+
+
+
+        <tr>
+            <td style="width: 100%; height: 10px; padding-top: 20px;" colspan="4">
+                Select Item Type
+            </td>
+        </tr>
+
+        <tr>
+
+            <td colspan="4" align="center" style="vertical-align: middle; padding-top: 20px; padding-bottom: 20px; padding-left: 10px; padding-right: 10px">
+
+
+                <div>
+                    <div class="form cf">
+                        <section class="plan cf">
+
+                            @Html.RadioButtonFor(model => model.Asset_Type, "Desktop", new { @id = "Desktop" })
+                            <label class="free-label four col" for="Desktop">Desktop PC</label>
+
+
+                            @Html.RadioButtonFor(model => model.Asset_Type, "Laptop", new { @id = "Laptop" })
+                            <label class="basic-label four col" for="Laptop">Laptop</label>
+
+
+                            @Html.RadioButtonFor(model => model.Asset_Type, "PrintScan", new { @id = "PrintScan" })
+                            <label class="premium-label four col" for="PrintScan">Printer/Scanner</label>
+
+
+                            @Html.RadioButtonFor(model => model.Asset_Type, "UPS", new { @id = "UPS" })
+                            <label class="premium-label four col" for="UPS">UPS</label>
+
+
+                            @Html.RadioButtonFor(model => model.Asset_Type, "Server", new { @id = "Server" })
+                            <label class="premium-label four col" for="Server">Server</label>
+
+
+                            @Html.RadioButtonFor(model => model.Asset_Type, "Switch", new { @id = "Switch" })
+                            <label class="premium-label four col" for="Switch">Network Switch</label>
+
+
+                            @Html.RadioButtonFor(model => model.Asset_Type, "DataCard", new { @id = "DataCard" })
+                            <label class="premium-label four col" for="DataCard">Data Card</label>
+
+
+                            @Html.RadioButtonFor(model => model.Asset_Type, "Ipad", new { @id = "Ipad" })
+                            <label class="premium-label four col" for="Ipad">IPAD / Surface Pro</label>
+
+
+                            @Html.RadioButtonFor(model => model.Asset_Type, "DC_Other", new { @id = "DC_Other" })
+                            <label class="premium-label four col" for="DC_Other">Data Center Other Item</label>
+
+
+                            @Html.RadioButtonFor(model => model.Asset_Type, "OtherItem", new { @id = "OtherItem" })
+                            <label class="premium-label four col" for="OtherItem">Other Item</label>
+
+
+                        </section>
+                    </div>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+
+
+        <tr>
+            <td style="width:100%; height:10px;" colspan="4">
+            </td>
+        </tr>
+
+        <tr style=" height: 30px; ">
+            <td align="left" style="width:15%; "></td>
+
+            <td style="width: 35%; padding-top: 10px; padding-bottom: 5px" align="center">
+
+                <div class="wrap_but">
+                    <button class="button" style="font-weight:bold; font-size:14px;">Submit</button>
+                </div>
+
+
+            </td>
+
+            <td style="width: 15%; padding-top: 10px; padding-bottom: 5px" align="center">
+
+                <div class="wrap_but">
+                    @Html.ActionLink("Back", "List_Make_Data", "MasterData", null, new { @class = "button", @style = "font-weight:bold; font-size:14px;" })
+
+                </div>
+            </td>
+
+            <td align="left" style="width:35%;"></td>
+        </tr>
+
+
+    </table>
+
+    }
+</div>
+
+
+
+@if (TempData["Message"] != null && TempData["Message"] != "" && TempData["Message"] != string.Empty)
+{
+    <script type="text/javascript">
+
+    window.onload = function () {
+        /**/
+        alert("@TempData["Message"]");
+    /**/
+    };
+    </script>
+
+}
+
+
+
+
+
+
+

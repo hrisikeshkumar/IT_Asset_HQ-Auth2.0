@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace RO_Chapter_Hardware.Controllers
+namespace IT_Hardware.Controllers
 {
     [Authorize]
     public class DashboardController : Controller

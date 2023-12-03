@@ -1,4 +1,4 @@
-﻿namespace RO_Chapter_Hardware.Infra
+﻿namespace IT_Hardware.Infra
 {
     public static class AuthorizationPolicies
     {

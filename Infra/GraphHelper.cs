@@ -11,7 +11,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace RO_Chapter_Hardware.Infra
+namespace IT_Hardware.Infra
 {
     /// <summary>
     /// Contains a set of methods and a pattern on how to handle group claims overage

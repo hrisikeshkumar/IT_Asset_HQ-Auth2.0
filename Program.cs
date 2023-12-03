@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
-using RO_Chapter_Hardware.Infra;
+using IT_Hardware.Infra;
 using Microsoft.Graph.Models.ExternalConnectors;
 using Microsoft.AspNetCore.Mvc.Razor;
 

@@ -1,4 +1,4 @@
-﻿@using RO_Chapter_Hardware.Areas.Chapter_Hardware.Models
+﻿@using IT_Hardware.Areas.Chapter_Hardware.Models
 @model IList<ROChapter_Mod>
 
 @{
@@ -37,9 +37,9 @@
             </td>
             <td align="right" width="25%">
                 <h4>
-                    @Html.ActionLink("Add New", "Com_Create_Item", "Computer")
+                    @Html.ActionLink("Add New", "Create_Item", "ROChapter")
 
-                    @*<a href="@Url.Action("Create", null, new { area = "Admin", controller = "Computer" }, Request.Url.Scheme)">Add New</a>*@
+                    @*<a href="@Url.Action("Create", null, new { area = "Chapter_Hardware", controller = "Computer" })">Add New</a>*@
                 </h4>
             </td>
         </tr>
@@ -58,6 +58,18 @@
                         <th>
                             serial No
                         </th>
+                        <th>
+                            Fund
+                        </th>
+                        <th>
+                            Procured Date
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                        <th>
+                            Dispossed
+                        </th>
                         <th> Action </th>
                     </tr>
 
@@ -69,6 +81,18 @@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Item_serial_No)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Fund_Provided)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Proc_date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Item_Sold)
                             </td>
                             <td>
 

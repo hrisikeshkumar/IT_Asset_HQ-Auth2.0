@@ -1,0 +1,195 @@
+﻿@using IT_Hardware.Areas.Admin.Models
+
+@model IList<Mod_Item_Issue>
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<link href="~/CSS/SearchBox/searchbox.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Nunito'>
+
+
+<div style=" margin-top: -100px;  text-align: center; height: 50px; align-content: center; width: 100% " class="card w-100 shadow p-3 mb-5 bg-white rounded">
+
+    <p style="font-size:large; padding-top:-5px; font-weight:400;">Item Issued List</p>
+
+</div>
+
+<div style=" align-content:center; width:100%" class="card w-100 shadow p-3 mb-5 bg-white rounded">
+    <table class=" table-hover table-striped shadow " style="width:100%">
+        <tr>
+            <td width="75%">
+
+                <div class="col-rt-3 equal-height">
+                    <div class="sb-example-3">
+                        <!-- partial:index.partial.html -->
+                        <div class="search__container">
+
+                            <input class="search__input" id="SL_Number" type="text" placeholder="Search  by Person Name or Serial Number">
+                        </div>
+                    </div>
+                </div>
+
+
+            </td>
+            <td align="right" width="25%">
+                <h4>
+                    @Html.ActionLink("Add New", "Item_Issue_Create_Item", "Item_Issue")
+
+                </h4>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                </br>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <table id="Bud_Uses_Grid" style="width:100%">
+                    <tr>
+                        <th>
+                            Item Type
+                        </th>
+                        <th>
+                            Item Serial No.
+                        </th>
+                        <th>
+                            Presently Issued
+                        </th>
+                        <th>
+                            Emp Designation
+                        </th>
+                        <th>
+                            Previously Issued
+                        </th>
+                        <th>
+                            Issue Date
+                        </th>
+
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Item_Type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Item_SerialNo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Transfered_Emp_Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Transfered_Emp_Designation)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Previous_Emp_Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Issued_date)
+                            </td>
+
+                        </tr>
+                    }
+
+                </table>
+
+            </td>
+
+        </tr>
+
+    </table>
+</div>
+
+<script type="text/javascript">
+    function ShowSuccessMsg() {
+        toastr.success("Successfully Added.");
+    };
+    function ShowFailure(Msg) {
+        toastr.error("Error:" + Msg);
+    };
+</script>
+
+
+@if (ViewBag.JavaScriptFunction != null)
+{
+    <script type="text/javascript">
+        @Html.Raw(ViewBag.JavaScriptFunction)
+    </script>
+}
+
+
+@if (TempData["Message"] != null && TempData["Message"] != "" && TempData["Message"] != string.Empty)
+{
+    <script type="text/javascript">
+
+    window.onload = function () {
+        /**/
+        alert("@TempData["Message"]");
+    /**/
+    };
+    </script>
+
+}
+
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $("#SL_Number").keyup(function () {
+            $("#Bud_Uses_Grid tr").remove();
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Item_Issue/Search_Item",
+                datatype: "Json",
+                data: { SL_Num: $('#SL_Number').val() },
+                success: function (response) {
+
+                    markup = "<tr><th style='width: 15%;'> Item Type </th> <th style='width: 15%;'>  Serial Number </th> <th style='width: 15%;'> Issued Employee </th> <th style='width: 15%; '> Designation </th>  <th style='width: 15%;'> Previous Employee </th>  <th style='width: 15%; '> Issued Date </th>  </tr>";
+                    tableBody = $("#Bud_Uses_Grid tbody");
+                    tableBody.append(markup);
+
+                    if (response != null) {
+                        //$.each(response.Bud_Uses_List[i], function (Budget_Uses_Id, Budget_Name, Budget_Amount, Budget_Type ) {
+                        $.each(response, function (key, val) {
+
+                            //var date = new Date(val.Issued_date);
+
+                            var date = new Date(parseInt(val.Issued_date.substr(6)));
+
+                            markup = "<tr><td> " + val.Item_Type + " </td> " +
+                                "<td> " + val.Item_SerialNo + " </td> " +
+                                "<td> " + val.Transfered_Emp_Name + " </td> " +
+                                "<td> " + val.Transfered_Emp_Designation + " </td> " +
+                                "<td> " + val.Previous_Emp_Name + " </td> " +
+                                "<td> " + date.toDateString() + " </td> </tr> "
+                            tableBody = $("#Bud_Uses_Grid tbody");
+                            tableBody.append(markup);
+
+
+
+                        });
+                    } else {
+                        alert("Something went wrong");
+                    }
+                },
+              
+
+            });
+
+        });
+    });
+
+</script>
+
+
+
+
+
+

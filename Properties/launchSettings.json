@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "RO_Chapter_Hardware": {
+    "IT_Hardware": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

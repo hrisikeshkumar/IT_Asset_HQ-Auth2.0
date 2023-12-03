@@ -1,0 +1,535 @@
+﻿@model IT_Hardware.Areas.Admin.Models.Mod_Item_Issue
+
+
+@{
+    ViewBag.Title = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+@*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>*@
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+
+<script type="text/javascript">
+    var isShift = false;
+    var seperator = "/";
+    window.onload = function () {
+        //Reference the Table.
+        var tblForm = document.getElementById("tblForm");
+
+        //Reference all INPUT elements in the Table.
+        var inputs = document.getElementsByTagName("input");
+
+        //Loop through all INPUT elements.
+        for (var i = 0; i < inputs.length; i++) {
+            //Check whether the INPUT element is TextBox.
+            if (inputs[i].type == "text") {
+                //Check whether Date Format Validation is required.
+                if (inputs[i].className.indexOf("date-format") > 0) {
+
+                    //Set Max Length.
+                    inputs[i].setAttribute("maxlength", 10);
+
+                    //Only allow Numeric Keys.
+                    inputs[i].onkeydown = function (e) {
+                        return IsNumeric(this, e.keyCode);
+                    };
+
+                    //Validate Date as User types.
+                    inputs[i].onkeyup = function (e) {
+                        ValidateDateFormat(this, e.keyCode);
+                    };
+                }
+            }
+        }
+    };
+
+    function IsNumeric(input, keyCode) {
+        if (keyCode == 16) {
+            isShift = true;
+        }
+        //Allow only Numeric Keys.
+        if (((keyCode >= 48 && keyCode <= 57) || keyCode == 8 || keyCode <= 37 || keyCode <= 39 || (keyCode >= 96 && keyCode <= 105)) && isShift == false) {
+            if ((input.value.length == 2 || input.value.length == 5) && keyCode != 8) {
+                input.value += seperator;
+            }
+
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
+
+    function ValidateDateFormat(input, keyCode) {
+        var dateString = input.value;
+        if (keyCode == 16) {
+            isShift = false;
+        }
+        var regex = /(((0|1)[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/((19|20)\d\d))$/;
+
+        //Check whether valid dd/MM/yyyy Date Format.
+        if (regex.test(dateString) || dateString.length == 0) {
+            ShowHideError(input, "none");
+        } else {
+            ShowHideError(input, "block");
+        }
+    };
+
+    function ShowHideError(textbox, display) {
+        var row = textbox.parentNode.parentNode;
+        var errorMsg = row.getElementsByTagName("span")[0];
+        if (errorMsg != null) {
+            errorMsg.style.display = display;
+        }
+    };
+</script>
+
+
+<script>
+    $(function () {
+        $(".dateclass").datepicker({
+            changeYear: true,
+            changeMonth: true,
+            dateFormat: 'dd/mm/yy',
+            minDate: new Date('01/01/1900'),
+            maxDate: '+10Y'
+        });
+    });
+</script>
+
+<style type="text/css">
+
+    .form-rounded {
+        border-radius: 3rem;
+    }
+</style>
+
+<style type="text/css">
+
+    @@import "compass/css3";
+
+    input[type=text], textarea {
+        @@include transition(all 0.30s ease-in-out);
+        outline: none;
+        padding: 3px 0px 3px 3px;
+        margin: 5px 1px 3px 0px;
+        border: 1px solid #DDDDDD;
+    }
+
+        input[type=text]:focus, textarea:focus {
+            @@include box-shadow(0 0 5px rgba(81, 203, 238, 1));
+            padding: 3px 0px 3px 3px;
+            margin: 5px 1px 3px 0px;
+            border: 1px solid rgba(81, 203, 238, 1);
+        }
+</style>
+
+<style type="text/css">
+    .button_cls {
+        background: #1AAB8A;
+        color: #fff;
+        border: none;
+        position: relative;
+        height: 25px;
+        font-size: 1em;
+        padding: 0 2em;
+        cursor: pointer;
+        transition: 800ms ease all;
+        outline: none;
+    }
+
+        .button_cls:hover {
+            background: #fff;
+            color: #1AAB8A;
+        }
+
+        .button_cls:before, button:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 2px;
+            width: 0;
+            background: #1AAB8A;
+            transition: 400ms ease all;
+        }
+
+        .button_cls:after {
+            right: inherit;
+            top: inherit;
+            left: 0;
+            bottom: 0;
+        }
+
+        .button_cls:hover:before, button:hover:after {
+            width: 100%;
+            transition: 800ms ease all;
+        }
+</style>
+
+
+<div style=" margin-top: -50px;  text-align: center; height: 50px; align-content: center; width: 100% " class="card w-100 shadow p-3 mb-5 bg-white rounded">
+
+    <p style="font-size:large; padding-top:-5px; font-weight:400;">Issue Item</p>
+
+</div>
+
+<div style=" align-content:center; width:100%" class="card w-100 shadow p-3 mb-5 bg-white rounded">
+
+
+    @using (Html.BeginForm("Item_Issue_Create_Post", "Item_Issue", FormMethod.Post, new { @id = "submitForm" }))
+    {
+
+        <table class=" table-hover table-striped shadow " style="width:100%">
+
+            <tr>
+                <td style="width:25%;">
+                    Asset Serial Number
+                </td>
+                <td style="width:50%;" colspan="2">
+                    @Html.TextBoxFor(x => x.Item_SerialNo, new { @class = " form-rounded", @style = " width :90%; border: 1px solid #0000FF; " })
+                    <i id="Icon_Item_SerialNo" class="valid fa fa-question-circle" style="font-size:24px;color:red"></i>
+                </td>
+                <td style="width:25%; height:50px;">
+                    @Html.HiddenFor(x => x.Item_Id, new { @class = " form-rounded", @style = " width :90%; border: 1px solid #0000FF; " })
+                </td>
+
+            </tr>
+
+            <tr>
+                <td style="width:25%; height:50px;">
+                    Asset Type
+                </td>
+                <td style="width:25%;">
+                    @Html.TextBoxFor(x => x.Item_Name, new { @class = " form-rounded", @readonly = "true", @style = " width :90%;  background-color: #e4f0f0; " })
+                </td>
+
+                <td style="width: 25%; height: 50px;">
+                    Transfer Date
+                </td>
+                <td style="width:25%;">
+                    @Html.TextBoxFor(x => x.Issued_date, new { @class = "dateclass form-rounded date-format", @style = " width :90%; border: 1px solid #0000FF; " })
+                    <i id="Icon_Issued_date" class="valid fa fa-question-circle" style="font-size:24px;color:red"></i>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td style="width:25%; font-weight:bold">Presently Issued</td>
+                <td style="width:75%;" colspan="3">
+                    @Html.HiddenFor(x => x.Previous_Custady_Id, new { @class = " form-rounded", @style = " width :90%; " })
+                </td>
+            </tr>
+            <tr>
+                <td style="width:25%;">
+                    Employee Name
+
+                </td>
+                <td style="width:25%;">
+                    @Html.TextBoxFor(x => x.Previous_Emp_Name, new { @class = " form-rounded", @readonly = "true", @style = " width :90%;  background-color: #e4f0f0;" })
+                </td>
+
+                <td style="width:25%;">
+                    Employee Designation
+                </td>
+                <td style="width:25%;">
+                    @Html.TextBoxFor(x => x.Previous_Emp_Designation, new { @class = " form-rounded", @readonly = "true", @style = " width :90%; background-color: #e4f0f0;" })
+                </td>
+
+            </tr>
+            <tr>
+                <td style="width:25%;">
+                    Employee Department
+                </td>
+                <td style="width:25%;">
+                    @Html.TextBoxFor(x => x.Previous_Emp_Dept, new { @class = " form-rounded", @readonly = "true", @style = " width :90%;  background-color: #e4f0f0;" })
+                </td>
+
+                <td style="width:25%;">
+                    Employee Location
+                </td>
+                <td style="width:25%;">
+                    @Html.TextBoxFor(x => x.Previous_Emp_Location, new { @class = "dateclass form-rounded date-format", @readonly = "true", @style = " width :90%;  background-color: #e4f0f0;" })
+                </td>
+
+            </tr>
+
+            <tr>
+                <td style="width:25%; font-weight:bold">Item Transfer To</td>
+                <td style="width:75%;" colspan="3">
+                    @Html.HiddenFor(x => x.Transfered_Custady_Id, new { @class = " form-rounded", @style = " width :90%; " })
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width: 25%; height: 50px;">
+                    Employee Name
+                </td>
+                <td style="width:25%;">
+                    @Html.TextBoxFor(x => x.Transfered_Emp_Name, new { @class = " form-rounded", @style = " width :90%; border: 1px solid #0000FF;" })
+                    <i id="Icon_Transfered_Emp_Name" class="valid fa fa-question-circle" style="font-size:24px;color:red"></i>
+                </td>
+
+                <td style="width:25%;">
+                    Employee Designation
+                </td>
+                <td style="width:25%;">
+                    @Html.TextBoxFor(x => x.Transfered_Emp_Designation, new { @class = " form-rounded", @readonly = "true", @style = " width :90%;  background-color: #e4f0f0;" })
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 25%; height: 50px;">
+                    Employee Department
+                </td>
+                <td style="width:25%;">
+                    @Html.TextBoxFor(x => x.Transfered_Emp_Dept, new { @class = " form-rounded", @readonly = "true", @style = " width :90%;  background-color: #e4f0f0;" })
+                </td>
+
+                <td style="width:25%;">
+                    Employee Location
+                </td>
+                <td style="width:25%;">
+                    @Html.TextBoxFor(x => x.Transfered_Emp_Location, new { @class = " form-rounded", @readonly = "true", @style = " width :90%; background-color: #e4f0f0;" })
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width:25%;">
+                    Remarks
+                </td>
+                <td style="width:75%; " colspan="3">
+                    @Html.TextAreaFor(x => x.Remarks, new { @class = " form-rounded", @style = " width :95%; " })
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width:100%; height:10px;" colspan="4">
+                </td>
+            </tr>
+            <tr style=" height: 50px; ">
+                <td align="left" style="width:25%; "></td>
+
+                <td style="width: 25%; padding-top: 10px; padding-bottom: 5px" align="center">
+                    <button class="button_cls form-rounded" id="btn_submit">Submit</button>
+
+                </td>
+
+                <td style="width: 25%; padding-top: 10px; padding-bottom: 5px" align="center">
+                    @Html.ActionLink("Back", "Item_Issue_Details", "Item_Issue", null, new { @class = "button_cls form-rounded", })
+                </td>
+
+                <td align="left" style="width:25%;"></td>
+            </tr>
+        </table>
+
+    }
+</div>
+
+
+@if (TempData["Message"] != null && TempData["Message"] != "" && TempData["Message"] != string.Empty)
+{
+    <script type="text/javascript">
+
+    window.onload = function () {
+        /**/
+        alert("@TempData["Message"]");
+    /**/
+    };
+    </script>
+
+}
+
+
+
+<link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css" rel="Stylesheet" type="text/css" />
+
+<script type="text/javascript">
+    $('#Item_SerialNo').autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: '/Admin/Item_Issue/AutoComplete',
+                data: "{'SL_No': '" + request.term + "'}",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return item.Item_SL_Number + ' -- ' + item.Item_Type + '--' + item.Item_Id;
+                        //return item ;
+
+                        //return {
+                        //    label: item.Item_SL_Number + '  ' + item.Item_Type + ' )',
+                        //    value: item.Item_Id,
+                        //    valeeee: item.ItemId
+                        //};
+                    }))
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (xmlHttpRequest, textStatus, errorThrown) {
+                    console.log('some error occured', textStatus, errorThrown);
+                }
+            });
+        },
+        minLength: 1,
+        select: function (event, ui) {
+            //alert('you have selected ' + ui.item.label);
+
+            $('#Item_SerialNo').val(ui.item.label.split('--')[0]);
+            $('#Item_Name').val(ui.item.value.split('--')[1]);
+            $('#Item_Id').val(ui.item.value.split('--')[2]);
+
+            return false;
+        }
+    });
+</script>
+
+
+<script>
+    $(document).ready(function () {
+
+        $("#Item_SerialNo").focusout(function () {
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Item_Issue/Find_Item_Issue",
+                datatype: "Json",
+                data: { Item_Id: $('#Item_Id').val() },
+                success: function (data) {
+                    $.each(data, function (index, value) {
+
+                        if (value === null) {
+
+
+                            if (index === 'Previous_Emp_Name') {
+                                alert('Item does not issued Previously ');
+                            }
+                        }
+                        else {
+
+                            if (index === 'Previous_Emp_Name') {
+                                $('#Previous_Emp_Name').val(value);
+                            }
+                            else if (index === 'Previous_Custady_Id') {
+                                $('#Previous_Custady_Id').val(value);
+                            }
+                            else if (index === 'Previous_Emp_Designation') {
+                                $('#Previous_Emp_Designation').val(value);
+                            }
+                            else if (index === 'Previous_Emp_Dept') {
+                                $('#Previous_Emp_Dept').val(value);
+                            }
+                            else if (index === 'Previous_Emp_Location') {
+                                $('#Previous_Emp_Location').val(value);
+                            }
+
+
+                        }
+
+
+
+                    });
+                }
+
+            });
+            //$("#Issued_date").focus();
+        });
+
+        $("#Issued_date").focusout(function () {
+
+            $("#Transfered_Emp_Name").focus();
+        });
+
+        $("#Transfered_Emp_Name").focusout(function () {
+
+            $("#Remarks").focus();
+        });
+
+        $("#Remarks").focusout(function () {
+
+            $("#btn_submit").focus();
+        });
+
+    });
+</script>
+
+
+<script type="text/javascript">
+    $('#Transfered_Emp_Name').autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: '/Admin/Item_Issue/AutoComplete_TransferEmployee',
+                data: "{'EmpID': '" + request.term + "'}",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return item.Transfered_Emp_Name + ' -- ' + item.Transfered_Emp_Designation + '--' + item.Transfered_Emp_Dept
+                            + '--' + item.Transfered_Emp_Location + '--' + item.Transfered_Custady_Id;
+                    }))
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (xmlHttpRequest, textStatus, errorThrown) {
+                    console.log('some error occured', textStatus, errorThrown);
+                }
+            });
+        },
+        minLength: 1,
+        select: function (event, ui) {
+            //alert('you have selected ' + ui.item.label);
+
+            $('#Transfered_Emp_Name').val(ui.item.label.split('--')[0]);
+            $('#Transfered_Emp_Designation').val(ui.item.value.split('--')[1]);
+            $('#Transfered_Emp_Dept').val(ui.item.label.split('--')[2]);
+            $('#Transfered_Emp_Location').val(ui.item.value.split('--')[3]);
+            $('#Transfered_Custady_Id').val(ui.item.value.split('--')[4]);
+
+            return false;
+        }
+    });
+</script>
+
+
+
+
+@*<script type="text/javascript">
+        $(document).ready(function () {
+
+            $("btn_submit").click(function () {
+
+                var submit = 0;
+                if ($('#Emp_Name').val() == '') {
+                    $("#IconEmp_Name").addClass("invalid");
+                    submit = 1;
+                }
+                if ($('#Emp_Name').val() == '') {
+                    $("#IconEmp_Name").addClass("invalid");
+                    submit = 1;
+                }
+                if ($('#Emp_Name').val() == '') {
+                    $("#IconEmp_Name").addClass("invalid");
+                    submit = 1;
+                }
+
+                if (submit == 1) {
+                    alert('please fill required field');
+                    return false;
+
+                }
+            });
+
+
+        });
+
+
+    </script>*@
+
+

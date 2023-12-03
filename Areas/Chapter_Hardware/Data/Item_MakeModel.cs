@@ -2,7 +2,7 @@
 using System.Data.SqlClient;
 using System.Data;
 
-namespace RO_Chapter_Hardware.Areas.Chapter_Hardware.Data
+namespace IT_Hardware.Areas.Chapter_Hardware.Data
 {
     internal class Item_MakeModel
     {

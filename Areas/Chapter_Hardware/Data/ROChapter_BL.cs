@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using RO_Chapter_Hardware.Areas.Chapter_Hardware.Models;
-using System.Configuration;
+using IT_Hardware.Areas.Chapter_Hardware.Models;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace RO_Chapter_Hardware.Areas.Chapter_Hardware.Data
+namespace IT_Hardware.Areas.Chapter_Hardware.Data
 {
     public class ROChapter_BL
     {
@@ -19,7 +18,7 @@ namespace RO_Chapter_Hardware.Areas.Chapter_Hardware.Data
                 SqlConnection con = new DBConnection().con;
                 
                 DataTable dt_Comuter;
-                using (SqlCommand cmd = new SqlCommand("sp_Computer"))
+                using (SqlCommand cmd = new SqlCommand("sp_ROsAset"))
                 {
 
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -27,9 +26,6 @@ namespace RO_Chapter_Hardware.Areas.Chapter_Hardware.Data
 
                     SqlParameter sqlP_type = new SqlParameter("@Type", "Get_List");
                     cmd.Parameters.Add(sqlP_type);
-
-                    SqlParameter sqlP_Asset_Type = new SqlParameter("@Asset_Type", "Desktop");
-                    cmd.Parameters.Add(sqlP_Asset_Type);
 
                     using (SqlDataAdapter sda = new SqlDataAdapter())
                     {
@@ -51,7 +47,13 @@ namespace RO_Chapter_Hardware.Areas.Chapter_Hardware.Data
 
                     BL_data.Item_serial_No = Convert.ToString(dr["Item_SlNo"]);
 
-                    BL_data.Item_id = Convert.ToString(dr["Item_Id"]);
+                    BL_data.Fund_Provided= Convert.ToString(dr["Fund_Provided"]);
+
+                    BL_data.Proc_date = Convert.ToDateTime(dr["Proc_Date"]);
+
+                    BL_data.price = Convert.ToInt32(dr["Asset_Price"]);
+
+                    BL_data.Item_Sold = Convert.ToString(dr["Item_Sold"]);
 
                     current_data.Add(BL_data);
                 }
@@ -62,7 +64,7 @@ namespace RO_Chapter_Hardware.Areas.Chapter_Hardware.Data
             return current_data;
         }
 
-        public int Save_Computer_data(ROChapter_Mod Data, string type, string Asset_ID)
+        public int Save_data(ROChapter_Mod Data, string type, string Asset_ID)
         {
             int status = 1;
             SqlConnection con = new DBConnection().con;
@@ -72,7 +74,7 @@ namespace RO_Chapter_Hardware.Areas.Chapter_Hardware.Data
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "sp_Computer";
+                cmd.CommandText = "sp_ROsAset";
 
                 cmd.Connection = con;
 
@@ -81,33 +83,47 @@ namespace RO_Chapter_Hardware.Areas.Chapter_Hardware.Data
 
                 if (type == "Update" || type == "Delete")
                 {
-                    SqlParameter Asset_Id = new SqlParameter("@Item_Id", Asset_ID);
+                    SqlParameter Asset_Id = new SqlParameter("@Item_id", Asset_ID);
                     cmd.Parameters.Add(Asset_Id);
                 }
 
+
                 SqlParameter Asset_Make_Id = new SqlParameter("@Item_Model_id", Data.Item_Model_id);
                 cmd.Parameters.Add(Asset_Make_Id);
-
-                SqlParameter sql_Vendor_Id = new SqlParameter("@Vendor_Id", Data.Vendor_Name);
-                cmd.Parameters.Add(sql_Vendor_Id);
-
+                SqlParameter Asset_Type = new SqlParameter("@Item_Type", Data.Item_Type);
+                cmd.Parameters.Add(Asset_Type);
                 SqlParameter Asset_SL_No = new SqlParameter("@Item_serial_No", Data.Item_serial_No);
                 cmd.Parameters.Add(Asset_SL_No);
-
-                SqlParameter Proc_Date = new SqlParameter("@Proc_Date", Data.Proc_date);
-                cmd.Parameters.Add(Proc_Date);
-
-
-                SqlParameter Asset_Price = new SqlParameter("@Asset_Price", Data.price);
-                cmd.Parameters.Add(Asset_Price);
-
+                SqlParameter ProcDate = new SqlParameter("@Proc_date", Data.Proc_date);
+                cmd.Parameters.Add(ProcDate);
+                SqlParameter ROChapterName = new SqlParameter("@ROChapterName", Data.ROChapterName);
+                cmd.Parameters.Add(ROChapterName);
+                SqlParameter Fund_Provided = new SqlParameter("@Fund_Provided", Data.ROChapterName);
+                cmd.Parameters.Add(Fund_Provided);
+                SqlParameter sql_Vendor = new SqlParameter("@Vendor_Id", Data.Vendor_Name);
+                cmd.Parameters.Add(sql_Vendor);
+                SqlParameter Invoice_Number = new SqlParameter("@Invoice_Number", Data.Invoice_Number);
+                cmd.Parameters.Add(Invoice_Number);
+                SqlParameter Invoice_File_Name = new SqlParameter("@Invoice_File_Name", Data.Invoice_File);
+                cmd.Parameters.Add(Invoice_File_Name);
+                SqlParameter price = new SqlParameter("@price", Data.price);
+                cmd.Parameters.Add(price);
                 SqlParameter Remarks = new SqlParameter("@Remarks", Data.Remarks);
                 cmd.Parameters.Add(Remarks);
-
-                SqlParameter Asset_Type = new SqlParameter("@Asset_Type", "Desktop");
-                cmd.Parameters.Add(Asset_Type);
-
-
+                SqlParameter Sanction_Order_File_Name = new SqlParameter("@Sanction_Order_File_Name", Data.Sanction_Order_File);
+                cmd.Parameters.Add(Sanction_Order_File_Name);
+                SqlParameter Sanction_Order_ID = new SqlParameter("@Sanction_Order_ID", Data.Invoice_Number);
+                cmd.Parameters.Add(@Sanction_Order_ID);
+                SqlParameter Sanction_Order_Date = new SqlParameter("@Sanction_Order_Date", Data.Invoice_File);
+                cmd.Parameters.Add(Sanction_Order_Date);
+                SqlParameter Item_Sold = new SqlParameter("@Item_Sold", Data.Item_Sold);
+                cmd.Parameters.Add(Item_Sold);
+                SqlParameter Sold_DT = new SqlParameter("@Sold_DT", Data.Sanction_Order_File);
+                cmd.Parameters.Add(Sold_DT);
+                SqlParameter Sold_To = new SqlParameter("@Sold_To", Data.Invoice_Number);
+                cmd.Parameters.Add(Sold_To);
+                SqlParameter Sold_Doc_File = new SqlParameter("@Sold_Doc_File", Data.Invoice_File);
+                cmd.Parameters.Add(Sold_Doc_File);
                 SqlParameter User_Id = new SqlParameter("@Create_Usr_Id", Data.Create_user);
                 cmd.Parameters.Add(User_Id);
 
@@ -133,7 +149,7 @@ namespace RO_Chapter_Hardware.Areas.Chapter_Hardware.Data
                 DataTable dt_Comuter;
                 SqlConnection con = new DBConnection().con;
 
-                using (SqlCommand cmd = new SqlCommand("sp_Computer"))
+                using (SqlCommand cmd = new SqlCommand("sp_ROsAset"))
                 {
                     SqlParameter sqlP_type = new SqlParameter("@Type", "Get_Data_By_ID");
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -154,17 +170,23 @@ namespace RO_Chapter_Hardware.Areas.Chapter_Hardware.Data
                     }
                 }
 
-                if (dt_Comuter.Rows.Count > 0)
+                foreach (DataRow dr in dt_Comuter.Rows)
                 {
+                    Data = new ROChapter_Mod();
 
-                    Data.Item_id = Convert.ToString(dt_Comuter.Rows[0]["Item_Id"]);
-                    Data.Item_Make_id = Convert.ToString(dt_Comuter.Rows[0]["Make"]);
-                    Data.Item_Model_id = Convert.ToString(dt_Comuter.Rows[0]["Item_MakeId"]);
-                    Data.Item_serial_No = Convert.ToString(dt_Comuter.Rows[0]["Item_SlNo"]);
-                    Data.Proc_date = Convert.ToDateTime(dt_Comuter.Rows[0]["Proc_Date"]).Date;
-                    Data.price = Convert.ToInt32(dt_Comuter.Rows[0]["Asset_Price"]);
-                    Data.Remarks = Convert.ToString(dt_Comuter.Rows[0]["Remarks"]);
+                    Data.Item_Type = Convert.ToString(dr["Asset_Type"]);
 
+                    Data.Item_serial_No = Convert.ToString(dr["Item_SlNo"]);
+
+                    Data.Fund_Provided = Convert.ToString(dr["Fund_Provided"]);
+
+                    Data.Proc_date = Convert.ToDateTime(dr["Proc_Date"]);
+
+                    Data.price = Convert.ToInt32(dr["Asset_Price"]);
+
+                    Data.Item_Sold = Convert.ToString(dr["Item_Sold"]);
+
+                   
                 }
 
             }

@@ -1,0 +1,291 @@
+﻿@model IT_Hardware.Areas.Admin.Models.Mod_Amc_Dashboard
+
+@{
+    ViewBag.Title = "Amc_DashBoard";
+}
+
+
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+@*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>*@
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+<script>
+    $(function () {
+        $(".dateclass").datepicker({
+            changeYear: true,
+            changeMonth: true,
+            dateFormat: 'dd/mm/yy',
+            minDate: new Date('01/01/1900'),
+            maxDate: '+10Y'
+        });
+    });
+</script>
+
+<style type="text/css">
+
+    .form-rounded {
+        border-radius: 3rem;
+    }
+</style>
+
+<style type="text/css">
+
+    @@import "compass/css3";
+
+    input[type=text], textarea {
+        @@include transition(all 0.30s ease-in-out);
+        outline: none;
+        padding: 3px 0px 3px 3px;
+        margin: 5px 1px 3px 0px;
+        border: 1px solid #DDDDDD;
+    }
+
+        input[type=text]:focus, textarea:focus {
+            @@include box-shadow(0 0 5px rgba(81, 203, 238, 1));
+            padding: 3px 0px 3px 3px;
+            margin: 5px 1px 3px 0px;
+            border: 1px solid rgba(81, 203, 238, 1);
+        }
+</style>
+
+<style type="text/css">
+    .button_cls {
+        background: #1AAB8A;
+        color: #fff;
+        border: none;
+        position: relative;
+        height: 25px;
+        font-size: 1em;
+        padding: 0 2em;
+        cursor: pointer;
+        transition: 800ms ease all;
+        outline: none;
+    }
+
+        .button_cls:hover {
+            background: #fff;
+            color: #1AAB8A;
+        }
+
+        .button_cls:before, button:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 2px;
+            width: 0;
+            background: #1AAB8A;
+            transition: 400ms ease all;
+        }
+
+        .button_cls:after {
+            right: inherit;
+            top: inherit;
+            left: 0;
+            bottom: 0;
+        }
+
+        .button_cls:hover:before, button:hover:after {
+            width: 100%;
+            transition: 800ms ease all;
+        }
+</style>
+
+
+<div style=" margin-top: -50px;  text-align: center; height: 50px; align-content: center; width: 100% " class="card w-100 shadow p-3 mb-5 bg-white rounded">
+
+    <p style="font-size:large; padding-top:-5px; font-weight:400;">IT Hardware AMC / Warranty Details</p>
+
+</div>
+
+<div style=" align-content:center; width:100%" class="card w-100 shadow p-3 mb-5 bg-white rounded">
+
+    @using (Html.BeginForm("User_Info_CreateItem_Post", "User_Info", FormMethod.Post))
+    {
+
+         <table class=" table-hover table-striped shadow " style="width:100%">
+
+
+
+                <tr>
+                    <td style="width:20%; font-weight:bold">
+                        Particulars
+                    </td>
+                    <td style="width: 20%; text-align: center; font-weight: bold">
+                        Item Under AMC
+                    </td>
+                    <td style="width: 20%; text-align: center; font-weight: bold">
+                        Item Under Warranty
+                    </td>
+                    <td style="width: 40%; text-align: center; font-weight: bold">
+                        Action
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                       Desktop PC
+                    </td>
+                    <td style="text-align:center">
+
+                        <h5>
+                            <a href="@Url.Action("Get_List_AMC", null, new { area = string.Empty, controller = "IT_Hardware_AMC"  , Types ="Desktop" })">
+                                @Model.PC_AMC
+                            </a>
+                        </h5>
+
+                    </td>
+                    <td style="text-align:center">
+                        <h5>
+                            <a href="@Url.Action("Get_List_Warranty", null, new { area = string.Empty, controller = "IT_Hardware_AMC"  , Types ="Desktop" })">
+                                @Model.PC_Waranty
+                            </a>
+                        </h5>
+                    </td>
+                    <td style="text-align:center">
+
+                        <ul style="list-style-type: none;">
+                            <li> <a href="@Url.Action("Find_Warranty_Expired", null, new { area = string.Empty, controller = "IT_Hardware_AMC"  , Types ="Desktop" })">Find Warranrty to be expired and Not in AMC</a> </li>
+                               </ul>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Laptop
+                    </td>
+                    <td style="text-align:center">
+                        <h5>
+                            <a href="@Url.Action("Get_List_AMC", null, new { area = string.Empty, controller = "IT_Hardware_AMC"   , Types ="Laptop" })">
+                                @Model.Laptop_AMC
+                            </a>
+                        </h5>
+                    </td>
+                    <td style="text-align:center">
+                        <h5>
+                            <a href="@Url.Action("Get_List_Warranty", null, new { area = string.Empty, controller = "IT_Hardware_AMC"  , Types ="Laptop"  })">
+                                @Model.Laptop_Waranty
+                            </a>
+                        </h5>
+                    </td>
+                    <td style="text-align:center">
+
+                        <ul style="list-style-type: none;">
+                            <li  > <a href="@Url.Action("Find_Warranty_Expired", null, new { area = string.Empty, controller = "IT_Hardware_AMC"  , Types ="Laptop"   })">Find Warranrty to be expired and Not in AMC</a> </li>
+                              </ul>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+              
+                            Printer
+    
+                    </td>
+                    <td style="text-align:center">
+                        <h5>
+                            <a href="@Url.Action("Get_List_AMC", null, new { area = string.Empty, controller = "IT_Hardware_AMC"  , Types ="Printer" })">
+                                @Model.Printer_AMC
+                            </a>
+                        </h5>
+                    </td>
+                    <td style="text-align:center">
+                        <h5>
+                            <a href="@Url.Action("Get_List_Warranty", null, new { area = string.Empty, controller = "IT_Hardware_AMC"    , Types ="Printer"  })">
+                                @Model.Printer_Waranty
+                            </a>
+                        </h5>
+                    </td>
+                    <td style="text-align:center">
+
+                        <ul style="list-style-type: none;">
+                            <li> <a href="@Url.Action("Find_Warranty_Expired", null, new { area = string.Empty, controller = "IT_Hardware_AMC"  , Types ="Printer"  })">Find Warranrty to be expired and Not in AMC</a> </li>
+                             </ul>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                            Scanner
+                    </td>
+                    <td style="text-align:center">
+                        <h5>
+                            <a href="@Url.Action("Get_List_AMC", null, new { area = string.Empty, controller = "IT_Hardware_AMC"  , Types ="Scanner" })">
+                                @Model.Scanner_AMC
+                            </a>
+                        </h5>
+
+                    </td>
+                    <td style="text-align:center">
+                        <h5>
+                            <a href="@Url.Action("Get_List_Warranty", null, new { area = string.Empty, controller = "IT_Hardware_AMC" , Types ="Scanner"  })">
+                                @Model.Scanner_Waranty
+                            </a>
+                        </h5>
+                    </td>
+                    <td style="text-align:center">
+
+                        <ul style="list-style-type: none;">
+                            <li> <a href="@Url.Action("Find_Warranty_Expired", null, new { area = string.Empty, controller = "IT_Hardware_AMC" , Types ="Scanner"  })">Find Warranrty to be expired and Not in AMC</a> </li>
+                             </ul>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+               
+                        UPS 
+                    </td>
+                    <td style="text-align:center">
+                        <h5>
+                        <a href="@Url.Action("Get_List_AMC", null, new { area = string.Empty, controller = "IT_Hardware_AMC" , Types ="Ups"})">
+                            @Model.Ups_AMC
+                        </a>
+                        </h5>
+                    </td>
+                    <td style="text-align:center">
+                        <h5>
+                            <a href="@Url.Action("Get_List_Warranty", null, new { area = string.Empty, controller = "IT_Hardware_AMC" , Types ="Ups" })">
+                                @Model.Ups_Waranty
+                            </a>
+                        </h5>
+                    </td>
+                    <td style="text-align:center">
+
+                        <ul style="list-style-type: none;">
+                            <li> <a href="@Url.Action("Find_Warranty_Expired", null, new { area = string.Empty, controller = "IT_Hardware_AMC" , Types ="Ups" })">Find Warranrty to be expired and Not in AMC</a> </li>
+                             </ul>
+
+                
+
+                    </td>
+                </tr>
+
+
+
+            </table>
+
+    }
+
+</div>
+
+
+@if (TempData["Message"] != null && TempData["Message"] != "" && TempData["Message"] != string.Empty)
+{
+    <script type="text/javascript">
+
+    window.onload = function () {
+        /**/
+        alert("@TempData["Message"]");
+    /**/
+    };
+    </script>
+
+}
+
+
+
+
+

@@ -1,0 +1,519 @@
+﻿@using IT_Hardware.Controllers
+@{
+    ViewBag.Title = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IT_Hardware.Areas.Admin.Models.Proposal_details
+
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+@*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>*@
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+<script>
+    $(function () {
+        $(".dateclass").datepicker({
+            changeYear: true,
+            changeMonth: true,
+            dateFormat: 'dd/mm/yy',
+            minDate: new Date('01/01/1900'),
+            maxDate: '+10Y'
+        });
+    });
+</script>
+
+<style type="text/css">
+
+    .form-rounded {
+        border-radius: 3rem;
+    }
+
+
+
+    .btn_download {
+        display: inline-block;
+        outline: 0;
+        cursor: pointer;
+        padding: 5px 10px;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 10px;
+        vertical-align: middle;
+        border: 1px solid;
+        border-radius: 6px;
+        color: #ffffff;
+        background-color: #2ea44f;
+        border-color: #1b1f2326;
+        box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px 0px inset;
+        transition: 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+        transition-property: color, background-color, border-color;
+    }
+
+        .btn_download:hover {
+            background-color: rgb(155 221 30 / 0.73);
+            border-color: #1b1f2326;
+            transition-duration: 0.1s;
+        }
+
+
+
+
+    .btn_delete {
+        display: inline-block;
+        outline: 0;
+        cursor: pointer;
+        padding: 5px 10px;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 10px;
+        vertical-align: middle;
+        border: 1px solid;
+        border-radius: 6px;
+        color: #000000;
+        background-color: #f59191;
+        border-color: #1b1f2326;
+        box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px 0px inset;
+        transition: 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+        transition-property: color, background-color, border-color;
+    }
+
+        .btn_delete:hover {
+            background-color: #f70c0c;
+            border-color: #1b1f2326;
+            transition-duration: 0.1s;
+        }
+
+
+</style>
+
+<style type="text/css">
+
+    @@import "compass/css3";
+
+    input[type=text], textarea {
+        @@include transition(all 0.30s ease-in-out);
+        outline: none;
+        padding: 3px 0px 3px 3px;
+        margin: 5px 1px 3px 0px;
+        border: 1px solid #DDDDDD;
+    }
+
+        input[type=text]:focus, textarea:focus {
+            @@include box-shadow(0 0 5px rgba(81, 203, 238, 1));
+            padding: 3px 0px 3px 3px;
+            margin: 5px 1px 3px 0px;
+            border: 1px solid rgba(81, 203, 238, 1);
+        }
+</style>
+
+<style type="text/css">
+    .button_cls {
+        background: #1AAB8A;
+        color: #fff;
+        border: none;
+        position: relative;
+        height: 25px;
+        font-size: 1em;
+        padding: 0 2em;
+        cursor: pointer;
+        transition: 800ms ease all;
+        outline: none;
+    }
+
+        .button_cls:hover {
+            background: #fff;
+            color: #1AAB8A;
+        }
+
+        .button_cls:before, button:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 2px;
+            width: 0;
+            background: #1AAB8A;
+            transition: 400ms ease all;
+        }
+
+        .button_cls:after {
+            right: inherit;
+            top: inherit;
+            left: 0;
+            bottom: 0;
+        }
+
+        .button_cls:hover:before, button:hover:after {
+            width: 100%;
+            transition: 800ms ease all;
+        }
+</style>
+
+
+<div style=" margin-top: -50px;  text-align: center; height: 50px; align-content: center; width: 100% " class="card w-100 shadow p-3 mb-5 bg-white rounded">
+
+    <p style="font-size:large; padding-top:-5px; font-weight:400;">Update Status of Proposal</p>
+
+</div>
+
+<div style=" align-content:center; width:100%" class="card w-100 shadow p-3 mb-5 bg-white rounded">
+
+
+    @using (Html.BeginForm("Update_proposal", "Admin_Dashboard", FormMethod.Post))
+    {
+
+        <table class=" table-hover table-striped shadow " style="width:100%">
+
+            <tr>
+                <td style="width:20%; ">
+                    Utilization Details
+                    @Html.HiddenFor(X => X.Proposal_Id)
+                </td>
+                <td style="width:80%;" colspan="3">
+
+                    @Html.TextAreaFor(x => x.Utilization_Details, new { @style = " width :100%; " })
+                </td>
+
+            </tr>
+            <tr>
+                <td style="width:20%;">
+                    Dte. Of IT Remarks
+                </td>
+                <td style="width:80%;" colspan="3">
+                    @Html.TextAreaFor(x => x.Dte_IT_Remarks, new { @style = " width :100%; " })
+                </td>
+
+            </tr>
+            <tr>
+                <td style="width: 20%; ">
+                    Dte. of F&A Remarks
+                </td>
+                <td style="width: 80%;" colspan="3">
+                    @Html.TextAreaFor(x => x.FA_Remarks, new { @style = " width :100%; " })
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width:20%;">
+                    Dte. of Purchase Remarks
+                </td>
+                <td style="width:80%; " colspan="3">
+                    @Html.TextAreaFor(x => x.Purchase_Remarks, new { @style = " width :100%; " })
+                </td>
+            </tr>
+            <tr>
+                <td style="width:20%;">
+                    Remarks of Secretary
+                </td>
+                <td style="width:80%; " colspan="3">
+                    @Html.TextAreaFor(x => x.Sec_Office_Remarks, new { @style = " width :100%; " })
+                </td>
+            </tr>
+            <tr>
+                <td style="width:20%;">
+                    Remarks of Other Directorate
+                </td>
+                <td style="width:80%; " colspan="3">
+                    @Html.TextAreaFor(x => x.Other_Dept_Remarks, new { @style = " width :100%; " })
+                </td>
+            </tr>
+
+            <tr style=" height: 50px; ">
+
+
+                <td align="left" style="width:25%; "> Upload File</td>
+
+                <td style="width: 75%;" colspan="3">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="width:100%;" colspan="3">
+                                <input type="file" name="postedFile" id="FileUpload_Id" />
+                                <input type="submit" id="btnFileUpload" class="btn_download" value="Upload" />
+                                <progress id="fileProgress" style="display: none"></progress>
+                                <span id="lblMessage" style="color: Green"></span>
+                            </td>
+                        </tr>
+                        <tr><td colspan="3" style="height:10px;"></td></tr>
+                        <tr>
+                            <td>
+                                <table id="Files_Grid" style="width:100%;">
+                                    <tr>
+                                        <td style="width:50%; font-weight:bold">File Name</td>
+                                        <td style="width: 25%; font-weight: bold"> Download</td>
+                                        <td style="width: 25%; font-weight: bold"> Delete</td>
+                                    </tr>
+
+                                    @foreach (var item in Model.Prop_Files)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.File_Name)
+                                            </td>
+                                            <td>
+                                                <input type='submit' value='Download' class='cssdownload btn_download' id='@item.File_Id' />
+                                            </td>
+                                            <td>
+                                                <input type='submit' class='appDetails btn_delete' id='@item.File_Id' value='Delete' />
+                                            </td>
+
+                                        </tr>
+                                    }
+
+                                </table>
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+
+
+                </td>
+            </tr>
+
+
+            <tr>
+                <td style="width:100%; height:10px;" colspan="4">
+                </td>
+            </tr>
+            <tr style=" height: 50px; ">
+                <td>
+                    <table style="width:100%;">
+                        <tr>
+                            <td>
+                                Completed
+                            </td>
+                            <td align="center" style="text-align:center; align-items:center">
+                                @Html.CheckBoxFor(x => x.Status, new { @style = " width :100%; " })
+                            </td>
+                            <td style="width:20%">
+                            </td>
+                        </tr>
+                    </table>
+
+                </td>
+                <td colspan="3" style="align-self:center" align="center">
+                    <table class="table-striped shadow" style="width:100%;">
+                        <tr>
+                            <td align="left" style="width:25%; "></td>
+
+                            <td style="width: 25%; padding-top: 10px; padding-bottom: 5px" align="center">
+                                <button class="button_cls form-rounded">Submit</button>
+
+                            </td>
+
+                            <td style="width: 25%; padding-top: 10px; padding-bottom: 5px" align="center">
+                                @Html.ActionLink("Back", "Admin_Dashboard", "Admin_Dashboard", null, new { @class = "button_cls form-rounded", })
+                            </td>
+
+                            <td align="left" style="width:25%;"></td>
+                        </tr>
+                    </table>
+                </td>
+
+            </tr>
+        </table>
+
+    }
+</div>
+
+
+@if (TempData["Message"] != null && TempData["Message"] != "" && TempData["Message"] != string.Empty)
+{
+    <script type="text/javascript">
+
+    window.onload = function () {
+        /**/
+        alert("@TempData["Message"]");
+    /**/
+    };
+    </script>
+
+}
+
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#Item_Make_id').change(function () {
+            $('#Item_Model_id').empty();
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Computer/Model_List",
+                datatype: "Json",
+                data: { Item_Make: $('#Item_Make_id').val() },
+                success: function (data) {
+                    $.each(data, function (index, value) {
+                        $('#Item_Model_id').append('<option value="' + value.Value + '">' + value.Text + '</option>');
+                    });
+                }
+
+            });
+
+        });
+    });
+</script>
+
+
+
+
+
+
+@*------------------------------------ File Function--------------------------------------------------------------*@
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#btnFileUpload').click(function (event) {
+
+
+            if (window.FormData !== undefined) {
+
+                var fileUpload = $("#FileUpload_Id").get(0);
+                var files = fileUpload.files;
+
+                var fileRefId = $("#Proposal_Id").val();
+
+                // Create FormData object
+                var fileData = new FormData();
+
+                // Looping over all files and add it to FormData object
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+
+                fileData.append('SLA_Id', fileRefId);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/Admin_Dashboard/FiliUpload",
+                    datatype: "Json",
+                    data: fileData,
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    success: function (response) {
+
+                        $("#Files_Grid tr").remove();
+
+                        markup = "<tr><th style='width: 50%;'> File Name </th> <th style='width: 25%;'> Download </th> <th style='width: 25%; text-align: center'> Delete </th> </tr>";
+                        tableBody = $("#Files_Grid tbody");
+                        tableBody.append(markup);
+
+
+                        if (response != null) {
+
+                            $.each(response, function (key, val) {
+
+                                markup = "<tr><td> " + val.File_Name + " </td> " +
+                                    "<td>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.File_Id + "' > </input> </td> " +
+                                    "<td style=' text-align: center'>  <input type='submit' class='appDetails btn_delete' id='" + val.File_Id + "' value='Delete' > </input> </td></tr> "
+
+                                tableBody = $("#Files_Grid tbody");
+                                tableBody.append(markup);
+
+                            });
+                        }
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                    }
+
+                });
+            }
+
+            event.preventDefault();
+
+        });
+    });
+</script>
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $(document).on("click", ".appDetails", function () {
+            var clickedBtnID = $(this).attr('id');
+
+            var fileRefId = $("#Proposal_Id").val();
+
+            if (confirm('Are you sure you want to delete this?')) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/Admin_Dashboard/DeleteFile",
+                    datatype: "Json",
+                    data: { FileId: clickedBtnID, RefId: fileRefId },
+                    success: function (response) {
+
+
+                        $("#Files_Grid tr").remove();
+
+                        markup = "<tr><th style='width: 50%;'> File Name </th> <th style='width: 25%;'> Download </th> <th style='width: 25%; text-align: center'> Delete </th> </tr>";
+                        tableBody = $("#Files_Grid tbody");
+                        tableBody.append(markup);
+
+
+                        if (response != null) {
+
+                            $.each(response, function (key, val) {
+
+                                markup = "<tr><td> " + val.File_Name + " </td> " +
+                                    "<td>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.File_Id + "' > </input> </td> " +
+                                    "<td style=' text-align: center'>  <input type='submit' class='appDetails btn_delete' id='" + val.File_Id + "' value='Delete' > </input> </td></tr> "
+
+                                tableBody = $("#Files_Grid tbody");
+                                tableBody.append(markup);
+
+                            });
+                        }
+
+
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                    }
+
+                });
+
+            }
+
+            event.preventDefault();
+
+        });
+    });
+</script>
+
+
+<script type="text/javascript">
+    $(document).on("click", ".cssdownload", function () {
+        var fileName = $(this).attr('id');
+
+
+        window.location.href = "/Admin/Admin_Dashboard/Download?fileId=" + fileName + "";
+
+
+        event.preventDefault();
+    });
+
+
+
+</script>
+
+
+@*---------------------------------------------------------------------------------------------------------------*@
+
+
+
+
+
+
+

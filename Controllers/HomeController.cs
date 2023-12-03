@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RO_Chapter_Hardware.Models;
+using IT_Hardware.Models;
 using System.Diagnostics;
 using Microsoft.Graph;
 using Microsoft.Identity.Web;
 
-namespace RO_Chapter_Hardware.Controllers
+namespace IT_Hardware.Controllers
 {
     [Authorize]
     public class HomeController : Controller

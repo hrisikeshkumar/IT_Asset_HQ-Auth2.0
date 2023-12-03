@@ -1,6 +1,6 @@
 ﻿using System.Data.SqlClient;
 
-namespace RO_Chapter_Hardware
+namespace IT_Hardware
 {
     public class DBConnection
     {

@@ -5,7 +5,7 @@ using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
-namespace IT_Asset.Controllers
+namespace IT_Hardware.Controllers
 {
     public class Log_InController : Controller
     {
