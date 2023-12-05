@@ -1,9 +1,11 @@
 ﻿@model IT_Hardware.Areas.Chapter_Hardware.Models.ROChapter_Mod
 
 
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+<link href="~/css/form-rounded.css" rel="stylesheet" />
+<link href="~/css/submit_button.css" rel="stylesheet" />
 
 
 <script>
@@ -19,8 +21,6 @@
 
     });
 </script>
-
-
 
 
 <script type="text/javascript">
@@ -99,12 +99,6 @@
 </script>
 
 
-<style type="text/css">
-
-    .form-rounded {
-        border-radius: 3rem;
-    }
-</style>
 
 <style type="text/css">
 
@@ -126,53 +120,12 @@
         }
 </style>
 
-<style type="text/css">
-    .button_cls {
-        background: #1AAB8A;
-        color: #fff;
-        border: none;
-        position: relative;
-        height: 25px;
-        font-size: 1em;
-        padding: 0 2em;
-        cursor: pointer;
-        transition: 800ms ease all;
-        outline: none;
-    }
 
-        .button_cls:hover {
-            background: #fff;
-            color: #1AAB8A;
-        }
-
-        .button_cls:before, button:after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            height: 2px;
-            width: 0;
-            background: #1AAB8A;
-            transition: 400ms ease all;
-        }
-
-        .button_cls:after {
-            right: inherit;
-            top: inherit;
-            left: 0;
-            bottom: 0;
-        }
-
-        .button_cls:hover:before, button:hover:after {
-            width: 100%;
-            transition: 800ms ease all;
-        }
-</style>
 
 
 <div style=" margin-top: -50px;  text-align: center; height: 50px; align-content: center; width: 100% " class="card w-100 shadow p-3 mb-5 bg-white rounded">
 
-    <p style="font-size:large; padding-top:-5px; font-weight:400;">Enter New Computer</p>
+    <p style="font-size:large; padding-top:-5px; font-weight:400;">Enter New System</p>
 
 </div>
 

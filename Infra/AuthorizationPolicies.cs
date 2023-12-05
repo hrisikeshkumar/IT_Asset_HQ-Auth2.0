@@ -11,5 +11,15 @@
         /// this policy stipulates that users in GroupAdmin can access resources
         /// </summary>
         public const string AssignmentToGroupAdminGroupRequired = "AssignmentToGroupAdminGroupRequired";
+
+
+
+        public const string AssignmentToGroupITStaffRequired = "AssignmentToGroupITStaffRequired";
+
+        public const string AssignmentToGroupITHardwareStaffRequired = "AssignmentToGroupITHardwareStaffRequired";
+
+        public const string AssignmentToChapterGroupRequired = "AssignmentToChapterGroupRequired";
+
+        public const string AssignmentToROsGroupRequired = "AssignmentToROsGroupRequired";
     }
 }
