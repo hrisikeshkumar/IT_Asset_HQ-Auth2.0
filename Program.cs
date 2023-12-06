@@ -91,6 +91,29 @@ builder.Services.AddAuthorization(options =>
 
     // this policy stipulates that users in GroupAdmin can access resources
     options.AddPolicy(AuthorizationPolicies.AssignmentToGroupAdminGroupRequired, policy => policy.RequireRole(builder.Configuration["Groups:GroupAdmin"]));
+
+
+    // this policy stipulates that users in Chapter Office can access resources
+    options.AddPolicy(AuthorizationPolicies.Chapter, policy => policy.RequireRole(builder.Configuration["Groups:Chapter"]));
+
+
+    // this policy stipulates that users in ROs Office can access resources
+    options.AddPolicy(AuthorizationPolicies.ROsGroup, policy => policy.RequireRole(builder.Configuration["Groups:Chapter"], builder.Configuration["Groups:ROs"] ));
+
+    // this policy stipulates that users in IT Staffs can access resources
+    options.AddPolicy(AuthorizationPolicies.ITStaff, policy => policy.RequireRole( builder.Configuration["Groups:ITStaff"] ));
+
+
+    // this policy stipulates that users in IT Hardware Staffs can access resources
+    options.AddPolicy(AuthorizationPolicies.ITSupportEngineer, policy => policy.RequireRole(builder.Configuration["Groups:ITSupportEngineer"]));
+
+
+    // this policy stipulates that users in IT Hardware Staffs can access resources
+    options.AddPolicy(AuthorizationPolicies.ITHardwareStaff, policy => policy.RequireRole( builder.Configuration["Groups:Chapter"], builder.Configuration["Groups:ROs"], 
+                                         builder.Configuration["Groups:ITSupportEngineer"], builder.Configuration["Groups:ITStaff"],builder.Configuration["Groups:ITStaff"]));
+
+
+
 });
 
 builder.Services.AddControllers();

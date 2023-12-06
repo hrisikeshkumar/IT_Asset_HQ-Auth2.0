@@ -14,12 +14,14 @@
 
 
 
-        public const string AssignmentToGroupITStaffRequired = "AssignmentToGroupITStaffRequired";
+        public const string ITStaff = "ITStaff";
 
-        public const string AssignmentToGroupITHardwareStaffRequired = "AssignmentToGroupITHardwareStaffRequired";
+        public const string ITHardwareStaff = "ITHardwareStaff";
 
-        public const string AssignmentToChapterGroupRequired = "AssignmentToChapterGroupRequired";
+        public const string ITSupportEngineer = "ITSupportEngineer";
 
-        public const string AssignmentToROsGroupRequired = "AssignmentToROsGroupRequired";
+        public const string Chapter = "Chapter";
+
+        public const string ROsGroup = "ROsGroup";
     }
 }
