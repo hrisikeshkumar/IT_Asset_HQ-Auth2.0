@@ -12,11 +12,9 @@ namespace IT_Hardware.Areas.Admin.Controllers
     public class Admin_DashboardController : Controller
     {
 
-        
         public ActionResult Admin_Dashboard()
         {
             
-
             BL_Admin_DashB B_Layer = new BL_Admin_DashB();
 
             Mod_Admin_dashB mod_Data = new Mod_Admin_dashB();

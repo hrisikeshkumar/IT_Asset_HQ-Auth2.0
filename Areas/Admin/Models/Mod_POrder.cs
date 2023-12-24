@@ -18,7 +18,8 @@ namespace IT_Hardware.Areas.Admin.Models
         public DateOnly PO_End_Date { get; set; }
         [Required]
         public string PO_Subject { get; set; }
-       // [Required]
+        public string Budget_Head_Id { get; set; }
+        // [Required]
         public string Vendor_id { get; set; }
         public List<SelectListItem> Vendor_List { get; set; }
         public string Remarks { get; set; }
