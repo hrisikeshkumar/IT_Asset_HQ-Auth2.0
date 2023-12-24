@@ -14,8 +14,6 @@ namespace IT_Hardware.Controllers
         [HttpGet]
         public ActionResult Log_In()
         {
-           
-
             return View("Log_In");
         }
 
@@ -23,9 +21,7 @@ namespace IT_Hardware.Controllers
         [HttpPost]
         public ActionResult Sign_In()
         {
-
-            return RedirectToAction("Dashboard", "Dashboard", new { area = "" });
-
+            return RedirectToAction("Admin_Dashboard", "Admin_Dashboard", new { area = "Admin" });
         }
 
         [HttpGet]

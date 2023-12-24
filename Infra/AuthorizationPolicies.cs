@@ -13,15 +13,15 @@
         public const string AssignmentToGroupAdminGroupRequired = "AssignmentToGroupAdminGroupRequired";
 
 
-
         public const string ITStaff = "ITStaff";
 
-        public const string ITHardwareStaff = "ITHardwareStaff";
+        public const string ITHardwareManager= "ITHardwareManager";
 
         public const string ITSupportEngineer = "ITSupportEngineer";
 
         public const string Chapter = "Chapter";
 
         public const string ROsGroup = "ROsGroup";
+
     }
 }

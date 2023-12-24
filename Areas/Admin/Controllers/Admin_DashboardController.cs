@@ -3,9 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using IT_Hardware.Areas.Admin.Data;
 using IT_Hardware.Areas.Admin.Models;
 using System.Data.SqlClient;
+using IT_Hardware.Infra;
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
+
+    [Authorize(Policy =   AuthorizationPolicies.ITHardwareManager )]
+    [Authorize(Policy =  AuthorizationPolicies.Chapter)]
     public class Admin_DashboardController : Controller
     {
 
