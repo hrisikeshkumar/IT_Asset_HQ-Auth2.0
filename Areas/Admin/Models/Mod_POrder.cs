@@ -13,9 +13,9 @@ namespace IT_Hardware.Areas.Admin.Models
         public int PO_Value { get; set; }
 
         [Required]
-        public DateTime PO_ST_Date { get; set; }
+        public DateOnly PO_ST_Date { get; set; }
         [Required]
-        public DateTime PO_End_Date { get; set; }
+        public DateOnly PO_End_Date { get; set; }
         [Required]
         public string PO_Subject { get; set; }
        // [Required]

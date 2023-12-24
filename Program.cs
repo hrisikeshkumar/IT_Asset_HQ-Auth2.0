@@ -175,7 +175,6 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-
 app.MapControllerRoute(
     name: "Chapter_Hardware",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");

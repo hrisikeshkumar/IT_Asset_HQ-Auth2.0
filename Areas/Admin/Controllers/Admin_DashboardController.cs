@@ -9,7 +9,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 {
 
     [Authorize(Policy =   AuthorizationPolicies.ITHardwareManager )]
-    [Authorize(Policy =  AuthorizationPolicies.Chapter)]
     public class Admin_DashboardController : Controller
     {
 
