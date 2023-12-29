@@ -4,25 +4,25 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
-
 namespace IT_Hardware.Areas.Admin.Data
 {
-    public class BL_POrder
+    public class BL_Invoice
     {
-        public List<Mod_POrder> Get_All_PO_Data()
+
+        public List<Mod_Invoice> Get_All_Invoice()
         {
 
-            Mod_POrder BL_data;
-            List<Mod_POrder> current_data = new List<Mod_POrder>();
+            Mod_Invoice BL_data;
+            List<Mod_Invoice> current_data = new List<Mod_Invoice>();
 
             try
             {
                 DataTable dt_Comuter;
-                
+
                 SqlConnection con = new DBConnection().con;
 
 
-                using (SqlCommand cmd = new SqlCommand("sp_POrder"))
+                using (SqlCommand cmd = new SqlCommand("sp_Invoice"))
                 {
                     SqlParameter sqlP_type = new SqlParameter("@Type", "Get_List");
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -42,17 +42,15 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 foreach (DataRow dr in dt_Comuter.Rows)
                 {
-                    BL_data = new Mod_POrder();
+                    BL_data = new Mod_Invoice();
 
-                    BL_data.Vendor_id = Convert.ToString(dr["PO_id"]);
-
-                    BL_data.PO_No = Convert.ToString(dr["PO_No"]);
-
-                    BL_data.PO_Subject = Convert.ToString(dr["PO_Sub"]);
-
-                    BL_data.PO_End_Date = (DateOnly)dr["PO_End_Date"];
-
-                    BL_data.PO_Value = Convert.ToInt32(dr["PO_Value"]);
+                    BL_data.Invoice_id = Convert.ToString(dr["PO_id"]);
+                    BL_data.Vendor_Name = Convert.ToString(dr["PO_No"]);
+                    BL_data.Invoice_Subject = Convert.ToString(dr["PO_Sub"]);
+                    BL_data.Invoice_No = Convert.ToString(dr["PO_No"]);
+                    BL_data.Invoice_ST_Date = (DateOnly)dr["PO_End_Date"];
+                    BL_data.Invoice_End_Date = (DateOnly)dr["PO_End_Date"];
+                    BL_data.Invoice_Value = Convert.ToInt32(dr["PO_Value"]);
 
                     current_data.Add(BL_data);
                 }
@@ -67,11 +65,11 @@ namespace IT_Hardware.Areas.Admin.Data
         {
 
             int status = -1;
-            PO_ID_Update = string.Empty;        
+            PO_ID_Update = string.Empty;
             PO_File_Name = string.Empty;
             SLA_File_Name = string.Empty;
 
-            
+
             SqlConnection con = new DBConnection().con;
             try
             {
@@ -92,7 +90,7 @@ namespace IT_Hardware.Areas.Admin.Data
                     cmd.Parameters.Add(PO_Id);
                 }
 
-                SqlParameter PO_No = new SqlParameter("@PO_No", Data.PO_No);   
+                SqlParameter PO_No = new SqlParameter("@PO_No", Data.PO_No);
                 cmd.Parameters.Add(PO_No);
 
                 SqlParameter PO_Value = new SqlParameter("@PO_Value", Data.PO_Value);
@@ -149,7 +147,7 @@ namespace IT_Hardware.Areas.Admin.Data
             try
             {
                 DataTable dt_Comuter;
-                
+
                 SqlConnection con = new DBConnection().con;
 
 
@@ -197,7 +195,7 @@ namespace IT_Hardware.Areas.Admin.Data
             try
             {
                 DataTable dt_Comuter;
-                
+
                 SqlConnection con = new DBConnection().con;
 
 
@@ -238,7 +236,6 @@ namespace IT_Hardware.Areas.Admin.Data
 
             return "";
         }
-
 
     }
 }

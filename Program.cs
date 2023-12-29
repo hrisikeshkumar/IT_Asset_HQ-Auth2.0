@@ -94,24 +94,20 @@ builder.Services.AddAuthorization(options =>
 
 
     // this policy stipulates that users in Chapter Office can access resources
-    options.AddPolicy(AuthorizationPolicies.Chapter, policy => policy.RequireRole(builder.Configuration["Groups:Chapter"]));
+    options.AddPolicy(AuthorizationPolicies.Chapter, policy => policy.RequireRole(builder.Configuration["Groups:Chapter"], builder.Configuration["Groups:ITHardwareManager"]));
 
 
     // this policy stipulates that users in ROs Office can access resources
-    options.AddPolicy(AuthorizationPolicies.ROsGroup, policy => policy.RequireRole(builder.Configuration["Groups:Chapter"], builder.Configuration["Groups:ROs"] ));
+    options.AddPolicy(AuthorizationPolicies.ROsGroup, policy => policy.RequireRole( builder.Configuration["Groups:ROs"], builder.Configuration["Groups:ITHardwareManager"]));
 
     // this policy stipulates that users in IT Staffs can access resources
-    options.AddPolicy(AuthorizationPolicies.ITStaff, policy => policy.RequireRole( builder.Configuration["Groups:ITStaff"] ));
-
-
-    // this policy stipulates that users in IT Hardware Staffs can access resources
-    options.AddPolicy(AuthorizationPolicies.ITSupportEngineer, policy => policy.RequireRole(builder.Configuration["Groups:ITSupportEngineer"]));
-
+    options.AddPolicy(AuthorizationPolicies.ITStaff, policy => policy.RequireRole( builder.Configuration["Groups:ITStaff"]));
 
     // this policy stipulates that users in IT Hardware Staffs can access resources
-    options.AddPolicy(AuthorizationPolicies.ITHardwareStaff, policy => policy.RequireRole( builder.Configuration["Groups:Chapter"], builder.Configuration["Groups:ROs"], 
-                                         builder.Configuration["Groups:ITSupportEngineer"], builder.Configuration["Groups:ITStaff"],builder.Configuration["Groups:ITStaff"]));
+    options.AddPolicy(AuthorizationPolicies.ITSupportEngineer, policy => policy.RequireRole(builder.Configuration["Groups:ITSupportEngineer"], builder.Configuration["Groups:ITHardwareManager"]));
 
+    // this policy stipulates that users in IT Hardware Staffs can access resources
+    options.AddPolicy(AuthorizationPolicies.ITHardwareManager, policy => policy.RequireRole( builder.Configuration["Groups:ITHardwareManager"]));
 
 
 });
@@ -178,7 +174,6 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
 
 app.MapControllerRoute(
     name: "Chapter_Hardware",

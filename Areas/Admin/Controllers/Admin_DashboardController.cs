@@ -3,17 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 using IT_Hardware.Areas.Admin.Data;
 using IT_Hardware.Areas.Admin.Models;
 using System.Data.SqlClient;
+using IT_Hardware.Infra;
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
+
+    [Authorize(Policy =   AuthorizationPolicies.ITHardwareManager )]
     public class Admin_DashboardController : Controller
     {
 
-        
         public ActionResult Admin_Dashboard()
         {
             
-
             BL_Admin_DashB B_Layer = new BL_Admin_DashB();
 
             Mod_Admin_dashB mod_Data = new Mod_Admin_dashB();
