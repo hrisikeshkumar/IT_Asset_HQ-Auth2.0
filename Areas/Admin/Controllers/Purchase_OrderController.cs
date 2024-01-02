@@ -3,13 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using IT_Hardware.Areas.Admin.Data;
 using IT_Hardware.Areas.Admin.Models;
 using DocumentFormat.OpenXml.EMMA;
+using IT_Hardware.Infra;
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
+
+    [Authorize(Policy = AuthorizationPolicies.ITStaff)]
     public class Purchase_OrderController : Controller
     {
 
-        [Authorize(Roles = "SU, Admin, Manager")]
+        
         [HttpGet]
         public ActionResult PO_Details(string Message)
         {
@@ -36,7 +39,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
 
-        [Authorize(Roles = "SU, Admin, Manager")]
+       
         [HttpPost]
         public ActionResult PO_Create_Post(Mod_POrder PO_Data)
         {
@@ -160,7 +163,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-        [Authorize(Roles = "SU, Admin, Manager")]
+       
         public ActionResult Edit_PO(string id)
         {
             BL_Vendor Md_Com = new BL_Vendor();
@@ -173,7 +176,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-        [Authorize(Roles = "SU, Admin, Manager")]
+        
         [HttpPost]
         public ActionResult Update_PO(Mod_Vendor Get_Data)
         {
@@ -213,7 +216,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return RedirectToAction("Vendor_Details", "Vendor");
         }
 
-        [Authorize(Roles = "SU, Admin, Manager")]
+        
         public ActionResult Delete_PO(Mod_Vendor Get_Data, string id)
         {
             int status = 0;
