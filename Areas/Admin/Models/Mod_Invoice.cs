@@ -17,8 +17,8 @@ namespace IT_Hardware.Areas.Admin.Models
         public DateOnly Invoice_End_Date { get; set; }
         [Required]
         public string Invoice_Subject { get; set; }
-        public string Invoice_Value { get; set; }
-        public string Penalty_Amount { get; set; }
+        public int Invoice_Value { get; set; }
+        public int Penalty_Amount { get; set; }
         public string Penalty_Reason { get; set; }
         public string Vendor_Name { get; set; }
         public string Remarks { get; set; }

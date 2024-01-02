@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace IT_Hardware.Areas.Admin.Data
 {
-    public class BL_POrder
+    public class BL_Porder
     {
         public List<Mod_POrder> Get_All_PO_Data()
         {
@@ -50,7 +50,7 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     BL_data.PO_Subject = Convert.ToString(dr["PO_Sub"]);
 
-                    BL_data.PO_End_Date = (DateOnly)dr["PO_End_Date"];
+                    BL_data.PO_End_Date =  (DateOnly)dr["PO_End_Date"];
 
                     BL_data.PO_Value = Convert.ToInt32(dr["PO_Value"]);
 

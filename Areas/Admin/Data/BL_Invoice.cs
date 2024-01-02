@@ -61,7 +61,7 @@ namespace IT_Hardware.Areas.Admin.Data
             return current_data;
         }
 
-        public int Save_PO_data(Mod_POrder Data, string type, string PO_ID, out string PO_ID_Update, out string PO_File_Name, out string SLA_File_Name)
+        public int Save_data(Mod_Invoice Data, string type, string PO_ID, out string PO_ID_Update, out string PO_File_Name, out string SLA_File_Name)
         {
 
             int status = -1;
@@ -86,23 +86,23 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 if (type == "Update" || type == "Delete")
                 {
-                    SqlParameter PO_Id = new SqlParameter("@PO_id", Data.PO_id);
+                    SqlParameter PO_Id = new SqlParameter("@PO_id", Data.PO_Id);
                     cmd.Parameters.Add(PO_Id);
                 }
 
-                SqlParameter PO_No = new SqlParameter("@PO_No", Data.PO_No);
+                SqlParameter PO_No = new SqlParameter("@PO_No", Data.Invoice_No);
                 cmd.Parameters.Add(PO_No);
 
-                SqlParameter PO_Value = new SqlParameter("@PO_Value", Data.PO_Value);
+                SqlParameter PO_Value = new SqlParameter("@PO_Value", Data.Invoice_Value);
                 cmd.Parameters.Add(PO_Value);
 
-                SqlParameter PO_ST_Date = new SqlParameter("@PO_ST_Date", Data.PO_ST_Date);
+                SqlParameter PO_ST_Date = new SqlParameter("@PO_ST_Date", Data.Invoice_ST_Date);
                 cmd.Parameters.Add(PO_ST_Date);
 
-                SqlParameter PO_End_Date = new SqlParameter("@PO_End_Date", Data.PO_End_Date);
+                SqlParameter PO_End_Date = new SqlParameter("@PO_End_Date", Data.Invoice_End_Date);
                 cmd.Parameters.Add(PO_End_Date);
 
-                SqlParameter PO_Subject = new SqlParameter("@Remarks", Data.PO_Subject);
+                SqlParameter PO_Subject = new SqlParameter("@Remarks", Data.Invoice_Subject);
                 cmd.Parameters.Add(PO_Subject);
 
                 SqlParameter Remarks = new SqlParameter("@Remarks", Data.Remarks);
@@ -140,16 +140,15 @@ namespace IT_Hardware.Areas.Admin.Data
             return status;
         }
 
-        public Mod_Vendor Get_Data_By_ID(string Vendor_Id)
+        public Mod_Invoice Get_Data_By_ID(string Vendor_Id)
         {
-            Mod_Vendor Data = new Mod_Vendor();
+            Mod_Invoice Data = new Mod_Invoice();
 
             try
             {
                 DataTable dt_Comuter;
 
                 SqlConnection con = new DBConnection().con;
-
 
                 using (SqlCommand cmd = new SqlCommand("sp_Vendor"))
                 {
@@ -174,9 +173,9 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 if (dt_Comuter.Rows.Count > 0)
                 {
-                    Data.Vendor_id = Convert.ToString(dt_Comuter.Rows[0]["Vendor_ID"]);
-                    Data.Vendor_name = Convert.ToString(dt_Comuter.Rows[0]["Vendor_name"]);
-                    Data.Vendor_Addr = Convert.ToString(dt_Comuter.Rows[0]["Vendor_Address"]);
+                    Data.Invoice_id = Convert.ToString(dt_Comuter.Rows[0]["Vendor_ID"]);
+                    Data.Invoice_No = Convert.ToString(dt_Comuter.Rows[0]["Vendor_name"]);
+                    Data.Invoice_Value = Convert.ToInt32(dt_Comuter.Rows[0]["Vendor_Address"]);
                     Data.Remarks = Convert.ToString(dt_Comuter.Rows[0]["remarks"]);
 
                 }
@@ -187,7 +186,7 @@ namespace IT_Hardware.Areas.Admin.Data
             return Data;
         }
 
-        public List<SelectListItem> Vendor_List()
+        public List<SelectListItem> PO_List()
         {
 
             List<SelectListItem> List_Item = new List<SelectListItem>();

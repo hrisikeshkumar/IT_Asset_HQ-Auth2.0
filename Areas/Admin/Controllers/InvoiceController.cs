@@ -12,20 +12,20 @@ namespace IT_Hardware.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Invoice_Details(string Message)
         {
-            BL_POrder objPO = new BL_POrder();
+            BL_Invoice objPO = new BL_Invoice();
 
-            List<Mod_POrder> pc_List = objPO.Get_All_PO_Data();
+            List<Mod_Invoice> pc_List = objPO.Get_All_Invoice();
 
-            return View("~/Areas/Admin/Views/Purchase_Order/PO_Details.cshtml", pc_List);
+            return View("", pc_List);
         }
 
         public ActionResult Invoice_Create_Item()
         {
 
-            Mod_POrder mod_PO = new Mod_POrder();
-            BL_POrder com = new BL_POrder();
+            Mod_Invoice mod_PO = new Mod_Invoice();
+            BL_Invoice com = new BL_Invoice();
 
-            mod_PO.Vendor_List = com.Vendor_List();
+           // mod_PO.Vendor_List = com.Vendor_List();
 
             return View("~/Areas/Admin/Views/Purchase_Order/PO_Create.cshtml", mod_PO);
 
@@ -33,29 +33,19 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public ActionResult Invoice_Create_Post(Mod_POrder PO_Data)
+        public ActionResult Invoice_Create_Post(Mod_Invoice Data)
         {
             string Message = "";
             try
             {
-                PO_Data.Create_usr_id = HttpContext.User.Identity.Name;
+                Data.Create_usr_id = HttpContext.User.Identity.Name;
                 string Vendor_Id = string.Empty;
                 if (ModelState.IsValid)
                 {
 
-                    if (PO_Data.File_PO.Length > 0)
-                    {
 
-                    }
-
-                    if (PO_Data.File_PO.Length > 0)
-                    {
-
-                    }
-
-
-                    BL_POrder save_data = new BL_POrder();
-                    int status = save_data.Save_PO_data(PO_Data, "Add_new", "", out string PO_Id, out string PO_File_Name, out string SLA_File_Name);
+                    BL_Invoice save_data = new BL_Invoice();
+                    int status = save_data.Save_data(Data, "Add_new", "", out string PO_Id, out string PO_File_Name, out string SLA_File_Name);
 
                     if (status > 0)
                     {
@@ -63,7 +53,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
 
-                        if (PO_Data.File_PO.Length > 0)
+                        if (Data.File_Invoice.Length > 0)
                         {
                             string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
 
@@ -72,41 +62,18 @@ namespace IT_Hardware.Areas.Admin.Controllers
                                 Directory.CreateDirectory(path);
 
                             //get file extension
-                            FileInfo fileInfo = new FileInfo(PO_Data.File_PO.FileName);
-                            string fileName = PO_Data.File_PO.FileName + fileInfo.Extension;
+                            FileInfo fileInfo = new FileInfo(Data.File_Invoice.FileName);
+                            string fileName = Data.File_Invoice.FileName + fileInfo.Extension;
 
                             string fileNameWithPath = Path.Combine(path, fileName);
 
                             using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
                             {
-                                PO_Data.File_PO.CopyTo(stream);
-                            }
-
-
-
-                        }
-
-                        if (PO_Data.File_SLA.Length > 0)
-                        {
-
-                            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
-
-                            //create folder if not exist
-                            if (!Directory.Exists(path))
-                                Directory.CreateDirectory(path);
-
-                            //get file extension
-                            FileInfo fileInfo = new FileInfo(PO_Data.File_SLA.FileName);
-                            string fileName = PO_Data.File_SLA.FileName + fileInfo.Extension;
-
-                            string fileNameWithPath = Path.Combine(path, fileName);
-
-                            using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
-                            {
-                                PO_Data.File_SLA.CopyTo(stream);
+                                Data.File_Invoice.CopyTo(stream);
                             }
 
                         }
+
                     }
 
                     else

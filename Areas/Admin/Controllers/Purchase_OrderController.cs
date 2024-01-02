@@ -3,18 +3,17 @@ using Microsoft.AspNetCore.Mvc;
 using IT_Hardware.Areas.Admin.Data;
 using IT_Hardware.Areas.Admin.Models;
 using DocumentFormat.OpenXml.EMMA;
-using IT_Hardware.Infra;
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
-
-    [Authorize(Policy = AuthorizationPolicies.ITStaff)]
     public class Purchase_OrderController : Controller
     {
+
+        [Authorize(Roles = "SU, Admin, Manager")]
         [HttpGet]
         public ActionResult PO_Details(string Message)
         {
-            BL_POrder objPO = new BL_POrder();
+            BL_Porder objPO = new BL_Porder();
 
             List<Mod_POrder> pc_List = objPO.Get_All_PO_Data();
 
@@ -27,7 +26,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         {
 
             Mod_POrder mod_PO = new Mod_POrder();
-            BL_POrder com = new BL_POrder();
+            BL_Porder com = new BL_Porder();
 
             mod_PO.Vendor_List = com.Vendor_List();
 
@@ -37,7 +36,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
 
-      
+        [Authorize(Roles = "SU, Admin, Manager")]
         [HttpPost]
         public ActionResult PO_Create_Post(Mod_POrder PO_Data)
         {
@@ -49,18 +48,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    if (PO_Data.File_PO.Length > 0)
-                    {
-                        
-                    }
-
-                    if (PO_Data.File_PO.Length > 0)
-                    {
-
-                    }
-
-
-                    BL_POrder save_data = new BL_POrder();
+                    BL_Porder save_data = new BL_Porder();
                     int status = save_data.Save_PO_data(PO_Data, "Add_new", "", out string PO_Id, out string PO_File_Name, out string SLA_File_Name);
 
                     if (status > 0)
@@ -172,7 +160,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-        
+        [Authorize(Roles = "SU, Admin, Manager")]
         public ActionResult Edit_PO(string id)
         {
             BL_Vendor Md_Com = new BL_Vendor();
@@ -185,7 +173,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-        
+        [Authorize(Roles = "SU, Admin, Manager")]
         [HttpPost]
         public ActionResult Update_PO(Mod_Vendor Get_Data)
         {
@@ -225,7 +213,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return RedirectToAction("Vendor_Details", "Vendor");
         }
 
-       
+        [Authorize(Roles = "SU, Admin, Manager")]
         public ActionResult Delete_PO(Mod_Vendor Get_Data, string id)
         {
             int status = 0;
