@@ -200,10 +200,10 @@
                     @Html.TextBoxFor(x => x.PO_No, new { @class = " form-rounded", @style = " width :90%; " })
                 </td>
                 <td style="width:25%;">
-                    P.O. Value (Yearly)
+                    P.O. Date
                 </td>
                 <td style="width:25%;">
-                    @Html.TextBoxFor(x => x.PO_Value, new { @class = " form-rounded", @style = " width :90%; " })
+                    @Html.TextBoxFor(x => x.PO_Date, new { @class = "dateclass form-rounded", @style = " width :90%; " })
                 </td>
             </tr>
             <tr>
@@ -249,6 +249,20 @@
                 </td>
                 <td style="width:25%;" colspan="3">
                     @Html.TextBoxFor(model => model.File_SLA, "", new { @type = "file" })
+                </td>
+            </tr>
+            <tr>
+                <td style="width:25%; height:50px;">
+                    SLA Required
+                </td>
+                <td style="width:25%;">
+                    @Html.CheckBoxFor(model => model.SLA_Required, new { @class = " form-rounded", @style = " width :60%; " })
+                </td>
+                <td style="width:25%;">
+                    P.O. Value (Yearly)
+                </td>
+                <td style="width:25%;">
+                    @Html.TextBoxFor(x => x.PO_Value, new { @class = " form-rounded", @style = " width :90%; " })
                 </td>
             </tr>
             <tr>

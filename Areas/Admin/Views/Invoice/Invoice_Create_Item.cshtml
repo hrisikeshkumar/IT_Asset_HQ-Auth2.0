@@ -1,5 +1,4 @@
-﻿
-@model IT_Hardware.Areas.Admin.Models.Mod_POrder
+﻿@model IT_Hardware.Areas.Admin.Models.Mod_Invoice
 
 
 @{
@@ -195,7 +194,7 @@
             <tr>
                 <td style="width:25%; ">
                     P.O. No.
-                    @Html.HiddenFor(x=>x.PO_id)
+                    @Html.HiddenFor(x => x.PO_id)
                 </td>
                 <td style="width:25%;">
                     @Html.TextBoxFor(x => x.PO_No, new { @class = " form-rounded", @style = " width :90%; " })
@@ -298,11 +297,11 @@
 {
     <script type="text/javascript">
 
-    window.onload = function () {
-        /**/
-        alert("@TempData["Message"]");
-    /**/
-    };
+        window.onload = function () {
+            /**/
+            alert("@TempData["Message"]");
+            /**/
+        };
     </script>
 
 }

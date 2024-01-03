@@ -86,13 +86,7 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
 // Adding authorization policies that enforce authorization using Azure AD security groups.
 builder.Services.AddAuthorization(options =>
 {
-    // this policy stipulates that users in both GroupMember and GroupAdmin can access resources
-    options.AddPolicy(AuthorizationPolicies.AssignmentToGroupMemberGroupRequired, policy => policy.RequireRole(builder.Configuration["Groups:GroupMember"], builder.Configuration["Groups:GroupAdmin"]));
-
-    // this policy stipulates that users in GroupAdmin can access resources
-    options.AddPolicy(AuthorizationPolicies.AssignmentToGroupAdminGroupRequired, policy => policy.RequireRole(builder.Configuration["Groups:GroupAdmin"]));
-
-
+   
     // this policy stipulates that users in Chapter Office can access resources
     options.AddPolicy(AuthorizationPolicies.Chapter, policy => policy.RequireRole(builder.Configuration["Groups:Chapter"], builder.Configuration["Groups:ITHardwareManager"]));
 

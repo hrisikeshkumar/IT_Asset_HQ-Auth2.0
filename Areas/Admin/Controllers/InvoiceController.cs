@@ -16,7 +16,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             List<Mod_Invoice> pc_List = objPO.Get_All_Invoice();
 
-            return View("", pc_List);
+            return View("~/Areas/Admin/Views/Invoice/Invoice_Details.cshtml", pc_List);
         }
 
         public ActionResult Invoice_Create_Item()
@@ -25,9 +25,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Mod_Invoice mod_PO = new Mod_Invoice();
             BL_Invoice com = new BL_Invoice();
 
-           // mod_PO.Vendor_List = com.Vendor_List();
-
-            return View("~/Areas/Admin/Views/Purchase_Order/PO_Create.cshtml", mod_PO);
+            return View("~/Areas/Admin/Views/Invoice/Invoice_Create_Item.cshtml", mod_PO);
 
         }
 
@@ -104,10 +102,8 @@ namespace IT_Hardware.Areas.Admin.Controllers
             BL_Vendor Md_Com = new BL_Vendor();
             Mod_Vendor data = Md_Com.Get_Data_By_ID(id);
 
-            //data.File_List = GetFiles_By_Id(id);
 
-
-            return View("~/Areas/Admin/Views/Vendor/Edit_Vendor.cshtml", data);
+            return View("~/Areas/Admin/Views/Invoice/Edit_Invoice.cshtml", data);
         }
 
 
