@@ -194,16 +194,16 @@
             <tr>
                 <td style="width:25%; ">
                     Invoice No.
-                    @Html.HiddenFor(x => x.Invoice_No)
+                    @Html.HiddenFor(x => x.Invoice_id)
                 </td>
                 <td style="width:25%;">
-                    @Html.DropDownListFor(x => x.Invoice_Year_List,"", new { @class = " form-rounded", @style = " width :90%; " })
+                    @Html.TextBoxFor(x => x.Invoice_No, new { @class = " form-rounded", @style = " width :90%; " })
                 </td>
                 <td style="width:25%;">
-                    P.O. Date
+                    Invoice Date
                 </td>
                 <td style="width:25%;">
-                    @Html.TextBoxFor(x => x.PO_Date, new { @class = "dateclass form-rounded", @style = " width :90%; " })
+                    @Html.TextBoxFor(x => x.Invoice_Date, new { @class = "dateclass form-rounded", @style = " width :90%; " })
                 </td>
             </tr>
             <tr>
@@ -211,58 +211,50 @@
                     Subject
                 </td>
                 <td style="width:75%;" colspan="3">
-                    @Html.TextBoxFor(x => x.PO_Subject, new { @class = " form-rounded", @style = " width :90%; " })
+                    @Html.TextBoxFor(x => x.Invoice_Subject, new { @class = " form-rounded", @style = " width :90%; " })
                 </td>
+            </tr>
+            <tr>
+                <td style="width:25%; height:50px;">
+                    Invoice Year
+                </td>
+                <td style="width:25%;">
+                    @Html.DropDownListFor(x => x.Invoice_Year_Id, Model.Invoice_Year_List, new { @class = "dateclass form-rounded", @style = " width :90%; " })
+                </td>
+                <td style="width:25%; height:50px;">
+                    PO
+                </td>
+                <td style="width:25%;">
+                    @Html.DropDownListFor(x => x.PO_Id, Model.PO_list, new { @class = "dateclass form-rounded", @style = " width :90%; " })
+                </td>
+            </tr>
+            <tr>
+                <td style="width:25%; height:50px;">
+                    Invoice Value
+                </td>
+                <td style="width:25%;">
+                    @Html.TextBoxFor(x => x.Invoice_Value, new { @class = "dateclass form-rounded", @style = " width :90%; " })
+                </td>
+                <td style="width:25%; height:50px;">
+                    Invoice File
+                </td>
+                <td style="width:25%;">
+                    @Html.TextBoxFor(model => model.File_Invoice, "", new { @type = "file" })
+                </td>
+            </tr>
 
-            </tr>
             <tr>
                 <td style="width:25%; height:50px;">
-                    P.O. Start Date
+                    Penalty Amount
                 </td>
                 <td style="width:25%;">
-                    @Html.TextBoxFor(x => x.PO_ST_Date, new { @class = "dateclass form-rounded", @style = " width :90%; " })
-                </td>
-                <td style="width:25%; height:50px;">
-                    P.O Expiary Date
+                    @Html.TextBoxFor(x => x.Penalty_Amount, new { @class = " form-rounded", @style = " width :90%; " })
                 </td>
                 <td style="width:25%;">
-                    @Html.TextBoxFor(x => x.PO_End_Date, new { @class = "dateclass form-rounded", @style = " width :90%; " })
-                </td>
-            </tr>
-            <tr>
-                <td style="width:25%; height:50px;">
-                    Vendor Name
-                </td>
-                <td style="width:75%;" colspan="3">
-                    @Html.DropDownListFor(x => x.Vendor_id, Model.Vendor_List, new { @class = " form-rounded", @style = " width :60%; " })
-                </td>
-            </tr>
-            <tr>
-                <td style="width:25%; height:50px;">
-                    P.O. Copy
+                    Penalty Reason
                 </td>
                 <td style="width:25%;">
-                    @Html.TextBoxFor(model => model.File_PO, "", new { @type = "file" })
-                </td>
-                <td style="width:25%; height:50px;">
-                    SLA Copy
-                </td>
-                <td style="width:25%;" colspan="3">
-                    @Html.TextBoxFor(model => model.File_SLA, "", new { @type = "file" })
-                </td>
-            </tr>
-            <tr>
-                <td style="width:25%; height:50px;">
-                    SLA Required
-                </td>
-                <td style="width:25%;">
-                    @Html.CheckBoxFor(model => model.SLA_Required, new { @class = " form-rounded", @style = " width :60%; " })
-                </td>
-                <td style="width:25%;">
-                    P.O. Value (Yearly)
-                </td>
-                <td style="width:25%;">
-                    @Html.TextBoxFor(x => x.PO_Value, new { @class = " form-rounded", @style = " width :90%; " })
+                    @Html.TextBoxFor(x => x.Penalty_Reason, new { @class = " form-rounded", @style = " width :90%; " })
                 </td>
             </tr>
             <tr>
@@ -289,6 +281,7 @@
                 <td align="left" style="width:25%;"></td>
             </tr>
         </table>
+
     }
 </div>
 
