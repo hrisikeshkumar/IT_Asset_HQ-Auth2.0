@@ -48,8 +48,6 @@ namespace IT_Hardware.Areas.Admin.Data
                     BL_data.Vendor_Name = Convert.ToString(dr["PO_No"]);
                     BL_data.Invoice_Subject = Convert.ToString(dr["PO_Sub"]);
                     BL_data.Invoice_No = Convert.ToString(dr["PO_No"]);
-                    BL_data.Invoice_ST_Date = (DateOnly)dr["PO_End_Date"];
-                    BL_data.Invoice_End_Date = (DateOnly)dr["PO_End_Date"];
                     BL_data.Invoice_Value = Convert.ToInt32(dr["PO_Value"]);
 
                     current_data.Add(BL_data);
@@ -86,24 +84,34 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 if (type == "Update" || type == "Delete")
                 {
-                    SqlParameter PO_Id = new SqlParameter("@PO_id", Data.PO_Id);
-                    cmd.Parameters.Add(PO_Id);
+                    SqlParameter Invoice_Id = new SqlParameter("@PO_id", Data.Invoice_id);
+                    cmd.Parameters.Add(Invoice_Id);
                 }
 
-                SqlParameter PO_No = new SqlParameter("@PO_No", Data.Invoice_No);
-                cmd.Parameters.Add(PO_No);
+                SqlParameter Invoice_No = new SqlParameter("@PO_No", Data.Invoice_No);
+                cmd.Parameters.Add(Invoice_No);
 
-                SqlParameter PO_Value = new SqlParameter("@PO_Value", Data.Invoice_Value);
-                cmd.Parameters.Add(PO_Value);
+                SqlParameter PO_Id = new SqlParameter("@PO_No", Data.PO_Id);
+                cmd.Parameters.Add(PO_Id);
 
-                SqlParameter PO_ST_Date = new SqlParameter("@PO_ST_Date", Data.Invoice_ST_Date);
-                cmd.Parameters.Add(PO_ST_Date);
+                SqlParameter Penalty_Amount = new SqlParameter("@PO_No", Data.Penalty_Amount);
+                cmd.Parameters.Add(Penalty_Amount);
 
-                SqlParameter PO_End_Date = new SqlParameter("@PO_End_Date", Data.Invoice_End_Date);
-                cmd.Parameters.Add(PO_End_Date);
+                SqlParameter Invoice_Subject = new SqlParameter("@PO_No", Data.Invoice_Subject);
+                cmd.Parameters.Add(Invoice_Subject);
 
-                SqlParameter PO_Subject = new SqlParameter("@Remarks", Data.Invoice_Subject);
-                cmd.Parameters.Add(PO_Subject);
+                SqlParameter Penalty_Reason = new SqlParameter("@PO_No", Data.Penalty_Reason);
+                cmd.Parameters.Add(Penalty_Reason);
+
+                SqlParameter Invoice_Year_Id = new SqlParameter("@PO_No", Data.Invoice_Year_Id);
+                cmd.Parameters.Add(Invoice_Year_Id);
+
+                SqlParameter Invoice_Value = new SqlParameter("@PO_Value", Data.Invoice_Value);
+                cmd.Parameters.Add(Invoice_Value);
+
+                SqlParameter Invoice_Date = new SqlParameter("@PO_ST_Date", Data.Invoice_Date);
+                cmd.Parameters.Add(Invoice_Date);
+
 
                 SqlParameter Remarks = new SqlParameter("@Remarks", Data.Remarks);
                 cmd.Parameters.Add(Remarks);
@@ -122,10 +130,9 @@ namespace IT_Hardware.Areas.Admin.Data
 
                         if (dt.Rows.Count > 0)
                         {
-                            PO_ID_Update = Convert.ToString(dt.Rows[0]["PO_id"]);
+                            PO_ID_Update = Convert.ToString(dt.Rows[0]["Invoice_id"]);
                             status = Convert.ToInt32(dt.Rows[0]["Row_Effect"]);
-                            PO_File_Name = Convert.ToString(dt.Rows[0]["PO_File_Name"]);
-                            SLA_File_Name = Convert.ToString(dt.Rows[0]["SLA_File_Name"]);
+                            PO_File_Name = Convert.ToString(dt.Rows[0]["Invoice_File_Name"]);
                         }
 
                     }

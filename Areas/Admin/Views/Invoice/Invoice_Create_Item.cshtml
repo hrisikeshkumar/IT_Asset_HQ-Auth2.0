@@ -193,11 +193,11 @@
         <table class=" table-hover table-striped shadow " style="width:100%">
             <tr>
                 <td style="width:25%; ">
-                    P.O. No.
-                    @Html.HiddenFor(x => x.PO_id)
+                    Invoice No.
+                    @Html.HiddenFor(x => x.Invoice_No)
                 </td>
                 <td style="width:25%;">
-                    @Html.TextBoxFor(x => x.PO_No, new { @class = " form-rounded", @style = " width :90%; " })
+                    @Html.DropDownListFor(x => x.Invoice_Year_List,"", new { @class = " form-rounded", @style = " width :90%; " })
                 </td>
                 <td style="width:25%;">
                     P.O. Date
