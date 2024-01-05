@@ -37,7 +37,7 @@
             </td>
             <td align="right" width="25%">
                 <h4>
-                    @Html.ActionLink("Add New", "PO_Create_Item", "Purchase_Order")
+                    @Html.ActionLink("Add New", "Invoice_Details", "Invoice")
 
                 </h4>
             </td>
@@ -76,8 +76,8 @@
                                 @Html.DisplayFor(modelItem => item.Create_date)
                             </td>
                             <td>
-                                @Html.ActionLink("Edit", "Edit_Vendor", new { id = item.Invoice_id }) |
-                                @Html.ActionLink("Delete", "Delete_Item", new { id = item.Invoice_id })
+                                @Html.ActionLink("Edit", "Edit_Invoice", new { id = item.Invoice_id }) |
+                                @Html.ActionLink("Delete", "Delete_Invoice", new { id = item.Invoice_id })
                             </td>
                         </tr>
                     }

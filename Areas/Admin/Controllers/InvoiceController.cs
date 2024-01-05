@@ -9,6 +9,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
     [Authorize(Policy =AuthorizationPolicies.ITStaff)]
     public class InvoiceController : Controller
     {
+
         [HttpGet]
         public ActionResult Invoice_Details(string Message)
         {
@@ -18,6 +19,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             return View("~/Areas/Admin/Views/Invoice/Invoice_Details.cshtml", pc_List);
         }
+
 
         public ActionResult Invoice_Create_Item()
         {
@@ -96,7 +98,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-
         public ActionResult Edit_Invoice(string id)
         {
             BL_Vendor Md_Com = new BL_Vendor();
@@ -105,7 +106,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             return View("~/Areas/Admin/Views/Invoice/Edit_Invoice.cshtml", data);
         }
-
 
 
         [HttpPost]
@@ -144,7 +144,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             }
 
-            return RedirectToAction("Vendor_Details", "Vendor");
+            return RedirectToAction("Invoice_Details", "Invoice");
         }
 
 
@@ -183,7 +183,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             return RedirectToAction("Vendor_Details", "Vendor");
         }
-
 
 
     }
