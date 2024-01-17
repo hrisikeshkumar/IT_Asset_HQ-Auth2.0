@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using IT_Hardware.Areas.Admin.Data;
 using IT_Hardware.Areas.Admin.Models;
 using IT_Hardware.Infra;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
@@ -25,7 +26,9 @@ namespace IT_Hardware.Areas.Admin.Controllers
         {
 
             Mod_Invoice mod_PO = new Mod_Invoice();
-            BL_Invoice com = new BL_Invoice();
+            BL_Invoice Inv_Data = new BL_Invoice();
+            mod_PO.Invoice_Year_List = Inv_Data.Budget_Year_List();
+            mod_PO.PO_list = Inv_Data.PO_List();
 
             return View("~/Areas/Admin/Views/Invoice/Invoice_Create_Item.cshtml", mod_PO);
 
@@ -99,12 +102,13 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
         public ActionResult Edit_Invoice(string id)
-        {
-            BL_Vendor Md_Com = new BL_Vendor();
-            Mod_Vendor data = Md_Com.Get_Data_By_ID(id);
+        {      
+            BL_Invoice Inv_Data = new BL_Invoice();
+            Mod_Invoice mod_PO = Inv_Data.Get_Data_By_ID(id);
+            mod_PO.Invoice_Year_List = Inv_Data.Budget_Year_List();
+            mod_PO.PO_list = Inv_Data.PO_List();
 
-
-            return View("~/Areas/Admin/Views/Invoice/Edit_Invoice.cshtml", data);
+            return View("~/Areas/Admin/Views/Invoice/Edit_Invoice.cshtml", mod_PO);
         }
 
 

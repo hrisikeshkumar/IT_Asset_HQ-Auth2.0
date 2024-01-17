@@ -181,7 +181,7 @@
 
 <div style=" margin-top: -50px;  text-align: center; height: 50px; align-content: center; width: 100% " class="card w-100 shadow p-3 mb-5 bg-white rounded">
 
-    <p style="font-size:large; padding-top:-5px; font-weight:400;">Edit Purchase Order</p>
+    <p style="font-size:large; padding-top:-5px; font-weight:400;">New Invoice</p>
 
 </div>
 
@@ -233,7 +233,7 @@
                     Invoice Value
                 </td>
                 <td style="width:25%;">
-                    @Html.TextBoxFor(x => x.Invoice_Value, new { @class = "dateclass form-rounded", @style = " width :90%; " })
+                    @Html.TextBoxFor(x => x.Invoice_Value, new { @class = "form-rounded", @style = " width :90%; " })
                 </td>
                 <td style="width:25%; height:50px;">
                     Invoice File
@@ -247,13 +247,16 @@
                 <td style="width:25%; height:50px;">
                     Penalty Amount
                 </td>
-                <td style="width:25%;">
+                <td style="width:25%;" colspan="3" >
                     @Html.TextBoxFor(x => x.Penalty_Amount, new { @class = " form-rounded", @style = " width :90%; " })
                 </td>
+
+            </tr>
+            <tr>
                 <td style="width:25%;">
                     Penalty Reason
                 </td>
-                <td style="width:25%;">
+                <td style="width:75%;" colspan="3">
                     @Html.TextBoxFor(x => x.Penalty_Reason, new { @class = " form-rounded", @style = " width :90%; " })
                 </td>
             </tr>
@@ -276,7 +279,7 @@
                     <button class="button_cls form-rounded">Submit</button>
                 </td>
                 <td style="width: 25%; padding-top: 10px; padding-bottom: 5px" align="center">
-                    @Html.ActionLink("Back", "PO_Details", "Purchase_Order", null, new { @class = "button_cls form-rounded", })
+                    @Html.ActionLink("Back", "Invoice_Details", "Invoice", null, new { @class = "button_cls form-rounded", })
                 </td>
                 <td align="left" style="width:25%;"></td>
             </tr>

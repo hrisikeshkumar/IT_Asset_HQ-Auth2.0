@@ -44,11 +44,16 @@ namespace IT_Hardware.Areas.Admin.Data
                 {
                     BL_data = new Mod_Invoice();
 
-                    BL_data.Invoice_id = Convert.ToString(dr["PO_id"]);
-                    BL_data.Vendor_Name = Convert.ToString(dr["PO_No"]);
-                    BL_data.Invoice_Subject = Convert.ToString(dr["PO_Sub"]);
-                    BL_data.Invoice_No = Convert.ToString(dr["PO_No"]);
+           
+                    BL_data.Invoice_id = Convert.ToString(dr["Inv_Id"]);
+                    BL_data.Invoice_No = Convert.ToString(dr["Inv_no"]);
+                    BL_data.Invoice_Subject = Convert.ToString(dr["Inv_Subject"]);
+                    //BL_data.Invoice_Date = (dr["Inv_date"]).ToString();
                     BL_data.Invoice_Value = Convert.ToInt32(dr["PO_Value"]);
+                    BL_data.Vendor_Name = Convert.ToString(dr["Vendor_name"]);
+                    BL_data.Penalty_Amount = Convert.ToInt32(dr["Penalty_Amt"]);
+                    BL_data.Penalty_Reason = Convert.ToString(dr["Penalty_Reason"]);
+                    BL_data.Invoice_Year_Id = Convert.ToString(dr["Bud_Id"]);
 
                     current_data.Add(BL_data);
                 }
@@ -147,7 +152,7 @@ namespace IT_Hardware.Areas.Admin.Data
             return status;
         }
 
-        public Mod_Invoice Get_Data_By_ID(string Vendor_Id)
+        public Mod_Invoice Get_Data_By_ID(string Invoice_Id)
         {
             Mod_Invoice Data = new Mod_Invoice();
 
@@ -157,15 +162,15 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 SqlConnection con = new DBConnection().con;
 
-                using (SqlCommand cmd = new SqlCommand("sp_Vendor"))
+                using (SqlCommand cmd = new SqlCommand("sp_Invoice"))
                 {
                     SqlParameter sqlP_type = new SqlParameter("@Type", "Get_Data_By_ID");
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection = con;
                     cmd.Parameters.Add(sqlP_type);
 
-                    SqlParameter VendorId = new SqlParameter("@Vendor_ID", Vendor_Id);
-                    cmd.Parameters.Add(VendorId);
+                    SqlParameter Inv_Id = new SqlParameter("@Vendor_ID", Invoice_Id);
+                    cmd.Parameters.Add(Inv_Id);
 
                     using (SqlDataAdapter sda = new SqlDataAdapter())
                     {
@@ -193,6 +198,7 @@ namespace IT_Hardware.Areas.Admin.Data
             return Data;
         }
 
+
         public List<SelectListItem> PO_List()
         {
 
@@ -200,15 +206,15 @@ namespace IT_Hardware.Areas.Admin.Data
 
             try
             {
-                DataTable dt_Comuter;
+                DataTable dt_PO;
 
                 SqlConnection con = new DBConnection().con;
 
 
-                using (SqlCommand cmd = new SqlCommand("Vendor_List"))
+                using (SqlCommand cmd = new SqlCommand("SELECT * from  dbo.Get_AllPO()"))
                 {
 
-                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.Text;
                     cmd.Connection = con;
 
                     using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -217,16 +223,16 @@ namespace IT_Hardware.Areas.Admin.Data
                         using (DataTable dt = new DataTable())
                         {
                             sda.Fill(dt);
-                            dt_Comuter = dt;
+                            dt_PO = dt;
                         }
                     }
                 }
 
-                foreach (DataRow dr in dt_Comuter.Rows)
+                foreach (DataRow dr in dt_PO.Rows)
                 {
                     SelectListItem Listdata = new SelectListItem();
-                    Listdata.Value = Convert.ToString(dr["Vendor_ID"]);
-                    Listdata.Text = Convert.ToString(dr["Vendor_name"]);
+                    Listdata.Value = Convert.ToString(dr["PO_id"]);
+                    Listdata.Text = Convert.ToString(dr["PO_Sub"]);
 
                     List_Item.Add(Listdata);
                 }
@@ -236,6 +242,52 @@ namespace IT_Hardware.Areas.Admin.Data
 
             return List_Item;
         }
+
+
+        public List<SelectListItem> Budget_Year_List()
+        {
+
+            List<SelectListItem> List_Item = new List<SelectListItem>();
+
+            try
+            {
+                DataTable dt_PO;
+
+                SqlConnection con = new DBConnection().con;
+
+
+                using (SqlCommand cmd = new SqlCommand("SELECT * from  dbo.Get_All_Budget_Year()"))
+                {
+
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection = con;
+
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        sda.SelectCommand = cmd;
+                        using (DataTable dt = new DataTable())
+                        {
+                            sda.Fill(dt);
+                            dt_PO = dt;
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in dt_PO.Rows)
+                {
+                    SelectListItem Listdata = new SelectListItem();
+                    Listdata.Value = Convert.ToString(dr["Bud_Id"]);
+                    Listdata.Text = Convert.ToString(dr["Bud_Year"]);
+
+                    List_Item.Add(Listdata);
+                }
+
+            }
+            catch (Exception ex) { }
+
+            return List_Item;
+        }
+
 
         public string Get_file_name(string type)
         {
