@@ -48,7 +48,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
                     BL_Invoice save_data = new BL_Invoice();
-                    int status = save_data.Save_data(Data, "Add_new", "", out string PO_Id, out string PO_File_Name, out string SLA_File_Name);
+                    int status = save_data.Save_data(Data, "Add_new", "", out string Inv_Id, out string Inv_File_Name);
 
                     if (status > 0)
                     {
@@ -58,7 +58,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
                         if (Data.File_Invoice.Length > 0)
                         {
-                            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
+                            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/Invoice");
 
                             //create folder if not exist
                             if (!Directory.Exists(path))
@@ -97,7 +97,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             }
 
-            return RedirectToAction("Vendor_Create_Item", "Vendor");
+            return RedirectToAction("Invoice_Create_Item", "Invoice");
         }
 
 
