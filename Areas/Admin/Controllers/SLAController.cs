@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using IT_Hardware.Areas.Admin.Data;
 using IT_Hardware.Areas.Admin.Models;
 using System.Data.SqlClient;
+using IT_Hardware.Infra;
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
+    [Authorize(Policy = AuthorizationPolicies.ITStaff)]
     public class SLAController : Controller
     {
 
@@ -20,7 +22,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-        [Authorize(Roles = "SU, Admin, Manager")]
+
         [HttpGet]
         public ActionResult SLA_Create_Item(string Message)
         {
@@ -38,15 +40,19 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-        [Authorize(Roles = "SU, Admin, Manager")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult SLA_CreateItem_Post(Mod_SLA Get_Data)
         {
 
             string Message = "";
             try
             {
+                
                 Get_Data.Create_usr_id = HttpContext.User.Identity.Name;
+                //Get_Data.Create_date = System.DateTime.Now;
+                //Get_Data.SLA_Id = "";
+
                 string SLA_Id = string.Empty;
                 if (ModelState.IsValid)
                 {
@@ -62,7 +68,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
                         using (MemoryStream ms = new MemoryStream())
                         {
-                            Get_Data.All_Fies[0].CopyTo(ms);
+                            Get_Data.All_Files.CopyTo(ms);
 
                             using (SqlConnection con = new DBConnection().con)
                             {
@@ -70,8 +76,8 @@ namespace IT_Hardware.Areas.Admin.Controllers
                                 using (SqlCommand cmd = new SqlCommand(query))
                                 {
                                     cmd.Connection = con;
-                                    cmd.Parameters.AddWithValue("@Name", Path.GetFileName(Get_Data.All_Fies[0].FileName));
-                                    cmd.Parameters.AddWithValue("@ContentType", Get_Data.All_Fies[0].ContentType);
+                                    cmd.Parameters.AddWithValue("@Name", Path.GetFileName(Get_Data.All_Files.FileName));
+                                    cmd.Parameters.AddWithValue("@ContentType", Get_Data.All_Files.ContentType);
                                     cmd.Parameters.AddWithValue("@Data", ms.ToArray());
                                     cmd.Parameters.AddWithValue("@Ref_Id", SLA_Id);
                                     con.Open();
@@ -106,9 +112,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
 
-
-
-        [Authorize(Roles = "SU, Admin, Manager")]
         public ActionResult Edit_SLA(string id)
         {
             BL_SLA BL_data = new BL_SLA();
@@ -125,7 +128,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-        //[Authorize(Roles = "SU, Admin, Manager")]
         public ActionResult Update_SLA(Mod_SLA Get_Data, string Item_id)
         {
             int status = 0;
@@ -164,7 +166,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-        //[Authorize(Roles = "SU, Admin, Manager")]
         public ActionResult Delete_SLA(Mod_SLA Get_Data, string id)
         {
            

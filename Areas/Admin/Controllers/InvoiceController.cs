@@ -46,7 +46,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
 
-
                     BL_Invoice save_data = new BL_Invoice();
                     int status = save_data.Save_data(Data, "Add_new", "", out string Inv_Id, out string Inv_File_Name);
 

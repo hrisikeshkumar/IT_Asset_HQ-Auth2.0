@@ -143,7 +143,7 @@
     @using (Html.BeginForm("SLA_CreateItem_Post", "SLA", FormMethod.Post, new { encType = "multipart/form-data" }))
     {
 
-
+        @Html.AntiForgeryToken()
         <table class=" table-hover table-striped shadow " style="width:100%">
 
             <tr>
@@ -182,13 +182,23 @@
                     @Html.TextBoxFor(x => x.Expiry_DT, new { @class = "dateclass form-rounded date-format", @style = " width :80%; " })
                 </td>
 
+                @Html.HiddenFor(x=>x.Vendor_Name);
+                @Html.HiddenFor(x => x.SLA_Id);
+                @Html.HiddenFor(x => x.Vendor_List);
+                @Html.HiddenFor(x => x.Create_usr_id);
+                @Html.HiddenFor(x => x.Create_date);
+                @Html.HiddenFor(x => x.Verfd_status);
+
+
             </tr>
             <tr>
                 <td style="width: 25%; height: 50px;">
                     Upload Related Files
                 </td>
                 <td style="width:75%;" colspan="3">
-                    <input type="file" name="postedFile" multiple="multiple" />
+                    <input id="All_Files" type="file"
+                           name="All_Files" />
+                   
                 </td>
             </tr>
 

@@ -23,7 +23,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return View("~/Areas/Admin/Views/Purchase_Order/PO_Details.cshtml", pc_List);
         }
 
-
         
         public ActionResult PO_Create_Item()
         {
@@ -38,8 +37,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-
-       
         [HttpPost]
         public ActionResult PO_Create_Post(Mod_POrder PO_Data)
         {
@@ -172,7 +169,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             //data.File_List = GetFiles_By_Id(id);
 
 
-            return View("~/Areas/Admin/Views/Vendor/Edit_Vendor.cshtml", data);
+            return View("~/Areas/Admin/Views/Vendor/PO_Create_Item.cshtml", data);
         }
 
 

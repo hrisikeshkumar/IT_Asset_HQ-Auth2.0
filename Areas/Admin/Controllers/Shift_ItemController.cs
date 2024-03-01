@@ -2,13 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using IT_Hardware.Areas.Admin.Data;
 using IT_Hardware.Areas.Admin.Models;
+using IT_Hardware.Infra;
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
+
+    [Authorize(Policy = AuthorizationPolicies.ITHardwareManager)]
     public class Shift_ItemController : Controller
     {
-
-        
         public ActionResult Shift_Item_Details()
         {
             BL_Shift_Item com = new BL_Shift_Item();

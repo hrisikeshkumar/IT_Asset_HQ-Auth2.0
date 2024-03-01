@@ -2,10 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using IT_Hardware.Areas.Admin.Data;
 using IT_Hardware.Areas.Admin.Models;
+using IT_Hardware.Infra;
 
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
+
+    [Authorize(Policy = AuthorizationPolicies.ITHardwareManager)]
     public class OtherItemController : Controller
     {
 

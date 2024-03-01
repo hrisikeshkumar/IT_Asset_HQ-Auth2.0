@@ -106,6 +106,8 @@ builder.Services.AddAuthorization(options =>
 
 });
 
+builder.Services.AddMvcCore();
+
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 
@@ -133,22 +135,6 @@ builder.Services.AddRazorPages();
 // Add the UI support to handle claims challenges
 builder.Services.AddServerSideBlazor()
    .AddMicrosoftIdentityConsentHandler();
-
-
-//builder.Services.Configure<IServiceCollection>(option =>
-//{
-//    string conStr = Configuration.GetConnectionString("MyConn");
-//    option.AddDbContext<DBCtx>(options1 => options1.UseSqlServer(conStr));
-//});
-
-
-//builder.Services.Configure<RazorViewEngineOptions>(options =>
-//{
-//    options.AreaViewLocationFormats.Clear();
-//    options.AreaViewLocationFormats.Add("/Chapter_Hardware/{2}/Views/{1}/{0}.cshtml");
-//    options.AreaViewLocationFormats.Add("/Chapter_Hardware/{2}/Views/Shared/{0}.cshtml");
-//    options.AreaViewLocationFormats.Add("/Views/Shared/{0}.cshtml");
-//});
 
 
 var app = builder.Build();

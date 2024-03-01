@@ -6,9 +6,11 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.Data.SqlClient;
+using IT_Hardware.Infra;
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
+    [Authorize(Policy = AuthorizationPolicies.ITStaff)]
     public class VendorController : Controller
     {
         
@@ -22,7 +24,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-        [Authorize(Roles = "SU, Admin, Manager")]
+     
         [HttpGet]
         public ActionResult Vendor_Create_Item(string Message)
         {
@@ -33,7 +35,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-        [Authorize(Roles = "SU, Admin, Manager")]
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Vendor_Create_Post(Mod_Vendor Get_Data)
@@ -52,12 +54,9 @@ namespace IT_Hardware.Areas.Admin.Controllers
                     {
                         TempData["Message"] = String.Format("Data save successfully");
 
-
-
                     }
                     else
                     {
-
                         TempData["Message"] = String.Format("Data is not saved");
                     }
                 }
@@ -77,7 +76,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-        [Authorize(Roles = "SU, Admin, Manager")]
+
         public ActionResult Edit_Vendor(string id)
         {
             BL_Vendor Md_Com = new BL_Vendor();
@@ -88,7 +87,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-        [Authorize(Roles = "SU, Admin, Manager")]
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Update_Vendor(Mod_Vendor Get_Data)
@@ -129,7 +128,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return RedirectToAction("Vendor_Details", "Vendor");
         }
 
-        [Authorize(Roles = "SU, Admin, Manager")]
         public ActionResult Delete_Vendor(Mod_Vendor Get_Data, string id)
         {
             int status = 0;

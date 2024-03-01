@@ -188,7 +188,7 @@
 <div style=" align-content:center; width:100%" class="card w-100 shadow p-3 mb-5 bg-white rounded">
 
 
-    @using (Html.BeginForm("PO_CreateItem_Post", "Purchase_Order", FormMethod.Post))
+    @using (Html.BeginForm("PO_CreateItem_Post", "Purchase_Order", FormMethod.Post, new { encType = "multipart/form-data" }))
     {
         <table class=" table-hover table-striped shadow " style="width:100%">
             <tr>

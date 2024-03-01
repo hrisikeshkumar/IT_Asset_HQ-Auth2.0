@@ -7,14 +7,14 @@ using ClosedXML.Excel;
 using System.Data.SqlClient;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using IT_Hardware.Infra;
 
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
+    [Authorize(Policy = AuthorizationPolicies.ITHardwareManager)]
     public class Stock_ReportController : Controller
     {
-
-        
         public ActionResult Stock_Report_Detail()
         {
             return View("~/Areas/Admin/Views/Stock_Report/Stock_Report_Detail.cshtml");

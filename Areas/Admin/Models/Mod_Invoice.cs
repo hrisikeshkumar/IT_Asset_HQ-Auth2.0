@@ -12,7 +12,7 @@ namespace IT_Hardware.Areas.Admin.Models
         public List<SelectListItem> Invoice_Year_List { get; set; }
 
         public List<SelectListItem> PO_list { get; set; }
-        [Required]
+
         public string PO_Id { get; set; }
         public string Invoice_Subject { get; set; }
         public string Vendor_Name { get; set; }
