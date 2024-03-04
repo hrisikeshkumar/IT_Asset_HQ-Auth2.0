@@ -49,45 +49,41 @@ namespace IT_Hardware.Areas.Admin.Controllers
             try
             {
                 
-                Get_Data.Create_usr_id = HttpContext.User.Identity.Name;
-                //Get_Data.Create_date = System.DateTime.Now;
-                //Get_Data.SLA_Id = "";
+                Get_Data.Create_usr_id = HttpContext.User.Identity.Name;      
 
                 string SLA_Id = string.Empty;
+                string SLA_FileName = string.Empty;
+
                 if (ModelState.IsValid)
                 {
                     BL_SLA save_data = new BL_SLA();
-                    int status = save_data.Save_SLA_data(Get_Data, "Add_new", "", out SLA_Id);
+                    int status = save_data.Save_SLA_data(Get_Data, "Add_new", "", out SLA_Id, out SLA_FileName);
 
                     if (status > 0)
                     {
                         TempData["Message"] = String.Format("Data saved successfully");
 
-                        //var httpContext = HttpContext.Request.Files;
-
-
-                        using (MemoryStream ms = new MemoryStream())
+                        if (Get_Data.All_Files.Length > 0)
                         {
-                            Get_Data.All_Files.CopyTo(ms);
 
-                            using (SqlConnection con = new DBConnection().con)
+                            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/SLA");
+
+                            //create folder if not exist
+                            if (!Directory.Exists(path))
+                                Directory.CreateDirectory(path);
+
+                            //get file extension
+                            FileInfo fileInfo = new FileInfo(Get_Data.All_Files.FileName);
+                            string fileName = SLA_FileName + fileInfo.Extension;
+
+                            string fileNameWithPath = Path.Combine(path, fileName);
+
+                            using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
                             {
-                                string query = "INSERT INTO tblFiles VALUES (@Name, @ContentType, @Data)";
-                                using (SqlCommand cmd = new SqlCommand(query))
-                                {
-                                    cmd.Connection = con;
-                                    cmd.Parameters.AddWithValue("@Name", Path.GetFileName(Get_Data.All_Files.FileName));
-                                    cmd.Parameters.AddWithValue("@ContentType", Get_Data.All_Files.ContentType);
-                                    cmd.Parameters.AddWithValue("@Data", ms.ToArray());
-                                    cmd.Parameters.AddWithValue("@Ref_Id", SLA_Id);
-                                    con.Open();
-                                    cmd.ExecuteNonQuery();
-                                    con.Close();
-                                }
+                                Get_Data.All_Files.CopyTo(stream);
                             }
+
                         }
-
-
 
                     }
                     else
@@ -132,6 +128,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         {
             int status = 0;
             string SLA_Id_I = string.Empty;
+            string SLA_FileName = string.Empty;
             try
             {
                 Get_Data.Create_usr_id = HttpContext.User.Identity.Name;
@@ -139,7 +136,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 {
                     BL_SLA Md_Asset = new BL_SLA();
 
-                    status = Md_Asset.Save_SLA_data(Get_Data, "Update", Item_id,  out SLA_Id_I );
+                    status = Md_Asset.Save_SLA_data(Get_Data, "Update", Item_id,  out SLA_Id_I, out SLA_FileName  );
 
                     if (status > 0)
                     {
@@ -175,10 +172,11 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     string SLA_Id = string.Empty;
+                    string SLA_FileName = string.Empty;
 
                     BL_SLA Md_Asset = new BL_SLA();
 
-                    int status = Md_Asset.Save_SLA_data(Get_Data, "Delete", id, out SLA_Id);
+                    int status = Md_Asset.Save_SLA_data(Get_Data, "Delete", id, out SLA_Id, out SLA_FileName);
 
                     if (status>0)
                     {

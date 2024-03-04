@@ -73,11 +73,12 @@ namespace IT_Hardware.Areas.Admin.Data
         }
 
 
-        public int Save_SLA_data(Mod_SLA Data, string type, string SLA_ID , out string SLA_Id_Update)
+        public int Save_SLA_data(Mod_SLA Data, string type, string SLA_ID , out string SLA_Id_Update, out string SLA_File_Name)
         {
             int status = 0;
             SLA_Id_Update = string.Empty;
-            
+            SLA_File_Name = string.Empty;
+
             SqlConnection con = new DBConnection().con;
             try
             {
@@ -120,10 +121,7 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter User_Id = new SqlParameter("@Create_Usr_Id", Data.Create_usr_id);
                 cmd.Parameters.Add(User_Id);
 
-                //con.Open();
-
-                //status = cmd.ExecuteNonQuery();
-
+                
 
 
                 using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -137,6 +135,7 @@ namespace IT_Hardware.Areas.Admin.Data
                         if (dt.Rows.Count>0)
                         {
                             SLA_Id_Update = Convert.ToString(dt.Rows[0]["SLA_Id"]);
+                            SLA_File_Name = Convert.ToString(dt.Rows[0]["SLA_File_temp"]);
                             status = Convert.ToInt32(dt.Rows[0]["Row_Effect"]);
                         }
                          
