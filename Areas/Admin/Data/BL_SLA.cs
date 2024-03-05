@@ -117,7 +117,15 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 SqlParameter Remarks = new SqlParameter("@Remarks", Data.Remarks);
                 cmd.Parameters.Add(Remarks);
+                SqlParameter SLA_File;
+                if (Data.All_Files.Length > 0)
+                {
+                    SLA_File = new SqlParameter("@SLA_Copy", 1);
+                }
+                else
+                    SLA_File = new SqlParameter("@SLA_Copy", 0);
 
+                cmd.Parameters.Add(SLA_File);
                 SqlParameter User_Id = new SqlParameter("@Create_Usr_Id", Data.Create_usr_id);
                 cmd.Parameters.Add(User_Id);
 

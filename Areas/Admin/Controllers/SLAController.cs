@@ -117,9 +117,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             Mod_data.Vendor_List = BL_data.Vendor_List();
 
-            //Mod_data.File_List = GetFiles_By_Id(Mod_data.SLA_Id);
-
-
             return View("~/Areas/Admin/Views/SLA/Edit_SLA.cshtml", Mod_data);
         }
 
@@ -136,7 +133,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 {
                     BL_SLA Md_Asset = new BL_SLA();
 
-                    status = Md_Asset.Save_SLA_data(Get_Data, "Update", Item_id,  out SLA_Id_I, out SLA_FileName  );
+                    status = Md_Asset.Save_SLA_data(Get_Data, "Update", Item_id,  out SLA_Id_I, out SLA_FileName );
 
                     if (status > 0)
                     {
@@ -227,7 +224,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         public JsonResult FiliUpload(IFormFile postedFile)
         {
 
-
+            /*
             using (MemoryStream ms = new MemoryStream())
             {
                 postedFile.CopyTo(ms);
@@ -247,7 +244,28 @@ namespace IT_Hardware.Areas.Admin.Controllers
                     }
                 }
             }
+            */
 
+            if (postedFile.Length > 0)
+            {
+
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/SLA");
+
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+
+                //get file extension
+                FileInfo fileInfo = new FileInfo(postedFile.FileName);
+                string fileName = fileInfo + fileInfo.Extension;
+
+                string fileNameWithPath = Path.Combine(path, fileName);
+
+                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                {
+                    postedFile.CopyTo(stream);
+                }
+
+            }
 
 
 

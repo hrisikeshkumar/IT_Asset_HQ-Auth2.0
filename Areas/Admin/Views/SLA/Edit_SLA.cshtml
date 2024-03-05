@@ -90,10 +90,6 @@
 </script>
 
 
-
-
-
-
 <script>
     $(function () {
         $(".dateclass").datepicker({
@@ -209,7 +205,6 @@
 
                     @Html.DropDownListFor(x => x.Vendor_id, Model.Vendor_List, new { @class = " form-rounded", @style = " width :60%; " })
 
-
                 </td>
 
             </tr>
@@ -267,22 +262,20 @@
                                         <td style="width: 25%; font-weight: bold"> Delete</td>
                                     </tr>
 
-                                  @*   @foreach (var item in Model.File_List)
-                                    {
                                         <tr>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.ContentType)
+                                            @Html.DisplayFor(x => x.SLA_File_Name )
                                             </td>
                                             <td>
-                                                <input type='submit' value='Download' class='cssdownload btn_download' id='@item.File_Id' />
+                                            <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.SLA_File_Name' />
                                             </td>
                                             <td>
-                                                <input type='submit' class='appDetails btn_delete' id='@item.File_Id' value='Delete' />
+                                            <input type='submit' class='appDetails btn_delete' id='@Model.SLA_File_Name' value='Delete' />
                                             </td>
 
                                         </tr>
-                                    }
- *@
+                                    
+
                                 </table>
                             </td>
 
