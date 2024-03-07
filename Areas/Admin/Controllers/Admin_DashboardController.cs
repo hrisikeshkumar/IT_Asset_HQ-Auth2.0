@@ -142,10 +142,12 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public JsonResult FiliUpload(IFormFile postedFile)
+        public JsonResult FiliUpload( IFormFile postedFile)
         {
 
             string SLA_Id = Request.Form["SLA_Id"].ToString();
+
+           
 
             using (MemoryStream ms = new MemoryStream())
             {

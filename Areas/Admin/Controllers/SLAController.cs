@@ -11,7 +11,15 @@ namespace IT_Hardware.Areas.Admin.Controllers
     public class SLAController : Controller
     {
 
-        
+        //private IHostingEnvironment Environment;
+
+        //public SLAController(IHostingEnvironment _environment)
+        //{
+        //    Environment = _environment;
+        //}
+
+
+
         public ActionResult SLA_Details()
         {
             BL_SLA com = new BL_SLA();
@@ -221,31 +229,12 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public JsonResult FiliUpload(IFormFile postedFile)
+        public JsonResult FiliUpload(string SLA_Id)
         {
 
-            /*
-            using (MemoryStream ms = new MemoryStream())
-            {
-                postedFile.CopyTo(ms);
-
-                using (SqlConnection con = new DBConnection().con)
-                {
-                    string query = "INSERT INTO tblFiles VALUES (@Name, @ContentType, @Data)";
-                    using (SqlCommand cmd = new SqlCommand(query))
-                    {
-                        cmd.Connection = con;
-                        cmd.Parameters.AddWithValue("@Name", Path.GetFileName(postedFile.FileName));
-                        cmd.Parameters.AddWithValue("@ContentType", postedFile.ContentType);
-                        cmd.Parameters.AddWithValue("@Data", ms.ToArray());
-                        con.Open();
-                        cmd.ExecuteNonQuery();
-                        con.Close();
-                    }
-                }
-            }
-            */
-
+          
+            string SLA_Id1 = SLA_Id.ToString();
+            IFormFile postedFile = Request.Form.Files[0];
             if (postedFile.Length > 0)
             {
 
@@ -256,7 +245,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
                 //get file extension
                 FileInfo fileInfo = new FileInfo(postedFile.FileName);
-                string fileName = fileInfo + fileInfo.Extension;
+                string fileName = SLA_Id + fileInfo.Extension;
 
                 string fileNameWithPath = Path.Combine(path, fileName);
 
@@ -266,8 +255,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 }
 
             }
-
-
 
             return Json(GetFiles_By_Id(""));
 
