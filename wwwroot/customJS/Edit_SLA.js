@@ -12,6 +12,9 @@
                 var files = fileUpload.files;
 
                 var fileRefId = $("#SLA_Id").val();
+                //var fileId = $("#File_Name").val();
+                var fileId = $('#abcdefgh').html();
+               
 
                 // Create FormData object
                 var fileData = new FormData();
@@ -22,6 +25,7 @@
                 }
 
                 fileData.append('SLA_Id', fileRefId);
+                fileData.append('file_Id', fileId);
 
                 $.ajax({
                     type: "POST",
@@ -32,23 +36,26 @@
                     processData: false, // Not to process data
                     success: function (response) {
 
-                        $("#Files_Grid tr").remove();
+                        alert('SLA File has been replaced successfully');
+                        //$("#Files_Grid tr").remove();
 
-                        markup = "<tr><th style='width: 50%;'> File Name </th> <th style='width: 25%;'> Download </th> <th style='width: 25%; text-align: center'> Delete </th> </tr>";
-                        tableBody = $("#Files_Grid tbody");
-                        tableBody.append(markup);
+                        //markup = "<tr><th style='width: 50%;'> File Name </th> <th style='width: 25%;'> Download </th> <th style='width: 25%; text-align: center'> Delete </th> </tr>";
+                        //tableBody = $("#Files_Grid tbody");
+                        //tableBody.append(markup);
 
 
                         if (response != null) {
 
                             $.each(response, function (key, val) {
 
-                                markup = "<tr><td> " + val.File_Name + " </td> " +
-                                    "<td>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.File_Id + "' > </input> </td> " +
-                                    "<td style=' text-align: center'>  <input type='submit' class='appDetails btn_delete' id='" + val.File_Id + "' value='Delete' > </input> </td></tr> "
+                                //markup = "<tr><td> " + val.File_Name + " </td> " +
+                                //    "<td>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.File_Id + "' > </input> </td> " +
+                                //    "<td style=' text-align: center'>  <input type='submit' class='appDetails btn_delete' id='" + val.File_Id + "' value='Delete' > </input> </td></tr> "
 
-                                tableBody = $("#Files_Grid tbody");
-                                tableBody.append(markup);
+                                //tableBody = $("#Files_Grid tbody");
+                                //tableBody.append(markup);
+
+                                
 
                             });
                         }

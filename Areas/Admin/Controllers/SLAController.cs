@@ -65,39 +65,44 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     BL_SLA save_data = new BL_SLA();
-                    int status = save_data.Save_SLA_data(Get_Data, "Add_new", "", out SLA_Id, out SLA_FileName);
+                    int status=0;
+
+                    if (Get_Data.All_Files.Length > 0)
+                    {
+                        FileInfo fileInfo = new FileInfo(Get_Data.All_Files.FileName);
+                        Get_Data.SLA_File_Name= fileInfo.Extension;
+                        status = save_data.Save_SLA_data(Get_Data, "Add_new", "", out SLA_Id, out SLA_FileName);
+
+                        string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/SLA");
+
+                        //create folder if not exist
+                        if (!Directory.Exists(path))
+                            Directory.CreateDirectory(path);
+                        //get file extension
+                        
+                        string fileName = SLA_FileName + fileInfo.Extension;
+
+                        string fileNameWithPath = Path.Combine(path, fileName);
+
+                        using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                        {
+                            Get_Data.All_Files.CopyTo(stream);
+                        }
+                    }
+                    else
+                    {
+                        status = save_data.Save_SLA_data(Get_Data, "Add_new", "", out SLA_Id, out SLA_FileName);
+                    }
 
                     if (status > 0)
                     {
                         TempData["Message"] = String.Format("Data saved successfully");
-
-                        if (Get_Data.All_Files.Length > 0)
-                        {
-
-                            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/SLA");
-
-                            //create folder if not exist
-                            if (!Directory.Exists(path))
-                                Directory.CreateDirectory(path);
-
-                            //get file extension
-                            FileInfo fileInfo = new FileInfo(Get_Data.All_Files.FileName);
-                            string fileName = SLA_FileName + fileInfo.Extension;
-
-                            string fileNameWithPath = Path.Combine(path, fileName);
-
-                            using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
-                            {
-                                Get_Data.All_Files.CopyTo(stream);
-                            }
-
-                        }
-
                     }
                     else
                     {
                         TempData["Message"] = String.Format("Data is not saved");
                     }
+
                 }
                 else
                 {
@@ -113,7 +118,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             return RedirectToAction("SLA_Create_Item", "SLA");
         }
-
 
 
         public ActionResult Edit_SLA(string id)
@@ -253,7 +257,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 {
                     postedFile.CopyTo(stream);
                 }
-
             }
 
             return Json(GetFiles_By_Id(""));
@@ -346,8 +349,17 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
         public FileResult Download(string fileId)
         {
-            
 
+            //Build the File Path.
+            string path = Path.Combine("wwwroot/Files/SLA/") + fileId;
+
+            //Read the File data into Byte Array.
+            byte[] bytes = System.IO.File.ReadAllBytes(path);
+
+            //Send the File to Download.
+            return File(bytes, "application/octet-stream", fileId);
+
+            /*  Download files which was save on the database
             byte[] bytes;
             string fileName, contentType;
             
@@ -369,12 +381,10 @@ namespace IT_Hardware.Areas.Admin.Controllers
                     con.Close();
                 }
             }
-
-
             return File(bytes, contentType, fileName);
+            */
+
         }
-
-
 
     }
 }

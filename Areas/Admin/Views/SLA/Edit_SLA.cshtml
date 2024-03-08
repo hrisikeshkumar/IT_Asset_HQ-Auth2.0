@@ -264,7 +264,11 @@
 
                                         <tr>
                                             <td>
-                                                @Html.DisplayFor(x => x.SLA_File_Name )
+                                                <div id="abcdefgh">
+                                                @Html.DisplayFor(x => x.SLA_File_Name)
+                                                </div>
+                                                   
+                                                
                                             </td>
                                             <td>
                                             <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.SLA_File_Name' />

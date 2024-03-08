@@ -102,6 +102,9 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter Vendor_ID = new SqlParameter("@Vendor_ID", Data.Vendor_id);
                 cmd.Parameters.Add(Vendor_ID);
 
+                SqlParameter File_extension = new SqlParameter("@SLA_File_Name", Data.@SLA_File_Name);
+                cmd.Parameters.Add(File_extension);
+
                 SqlParameter Service_Type_Short = new SqlParameter("@Service_Type_Short", Data.Service_Type_Short);
                 cmd.Parameters.Add(Service_Type_Short);
 
