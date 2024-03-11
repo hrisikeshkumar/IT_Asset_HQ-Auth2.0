@@ -27,8 +27,6 @@
 </script>
 
 
-
-
 <script type="text/javascript">
     var isShift = false;
     var seperator = "/";
@@ -105,16 +103,13 @@
 </script>
 
 
-
-
-
-
 <style type="text/css">
 
     .form-rounded {
         border-radius: 3rem;
     }
 </style>
+
 
 <style type="text/css">
 
@@ -135,6 +130,7 @@
             border: 1px solid rgba(81, 203, 238, 1);
         }
 </style>
+
 
 <style type="text/css">
     .button_cls {
@@ -234,21 +230,17 @@
                     Vendor Name
                 </td>
                 <td style="width:75%;" colspan="3">
-                    @Html.DropDownListFor(x => x.Vendor_id, Model.Vendor_List, new { @class = " form-rounded", @style = " width :60%; " })
-                </td>
+                    @Html.DropDownListFor(x => x.Vendor_id, Model.Vendor_List, new { @class = " form-rounded", @style = " width :70%; " })
+                </td>         
             </tr>
             <tr>
-                <td style="width:25%; height:50px;">
-                    P.O. Copy
+                <td style="width: 25%; height: 50px;">
+                    Upload Related Files
                 </td>
-                <td style="width:25%;">
-                    @Html.TextBoxFor(model => model.File_PO, "", new { @type = "file" })
-                </td>
-                <td style="width:25%; height:50px;">
-                    SLA Copy
-                </td>
-                <td style="width:25%;" colspan="3">
-                    @Html.TextBoxFor(model => model.File_SLA, "", new { @type = "file" })
+                <td style="width:75%;" colspan="3">
+                    <input id="File_PO" type="file"
+                           name="File_PO" />
+
                 </td>
             </tr>
             <tr>
@@ -291,18 +283,17 @@
         </table>
 
     }
+
+
 </div>
 
 
 @if (TempData["Message"] != null && TempData["Message"] != "" && TempData["Message"] != string.Empty)
 {
     <script type="text/javascript">
-
-    window.onload = function () {
-        /**/
-        alert("@TempData["Message"]");
-    /**/
-    };
+        window.onload = function () {
+            alert("@TempData["Message"]");
+        };
     </script>
 
 }

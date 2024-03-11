@@ -63,19 +63,17 @@ namespace IT_Hardware.Areas.Admin.Data
             return current_data;
         }
 
-        public int Save_PO_data(Mod_POrder Data, string type, string PO_ID, out string PO_ID_Update, out string PO_File_Name, out string SLA_File_Name)
+        public int Save_PO_data(Mod_POrder Data, string type, string PO_ID, out string PO_ID_Update, out string PO_File_Name)
         {
 
             int status = -1;
             PO_ID_Update = string.Empty;        
             PO_File_Name = string.Empty;
-            SLA_File_Name = string.Empty;
 
             
             SqlConnection con = new DBConnection().con;
             try
             {
-
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -127,7 +125,6 @@ namespace IT_Hardware.Areas.Admin.Data
                             PO_ID_Update = Convert.ToString(dt.Rows[0]["PO_id"]);
                             status = Convert.ToInt32(dt.Rows[0]["Row_Effect"]);
                             PO_File_Name = Convert.ToString(dt.Rows[0]["PO_File_Name"]);
-                            SLA_File_Name = Convert.ToString(dt.Rows[0]["SLA_File_Name"]);
                         }
 
                     }

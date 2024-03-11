@@ -7,10 +7,17 @@
 }
 
 
+
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+@*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>*@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <link href="~/CSS/Final_Submit_Button.css" rel="stylesheet" />
 
+@* <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> *@
+
+
+<script src="~/customjs/edit_sla.js"></script>
 
 
 
@@ -258,28 +265,22 @@
                                 <table id="Files_Grid" style="width:100%;">
                                     <tr>
                                         <td style="width:50%; font-weight:bold">File Name</td>
-                                        <td style="width: 25%; font-weight: bold"> Download</td>
-                                        <td style="width: 25%; font-weight: bold"> Delete</td>
+                                        <td style="width: 25%; font-weight: bold"> Download</td>                                     
                                     </tr>
 
-                                        <tr>
+                                    <tr>
                                             <td>
                                                 <div id="abcdefgh">
                                                 @Html.DisplayFor(x => x.SLA_File_Name)
                                                 </div>
-                                                   
-                                                
+ 
                                             </td>
                                             <td>
                                             <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.SLA_File_Name' />
                                             </td>
-                                            <td>
-                                            <input type='submit' class='appDetails btn_delete' id='@Model.SLA_File_Name' value='Delete' />
-                                            </td>
 
                                         </tr>
                                     
-
                                 </table>
                             </td>
 
@@ -380,151 +381,8 @@
 @*------------------------------------ File Function--------------------------------------------------------------*@
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 
-<script src="~/customjs/edit_sla.js"></script>
-
-@* 
-
-<script type="text/javascript">
-    $(function () {
-
-        $('#btnFileUpload').click(function (event) {
-
-
-            if (window.FormData !== undefined) {
-
-                var fileUpload = $("#FileUpload_Id").get(0);
-                var files = fileUpload.files;
-
-                var fileRefId = $("#SLA_Id").val();
-
-                // Create FormData object
-                var fileData = new FormData();
-
-                // Looping over all files and add it to FormData object
-                for (var i = 0; i < files.length; i++) {
-                    fileData.append(files[i].name, files[i]);
-                }
-
-                fileData.append('SLA_Id', fileRefId);
-
-                $.ajax({
-                    type: "POST",
-                    url: "/Admin/SLA/FiliUpload",
-                    datatype: "Json",
-                    data: fileData,
-                    contentType: false, // Not to set any content header
-                    processData: false, // Not to process data
-                    success: function (response) {
-
-                        $("#Files_Grid tr").remove();
-
-                        markup = "<tr><th style='width: 50%;'> File Name </th> <th style='width: 25%;'> Download </th> <th style='width: 25%; text-align: center'> Delete </th> </tr>";
-                        tableBody = $("#Files_Grid tbody");
-                        tableBody.append(markup);
-
-
-                        if (response != null) {
-
-                            $.each(response, function (key, val) {
-
-                                markup = "<tr><td> " + val.File_Name + " </td> " +
-                                    "<td>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.File_Id + "' > </input> </td> " +
-                                    "<td style=' text-align: center'>  <input type='submit' class='appDetails btn_delete' id='" + val.File_Id + "' value='Delete' > </input> </td></tr> "
-
-                                tableBody = $("#Files_Grid tbody");
-                                tableBody.append(markup);
-
-                            });
-                        }
-                    },
-                    error: function (err) {
-                        alert(err.statusText);
-                    }
-
-                });
-            }
-
-            event.preventDefault();
-
-        });
-    });
-</script>
-
-
-<script type="text/javascript">
-    $(function () {
-
-        $(document).on("click", ".appDetails", function () {
-            var clickedBtnID = $(this).attr('id');
-
-            var fileRefId = $("#SLA_Id").val();
-
-            if (confirm('Are you sure you want to delete this?')) {
-
-                $.ajax({
-                    type: "POST",
-                    url: "/Admin/SLA/DeleteFile",
-                    datatype: "Json",
-                    data: { FileId: clickedBtnID, RefId: fileRefId },
-                    success: function (response) {
-
-
-                        $("#Files_Grid tr").remove();
-
-                        markup = "<tr><th style='width: 50%;'> File Name </th> <th style='width: 25%;'> Download </th> <th style='width: 25%; text-align: center'> Delete </th> </tr>";
-                        tableBody = $("#Files_Grid tbody");
-                        tableBody.append(markup);
-
-
-                        if (response != null) {
-
-                            $.each(response, function (key, val) {
-
-                                markup = "<tr><td> " + val.File_Name + " </td> " +
-                                    "<td>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.File_Id + "' > </input> </td> " +
-                                    "<td style=' text-align: center'>  <input type='submit' class='appDetails btn_delete' id='" + val.File_Id + "' value='Delete' > </input> </td></tr> "
-
-                                tableBody = $("#Files_Grid tbody");
-                                tableBody.append(markup);
-
-                            });
-                        }
-
-
-                    },
-                    error: function (err) {
-                        alert(err.statusText);
-                    }
-
-                });
-
-            }
-
-            event.preventDefault();
-
-        });
-    });
-</script>
-
-
-<script type="text/javascript">
-    $(document).on("click", ".cssdownload", function () {
-        var fileName = $(this).attr('id');
-
-
-        window.location.href = "/Admin/SLA/Download?fileId=" + fileName + "";
-
-
-        event.preventDefault();
-    });
-
-
-
-</script>
- *@
 
 @*---------------------------------------------------------------------------------------------------------------*@
 

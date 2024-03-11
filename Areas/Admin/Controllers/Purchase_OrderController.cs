@@ -49,95 +49,42 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 {
 
                     BL_Porder save_data = new BL_Porder();
-                    int status = save_data.Save_PO_data(PO_Data, "Add_new", "", out string PO_Id, out string PO_File_Name, out string SLA_File_Name);
 
-                    if (status > 0)
+                    int status = 0;
+
+                    if (PO_Data.File_PO.Length > 0)
                     {
-                        TempData["Message"] = String.Format("Data save successfully");
 
+                        status = save_data.Save_PO_data(PO_Data, "Add_new", "", out string PO_Id, out string PO_File_Name);
 
+                        string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/PO/");
 
-                        if (PO_Data.File_PO.Length > 0)
+                        //create folder if not exist
+                        if (!Directory.Exists(path))
+                            Directory.CreateDirectory(path);
+
+                        //get file extension
+                        FileInfo fileInfo = new FileInfo(PO_Data.File_PO.FileName);
+                        string fileName = PO_File_Name + fileInfo.Extension;
+
+                        string fileNameWithPath = Path.Combine(path, fileName);
+
+                        using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
                         {
-                            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
-
-                            //create folder if not exist
-                            if (!Directory.Exists(path))
-                                Directory.CreateDirectory(path);
-
-                            //get file extension
-                            FileInfo fileInfo = new FileInfo(PO_Data.File_PO.FileName);
-                            string fileName = PO_Data.File_PO.FileName + fileInfo.Extension;
-
-                            string fileNameWithPath = Path.Combine(path, fileName);
-
-                            using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
-                            {
-                                PO_Data.File_PO.CopyTo(stream);
-                            }
-                            
-
-                            //for (int i = 0; i < Request.Files.Count; i++)
-                            //{
-                            //    //HttpPostedFile httpPostedFile = Request.Files;
-
-                            //    var postedFile = Request.Files[i];
-
-                            //    if (postedFile != null)
-                            //    {
-
-                            //        byte[] bytes;
-                            //        using (BinaryReader br = new BinaryReader(postedFile.InputStream))
-                            //        {
-                            //            bytes = br.ReadBytes(postedFile.ContentLength);
-                            //        }
-                            //        
-                            //        using (SqlConnection con = new DBConnection().con)
-                            //        {
-                            //            string query = "INSERT INTO File_table(File_Id,  File_Table, File_Ref_Id, File_Name, ContentType, File_Data) VALUES ( dbo.Get_Unique_File_Id(), 'Vendor', @Ref_Id,   @Name, @ContentType, @Data)";
-                            //            using (SqlCommand cmd = new SqlCommand(query))
-                            //            {
-                            //                cmd.Connection = con;
-                            //                cmd.Parameters.AddWithValue("@Name", Path.GetFileName(postedFile.FileName));
-                            //                cmd.Parameters.AddWithValue("@ContentType", postedFile.ContentType);
-                            //                cmd.Parameters.AddWithValue("@Data", bytes);
-                            //                cmd.Parameters.AddWithValue("@Ref_Id", Vendor_Id);
-                            //                con.Open();
-                            //                cmd.ExecuteNonQuery();
-                            //                con.Close();
-                            //            }
-                            //        }
-
-
-                            //    }
-                            //}
-
-
+                            PO_Data.File_PO.CopyTo(stream);
                         }
 
-                        if (PO_Data.File_SLA.Length > 0)
-                        {
+                    }
+                    else 
+                    {
+                        status = save_data.Save_PO_data(PO_Data, "Add_new", "", out string PO_Id, out string PO_File_Name);
 
-                            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
-
-                            //create folder if not exist
-                            if (!Directory.Exists(path))
-                                Directory.CreateDirectory(path);
-
-                            //get file extension
-                            FileInfo fileInfo = new FileInfo(PO_Data.File_SLA.FileName);
-                            string fileName = PO_Data.File_SLA.FileName + fileInfo.Extension;
-
-                            string fileNameWithPath = Path.Combine(path, fileName);
-
-                            using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
-                            {
-                                PO_Data.File_SLA.CopyTo(stream);
-                            }
-
-                        }
                     }
 
+                    if (status>0)
+                    {
+                        TempData["Message"] = String.Format("Data save successfully");
+                    }
                     else
                     {
 
@@ -156,7 +103,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             }
 
-            return RedirectToAction("Vendor_Create_Item", "Vendor");
+            return RedirectToAction("PO_Create_Item", "Purchase_Order");
         }
 
 
