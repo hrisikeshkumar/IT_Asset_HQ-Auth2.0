@@ -50,7 +50,7 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     BL_data.PO_Subject = Convert.ToString(dr["PO_Sub"]);
 
-                    BL_data.PO_End_Date =  (DateOnly)dr["PO_End_Date"];
+                    BL_data.PO_End_Date =  Convert.ToDateTime( dr["PO_End_Date"]) ;
 
                     BL_data.PO_Value = Convert.ToInt32(dr["PO_Value"]);
 
@@ -81,8 +81,7 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 cmd.Connection = con;
 
-                SqlParameter sqlP_type = new SqlParameter("@Type", type);
-                cmd.Parameters.Add(sqlP_type);
+               
 
                 if (type == "Update" || type == "Delete")
                 {
@@ -96,13 +95,19 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter PO_Value = new SqlParameter("@PO_Value", Data.PO_Value);
                 cmd.Parameters.Add(PO_Value);
 
+                SqlParameter Vendor_id = new SqlParameter("@Vendor_id", Data.Vendor_id);
+                cmd.Parameters.Add(Vendor_id);
+
                 SqlParameter PO_ST_Date = new SqlParameter("@PO_ST_Date", Data.PO_ST_Date);
                 cmd.Parameters.Add(PO_ST_Date);
 
                 SqlParameter PO_End_Date = new SqlParameter("@PO_End_Date", Data.PO_End_Date);
                 cmd.Parameters.Add(PO_End_Date);
 
-                SqlParameter PO_Subject = new SqlParameter("@Remarks", Data.PO_Subject);
+                SqlParameter PO_File_Present = new SqlParameter("@PO_File_Present", Data.PO_File_Name);
+                cmd.Parameters.Add(PO_File_Present);
+
+                SqlParameter PO_Subject = new SqlParameter("@PO_Subject", Data.PO_Subject);
                 cmd.Parameters.Add(PO_Subject);
 
                 SqlParameter Remarks = new SqlParameter("@Remarks", Data.Remarks);
@@ -111,6 +116,8 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter User_Id = new SqlParameter("@Create_Usr_Id", Data.Create_usr_id);
                 cmd.Parameters.Add(User_Id);
 
+                SqlParameter sqlP_type = new SqlParameter("@Type", type);
+                cmd.Parameters.Add(sqlP_type);
 
                 using (SqlDataAdapter sda = new SqlDataAdapter())
                 {

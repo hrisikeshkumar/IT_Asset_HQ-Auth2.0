@@ -54,7 +54,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
                     if (PO_Data.File_PO.Length > 0)
                     {
-
+                        PO_Data.PO_File_Name = "Y";
                         status = save_data.Save_PO_data(PO_Data, "Add_new", "", out string PO_Id, out string PO_File_Name);
 
                         string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/PO/");
@@ -77,6 +77,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                     }
                     else 
                     {
+                        PO_Data.PO_File_Name = "N";
                         status = save_data.Save_PO_data(PO_Data, "Add_new", "", out string PO_Id, out string PO_File_Name);
 
                     }
@@ -110,57 +111,48 @@ namespace IT_Hardware.Areas.Admin.Controllers
        
         public ActionResult Edit_PO(string id)
         {
-            BL_Vendor Md_Com = new BL_Vendor();
-            Mod_Vendor data = Md_Com.Get_Data_By_ID(id);
+            Mod_POrder mod_PO = new Mod_POrder();
+            BL_Porder com = new BL_Porder();
 
-            //data.File_List = GetFiles_By_Id(id);
+            mod_PO.Vendor_List = com.Vendor_List();
 
 
-            return View("~/Areas/Admin/Views/Vendor/PO_Create_Item.cshtml", data);
+            return View("~/Areas/Admin/Views/Purchase_Order/Edit_PO.cshtml", mod_PO);
+
         }
 
 
-        
+
         [HttpPost]
-        public ActionResult Update_PO(Mod_Vendor Get_Data)
+        public JsonResult FiliUpload(string SLA_Id)
         {
-            int status = 0;
-            try
+
+
+            string SLA_Id1 = SLA_Id.ToString();
+            IFormFile postedFile = Request.Form.Files[0];
+            if (postedFile.Length > 0)
             {
-                Get_Data.Create_usr_id = HttpContext.User.Identity.Name;
-                if (ModelState.IsValid)
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/PO");
+
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+
+                //get file extension
+                FileInfo fileInfo = new FileInfo(postedFile.FileName);
+                string fileName = SLA_Id + fileInfo.Extension;
+
+                string fileNameWithPath = Path.Combine(path, fileName);
+
+                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
                 {
-                    BL_Vendor Md_Asset = new BL_Vendor();
-
-                    string out_param = string.Empty;
-
-                    status = Md_Asset.Save_Vendor_data(Get_Data, "Update", Get_Data.Vendor_id, out out_param);
-
-                    if (status > 0)
-                    {
-                        TempData["Message"] = String.Format("Data have saved successfully");
-                    }
-                    else
-                    {
-                        TempData["Message"] = String.Format("Data is not saved");
-                    }
-                }
-                else
-                {
-                    TempData["Message"] = String.Format("Required Data are not Provided");
+                    postedFile.CopyTo(stream);
                 }
             }
-            catch (Exception ex)
-            {
 
-                TempData["Message"] = string.Format("ShowFailure();");
-
-            }
-
-            return RedirectToAction("Vendor_Details", "Vendor");
+            return Json("");
         }
 
-        
+
         public ActionResult Delete_PO(Mod_Vendor Get_Data, string id)
         {
             int status = 0;
@@ -199,6 +191,19 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
 
+        public FileResult Download(string fileId)
+        {
+
+            //Build the File Path.
+            string path = Path.Combine("wwwroot/Files/PO/") + fileId;
+
+            //Read the File data into Byte Array.
+            byte[] bytes = System.IO.File.ReadAllBytes(path);
+
+            //Send the File to Download.
+            return File(bytes, "application/octet-stream", fileId);
+
+        }
 
     }
 }
