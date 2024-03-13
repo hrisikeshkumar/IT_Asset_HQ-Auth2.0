@@ -73,13 +73,11 @@ namespace IT_Hardware.Areas.Admin.Controllers
                         {
                             PO_Data.File_PO.CopyTo(stream);
                         }
-
                     }
                     else 
                     {
                         PO_Data.PO_File_Name = "N";
                         status = save_data.Save_PO_data(PO_Data, "Add_new", "", out string PO_Id, out string PO_File_Name);
-
                     }
 
                     if (status>0)
@@ -108,19 +106,16 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-       
         public ActionResult Edit_PO(string id)
         {
-            Mod_POrder mod_PO = new Mod_POrder();
-            BL_Porder com = new BL_Porder();
+            
+            BL_Porder data = new BL_Porder();
 
-            mod_PO.Vendor_List = com.Vendor_List();
-
+            Mod_POrder mod_PO = data.Get_Data_By_ID( id);
+            mod_PO.Vendor_List = data.Vendor_List();
 
             return View("~/Areas/Admin/Views/Purchase_Order/Edit_PO.cshtml", mod_PO);
-
         }
-
 
 
         [HttpPost]
@@ -188,7 +183,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             return RedirectToAction("Vendor_Details", "Vendor");
         }
-
 
 
         public FileResult Download(string fileId)
