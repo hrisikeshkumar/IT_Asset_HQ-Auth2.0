@@ -58,7 +58,7 @@
                             Invoice Subject
                         </th>
                         <th>
-                            Processing Date
+                            Invoice Value
                         </th>
                         <th> Action </th>
                     </tr>
@@ -73,7 +73,7 @@
                                 @Html.DisplayFor(modelItem => item.Invoice_Subject)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Create_date)
+                                @Html.DisplayFor(modelItem => item.Invoice_Value)
                             </td>
                             <td>
                                 @Html.ActionLink("Edit", "Edit_Invoice", new { id = item.Invoice_id }) |

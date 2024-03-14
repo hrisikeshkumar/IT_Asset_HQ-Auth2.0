@@ -27,8 +27,9 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             Mod_Invoice mod_PO = new Mod_Invoice();
             BL_Invoice Inv_Data = new BL_Invoice();
-            mod_PO.Invoice_Year_List = Inv_Data.Budget_Year_List();
+            mod_PO.Fin_Year_List = Inv_Data.Fin_Year_List();
             mod_PO.PO_list = Inv_Data.PO_List();
+
 
             return View("~/Areas/Admin/Views/Invoice/Invoice_Create_Item.cshtml", mod_PO);
 
@@ -104,7 +105,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         {      
             BL_Invoice Inv_Data = new BL_Invoice();
             Mod_Invoice mod_PO = Inv_Data.Get_Data_By_ID(id);
-            mod_PO.Invoice_Year_List = Inv_Data.Budget_Year_List();
+            mod_PO.Fin_Year_List = Inv_Data.Fin_Year_List();
             mod_PO.PO_list = Inv_Data.PO_List();
 
             return View("~/Areas/Admin/Views/Invoice/Edit_Invoice.cshtml", mod_PO);
@@ -185,6 +186,19 @@ namespace IT_Hardware.Areas.Admin.Controllers
             }
 
             return RedirectToAction("Vendor_Details", "Vendor");
+        }
+
+
+
+
+        public JsonResult Bud_Head_List(string Fin_Year)
+        {
+
+            BL_Invoice data = new BL_Invoice();
+            Mod_Invoice Mod_Invoice = new Mod_Invoice();
+            Mod_Invoice.Budget_List = data.Budget_Head_List(Fin_Year);
+
+            return Json(Mod_Invoice.Budget_List);
         }
 
 

@@ -49,10 +49,9 @@ namespace IT_Hardware.Areas.Admin.Data
                     BL_data.Invoice_Subject = Convert.ToString(dr["Inv_Subject"]);
                     BL_data.Invoice_Date =  (DateOnly)(dr["Inv_date"]);
                     BL_data.Invoice_Value = Convert.ToInt32(dr["PO_Value"]);
-                    BL_data.Vendor_Name = Convert.ToString(dr["Vendor_name"]);
                     BL_data.Penalty_Amount = Convert.ToInt32(dr["Penalty_Amt"]);
                     BL_data.Penalty_Reason = Convert.ToString(dr["Penalty_Reason"]);
-                    BL_data.Invoice_Year_Id = Convert.ToString(dr["Bud_Id"]);
+                    BL_data.Budget_Id = Convert.ToString(dr["Bud_Id"]);
 
                     current_data.Add(BL_data);
                 }
@@ -106,7 +105,7 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter Penalty_Reason = new SqlParameter("@PO_No", Data.Penalty_Reason);
                 cmd.Parameters.Add(Penalty_Reason);
 
-                SqlParameter Invoice_Year_Id = new SqlParameter("@PO_No", Data.Invoice_Year_Id);
+                SqlParameter Invoice_Year_Id = new SqlParameter("@PO_No", Data.Fin_Year);
                 cmd.Parameters.Add(Invoice_Year_Id);
 
                 SqlParameter Invoice_Value = new SqlParameter("@PO_Value", Data.Invoice_Value);
@@ -190,10 +189,9 @@ namespace IT_Hardware.Areas.Admin.Data
                         Data.Invoice_Subject = Convert.ToString(dt_Comuter.Rows[0]["Inv_Subject"]);
                         Data.Invoice_Date = (DateOnly)(dt_Comuter.Rows[0]["Inv_date"]);
                         Data.Invoice_Value = Convert.ToInt32(dt_Comuter.Rows[0]["PO_Value"]);
-                        Data.Vendor_Name = Convert.ToString(dt_Comuter.Rows[0]["Vendor_name"]);
                         Data.Penalty_Amount = Convert.ToInt32(dt_Comuter.Rows[0]["Penalty_Amt"]);
                         Data.Penalty_Reason = Convert.ToString(dt_Comuter.Rows[0]["Penalty_Reason"]);
-                        Data.Invoice_Year_Id = Convert.ToString(dt_Comuter.Rows[0]["Bud_Id"]);
+                        Data.Budget_Id = Convert.ToString(dt_Comuter.Rows[0]["Bud_Id"]);
 
                 }
 
@@ -249,7 +247,7 @@ namespace IT_Hardware.Areas.Admin.Data
         }
 
 
-        public List<SelectListItem> Budget_Year_List()
+        public List<SelectListItem> Fin_Year_List()
         {
 
             List<SelectListItem> List_Item = new List<SelectListItem>();
@@ -261,7 +259,9 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlConnection con = new DBConnection().con;
 
 
-                using (SqlCommand cmd = new SqlCommand("SELECT * from  dbo.Get_All_Budget_Year()"))
+                //using (SqlCommand cmd = new SqlCommand("SELECT * from  dbo.Get_All_Budget_Year()"))
+
+                using (SqlCommand cmd = new SqlCommand("SELECT * from  dbo.Get_All_Fin_Year()"))
                 {
 
                     cmd.CommandType = CommandType.Text;
@@ -283,6 +283,53 @@ namespace IT_Hardware.Areas.Admin.Data
                     SelectListItem Listdata = new SelectListItem();
                     Listdata.Value = Convert.ToString(dr["Bud_Id"]);
                     Listdata.Text = Convert.ToString(dr["Bud_Year"]);
+
+                    List_Item.Add(Listdata);
+                }
+
+            }
+            catch (Exception ex) { }
+
+            return List_Item;
+        }
+
+
+        public List<SelectListItem> Budget_Head_List(string FinYear)
+        {
+
+            List<SelectListItem> List_Item = new List<SelectListItem>();
+
+            try
+            {
+                DataTable dt_PO;
+
+                SqlConnection con = new DBConnection().con;
+
+
+                using (SqlCommand cmd = new SqlCommand("SELECT * from  dbo.Get_All_Budget_Head(@FinYear)"))
+                {
+
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection = con;
+                    SqlParameter SqlFinYear = new SqlParameter("@FinYear", FinYear);
+                    cmd.Parameters.Add(SqlFinYear);
+
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        sda.SelectCommand = cmd;
+                        using (DataTable dt = new DataTable())
+                        {
+                            sda.Fill(dt);
+                            dt_PO = dt;
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in dt_PO.Rows)
+                {
+                    SelectListItem Listdata = new SelectListItem();
+                    Listdata.Value = Convert.ToString(dr["Bud_Head_Id"]);
+                    Listdata.Text = Convert.ToString(dr["Bud_Name"]);
 
                     List_Item.Add(Listdata);
                 }

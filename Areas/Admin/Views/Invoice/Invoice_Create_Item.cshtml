@@ -192,72 +192,84 @@
     {
         <table class=" table-hover table-striped shadow " style="width:100%">
             <tr>
-                <td style="width:25%; ">
+                <td style="width:20%; ">
                     Invoice No.
                     @Html.HiddenFor(x => x.Invoice_id)
                 </td>
-                <td style="width:25%;">
+                <td style="width:30%;">
                     @Html.TextBoxFor(x => x.Invoice_No, new { @class = " form-rounded", @style = " width :90%; " })
                 </td>
-                <td style="width:25%;">
+                <td style="width:20%;">
                     Invoice Date
                 </td>
-                <td style="width:25%;">
+                <td style="width:30%;">
                     @Html.TextBoxFor(x => x.Invoice_Date, new { @class = "dateclass form-rounded", @style = " width :90%; " })
                 </td>
             </tr>
             <tr>
-                <td style="width:25%; ">
+                <td style="width:20%; ">
                     Subject
                 </td>
-                <td style="width:75%;" colspan="3">
-                    @Html.TextBoxFor(x => x.Invoice_Subject, new { @class = " form-rounded", @style = " width :90%; " })
+                <td style="width:80%;" colspan="3">
+                    @Html.TextAreaFor(x => x.Invoice_Subject, new { @rows = "3", @style = " width :95%; " })
                 </td>
             </tr>
             <tr>
-                <td style="width:25%; height:50px;">
-                    Invoice Year
+                <td style="width:20%; height:50px;">
+                    Financial Year
                 </td>
-                <td style="width:25%;">
-                    @Html.DropDownListFor(x => x.Invoice_Year_Id, Model.Invoice_Year_List, new { @class = "dateclass form-rounded", @style = " width :90%; " })
+                <td style="width:30%;">
+                    @Html.DropDownListFor(x => x.Fin_Year, Model.Fin_Year_List, new { @class = "dateclass form-rounded", @style = " width :90%; " })
                 </td>
-                <td style="width:25%; height:50px;">
-                    PO
+                <td style="width:20%; height:50px;">
+                    Budget Head
                 </td>
-                <td style="width:25%;">
-                    @Html.DropDownListFor(x => x.PO_Id, Model.PO_list, new { @class = "dateclass form-rounded", @style = " width :90%; " })
+                <td style="width:30%;">
+                    @Html.DropDownListFor(x => x.Budget_Id, new SelectList(string.Empty, "Value", "Text"), new { @class = "dateclass form-rounded", @style = " width :90%; " })
                 </td>
             </tr>
             <tr>
-                <td style="width:25%; height:50px;">
+                <td style="width:20%; height:50px;">
+                    Purchase Order
+                </td>
+                <td style="width:30%;">
+                    @Html.DropDownListFor(x => x.PO_Id, Model.PO_list, new { @class = "form-rounded", @style = " width :90%; " })
+                </td>
+                <td style="width:20%; height:50px;">
                     Invoice Value
                 </td>
-                <td style="width:25%;">
+                <td style="width:30%;">
                     @Html.TextBoxFor(x => x.Invoice_Value, new { @class = "form-rounded", @style = " width :90%; " })
                 </td>
-                <td style="width:25%; height:50px;">
+            </tr>
+            <tr>
+                <td style="width:20%;">
+                    Invoice Period
+                </td>
+                <td style="width:80%;" colspan="3">
+                    @Html.TextAreaFor(x => x.Penalty_Reason, new { @rows = "2", @style = " width :96%; " })
+                </td>
+            </tr>
+            <tr>
+                <td style="width:20%; height:50px;">
+                    Penalty Amount
+                </td>
+                <td style="width:30%;"  >
+                    @Html.TextBoxFor(x => x.Penalty_Amount, new { @class = " form-rounded", @style = " width :95%; " })
+                </td>
+                <td style="width:20%; height:50px;">
                     Invoice File
                 </td>
-                <td style="width:25%;">
+                <td style="width:30%;">
                     @Html.TextBoxFor(model => model.File_Invoice, "", new { @type = "file" })
                 </td>
             </tr>
-
             <tr>
-                <td style="width:25%; height:50px;">
-                    Penalty Amount
-                </td>
-                <td style="width:25%;" colspan="3" >
-                    @Html.TextBoxFor(x => x.Penalty_Amount, new { @class = " form-rounded", @style = " width :90%; " })
-                </td>
-
-            </tr>
-            <tr>
-                <td style="width:25%;">
+                <td style="width:20%;">
                     Penalty Reason
                 </td>
-                <td style="width:75%;" colspan="3">
-                    @Html.TextBoxFor(x => x.Penalty_Reason, new { @class = " form-rounded", @style = " width :90%; " })
+                <td style="width:80%;" colspan="3">
+                    @Html.TextAreaFor(x => x.Penalty_Reason, new { @rows = "2", @style = " width :96%; " })
                 </td>
             </tr>
             <tr>
@@ -303,20 +315,21 @@
 }
 
 
+
 <script type="text/javascript">
     $(function () {
 
-        $('#Budget_Year').change(function () {
-            $('#Budget_Head_Id').empty();
+        $('#Fin_Year').change(function () {
+            $('#Budget_Id').empty();
 
             $.ajax({
                 type: "POST",
-                url: "/Admin/Budget_Uses/Budget_List",
+                url: "/Invoice/Bud_Head_List",
                 datatype: "Json",
-                data: { Yearcode: $('#Budget_Year').val() },
+                data: { Fin_Year: $('#Fin_Year').val() },
                 success: function (data) {
                     $.each(data, function (index, value) {
-                        $('#Budget_Head_Id').append('<option value="' + value.Value + '">' + value.Text + '</option>');
+                        $('#Budget_Id').append('<option value="' + value.Value + '">' + value.Text + '</option>');
                     });
                 }
 
@@ -324,47 +337,7 @@
 
         });
     });
-
-
-    $(function () {
-
-        $('#Budget_Head_Id').change(function () {
-
-            $.ajax({
-                type: "POST",
-                url: "/Admin/Budget_Uses/Prev_Budget_info",
-                dataType: "json",
-                data: { Yearcode: $('#Budget_Year').val(), Bud_Head_Id: $('#Budget_Head_Id').val() },
-                success: function (response) {
-                    if (response != null) {
-                        $('#Total_Approved_Budget').val(response.Total_Approved_Budget);
-                        $('#Amount_Utilized_Before').val(response.Amount_Utilized_Before);
-                        $('#Balance_Available').val(response.Balance_Available);
-                    } else {
-                        alert("Something went wrong");
-                    }
-                },
-                failure: function (response) {
-                    alert(response.responseText);
-                },
-                error: function (response) {
-                    alert(response.responseText);
-                }
-            });
-
-        });
-    });
-
-
-    $(function () {
-        $('#Budget_Amount').focusout(function () {
-            $('#Remaning_Balance').val($('#Balance_Available').val() - $('#Budget_Amount').val());
-        });
-    });
-
 </script>
-
-
 
 
 
