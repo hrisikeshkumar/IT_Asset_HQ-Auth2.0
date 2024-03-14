@@ -11,7 +11,15 @@ namespace IT_Hardware.Areas.Admin.Controllers
     public class SLAController : Controller
     {
 
-        
+        //private IHostingEnvironment Environment;
+
+        //public SLAController(IHostingEnvironment _environment)
+        //{
+        //    Environment = _environment;
+        //}
+
+
+
         public ActionResult SLA_Details()
         {
             BL_SLA com = new BL_SLA();
@@ -49,51 +57,52 @@ namespace IT_Hardware.Areas.Admin.Controllers
             try
             {
                 
-                Get_Data.Create_usr_id = HttpContext.User.Identity.Name;
-                //Get_Data.Create_date = System.DateTime.Now;
-                //Get_Data.SLA_Id = "";
+                Get_Data.Create_usr_id = HttpContext.User.Identity.Name;      
 
                 string SLA_Id = string.Empty;
+                string SLA_FileName = string.Empty;
+
                 if (ModelState.IsValid)
                 {
                     BL_SLA save_data = new BL_SLA();
-                    int status = save_data.Save_SLA_data(Get_Data, "Add_new", "", out SLA_Id);
+                    int status=0;
+
+                    if (Get_Data.All_Files.Length > 0)
+                    {
+                        FileInfo fileInfo = new FileInfo(Get_Data.All_Files.FileName);
+                        Get_Data.SLA_File_Name= fileInfo.Extension;
+                        status = save_data.Save_SLA_data(Get_Data, "Add_new", "", out SLA_Id, out SLA_FileName);
+
+                        string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/SLA");
+
+                        //create folder if not exist
+                        if (!Directory.Exists(path))
+                            Directory.CreateDirectory(path);
+                        //get file extension
+                        
+                        string fileName = SLA_FileName + fileInfo.Extension;
+
+                        string fileNameWithPath = Path.Combine(path, fileName);
+
+                        using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                        {
+                            Get_Data.All_Files.CopyTo(stream);
+                        }
+                    }
+                    else
+                    {
+                        status = save_data.Save_SLA_data(Get_Data, "Add_new", "", out SLA_Id, out SLA_FileName);
+                    }
 
                     if (status > 0)
                     {
                         TempData["Message"] = String.Format("Data saved successfully");
-
-                        //var httpContext = HttpContext.Request.Files;
-
-
-                        using (MemoryStream ms = new MemoryStream())
-                        {
-                            Get_Data.All_Files.CopyTo(ms);
-
-                            using (SqlConnection con = new DBConnection().con)
-                            {
-                                string query = "INSERT INTO tblFiles VALUES (@Name, @ContentType, @Data)";
-                                using (SqlCommand cmd = new SqlCommand(query))
-                                {
-                                    cmd.Connection = con;
-                                    cmd.Parameters.AddWithValue("@Name", Path.GetFileName(Get_Data.All_Files.FileName));
-                                    cmd.Parameters.AddWithValue("@ContentType", Get_Data.All_Files.ContentType);
-                                    cmd.Parameters.AddWithValue("@Data", ms.ToArray());
-                                    cmd.Parameters.AddWithValue("@Ref_Id", SLA_Id);
-                                    con.Open();
-                                    cmd.ExecuteNonQuery();
-                                    con.Close();
-                                }
-                            }
-                        }
-
-
-
                     }
                     else
                     {
                         TempData["Message"] = String.Format("Data is not saved");
                     }
+
                 }
                 else
                 {
@@ -111,7 +120,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-
         public ActionResult Edit_SLA(string id)
         {
             BL_SLA BL_data = new BL_SLA();
@@ -121,9 +129,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             Mod_data.Vendor_List = BL_data.Vendor_List();
 
-            //Mod_data.File_List = GetFiles_By_Id(Mod_data.SLA_Id);
-
-
             return View("~/Areas/Admin/Views/SLA/Edit_SLA.cshtml", Mod_data);
         }
 
@@ -132,6 +137,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         {
             int status = 0;
             string SLA_Id_I = string.Empty;
+            string SLA_FileName = string.Empty;
             try
             {
                 Get_Data.Create_usr_id = HttpContext.User.Identity.Name;
@@ -139,7 +145,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 {
                     BL_SLA Md_Asset = new BL_SLA();
 
-                    status = Md_Asset.Save_SLA_data(Get_Data, "Update", Item_id,  out SLA_Id_I );
+                    status = Md_Asset.Save_SLA_data(Get_Data, "Update", Item_id,  out SLA_Id_I, out SLA_FileName );
 
                     if (status > 0)
                     {
@@ -175,10 +181,11 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     string SLA_Id = string.Empty;
+                    string SLA_FileName = string.Empty;
 
                     BL_SLA Md_Asset = new BL_SLA();
 
-                    int status = Md_Asset.Save_SLA_data(Get_Data, "Delete", id, out SLA_Id);
+                    int status = Md_Asset.Save_SLA_data(Get_Data, "Delete", id, out SLA_Id, out SLA_FileName);
 
                     if (status>0)
                     {
@@ -226,32 +233,31 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public JsonResult FiliUpload(IFormFile postedFile)
+        public JsonResult FiliUpload(string SLA_Id)
         {
 
-
-            using (MemoryStream ms = new MemoryStream())
+          
+            string SLA_Id1 = SLA_Id.ToString();
+            IFormFile postedFile = Request.Form.Files[0];
+            if (postedFile.Length > 0)
             {
-                postedFile.CopyTo(ms);
 
-                using (SqlConnection con = new DBConnection().con)
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/SLA");
+
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+
+                //get file extension
+                FileInfo fileInfo = new FileInfo(postedFile.FileName);
+                string fileName = SLA_Id + fileInfo.Extension;
+
+                string fileNameWithPath = Path.Combine(path, fileName);
+
+                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
                 {
-                    string query = "INSERT INTO tblFiles VALUES (@Name, @ContentType, @Data)";
-                    using (SqlCommand cmd = new SqlCommand(query))
-                    {
-                        cmd.Connection = con;
-                        cmd.Parameters.AddWithValue("@Name", Path.GetFileName(postedFile.FileName));
-                        cmd.Parameters.AddWithValue("@ContentType", postedFile.ContentType);
-                        cmd.Parameters.AddWithValue("@Data", ms.ToArray());
-                        con.Open();
-                        cmd.ExecuteNonQuery();
-                        con.Close();
-                    }
+                    postedFile.CopyTo(stream);
                 }
             }
-
-
-
 
             return Json(GetFiles_By_Id(""));
 
@@ -343,8 +349,17 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
         public FileResult Download(string fileId)
         {
-            
 
+            //Build the File Path.
+            string path = Path.Combine("wwwroot/Files/SLA/") + fileId;
+
+            //Read the File data into Byte Array.
+            byte[] bytes = System.IO.File.ReadAllBytes(path);
+
+            //Send the File to Download.
+            return File(bytes, "application/octet-stream", fileId);
+
+            /*  Download files which was save on the database
             byte[] bytes;
             string fileName, contentType;
             
@@ -366,12 +381,10 @@ namespace IT_Hardware.Areas.Admin.Controllers
                     con.Close();
                 }
             }
-
-
             return File(bytes, contentType, fileName);
+            */
+
         }
-
-
 
     }
 }

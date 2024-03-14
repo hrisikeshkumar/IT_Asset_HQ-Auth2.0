@@ -44,13 +44,13 @@ namespace IT_Hardware.Areas.Admin.Data
                 {
                     BL_data = new Mod_POrder();
 
-                    BL_data.Vendor_id = Convert.ToString(dr["PO_id"]);
+                    BL_data.PO_id = Convert.ToString(dr["PO_id"]);
 
                     BL_data.PO_No = Convert.ToString(dr["PO_No"]);
 
                     BL_data.PO_Subject = Convert.ToString(dr["PO_Sub"]);
 
-                    BL_data.PO_End_Date =  (DateOnly)dr["PO_End_Date"];
+                    BL_data.PO_End_Date =  Convert.ToDateTime( dr["PO_End_Date"]) ;
 
                     BL_data.PO_Value = Convert.ToInt32(dr["PO_Value"]);
 
@@ -63,19 +63,17 @@ namespace IT_Hardware.Areas.Admin.Data
             return current_data;
         }
 
-        public int Save_PO_data(Mod_POrder Data, string type, string PO_ID, out string PO_ID_Update, out string PO_File_Name, out string SLA_File_Name)
+        public int Save_PO_data(Mod_POrder Data, string type, string PO_ID, out string PO_ID_Update, out string PO_File_Name)
         {
 
             int status = -1;
             PO_ID_Update = string.Empty;        
             PO_File_Name = string.Empty;
-            SLA_File_Name = string.Empty;
 
             
             SqlConnection con = new DBConnection().con;
             try
             {
-
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -83,8 +81,7 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 cmd.Connection = con;
 
-                SqlParameter sqlP_type = new SqlParameter("@Type", type);
-                cmd.Parameters.Add(sqlP_type);
+               
 
                 if (type == "Update" || type == "Delete")
                 {
@@ -98,13 +95,19 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter PO_Value = new SqlParameter("@PO_Value", Data.PO_Value);
                 cmd.Parameters.Add(PO_Value);
 
+                SqlParameter Vendor_id = new SqlParameter("@Vendor_id", Data.Vendor_id);
+                cmd.Parameters.Add(Vendor_id);
+
                 SqlParameter PO_ST_Date = new SqlParameter("@PO_ST_Date", Data.PO_ST_Date);
                 cmd.Parameters.Add(PO_ST_Date);
 
                 SqlParameter PO_End_Date = new SqlParameter("@PO_End_Date", Data.PO_End_Date);
                 cmd.Parameters.Add(PO_End_Date);
 
-                SqlParameter PO_Subject = new SqlParameter("@Remarks", Data.PO_Subject);
+                SqlParameter PO_File_Present = new SqlParameter("@PO_File_Present", Data.PO_File_Name);
+                cmd.Parameters.Add(PO_File_Present);
+
+                SqlParameter PO_Subject = new SqlParameter("@PO_Subject", Data.PO_Subject);
                 cmd.Parameters.Add(PO_Subject);
 
                 SqlParameter Remarks = new SqlParameter("@Remarks", Data.Remarks);
@@ -113,6 +116,8 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter User_Id = new SqlParameter("@Create_Usr_Id", Data.Create_usr_id);
                 cmd.Parameters.Add(User_Id);
 
+                SqlParameter sqlP_type = new SqlParameter("@Type", type);
+                cmd.Parameters.Add(sqlP_type);
 
                 using (SqlDataAdapter sda = new SqlDataAdapter())
                 {
@@ -127,7 +132,6 @@ namespace IT_Hardware.Areas.Admin.Data
                             PO_ID_Update = Convert.ToString(dt.Rows[0]["PO_id"]);
                             status = Convert.ToInt32(dt.Rows[0]["Row_Effect"]);
                             PO_File_Name = Convert.ToString(dt.Rows[0]["PO_File_Name"]);
-                            SLA_File_Name = Convert.ToString(dt.Rows[0]["SLA_File_Name"]);
                         }
 
                     }
@@ -142,25 +146,25 @@ namespace IT_Hardware.Areas.Admin.Data
             return status;
         }
 
-        public Mod_Vendor Get_Data_By_ID(string Vendor_Id)
+        public Mod_POrder Get_Data_By_ID(string PO_Id)
         {
-            Mod_Vendor Data = new Mod_Vendor();
+            Mod_POrder Data = new Mod_POrder();
 
             try
             {
-                DataTable dt_Comuter;
+                DataTable dt_PObyID;
                 
                 SqlConnection con = new DBConnection().con;
 
 
-                using (SqlCommand cmd = new SqlCommand("sp_Vendor"))
+                using (SqlCommand cmd = new SqlCommand("sp_POrder"))
                 {
                     SqlParameter sqlP_type = new SqlParameter("@Type", "Get_Data_By_ID");
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection = con;
                     cmd.Parameters.Add(sqlP_type);
 
-                    SqlParameter VendorId = new SqlParameter("@Vendor_ID", Vendor_Id);
+                    SqlParameter VendorId = new SqlParameter("@PO_id", PO_Id);
                     cmd.Parameters.Add(VendorId);
 
                     using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -169,17 +173,30 @@ namespace IT_Hardware.Areas.Admin.Data
                         using (DataTable dt = new DataTable())
                         {
                             sda.Fill(dt);
-                            dt_Comuter = dt;
+                            dt_PObyID = dt;
                         }
                     }
                 }
 
-                if (dt_Comuter.Rows.Count > 0)
+                if (dt_PObyID.Rows.Count > 0)
                 {
-                    Data.Vendor_id = Convert.ToString(dt_Comuter.Rows[0]["Vendor_ID"]);
-                    Data.Vendor_name = Convert.ToString(dt_Comuter.Rows[0]["Vendor_name"]);
-                    Data.Vendor_Addr = Convert.ToString(dt_Comuter.Rows[0]["Vendor_Address"]);
-                    Data.Remarks = Convert.ToString(dt_Comuter.Rows[0]["remarks"]);
+                    Data.PO_id = Convert.ToString(dt_PObyID.Rows[0]["PO_id"]);
+                    Data.PO_No = Convert.ToString(dt_PObyID.Rows[0]["PO_No"]);
+                    Data.PO_Subject = Convert.ToString(dt_PObyID.Rows[0]["PO_Sub"]);
+                    Data.PO_Value = Convert.ToInt32(dt_PObyID.Rows[0]["PO_Value"]);
+
+                    if (Convert.ToString( dt_PObyID.Rows[0]["PO_Date"]) != string.Empty)
+                        Data.PO_Date = Convert.ToDateTime(dt_PObyID.Rows[0]["PO_Date"]);
+                    if (Convert.ToString(dt_PObyID.Rows[0]["PO_ST_Date"]) != string.Empty)
+                        Data.PO_ST_Date = Convert.ToDateTime(dt_PObyID.Rows[0]["PO_ST_Date"]);
+                    if (Convert.ToString(dt_PObyID.Rows[0]["PO_End_Date"]) != string.Empty)
+                        Data.PO_End_Date = Convert.ToDateTime(dt_PObyID.Rows[0]["PO_End_Date"]);
+                    Data.PO_File_Name = Convert.ToString(dt_PObyID.Rows[0]["PO_File"]);
+                    Data.Vendor_id = Convert.ToString(dt_PObyID.Rows[0]["Vendor_Id"]);
+                    Data.Remarks = Convert.ToString(dt_PObyID.Rows[0]["Remarks"]); 
+                    
+
+
 
                 }
 

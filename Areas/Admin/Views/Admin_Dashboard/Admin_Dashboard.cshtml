@@ -327,7 +327,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/Admin/Admin_Dashboard/Get_Proposal_Detail_for_Modal",
+                url: "/Admin_Dashboard/Get_Proposal_Detail_for_Modal",
                 dataType: "json",
                 data: { Proposal_Id: proposal_id },
                 success: function (response) {
@@ -384,7 +384,7 @@
         var fileName = $(this).attr('id');
 
 
-        window.location.href = "/Admin/Admin_Dashboard/Download?fileId=" + fileName + "";
+        window.location.href = "/Admin_Dashboard/Download?fileId=" + fileName + "";
 
 
         event.preventDefault();

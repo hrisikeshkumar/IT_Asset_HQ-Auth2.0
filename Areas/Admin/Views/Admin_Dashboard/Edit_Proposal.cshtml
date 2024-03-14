@@ -343,7 +343,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/Admin/Computer/Model_List",
+                url: "/Computer/Model_List",
                 datatype: "Json",
                 data: { Item_Make: $('#Item_Make_id').val() },
                 success: function (data) {
@@ -395,7 +395,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "/Admin/Admin_Dashboard/FiliUpload",
+                    url: "/Admin_Dashboard/FiliUpload",
                     datatype: "Json",
                     data: fileData,
                     contentType: false, // Not to set any content header
@@ -449,7 +449,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "/Admin/Admin_Dashboard/DeleteFile",
+                    url: "/Admin_Dashboard/DeleteFile",
                     datatype: "Json",
                     data: { FileId: clickedBtnID, RefId: fileRefId },
                     success: function (response) {
@@ -498,7 +498,7 @@
         var fileName = $(this).attr('id');
 
 
-        window.location.href = "/Admin/Admin_Dashboard/Download?fileId=" + fileName + "";
+        window.location.href = "/Admin_Dashboard/Download?fileId=" + fileName + "";
 
 
         event.preventDefault();

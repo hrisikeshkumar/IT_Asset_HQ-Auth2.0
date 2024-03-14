@@ -238,20 +238,56 @@
                     @Html.DropDownListFor(x => x.Vendor_id, Model.Vendor_List, new { @class = " form-rounded", @style = " width :60%; " })
                 </td>
             </tr>
-            <tr>
-                <td style="width:25%; height:50px;">
-                    P.O. Copy
-                </td>
-                <td style="width:25%;">
-                    @Html.TextBoxFor(model => model.File_PO, "", new { @type = "file" })
-                </td>
-                <td style="width:25%; height:50px;">
-                    SLA Copy
-                </td>
-                <td style="width:25%;" colspan="3">
-                    @Html.TextBoxFor(model => model.File_SLA, "", new { @type = "file" })
+
+            <tr style=" height: 50px; ">
+
+
+                <td align="left" style="width:25%; "> Upload File</td>
+
+                <td style="width: 75%;" colspan="3">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="width:100%;" colspan="3">
+                                <input type="file" name="postedFile" id="FileUpload_Id" />
+                                <input type="submit" id="btnFileUpload" class="btn_download" value="Upload" />
+                                <progress id="fileProgress" style="display: none"></progress>
+                                <span id="lblMessage" style="color: Green"></span>
+                            </td>
+                        </tr>
+                        <tr><td colspan="3" style="height:10px;"></td></tr>
+                        <tr>
+                            <td>
+                                <table id="Files_Grid" style="width:100%;">
+                                    <tr>
+                                        <td style="width:50%; font-weight:bold">File Name</td>
+                                        <td style="width: 25%; font-weight: bold"> Download</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <div id="abcdefgh">
+                                                @Html.DisplayFor(x => x.PO_File_Name)
+                                            </div>
+
+                                        </td>
+                                        <td>
+                                            <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.PO_File_Name' />
+                                        </td>
+
+                                    </tr>
+
+                                </table>
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+
+
                 </td>
             </tr>
+
             <tr>
                 <td style="width:25%; height:50px;">
                     SLA Required

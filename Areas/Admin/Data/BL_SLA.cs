@@ -73,11 +73,12 @@ namespace IT_Hardware.Areas.Admin.Data
         }
 
 
-        public int Save_SLA_data(Mod_SLA Data, string type, string SLA_ID , out string SLA_Id_Update)
+        public int Save_SLA_data(Mod_SLA Data, string type, string SLA_ID , out string SLA_Id_Update, out string SLA_File_Name)
         {
             int status = 0;
             SLA_Id_Update = string.Empty;
-            
+            SLA_File_Name = string.Empty;
+
             SqlConnection con = new DBConnection().con;
             try
             {
@@ -101,6 +102,9 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter Vendor_ID = new SqlParameter("@Vendor_ID", Data.Vendor_id);
                 cmd.Parameters.Add(Vendor_ID);
 
+                SqlParameter File_extension = new SqlParameter("@SLA_File_Name", Data.@SLA_File_Name);
+                cmd.Parameters.Add(File_extension);
+
                 SqlParameter Service_Type_Short = new SqlParameter("@Service_Type_Short", Data.Service_Type_Short);
                 cmd.Parameters.Add(Service_Type_Short);
 
@@ -116,14 +120,19 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 SqlParameter Remarks = new SqlParameter("@Remarks", Data.Remarks);
                 cmd.Parameters.Add(Remarks);
+                SqlParameter SLA_File;
+                if (Data.All_Files.Length > 0)
+                {
+                    SLA_File = new SqlParameter("@SLA_Copy", 1);
+                }
+                else
+                    SLA_File = new SqlParameter("@SLA_Copy", 0);
 
+                cmd.Parameters.Add(SLA_File);
                 SqlParameter User_Id = new SqlParameter("@Create_Usr_Id", Data.Create_usr_id);
                 cmd.Parameters.Add(User_Id);
 
-                //con.Open();
-
-                //status = cmd.ExecuteNonQuery();
-
+                
 
 
                 using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -137,6 +146,7 @@ namespace IT_Hardware.Areas.Admin.Data
                         if (dt.Rows.Count>0)
                         {
                             SLA_Id_Update = Convert.ToString(dt.Rows[0]["SLA_Id"]);
+                            SLA_File_Name = Convert.ToString(dt.Rows[0]["SLA_File_temp"]);
                             status = Convert.ToInt32(dt.Rows[0]["Row_Effect"]);
                         }
                          
@@ -196,6 +206,13 @@ namespace IT_Hardware.Areas.Admin.Data
                     Data.Vendor_id = Convert.ToString(dt_Comuter.Rows[0]["Vendor_id"]);
                     Data.Service_Type_Short = Convert.ToString(dt_Comuter.Rows[0]["Service_Type_Short"]);
                     Data.Service_Type_Details = Convert.ToString(dt_Comuter.Rows[0]["Service_Type_Details"]);
+
+
+                    if (Convert.ToString(dt_Comuter.Rows[0]["SLA_File"]) != "")
+                    {
+                        Data.SLA_File_Name = Convert.ToString(dt_Comuter.Rows[0]["SLA_File"]);
+                    }
+                    
 
                     if ( Convert.ToString( dt_Comuter.Rows[0]["Service_ST_DT"] )!= "" || Convert.ToString(dt_Comuter.Rows[0]["Service_ST_DT"]) != string.Empty)
                     {
