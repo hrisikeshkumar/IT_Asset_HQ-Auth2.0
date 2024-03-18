@@ -306,7 +306,7 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlConnection con = new DBConnection().con;
 
 
-                using (SqlCommand cmd = new SqlCommand("SELECT * from  dbo.Get_All_Budget_Head(@FinYear)"))
+                using (SqlCommand cmd = new SqlCommand("SELECT * from  dbo.Get_Budget_ByYear(@FinYear)"))
                 {
 
                     cmd.CommandType = CommandType.Text;
@@ -328,8 +328,8 @@ namespace IT_Hardware.Areas.Admin.Data
                 foreach (DataRow dr in dt_PO.Rows)
                 {
                     SelectListItem Listdata = new SelectListItem();
-                    Listdata.Value = Convert.ToString(dr["Bud_Head_Id"]);
-                    Listdata.Text = Convert.ToString(dr["Bud_Name"]);
+                    Listdata.Value = Convert.ToString(dr["Budget_Head_Id"]);
+                    Listdata.Text = Convert.ToString(dr["Budget_Name"]);
 
                     List_Item.Add(Listdata);
                 }

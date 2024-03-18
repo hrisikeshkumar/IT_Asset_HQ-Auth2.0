@@ -329,7 +329,7 @@
                 data: { Fin_Year: $('#Fin_Year').val() },
                 success: function (data) {
                     $.each(data, function (index, value) {
-                        $('#Budget_Id').append('<option value="' + value.Value + '">' + value.Text + '</option>');
+                        $('#Budget_Id').append('<option value="' + value.value + '">' + value.text + '</option>');
                     });
                 }
 
