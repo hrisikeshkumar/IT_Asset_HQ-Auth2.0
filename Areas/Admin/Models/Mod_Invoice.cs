@@ -7,7 +7,7 @@ namespace IT_Hardware.Areas.Admin.Models
     {
         public string? Invoice_id { get; set; }
         public string Invoice_No { get; set; }
-        public DateOnly Invoice_Date { get; set; }
+        public DateTime Invoice_Date { get; set; }
         public string? PO_Id { get; set; }
         public string? Fin_Year{ get; set; }
         public string? Budget_Id { get; set; }

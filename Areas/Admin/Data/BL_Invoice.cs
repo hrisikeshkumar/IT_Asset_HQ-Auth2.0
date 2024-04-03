@@ -47,11 +47,11 @@ namespace IT_Hardware.Areas.Admin.Data
                     BL_data.Invoice_id = Convert.ToString(dr["Inv_Id"]);
                     BL_data.Invoice_No = Convert.ToString(dr["Inv_no"]);
                     BL_data.Invoice_Subject = Convert.ToString(dr["Inv_Subject"]);
-                    BL_data.Invoice_Date =  (DateOnly)(dr["Inv_date"]);
-                    BL_data.Invoice_Value = Convert.ToInt32(dr["PO_Value"]);
+                    BL_data.Invoice_Date =  Convert.ToDateTime(dr["Inv_date"]);
+                    BL_data.Invoice_Value = Convert.ToInt32(dr["Inv_Value"]);
                     BL_data.Penalty_Amount = Convert.ToInt32(dr["Penalty_Amt"]);
                     BL_data.Penalty_Reason = Convert.ToString(dr["Penalty_Reason"]);
-                    BL_data.Budget_Id = Convert.ToString(dr["Bud_Id"]);
+                    BL_data.Budget_Id = Convert.ToString(dr["Bud_Head"]);
 
                     current_data.Add(BL_data);
                 }
@@ -77,7 +77,7 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "sp_POrder";
+                cmd.CommandText = "sp_Invoice";
 
                 cmd.Connection = con;
 
@@ -86,32 +86,35 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 if (type == "Update" || type == "Delete")
                 {
-                    SqlParameter Invoice_Id = new SqlParameter("@PO_id", Data.Invoice_id);
+                    SqlParameter Invoice_Id = new SqlParameter("@Inv_id", Data.Invoice_id);
                     cmd.Parameters.Add(Invoice_Id);
                 }
 
-                SqlParameter Invoice_No = new SqlParameter("@PO_No", Data.Invoice_No);
+                SqlParameter Invoice_No = new SqlParameter("@Inv_no", Data.Invoice_No);
                 cmd.Parameters.Add(Invoice_No);
 
-                SqlParameter PO_Id = new SqlParameter("@PO_No", Data.PO_Id);
-                cmd.Parameters.Add(PO_Id);
-
-                SqlParameter Penalty_Amount = new SqlParameter("@PO_No", Data.Penalty_Amount);
-                cmd.Parameters.Add(Penalty_Amount);
-
-                SqlParameter Invoice_Subject = new SqlParameter("@PO_No", Data.Invoice_Subject);
+                SqlParameter Invoice_Subject = new SqlParameter("@Inv_Subject", Data.Invoice_Subject);
                 cmd.Parameters.Add(Invoice_Subject);
 
-                SqlParameter Penalty_Reason = new SqlParameter("@PO_No", Data.Penalty_Reason);
-                cmd.Parameters.Add(Penalty_Reason);
+                SqlParameter PO_Id = new SqlParameter("@PO_Id", Data.PO_Id);
+                cmd.Parameters.Add(PO_Id);
 
-                SqlParameter Invoice_Year_Id = new SqlParameter("@PO_No", Data.Fin_Year);
-                cmd.Parameters.Add(Invoice_Year_Id);
-
-                SqlParameter Invoice_Value = new SqlParameter("@PO_Value", Data.Invoice_Value);
+                SqlParameter Invoice_Value = new SqlParameter("@Inv_Value", Data.Invoice_Value);
                 cmd.Parameters.Add(Invoice_Value);
 
-                SqlParameter Invoice_Date = new SqlParameter("@PO_ST_Date", Data.Invoice_Date);
+                SqlParameter Penalty_Amount = new SqlParameter("@Penalty_Amt", Data.Penalty_Amount);
+                cmd.Parameters.Add(Penalty_Amount);  
+
+                SqlParameter Penalty_Reason = new SqlParameter("@Penalty_Reason", Data.Penalty_Reason);
+                cmd.Parameters.Add(Penalty_Reason);
+
+                SqlParameter Invoice_Year_Id = new SqlParameter("@Inv_year", Data.Fin_Year);
+                cmd.Parameters.Add(Invoice_Year_Id);
+
+                SqlParameter Bud_Id = new SqlParameter("@Bud_Head", Data.Budget_Id);
+                cmd.Parameters.Add(Bud_Id);
+
+                SqlParameter Invoice_Date = new SqlParameter("@Inv_date", Data.Invoice_Date);
                 cmd.Parameters.Add(Invoice_Date);
 
 
@@ -123,7 +126,7 @@ namespace IT_Hardware.Areas.Admin.Data
 
 
                 using (SqlDataAdapter sda = new SqlDataAdapter())
-                {
+                { 
 
                     sda.SelectCommand = cmd;
                     using (DataTable dt = new DataTable())
@@ -132,7 +135,7 @@ namespace IT_Hardware.Areas.Admin.Data
 
                         if (dt.Rows.Count > 0)
                         {
-                            Inv_ID_Update = Convert.ToString(dt.Rows[0]["Invoice_id"]);
+                            Inv_ID_Update = Convert.ToString(dt.Rows[0]["Inv_Id"]);
                             status = Convert.ToInt32(dt.Rows[0]["Row_Effect"]);
                             Inv_File_Name = Convert.ToString(dt.Rows[0]["Inv_File_Name"]);
                         }
@@ -187,7 +190,7 @@ namespace IT_Hardware.Areas.Admin.Data
                         Data.Invoice_id = Convert.ToString(dt_Comuter.Rows[0]["Inv_Id"]);
                         Data.Invoice_No = Convert.ToString(dt_Comuter.Rows[0]["Inv_no"]);
                         Data.Invoice_Subject = Convert.ToString(dt_Comuter.Rows[0]["Inv_Subject"]);
-                        Data.Invoice_Date = (DateOnly)(dt_Comuter.Rows[0]["Inv_date"]);
+                        Data.Invoice_Date = Convert.ToDateTime(dt_Comuter.Rows[0]["Inv_date"]);
                         Data.Invoice_Value = Convert.ToInt32(dt_Comuter.Rows[0]["PO_Value"]);
                         Data.Penalty_Amount = Convert.ToInt32(dt_Comuter.Rows[0]["Penalty_Amt"]);
                         Data.Penalty_Reason = Convert.ToString(dt_Comuter.Rows[0]["Penalty_Reason"]);
