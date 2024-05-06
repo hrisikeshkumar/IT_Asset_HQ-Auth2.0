@@ -120,19 +120,16 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 SqlParameter Remarks = new SqlParameter("@Remarks", Data.Remarks);
                 cmd.Parameters.Add(Remarks);
-                SqlParameter SLA_File;
-                if (Data.All_Files.Length > 0)
-                {
-                    SLA_File = new SqlParameter("@SLA_Copy", 1);
-                }
-                else
-                    SLA_File = new SqlParameter("@SLA_Copy", 0);
 
+                SqlParameter SLA_File;
+                if (Data.All_Files is null)
+                    SLA_File = new SqlParameter("@SLA_Copy", 0);
+                else
+                    SLA_File = new SqlParameter("@SLA_Copy", 1);
                 cmd.Parameters.Add(SLA_File);
+
                 SqlParameter User_Id = new SqlParameter("@Create_Usr_Id", Data.Create_usr_id);
                 cmd.Parameters.Add(User_Id);
-
-                
 
 
                 using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -149,13 +146,9 @@ namespace IT_Hardware.Areas.Admin.Data
                             SLA_File_Name = Convert.ToString(dt.Rows[0]["SLA_File_temp"]);
                             status = Convert.ToInt32(dt.Rows[0]["Row_Effect"]);
                         }
-                         
 
                     }
                 }
-
-
-
 
             }
             catch (Exception ex) { status = -1; }

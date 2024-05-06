@@ -73,7 +73,6 @@ namespace IT_Hardware.Areas.Admin.Data
             SqlConnection con = new DBConnection().con;
             try
             {
-
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -191,11 +190,11 @@ namespace IT_Hardware.Areas.Admin.Data
                         Data.Invoice_No = Convert.ToString(dt_Comuter.Rows[0]["Inv_no"]);
                         Data.Invoice_Subject = Convert.ToString(dt_Comuter.Rows[0]["Inv_Subject"]);
                         Data.Invoice_Date = Convert.ToDateTime(dt_Comuter.Rows[0]["Inv_date"]);
-                        Data.Invoice_Value = Convert.ToInt32(dt_Comuter.Rows[0]["PO_Value"]);
+                        Data.Invoice_Value = Convert.ToInt32(dt_Comuter.Rows[0]["Inv_Value"]);
                         Data.Penalty_Amount = Convert.ToInt32(dt_Comuter.Rows[0]["Penalty_Amt"]);
                         Data.Penalty_Reason = Convert.ToString(dt_Comuter.Rows[0]["Penalty_Reason"]);
-                        Data.Budget_Id = Convert.ToString(dt_Comuter.Rows[0]["Bud_Id"]);
-
+                        Data.Budget_Id = Convert.ToString(dt_Comuter.Rows[0]["Bud_Head"]);
+                        Data.File_name = Convert.ToString(dt_Comuter.Rows[0]["Inv_File_Id"]);
                 }
 
             }

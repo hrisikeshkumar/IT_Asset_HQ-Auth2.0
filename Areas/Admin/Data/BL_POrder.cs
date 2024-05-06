@@ -45,13 +45,9 @@ namespace IT_Hardware.Areas.Admin.Data
                     BL_data = new Mod_POrder();
 
                     BL_data.PO_id = Convert.ToString(dr["PO_id"]);
-
                     BL_data.PO_No = Convert.ToString(dr["PO_No"]);
-
                     BL_data.PO_Subject = Convert.ToString(dr["PO_Sub"]);
-
                     BL_data.PO_End_Date =  Convert.ToDateTime( dr["PO_End_Date"]) ;
-
                     BL_data.PO_Value = Convert.ToInt32(dr["PO_Value"]);
 
                     current_data.Add(BL_data);
@@ -69,7 +65,6 @@ namespace IT_Hardware.Areas.Admin.Data
             int status = -1;
             PO_ID_Update = string.Empty;        
             PO_File_Name = string.Empty;
-
             
             SqlConnection con = new DBConnection().con;
             try
@@ -80,8 +75,6 @@ namespace IT_Hardware.Areas.Admin.Data
                 cmd.CommandText = "sp_POrder";
 
                 cmd.Connection = con;
-
-               
 
                 if (type == "Update" || type == "Delete")
                 {
@@ -137,8 +130,6 @@ namespace IT_Hardware.Areas.Admin.Data
                     }
                 }
 
-
-
             }
             catch (Exception ex) { status = -1; }
             finally { con.Close(); }
@@ -153,9 +144,7 @@ namespace IT_Hardware.Areas.Admin.Data
             try
             {
                 DataTable dt_PObyID;
-                
                 SqlConnection con = new DBConnection().con;
-
 
                 using (SqlCommand cmd = new SqlCommand("sp_POrder"))
                 {
@@ -191,12 +180,10 @@ namespace IT_Hardware.Areas.Admin.Data
                         Data.PO_ST_Date = Convert.ToDateTime(dt_PObyID.Rows[0]["PO_ST_Date"]);
                     if (Convert.ToString(dt_PObyID.Rows[0]["PO_End_Date"]) != string.Empty)
                         Data.PO_End_Date = Convert.ToDateTime(dt_PObyID.Rows[0]["PO_End_Date"]);
+
                     Data.PO_File_Name = Convert.ToString(dt_PObyID.Rows[0]["PO_File"]);
                     Data.Vendor_id = Convert.ToString(dt_PObyID.Rows[0]["Vendor_Id"]);
                     Data.Remarks = Convert.ToString(dt_PObyID.Rows[0]["Remarks"]); 
-                    
-
-
 
                 }
 

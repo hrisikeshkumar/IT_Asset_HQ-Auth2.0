@@ -110,7 +110,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
         {
             
             BL_Porder data = new BL_Porder();
-
             Mod_POrder mod_PO = data.Get_Data_By_ID( id);
             mod_PO.Vendor_List = data.Vendor_List();
 

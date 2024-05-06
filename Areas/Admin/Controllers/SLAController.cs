@@ -11,15 +11,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
     public class SLAController : Controller
     {
 
-        //private IHostingEnvironment Environment;
-
-        //public SLAController(IHostingEnvironment _environment)
-        //{
-        //    Environment = _environment;
-        //}
-
-
-
         public ActionResult SLA_Details()
         {
             BL_SLA com = new BL_SLA();
@@ -29,19 +20,14 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return View("~/Areas/Admin/Views/SLA/SLA_Details.cshtml", SLA_List);
         }
 
-
-
         [HttpGet]
         public ActionResult SLA_Create_Item(string Message)
         {
             ViewBag.Message = Message;
 
             BL_SLA BL_data = new BL_SLA();
-
             Mod_SLA Mod_data = new Mod_SLA();
-            
             Mod_data.Vendor_List = BL_data.Vendor_List();
-
 
             return View("~/Areas/Admin/Views/SLA/SLA_Create_Item.cshtml", Mod_data);
 
@@ -56,7 +42,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             string Message = "";
             try
             {
-                
                 Get_Data.Create_usr_id = HttpContext.User.Identity.Name;      
 
                 string SLA_Id = string.Empty;
@@ -67,7 +52,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                     BL_SLA save_data = new BL_SLA();
                     int status=0;
 
-                    if (Get_Data.All_Files.Length > 0)
+                    if (Get_Data.All_Files != null)
                     {
                         FileInfo fileInfo = new FileInfo(Get_Data.All_Files.FileName);
                         Get_Data.SLA_File_Name= fileInfo.Extension;
@@ -81,7 +66,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
                         //get file extension
                         
                         string fileName = SLA_FileName + fileInfo.Extension;
-
                         string fileNameWithPath = Path.Combine(path, fileName);
 
                         using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
@@ -119,7 +103,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return RedirectToAction("SLA_Create_Item", "SLA");
         }
 
-
+        [HttpGet]
         public ActionResult Edit_SLA(string id)
         {
             BL_SLA BL_data = new BL_SLA();
@@ -132,8 +116,8 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return View("~/Areas/Admin/Views/SLA/Edit_SLA.cshtml", Mod_data);
         }
 
-
-        public ActionResult Update_SLA(Mod_SLA Get_Data, string Item_id)
+        [HttpPost]
+        public ActionResult Update_SLA(Mod_SLA Get_Data)
         {
             int status = 0;
             string SLA_Id_I = string.Empty;
@@ -143,18 +127,36 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 Get_Data.Create_usr_id = HttpContext.User.Identity.Name;
                 if (ModelState.IsValid)
                 {
-                    BL_SLA Md_Asset = new BL_SLA();
-
-                    status = Md_Asset.Save_SLA_data(Get_Data, "Update", Item_id,  out SLA_Id_I, out SLA_FileName );
-
-                    if (status > 0)
+                    BL_SLA save_data = new BL_SLA();
+                    if (Get_Data.All_Files != null)
                     {
-                        TempData["Message"] = String.Format("Data saved successfully");
+                        FileInfo fileInfo = new FileInfo(Get_Data.All_Files.FileName);
+                        Get_Data.SLA_File_Name = fileInfo.Extension;
+                        status = save_data.Save_SLA_data(Get_Data, "Update", Get_Data.SLA_Id, out SLA_Id_I, out SLA_FileName);
+
+                        string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/SLA");
+
+                        //create folder if not exist
+                        if (!Directory.Exists(path))
+                            Directory.CreateDirectory(path);
+                        //get file extension
+
+                        string fileName = SLA_FileName ;
+
+                        string fileNameWithPath = Path.Combine(path, fileName);
+
+                        using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                        {
+                            Get_Data.All_Files.CopyTo(stream);
+                        }
                     }
                     else
                     {
-                        TempData["Message"] = String.Format("Data is not saved");
+                        status = save_data.Save_SLA_data(Get_Data, "Update", Get_Data.SLA_Id, out SLA_Id_I, out SLA_FileName);
                     }
+
+                    TempData["Message"] = String.Format("Data saved successfully");
+
                 }
                 else
                 {
@@ -168,7 +170,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             }
 
-            return RedirectToAction("SLA_Details", "SLA");
+            return RedirectToAction("Edit_SLA", "SLA" , new { id = Get_Data.SLA_Id });
         }
 
 
@@ -322,7 +324,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-
         public JsonResult DeleteFile(string FileId, string RefId)
         {
 
@@ -344,7 +345,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return Json(GetFiles_By_Id(RefId));
 
         }
-
 
 
         public FileResult Download(string fileId)

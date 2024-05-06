@@ -24,15 +24,12 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
         public ActionResult Invoice_Create_Item()
         {
-
             Mod_Invoice mod_PO = new Mod_Invoice();
             BL_Invoice Inv_Data = new BL_Invoice();
             mod_PO.Fin_Year_List = Inv_Data.Fin_Year_List();
             mod_PO.PO_list = Inv_Data.PO_List();
 
-
             return View("~/Areas/Admin/Views/Invoice/Invoice_Create_Item.cshtml", mod_PO);
-
         }
 
 
@@ -46,15 +43,14 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 string Vendor_Id = string.Empty;
                 if (ModelState.IsValid)
                 {
-
                     BL_Invoice save_data = new BL_Invoice();
+                    //FileInfo fileInfo = new FileInfo(save_data.fil);
+                    //Get_Data.SLA_File_Name = fileInfo.Extension;
                     int status = save_data.Save_data(Data, "Add_new", "", out string Inv_Id, out string Inv_File_Name);
 
                     if (status > 0)
                     {
                         TempData["Message"] = String.Format("Data save successfully");
-
-
 
                         if (Data.File_Invoice.Length > 0)
                         {
@@ -66,7 +62,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
                             //get file extension
                             FileInfo fileInfo = new FileInfo(Data.File_Invoice.FileName);
-                            string fileName = Data.File_Invoice.FileName + fileInfo.Extension;
+                            string fileName = Inv_File_Name + fileInfo.Extension;
 
                             string fileNameWithPath = Path.Combine(path, fileName);
 
@@ -74,14 +70,10 @@ namespace IT_Hardware.Areas.Admin.Controllers
                             {
                                 Data.File_Invoice.CopyTo(stream);
                             }
-
                         }
-
                     }
-
                     else
                     {
-
                         TempData["Message"] = String.Format("Data is not saved");
                     }
                 }
@@ -92,15 +84,13 @@ namespace IT_Hardware.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-
                 TempData["Message"] = string.Format("ShowFailure();");
-
             }
 
             return RedirectToAction("Invoice_Create_Item", "Invoice");
         }
 
-
+        [HttpGet]
         public ActionResult Edit_Invoice(string id)
         {      
             BL_Invoice Inv_Data = new BL_Invoice();
@@ -189,7 +179,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-
         public JsonResult Bud_Head_List(string Fin_Year)
         {
 
@@ -198,6 +187,22 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Mod_Invoice.Budget_List = data.Budget_Head_List(Fin_Year);
 
             return Json(Mod_Invoice.Budget_List);
+        }
+
+
+        public FileResult Download(string fileId)
+        {
+
+            //Build the File Path.
+            string path = Path.Combine("wwwroot/Files/Invoice/") + fileId;
+
+            //Read the File data into Byte Array.
+            byte[] bytes = System.IO.File.ReadAllBytes(path);
+
+            //Send the File to Download.
+            return File(bytes, "application/octet-stream", fileId);
+
+           
         }
 
 

@@ -21,6 +21,7 @@ namespace IT_Hardware.Areas.Admin.Models
         public string? Remarks { get; set; }
         public string? Create_usr_id { get; set; }
         public IFormFile File_Invoice { get; set; }
+        public string? File_name { get; set; }
 
     }
 }

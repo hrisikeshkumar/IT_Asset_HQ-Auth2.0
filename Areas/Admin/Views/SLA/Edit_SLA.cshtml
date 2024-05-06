@@ -6,14 +6,10 @@
     //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 @*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>*@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
 <link href="~/CSS/Final_Submit_Button.css" rel="stylesheet" />
-
 @* <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> *@
 
 
@@ -198,7 +194,7 @@
 <div style=" align-content:center; width:100%" class="card w-100 shadow p-3 mb-5 bg-white rounded">
 
 
-    @using (Html.BeginForm("Update_SLA", "SLA", FormMethod.Post))
+    @using (Html.BeginForm("Update_SLA", "SLA", FormMethod.Post , new { encType = "multipart/form-data" }))
     {
 
         <table class=" table-hover table-striped shadow " style="width:100%">
@@ -221,9 +217,7 @@
                     Service Type Overview
                 </td>
                 <td style="width:75%;" colspan="3">
-
                     @Html.TextBoxFor(x => x.Service_Type_Short, new { @class = " form-rounded", @style = " width :90%; " })
-
                 </td>
             </tr>
             <tr>
@@ -253,10 +247,10 @@
                     <table style="width: 100%;">
                         <tr>
                             <td style="width:100%;" colspan="3">
-                                <input type="file" name="postedFile" id="FileUpload_Id" />
-                                <input type="submit" id="btnFileUpload" class="btn_download" value="Upload" />
+                                <input type="file" name="All_Files" id="All_Files" />
+                               @*  <input type="submit" id="btnFileUpload" class="btn_download" value="Upload" />
                                 <progress id="fileProgress" style="display: none"></progress>
-                                <span id="lblMessage" style="color: Green"></span>
+                                <span id="lblMessage" style="color: Green"></span> *@
                             </td>
                         </tr>
                         <tr><td colspan="3" style="height:10px;"></td></tr>
@@ -271,12 +265,11 @@
                                     <tr>
                                             <td>
                                                 <div id="abcdefgh">
-                                                @Html.DisplayFor(x => x.SLA_File_Name)
+                                                    @Html.DisplayFor(x => x.SLA_File_Name)
                                                 </div>
- 
                                             </td>
                                             <td>
-                                            <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.SLA_File_Name' />
+                                                <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.SLA_File_Name' />
                                             </td>
 
                                         </tr>
@@ -287,9 +280,6 @@
                         </tr>
 
                     </table>
-
-
-
                 </td>
             </tr>
 
@@ -321,7 +311,6 @@
 
                 <td style="width: 25%; padding-top: 10px; padding-bottom: 5px" align="center">
                     <button class="button_cls form-rounded">Submit</button>
-
                 </td>
 
                 <td style="width: 25%; padding-top: 10px; padding-bottom: 5px" align="center">
@@ -342,9 +331,7 @@
     <script type="text/javascript">
 
     window.onload = function () {
-        /**/
         alert("@TempData["Message"]");
-    /**/
     };
     </script>
 
@@ -375,16 +362,6 @@
     });
 </script>
 
-
-
-
-@*------------------------------------ File Function--------------------------------------------------------------*@
-
-
-
-
-
-@*---------------------------------------------------------------------------------------------------------------*@
 
 
 
