@@ -12,16 +12,14 @@
         /// </summary>
         public const string AssignmentToGroupAdminGroupRequired = "AssignmentToGroupAdminGroupRequired";
 
+        public const string AllAccess = "AllAccess";
 
-        public const string ITStaff = "ITStaff";
+        public const string ITStaffs = "ITStaffs";
 
-        public const string ITHardwareManager= "ITHardwareManager";
+        public const string ITManagers = "ITHardwareManager";
 
-        public const string ITSupportEngineer = "ITSupportEngineer";
+        public const string ITSupportEngineers = "ITSupportEngineers";
 
-        public const string Chapter = "Chapter";
-
-        public const string ROsGroup = "ROsGroup";
-
+      
     }
 }

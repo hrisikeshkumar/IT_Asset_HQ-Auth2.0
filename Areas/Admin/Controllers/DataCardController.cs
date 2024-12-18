@@ -6,7 +6,7 @@ using IT_Hardware.Infra;
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
-    [Authorize(Policy = AuthorizationPolicies.ITHardwareManager)]
+    [Authorize(Policy = AuthorizationPolicies.ITManagers)]
     public class DataCardController : Controller
     {
 

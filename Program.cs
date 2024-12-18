@@ -41,10 +41,14 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 
 });
 
+// <summary>
 // This is required to be instantiated before the OpenIdConnectOptions starts getting configured.
 // By default, the claims mapping will map claim names in the old format to accommodate older SAML applications.
 // 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role' instead of 'roles'
 // This flag ensures that the ClaimsIdentity claims collection will be built from the claims in the token
+//</summary>
+
+
 JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
 // Adds Microsoft Identity platform (AAD v2.0) support to protect this Api
@@ -90,20 +94,22 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
 // Adding authorization policies that enforce authorization using Azure AD security groups.
 builder.Services.AddAuthorization(options =>
 {
-    // this policy stipulates that users in Chapter Office can access resources
-    options.AddPolicy(AuthorizationPolicies.Chapter, policy => policy.RequireRole(builder.Configuration["Groups:Chapter"], builder.Configuration["Groups:ITHardwareManager"]));
-
-    // this policy stipulates that users in ROs Office can access resources
-    options.AddPolicy(AuthorizationPolicies.ROsGroup, policy => policy.RequireRole( builder.Configuration["Groups:ROs"], builder.Configuration["Groups:ITHardwareManager"]));
 
     // this policy stipulates that users in IT Staffs can access resources
-    options.AddPolicy(AuthorizationPolicies.ITStaff, policy => policy.RequireRole( builder.Configuration["Groups:ITStaff"]));
+    options.AddPolicy(AuthorizationPolicies.AllAccess, policy => policy.RequireRole(builder.Configuration["Groups:ITStaff"],
+        builder.Configuration["Groups:ITSupportEngineers"], builder.Configuration["Groups:ITManagers"]));
+
+    // this policy stipulates that users in IT Staffs can access resources
+    options.AddPolicy(AuthorizationPolicies.ITStaffs, policy => policy.RequireRole(builder.Configuration["Groups:ITStaff"],
+         builder.Configuration["Groups:ITManagers"]));
+
 
     // this policy stipulates that users in IT Hardware Staffs can access resources
-    options.AddPolicy(AuthorizationPolicies.ITSupportEngineer, policy => policy.RequireRole(builder.Configuration["Groups:ITSupportEngineer"], builder.Configuration["Groups:ITHardwareManager"]));
+    options.AddPolicy(AuthorizationPolicies.ITSupportEngineers, policy => policy.RequireRole(builder.Configuration["Groups:ITSupportEngineers"], 
+        builder.Configuration["Groups:ITManagers"]));
 
     // this policy stipulates that users in IT Hardware Staffs can access resources
-    options.AddPolicy(AuthorizationPolicies.ITHardwareManager, policy => policy.RequireRole( builder.Configuration["Groups:ITHardwareManager"]));
+    options.AddPolicy(AuthorizationPolicies.ITManagers, policy => policy.RequireRole( builder.Configuration["Groups:ITManagers"]));
 
 });
 

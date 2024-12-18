@@ -8,7 +8,7 @@ using IT_Hardware.Infra;
 namespace IT_Hardware.Areas.Admin.Controllers
 {
 
-    [Authorize(Policy = AuthorizationPolicies.ITHardwareManager)]
+    [Authorize(Policy = AuthorizationPolicies.ITManagers)]
     public class IT_Hardware_AMCController : Controller
     {
         // GET: Admin/IT_Hardware_AMC

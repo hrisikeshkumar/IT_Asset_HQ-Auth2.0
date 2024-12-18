@@ -8,7 +8,7 @@ using IT_Hardware.Infra;
 namespace IT_Hardware.Areas.Admin.Controllers
 {
 
-    [Authorize(Policy = AuthorizationPolicies.ITStaff)]
+    [Authorize(Policy = AuthorizationPolicies.ITStaffs)]
     public class Purchase_OrderController : Controller
     {
 

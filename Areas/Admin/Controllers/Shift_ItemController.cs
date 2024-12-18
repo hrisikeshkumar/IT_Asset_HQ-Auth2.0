@@ -7,7 +7,7 @@ using IT_Hardware.Infra;
 namespace IT_Hardware.Areas.Admin.Controllers
 {
 
-    [Authorize(Policy = AuthorizationPolicies.ITHardwareManager)]
+    [Authorize(Policy = AuthorizationPolicies.ITManagers)]
     public class Shift_ItemController : Controller
     {
         public ActionResult Shift_Item_Details()

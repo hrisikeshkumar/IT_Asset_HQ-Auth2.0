@@ -8,7 +8,7 @@ using IT_Hardware.Infra;
 namespace IT_Hardware.Areas.Admin.Controllers
 {
 
-    [Authorize(Policy =   AuthorizationPolicies.ITHardwareManager )]
+    [Authorize(Policy =   AuthorizationPolicies.AllAccess)]
     public class Admin_DashboardController : Controller
     {
 

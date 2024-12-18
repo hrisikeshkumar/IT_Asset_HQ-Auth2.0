@@ -12,7 +12,7 @@ using IT_Hardware.Infra;
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
-    [Authorize(Policy = AuthorizationPolicies.ITHardwareManager)]
+    [Authorize(Policy = AuthorizationPolicies.ITManagers)]
     public class Stock_ReportController : Controller
     {
         public ActionResult Stock_Report_Detail()
