@@ -11,6 +11,7 @@ using IT_Hardware.Infra;
 namespace IT_Hardware.Areas.Admin.Controllers
 {
     [Authorize(Policy = AuthorizationPolicies.ITStaffs)]
+    [Area("Admin")]
     public class VendorController : Controller
     {
         
@@ -20,7 +21,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             List<Mod_Vendor> pc_List = com.Get_VendorData();
 
-            return View("~/Areas/Admin/Views/Vendor/Vendor_Details.cshtml", pc_List);
+            return View(pc_List);
         }
 
 
@@ -30,7 +31,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         {
             ViewBag.Message = Message;
 
-            return View("~/Areas/Admin/Views/Vendor/Vendor_Create_Item.cshtml");
+            return View();
 
         }
 
@@ -83,7 +84,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Mod_Vendor data = Md_Com.Get_Data_By_ID(id);
 
 
-            return View("~/Areas/Admin/Views/Vendor/Edit_Vendor.cshtml", data);
+            return View( data);
         }
 
 
@@ -278,11 +279,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 }
             }
 
-
             return File(bytes, contentType, fileName);
         }
-
-
-
     }
 }

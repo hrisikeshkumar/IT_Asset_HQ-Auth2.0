@@ -7,6 +7,7 @@ using IT_Hardware.Infra;
 namespace IT_Hardware.Areas.Admin.Controllers
 {
     [Authorize(Policy = AuthorizationPolicies.ITStaffs)]
+    [Area("Admin")]
     public class Budget_HeadController : Controller
     {
         
@@ -16,7 +17,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             List<Mod_Budget> pc_List = com.Get_BudgetData();
 
-            return View("~/Areas/Admin/Views/Budget_Head/Budget_Head_Details.cshtml", pc_List);
+            return View( pc_List);
         }
 
 
@@ -33,7 +34,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Mod_data.Bud_year_List = bud_year.budget_year_dropdown();
 
 
-            return View("~/Areas/Admin/Views/Budget_Head/Budget_Head_Create_Item.cshtml", Mod_data);
+            return View( Mod_data);
         }
 
         
@@ -89,7 +90,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Model_data.Bud_year_List = bud_year.budget_year_dropdown();
 
 
-            return View("~/Areas/Admin/Views/Budget_Head/Edit_Budget_Head.cshtml", Model_data);
+            return View( Model_data);
         }
 
 

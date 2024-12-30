@@ -8,6 +8,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 {
 
     [Authorize(Policy = AuthorizationPolicies.ITManagers)]
+    [Area("Admin")]
     public class MasterDataController : Controller
     {
 
@@ -17,7 +18,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             List<Mod_AssetMaster> MasterList = AssetMaster_data.Get_Data();
 
-            return View("~/Areas/Admin/Views/MasterData/List_Make_Data.cshtml", MasterList);
+            return View(  MasterList);
         }
 
 
@@ -25,7 +26,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Add_AssetMakeModel(Mod_AssetMaster Get_Data)
         {
-            return View("~/Areas/Admin/Views/MasterData/Add_AssetMakeModel.cshtml");
+            return View();
         }
 
 
@@ -77,7 +78,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             //Md_Asset.Get_Data_By_ID(Asset.Asset_ID.ToString().Trim());
             Mod_AssetMaster data = Md_Asset.Get_Data_By_ID(id);
 
-            return View("~/Areas/Admin/Views/MasterData/EdIT_HardwaresMasterData.cshtml", data);
+            return View( data);
         }
 
 

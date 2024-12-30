@@ -55,8 +55,6 @@
                 border-top: solid 1px black;
             }
 
-         
-
 
         /* top-left border-radius */
             .zui-table-rounded tbody tr:first-child th:first-child {
@@ -141,9 +139,10 @@
     </section>
     <nav class="hs-navigation">
         <ul class="nav-links">
-            <li><a href="/Admin/Admin_Dashboard/Admin_Dashboard"> <span class="icon"> <i class="zmdi zmdi-collection-item"></i> </span> Dash Board</a> </li>
+           
+            <li><a href="@Url.Action("Admin_Dashboard", null, new { area = "Admin", controller = "Admin_Dashboard" })"> <span class="icon"> <i class="zmdi zmdi-collection-item"></i> </span> Dash Board</a> </li>
 
-            <li><a href="@Url.Action("Employee_Details", null, new { area = "", controller = "Employee" })"> <span class="icon"> <i class="zmdi zmdi-collection-item"></i> </span> Employees Data</a> </li>
+            <li><a href="@Url.Action("Employee_Details", null, new { area = "Admin", controller = "Employee" })"> <span class="icon"> <i class="zmdi zmdi-collection-item"></i> </span> Employees Data</a> </li>
 
 
             <li class="has-child">
@@ -156,9 +155,9 @@
                 <ul class="its-children">
 
                     <li> <a href="@Url.Action("Vendor_Details", null, new { area = "Admin", controller = "Vendor" }  )">Vendor Information</a> </li>
-                    <li> <a href="@Url.Action("PO_Details", null, new { area = string.Empty, controller = "Purchase_Order" }  )">Purchase Order</a> </li>
-                    <li> <a href="@Url.Action("SLA_Details", null, new { area = string.Empty, controller = "SLA" }  )">Service Level Agreement</a> </li>
-                    <li> <a href="@Url.Action("Invoice_Details", null, new { area = string.Empty, controller = "Invoice" }  )">Invoices Details</a> </li>
+                    <li> <a href="@Url.Action("PO_Details", null, new { area = "Admin", controller = "Purchase_Order" }  )">Purchase Order</a> </li>
+                    <li> <a href="@Url.Action("SLA_Details", null, new { area = "Admin", controller = "SLA" }  )">Service Level Agreement</a> </li>
+                    <li> <a href="@Url.Action("Invoice_Details", null, new { area = "Admin", controller = "Invoice" }  )">Invoices Details</a> </li>
                 </ul>
             </li>
 
@@ -173,16 +172,16 @@
                 </span>
                 <ul class="its-children">
 
-                    <li> <a href="@Url.Action("Budget_Year_Details", null, new { area = string.Empty, controller = "Budget_Year" }  )">Budget Year Master</a> </li>
-                    <li> <a href="@Url.Action("Budget_Head_Details", null, new { area = string.Empty, controller = "Budget_Head" }  )">Budget Head Detsils</a> </li>
-                    <li> <a href="@Url.Action("Budget_Uses_Details", null, new { area = string.Empty, controller = "Budget_Uses" }  )">Budget Uses Details</a> </li>
+                    <li> <a href="@Url.Action("Budget_Year_Details", null, new { area = "Admin", controller = "Budget_Year" }  )">Budget Year Master</a> </li>
+                    <li> <a href="@Url.Action("Budget_Head_Details", null, new { area = "Admin", controller = "Budget_Head" }  )">Budget Head Detsils</a> </li>
+                    <li> <a href="@Url.Action("Budget_Uses_Details", null, new { area = "Admin", controller = "Budget_Uses" }  )">Budget Uses Details</a> </li>
 
                 </ul>
             </li>
 
-            <li> <a href="@Url.Action("Item_Issue_Details", null, new { area = string.Empty, controller = "Item_Issue" }  )"> <span class="icon"> <i class="zmdi zmdi-compass"></i> </span> Issue Item To Employees</a>  </li>
-            <li> <a href="@Url.Action("Shift_Item_Details", null, new { area = string.Empty, controller = "Shift_Item" }  )"> <span class="icon"> <i class="zmdi zmdi-compass"></i> </span> Shift Item To Other Company</a>  </li>
-            <li> <a href="@Url.Action("Amc_DashBoard", null, new { area = string.Empty, controller = "IT_Hardware_AMC" }  )"> <span class="icon"> <i class="zmdi zmdi-compass"></i> </span> IT Hardware AMC Details</a>  </li>
+            <li> <a href="@Url.Action("Item_Issue_Details", null, new { area = "Admin", controller = "Item_Issue" }  )"> <span class="icon"> <i class="zmdi zmdi-compass"></i> </span> Issue Item To Employees</a>  </li>
+            <li> <a href="@Url.Action("Shift_Item_Details", null, new { area = "Admin", controller = "Shift_Item" }  )"> <span class="icon"> <i class="zmdi zmdi-compass"></i> </span> Shift Item To Other Company</a>  </li>
+            <li> <a href="@Url.Action("Amc_DashBoard", null, new { area = "Admin", controller = "IT_Hardware_AMC" }  )"> <span class="icon"> <i class="zmdi zmdi-compass"></i> </span> IT Hardware AMC Details</a>  </li>
 
 
             <li class="has-child">
@@ -199,26 +198,26 @@
                     <li class="has-child">
                         <span class="its-parent"> Computer </span>
                         <ul class="its-children">
-                            <li> <a href="@Url.Action("Com_Details", null, new { area = string.Empty, controller = "Computer" }  )">Desktop</a> </li>
-                            <li> <a href="@Url.Action("Monitor_Details", null, new { area = string.Empty, controller = "Monitor" }  )"> Monitor </a> </li>
-                            <li> <a href="@Url.Action("Lap_Details", null, new { area = string.Empty, controller = "Laptop" }  )"> Laptop </a> </li>
+                            <li> <a href="@Url.Action("Com_Details", null, new { area = "Admin", controller = "Computer" }  )">Desktop</a> </li>
+                            <li> <a href="@Url.Action("Monitor_Details", null, new { area = "Admin", controller = "Monitor" }  )"> Monitor </a> </li>
+                            <li> <a href="@Url.Action("Lap_Details", null, new { area = "Admin", controller = "Laptop" }  )"> Laptop </a> </li>
                         </ul>
                     </li>
                     <li class="has-child">
                         <span class="its-parent"> Printer/Scanner / UPS </span>
                         <ul class="its-children">
-                            <li> <a href="@Url.Action("Printer_Details", null, new { area = string.Empty, controller = "Printer" }  )">Printer</a> </li>
-                            <li> <a href="@Url.Action("Scanner_Details", null, new { area = string.Empty, controller = "Scanner" }  )"> Scanner </a> </li>
-                            <li> <a href="@Url.Action("UPS_Details", null, new { area = string.Empty, controller = "UPS" }  )"> UPS </a> </li>
+                            <li> <a href="@Url.Action("Printer_Details", null, new { area = "Admin", controller = "Printer" }  )">Printer</a> </li>
+                            <li> <a href="@Url.Action("Scanner_Details", null, new { area = "Admin", controller = "Scanner" }  )"> Scanner </a> </li>
+                            <li> <a href="@Url.Action("UPS_Details", null, new { area = "Admin", controller = "UPS" }  )"> UPS </a> </li>
                         </ul>
                     </li>
 
                     <li class="has-child">
                         <span class="its-parent"> Data Center Items </span>
                         <ul class="its-children">
-                            <li> <a href="@Url.Action("Server_Details", null, new { area = string.Empty, controller = "Server" }  )">Servers</a> </li>
-                            <li> <a href="@Url.Action("Switch_Details", null, new { area = string.Empty, controller = "Switch" }  )"> Switches </a> </li>
-                            <li> <a href="@Url.Action("DC_MisItems_Details", null, new { area = string.Empty, controller = "DC_MisItems" }  )"> Other Items </a> </li>
+                            <li> <a href="@Url.Action("Server_Details", null, new { area = "Admin", controller = "Server" }  )">Servers</a> </li>
+                            <li> <a href="@Url.Action("Switch_Details", null, new { area = "Admin", controller = "Switch" }  )"> Switches </a> </li>
+                            <li> <a href="@Url.Action("DC_MisItems_Details", null, new { area = "Admin", controller = "DC_MisItems" }  )"> Other Items </a> </li>
                         </ul>
                     </li>
 
@@ -226,9 +225,9 @@
                         <span class="its-parent"> Other Mislenious Items </span>
                         <ul class="its-children">
 
-                            <li> <a href="@Url.Action("DataCard_Details", null, new { area = string.Empty, controller = "DataCard" }  )">Data Card</a> </li>
-                            <li> <a href="@Url.Action("AppleIpad_Details", null, new { area = string.Empty, controller = "AppleIpad" }  )">Apple Ipad /Surface Pro</a> </li>
-                            <li> <a href="@Url.Action("OtherItem_Details", null, new { area = string.Empty, controller = "OtherItem" }  )"> Mislenious Items</a> </li>
+                            <li> <a href="@Url.Action("DataCard_Details", null, new { area = "Admin", controller = "DataCard" }  )">Data Card</a> </li>
+                            <li> <a href="@Url.Action("AppleIpad_Details", null, new { area = "Admin", controller = "AppleIpad" }  )">Apple Ipad /Surface Pro</a> </li>
+                            <li> <a href="@Url.Action("OtherItem_Details", null, new { area = "Admin", controller = "OtherItem" }  )"> Mislenious Items</a> </li>
 
 
                         </ul>
@@ -239,7 +238,7 @@
 
             </li>
 
-            <li class="has-child">
+          @* <li class="has-child">
                 <span class="its-parent">
                     <span class="icon">
                         <i class="zmdi zmdi-device-hub"></i>
@@ -252,7 +251,7 @@
                     <li> <a href="@Url.Action("UserRole_Details", null, new { area = string.Empty, controller = "UserRole" }  )">User Role Mapping</a> </li>
 
                 </ul>
-            </li>
+            </li> *@
 
             <li class="has-child">
                 <span class="its-parent">
@@ -275,8 +274,8 @@
                     </span>Reports
                 </span>
                 <ul class="its-children">
-                    <li> <a href="@Url.Action("Stock_Report_Detail", null, new { area = string.Empty, controller = "Stock_Report" }  )"> Stock Report</a> </li>
-                    <li> <a href="@Url.Action("Budget_Report_Detail", null, new { area = string.Empty, controller = "Stock_Report" }  )"> Budget Report</a> </li>
+                    <li> <a href="@Url.Action("Stock_Report_Detail", null, new { area = "Admin", controller = "Stock_Report" }  )"> Stock Report</a> </li>
+                    <li> <a href="@Url.Action("Budget_Report_Detail", null, new { area = "Admin", controller = "Stock_Report" }  )"> Budget Report</a> </li>
 
                 </ul>
             </li>
@@ -286,7 +285,7 @@
         </ul>
     </nav>
     <!--End hs Mega Menu-->
-    <div class="container" style="padding-top:5%; padding-left:5%">
+    <div style=" padding-left:7%; width:90%; padding-top:4%; ">
         @RenderBody()
         
     </div>

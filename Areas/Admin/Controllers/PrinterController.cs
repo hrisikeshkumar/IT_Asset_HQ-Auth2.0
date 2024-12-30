@@ -8,6 +8,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 {
 
     [Authorize(Policy = AuthorizationPolicies.ITManagers)]
+    [Area("Admin")]
     public class PrinterController : Controller
     {
 
@@ -17,7 +18,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
                 List<Mod_Printer> pc_List = com.Get_PrinterData();
 
-                return View("~/Areas/Admin/Views/Printer/Printer_Details.cshtml", pc_List);
+                return View( pc_List);
             }
 
 
@@ -33,7 +34,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Mod_data.Item_Make_List = Make_List.Item_MakeModel_List("PrintScan", "MAKE", "");
             Mod_data.Vendor_List = Make_List.Vendor_List();
 
-            return View("~/Areas/Admin/Views/Printer/Printer_Create_Item.cshtml", Mod_data);
+            return View( Mod_data);
 
         }
 
@@ -93,7 +94,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 Model_data.Item_Model_List = Make_List.Item_MakeModel_List("PrintScan", "MODEL", Model_data.Item_Make_id.Trim().ToString());
 
 
-            return View("~/Areas/Admin/Views/Printer/Edit_Printer.cshtml", Model_data);
+            return View(Model_data);
             }
 
 

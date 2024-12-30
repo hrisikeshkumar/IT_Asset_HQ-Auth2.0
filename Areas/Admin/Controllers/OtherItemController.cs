@@ -9,6 +9,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 {
 
     [Authorize(Policy = AuthorizationPolicies.  ITManagers)]
+    [Area("Admin")]
     public class OtherItemController : Controller
     {
 
@@ -19,7 +20,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             List<Mod_OtherItem> pc_List = com.Get_OtherItemData();
 
-            return View("~/Areas/Admin/Views/OtherItem/OtherItem_Details.cshtml", pc_List);
+            return View(pc_List);
         }
 
 
@@ -34,7 +35,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Item_MakeModel Make_List = new Item_MakeModel();
             Mod_data.Item_Make_List = Make_List.Item_MakeModel_List("OtherItem", "MAKE", "");
             Mod_data.Vendor_List = Make_List.Vendor_List();
-            return View("~/Areas/Admin/Views/OtherItem/OtherItem_Create_Item.cshtml", Mod_data);
+            return View( Mod_data);
 
         }
 
@@ -92,7 +93,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Model_data.Item_Model_List = Make_List.Item_MakeModel_List("OtherItem", "MODEL", Model_data.Item_Make_id.Trim().ToString());
 
 
-            return View("~/Areas/Admin/Views/OtherItem/Edit_OtherItem.cshtml", Model_data);
+            return View( Model_data);
         }
 
 

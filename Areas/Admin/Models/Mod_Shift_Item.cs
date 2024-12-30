@@ -16,6 +16,9 @@ namespace IT_Hardware.Areas.Admin.Models
         public string Item_Shift_Location { get; set; }
         public string Present_Company { get; set; }
         public string Shifted_Company { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         [Required]
         public DateTime? Shift_date { get; set; }
         public string Remarks { get; set; }
@@ -23,6 +26,9 @@ namespace IT_Hardware.Areas.Admin.Models
         public DateTime? Create_date { get; set; }
         public string Verfd_status { get; set; }
         public string Verfd_usr_id { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? Verfd_date { get; set; }
 
     }

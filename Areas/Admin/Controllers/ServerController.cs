@@ -8,6 +8,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 {
 
     [Authorize(Policy = AuthorizationPolicies.ITManagers)]
+    [Area("Admin")]
     public class ServerController : Controller
     {
 
@@ -17,7 +18,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             List<Mod_Server> pc_List = com.Get_ServerData();
 
-            return View("~/Areas/Admin/Views/Server/Server_Details.cshtml", pc_List);
+            return View( pc_List);
         }
 
 
@@ -31,7 +32,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Item_MakeModel Make_List = new Item_MakeModel();
             Mod_data.Item_Make_List = Make_List.Item_MakeModel_List("Server", "MAKE", "");
             Mod_data.Vendor_List = Make_List.Vendor_List();
-            return View("~/Areas/Admin/Views/Server/Server_Create_Item.cshtml", Mod_data);
+            return View( Mod_data);
 
         }
 
@@ -88,7 +89,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             Model_data.Item_Model_List = Make_List.Item_MakeModel_List("Server", "MODEL", Model_data.Item_Make_id.Trim().ToString());
 
-            return View("~/Areas/Admin/Views/Server/Edit_Server.cshtml", Model_data);
+            return View( Model_data);
         }
 
 

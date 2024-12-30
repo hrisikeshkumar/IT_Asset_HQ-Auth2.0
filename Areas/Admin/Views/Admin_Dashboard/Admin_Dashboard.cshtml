@@ -43,7 +43,7 @@
 </style>
 
 
-<div style=" align-content:center;  width:100%" class="card-deck w-100 shadow p-3 mb-5 bg-white rounded">
+<div style=" align-content:center;  width:100%" class=" h-10 w-100 shadow p-1 mb-1 bg-white rounded">
     <table class="   " style="width: 100%; background-color: #b2f3b2;">
         <tr>
             <td style="text-align:center; width:60%; ">
@@ -70,11 +70,10 @@
 
 
             <thead>
-                <tr style="background-color: #b2f3b2;; font-weight: bold; ">
-                    <td style="width: 65%; font-weight: bold; font-size: large"> <h5> Proposal Initiated </h5></td>
-                    <td style="width: 20%; font-weight: bold; font-size: large"><h5>Initiate Date </h5></td>
-                    <td style="width: 15%; font-weight: bold; font-size: large; text-align: center"> <h5>Status </h5></td>
-
+                <tr style="background-color: #b2f3b2; font-weight: bold; ">
+                    <td style="width: 70%; font-weight: bold; font-size: large; text-align: left"> <h4> Proposal Initiated </h4></td>
+                    <td style="width: 15%; font-weight: bold; font-size: large; text-align: center"><h4>Initiate Date </h4></td>
+                    <td style="width: 15%; font-weight: bold; font-size: large; text-align: center"> <h4>Status </h4></td>
                 </tr>
             </thead>
 
@@ -83,20 +82,19 @@
             {
                 <tbody>
                     <tr>
-                        <td style="width:60%;">
+                        <td style="width:70%;">
                             <a href=""
                                class=" "   style="font-size:medium"  data-toggle="modal" data-target="#myModal2" data-status="@Item.Proposal_Id" id="@Item.Proposal_Id">
                                 @Item.Utilization_Details
                             </a>
                         </td>
-                        <td style="width:15%;">
-                            @Html.DisplayFor(modelitem => Item.IT_Initiate_Date, new { @class = "form-rounded", @style = " width :80%; font-size:medium " })
+                        <td style="width:15%;  text-align: center ">
+                            @Html.DisplayFor(modelitem => Item.IT_Initiate_Date, "{0:dd/MM/yyyy}",
+                                     new { @disabled = "disabled", @class = "form-rounded", @style = " width :80%; font-size:medium " })
                         </td>
                         <td style="width: 15%; text-align: center">
                             @Html.DisplayFor(modelitem => Item.Status, new { @class = "form-rounded", @style = " width :80%; font-size:medium" })
                         </td>
-
-
                     </tr>
                 </tbody>
             }
@@ -114,8 +112,8 @@
 
             <thead>
                 <tr style="background-color: #b2f3b2 ">
-                    <td style="width: 65%; font-weight: bold; font-size: large"> <h5> Bill Processed </h5> </td>
-                    <td style="width: 20%; font-weight: bold; font-size: large"><h5> Initiate Date </h5></td>
+                    <td style="width: 70%; font-weight: bold; font-size: large; text-align: left"> <h5> Bill Processed </h5> </td>
+                    <td style="width: 15%; font-weight: bold; font-size: large; text-align: center"><h5> Initiate Date </h5></td>
                     <td style="width: 15%; font-weight: bold; text-align: center; font-size: large"> <h5> Status</h5></td>
 
                 </tr>
@@ -126,14 +124,15 @@
             {
                 <tbody>
                     <tr>
-                        <td style="width:60%;">
+                        <td style="width:70%;">
                             <a href=""
                                class=" "  style="font-size:medium"  data-toggle="modal" data-target="#myModal2" data-status="@Item.Proposal_Id" id="@Item.Proposal_Id">
                                 @Item.Utilization_Details
                             </a>
                         </td>
-                        <td style="width:15%;">
-                            @Html.DisplayFor(modelitem => Item.IT_Initiate_Date, new { @class = "form-rounded", @style = " width :80%; font-size:medium " })
+                        <td style="width:15%; text-align: center" >
+                            @Html.DisplayFor(modelitem => Item.IT_Initiate_Date, "{0:dd/MM/yyyy}",
+                                     new { @disabled = "disabled", @class = "form-rounded", @style = " width :80%; font-size:medium " })
                         </td>
                         <td style="width: 15%; text-align: center">
                             @Html.DisplayFor(modelitem => Item.Status, new { @class = "form-rounded", @style = " width :80%; font-size:medium " })

@@ -9,6 +9,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 {
 
     [Authorize(Policy = AuthorizationPolicies.ITStaffs)]
+    [Area("Admin")]
     public class Purchase_OrderController : Controller
     {
 
@@ -20,7 +21,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             List<Mod_POrder> pc_List = objPO.Get_All_PO_Data();
 
-            return View("~/Areas/Admin/Views/Purchase_Order/PO_Details.cshtml", pc_List);
+            return View( pc_List);
         }
 
         
@@ -32,7 +33,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             mod_PO.Vendor_List = com.Vendor_List();
 
-            return View("~/Areas/Admin/Views/Purchase_Order/PO_Create.cshtml", mod_PO);
+            return View( mod_PO);
 
         }
 
@@ -113,7 +114,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Mod_POrder mod_PO = data.Get_Data_By_ID( id);
             mod_PO.Vendor_List = data.Vendor_List();
 
-            return View("~/Areas/Admin/Views/Purchase_Order/Edit_PO.cshtml", mod_PO);
+            return View( mod_PO);
         }
 
 

@@ -9,6 +9,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 {
 
     [Authorize(Policy =   AuthorizationPolicies.AllAccess)]
+    [Area("Admin")]
     public class Admin_DashboardController : Controller
     {
 
@@ -23,8 +24,9 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             mod_Data.List_Bill_Process = B_Layer.Get_List_Bills();
 
-            return View("~/Areas/Admin/Views/Admin_Dashboard/Admin_Dashboard.cshtml", mod_Data);
+            //return View("~/Areas/Admin/Views/Admin_Dashboard/Admin_Dashboard.cshtml", mod_Data);
 
+            return View(mod_Data);
         }
 
 
@@ -68,7 +70,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             B_Layer.Get_Proposal_By_Id(mod_Data, Proposal.Prop_detail.Proposal_Id);
 
-            return View("~/Areas/Admin/Views/Admin_Dashboard/Edit_Proposal.cshtml", mod_Data.Prop_detail);
+            return View(mod_Data.Prop_detail);
 
         }
 

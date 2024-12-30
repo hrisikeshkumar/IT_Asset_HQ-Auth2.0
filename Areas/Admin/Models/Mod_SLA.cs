@@ -15,7 +15,13 @@ namespace IT_Hardware.Areas.Admin.Models
         public string? Service_Type_Details { get; set; }
         public string? SLA_File_Name { get; set; }
         public string? Remarks { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? Service_ST_DT { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? Expiry_DT { get; set; }
         public string? Create_usr_id { get; set; }    /*pp*/
         public DateTime? Create_date { get; set; }    /*pp*/

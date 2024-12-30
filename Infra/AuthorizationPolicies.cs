@@ -16,7 +16,7 @@
 
         public const string ITStaffs = "ITStaffs";
 
-        public const string ITManagers = "ITHardwareManager";
+        public const string ITManagers = "ITManagers";
 
         public const string ITSupportEngineers = "ITSupportEngineers";
 

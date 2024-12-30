@@ -12,7 +12,7 @@ namespace IT_Hardware.Areas.Admin.Models
         public List<mod_Admin_Bill_Process_List> List_Bill_Process { get; set; }
         public List<mod_SLA_Expiary_List> List_SLA_Expiary { get; set; }
     }
-
+     
 
     public class Proposal_details
     {
@@ -46,6 +46,9 @@ namespace IT_Hardware.Areas.Admin.Models
     {
        public string Proposal_Id { get; set; }
         public string Utilization_Details { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime IT_Initiate_Date { get; set; }
         public string Status { get; set; }
               
@@ -55,6 +58,9 @@ namespace IT_Hardware.Areas.Admin.Models
     {
         public string Proposal_Id { get; set; }
         public string Utilization_Details { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime IT_Initiate_Date { get; set; }
         public string Status { get; set; }
 
@@ -64,6 +70,9 @@ namespace IT_Hardware.Areas.Admin.Models
     {
         public string SLA_Id { get; set; }
         public string Vendor_Name { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime Expiary_Date { get; set; }
         public string Status { get; set; }
 

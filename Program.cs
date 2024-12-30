@@ -96,11 +96,11 @@ builder.Services.AddAuthorization(options =>
 {
 
     // this policy stipulates that users in IT Staffs can access resources
-    options.AddPolicy(AuthorizationPolicies.AllAccess, policy => policy.RequireRole(builder.Configuration["Groups:ITStaff"],
+    options.AddPolicy(AuthorizationPolicies.AllAccess, policy => policy.RequireRole(builder.Configuration["Groups:ITStaffs"],
         builder.Configuration["Groups:ITSupportEngineers"], builder.Configuration["Groups:ITManagers"]));
 
     // this policy stipulates that users in IT Staffs can access resources
-    options.AddPolicy(AuthorizationPolicies.ITStaffs, policy => policy.RequireRole(builder.Configuration["Groups:ITStaff"],
+    options.AddPolicy(AuthorizationPolicies.ITStaffs, policy => policy.RequireRole(builder.Configuration["Groups:ITStaffs"],
          builder.Configuration["Groups:ITManagers"]));
 
 

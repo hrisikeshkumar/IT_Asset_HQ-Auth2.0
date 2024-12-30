@@ -8,6 +8,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 {
 
     [Authorize(Policy = AuthorizationPolicies.ITManagers)]
+    [Area("Admin")]
     public class ScannerController : Controller
     {
         
@@ -17,7 +18,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             List<Mod_Scanner> pc_List = com.Get_ScannerData();
 
-            return View("~/Areas/Admin/Views/Scanner/Scanner_Details.cshtml", pc_List);
+            return View(pc_List);
         }
 
 
@@ -33,7 +34,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Mod_data.Item_Make_List = Make_List.Item_MakeModel_List("PrintScan", "MAKE", "");
             Mod_data.Vendor_List = Make_List.Vendor_List();
 
-            return View("~/Areas/Admin/Views/Scanner/Scanner_Create_Item.cshtml", Mod_data);
+            return View( Mod_data);
 
         }
 
@@ -92,7 +93,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Model_data.Item_Model_List = Make_List.Item_MakeModel_List("PrintScan", "MODEL", Model_data.Item_Make_id.Trim().ToString());
 
 
-            return View("~/Areas/Admin/Views/Scanner/Edit_Scanner.cshtml", Model_data);
+            return View( Model_data);
         }
 
 

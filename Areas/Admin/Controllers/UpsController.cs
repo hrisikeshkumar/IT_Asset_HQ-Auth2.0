@@ -7,6 +7,7 @@ using IT_Hardware.Infra;
 namespace IT_Hardware.Areas.Admin.Controllers
 {
     [Authorize(Policy = AuthorizationPolicies.ITManagers)]
+    [Area("Admin")]
     public class UpsController : Controller
     {
 
@@ -16,11 +17,9 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             List<Mod_Ups> pc_List = com.Get_UpsData();
 
-            return View("~/Areas/Admin/Views/Ups/Ups_Details.cshtml", pc_List);
+            return View( pc_List);
         }
 
-
-        
         [HttpGet]
         public ActionResult Ups_Create_Item(string Message)
         {
@@ -30,11 +29,8 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Item_MakeModel Make_List = new Item_MakeModel();
             Mod_data.Item_Make_List = Make_List.Item_MakeModel_List("UPS", "MAKE", "");
             Mod_data.Vendor_List = Make_List.Vendor_List();
-            return View("~/Areas/Admin/Views/Ups/Ups_Create_Item.cshtml", Mod_data);
-
+            return View(Mod_data);
         }
-
-
         
         [HttpPost]
         public ActionResult Ups_CreateItem_Post(Mod_Ups Get_Data)
@@ -72,11 +68,8 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return RedirectToAction("Ups_Create_Item", "Ups");
         }
 
-
-        
         public ActionResult Edit_Ups(string id)
-        {
-           
+        {           
             BL_Ups BL_data = new BL_Ups();
             Mod_Ups Model_data = new Mod_Ups();
             Item_MakeModel Make_List = new Item_MakeModel();
@@ -87,7 +80,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             Model_data.Item_Model_List = Make_List.Item_MakeModel_List("UPS", "MODEL", Model_data.Item_Make_id.Trim().ToString());
 
-            return View("~/Areas/Admin/Views/Ups/Edit_Ups.cshtml", Model_data);
+            return View( Model_data);
         }
 
 

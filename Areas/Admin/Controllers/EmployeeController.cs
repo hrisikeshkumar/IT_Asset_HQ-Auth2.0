@@ -8,6 +8,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 {
 
     [Authorize(Policy = AuthorizationPolicies.ITManagers)]
+    [Area("Admin")]
     public class EmployeeController : Controller
     {
 
@@ -18,7 +19,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             List<Mod_Employee> Emp_List = data.Get_EmployeeData();
 
-            return View("~/Areas/Admin/Views/Employee/Employee_Details.cshtml", Emp_List);
+            return View( Emp_List);
         }
 
 
@@ -37,7 +38,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             Mod_emp.Dept_List = data.Bind_Dept();
 
-            return View("~/Areas/Admin/Views/Employee/Create_Employee.cshtml", Mod_emp);
+            return View( Mod_emp);
 
         }
 
@@ -96,7 +97,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             Mod_emp.Designation_List = Emp_Data.Bind_Designation(Mod_emp.Emp_Type);
 
-            return View("~/Areas/Admin/Views/Employee/Edit_Employee.cshtml", Mod_emp);
+            return View(  Mod_emp);
         }
 
 

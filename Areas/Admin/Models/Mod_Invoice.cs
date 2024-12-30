@@ -7,6 +7,9 @@ namespace IT_Hardware.Areas.Admin.Models
     {
         public string? Invoice_id { get; set; }
         public string Invoice_No { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime Invoice_Date { get; set; }
         public string? PO_Id { get; set; }
         public string? Fin_Year{ get; set; }

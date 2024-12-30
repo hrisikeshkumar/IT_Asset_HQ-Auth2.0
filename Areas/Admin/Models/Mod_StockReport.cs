@@ -16,8 +16,17 @@ namespace IT_Hardware.Areas.Admin.Models
         public string Item_Make { get; set; }
         public string Item_Model { get; set; }
         public string Item_SlNo { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime Item_Proc_date { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime Warranty_Exp_date { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime AMC_Exp_date { get; set; }
         public string Obsolete { get; set; }
     }

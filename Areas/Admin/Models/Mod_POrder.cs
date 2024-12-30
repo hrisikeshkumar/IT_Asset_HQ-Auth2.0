@@ -11,11 +11,22 @@ namespace IT_Hardware.Areas.Admin.Models
         public string? PO_No { get; set; }
         [Required]
         public int? PO_Value { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? PO_Date { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         [Required]
         public DateTime PO_ST_Date { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         [Required]
         public DateTime PO_End_Date { get; set; }
+
+
         [Required]
         public string? PO_Subject { get; set; }
         public string? PO_File_Name { get; set; }

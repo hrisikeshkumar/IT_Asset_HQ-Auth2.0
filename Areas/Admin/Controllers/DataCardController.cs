@@ -7,6 +7,7 @@ using IT_Hardware.Infra;
 namespace IT_Hardware.Areas.Admin.Controllers
 {
     [Authorize(Policy = AuthorizationPolicies.ITManagers)]
+    [Area("Admin")]
     public class DataCardController : Controller
     {
 
@@ -17,7 +18,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             List<Mod_DataCard> pc_List = com.Get_DataCardData();
 
-            return View("~/Areas/Admin/Views/DataCard/DataCard_Details.cshtml", pc_List);
+            return View( pc_List);
         }
 
         
@@ -30,7 +31,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Mod_data.Item_Make_List = Make_List.Item_MakeModel_List("DataCard", "MAKE", "");
             Mod_data.Vendor_List = Make_List.Vendor_List();
 
-            return View("~/Areas/Admin/Views/DataCard/DataCard_Create_Item.cshtml", Mod_data);
+            return View( Mod_data);
 
         }
 
@@ -89,7 +90,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Model_data.Item_Model_List = Make_List.Item_MakeModel_List("DataCard", "MODEL", Model_data.Item_Make_id.Trim().ToString());
 
 
-            return View("~/Areas/Admin/Views/DataCard/Edit_DataCard.cshtml", Model_data);
+            return View( Model_data);
         }
 
         

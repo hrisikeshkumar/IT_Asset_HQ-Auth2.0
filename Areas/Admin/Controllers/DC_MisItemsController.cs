@@ -9,6 +9,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 {
 
     [Authorize(Policy = AuthorizationPolicies.ITManagers)]
+    [Area("Admin")]
     public class DC_MisItemsController : Controller
     {
 
@@ -18,7 +19,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             List<Mod_DC_MisItems> pc_List = com.Get_DC_MisItemsData();
 
-            return View("~/Areas/Admin/Views/DC_MisItems/DC_MisItems_Details.cshtml", pc_List);
+            return View( pc_List);
         }
 
         
@@ -32,7 +33,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Mod_data.Item_Make_List = Make_List.Item_MakeModel_List("DC_Other", "MAKE", "");
             Mod_data.Vendor_List = Make_List.Vendor_List();
 
-            return View("~/Areas/Admin/Views/DC_MisItems/DC_MisItems_Create_Item.cshtml", Mod_data);
+            return View( Mod_data);
 
         }
 
@@ -89,7 +90,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Model_data.Item_Model_List = Make_List.Item_MakeModel_List("DC_Other", "MODEL", Model_data.Item_Make_id.Trim().ToString());
 
 
-            return View("~/Areas/Admin/Views/DC_MisItems/Edit_DC_MisItems.cshtml", Model_data);
+            return View( Model_data);
         }
 
         

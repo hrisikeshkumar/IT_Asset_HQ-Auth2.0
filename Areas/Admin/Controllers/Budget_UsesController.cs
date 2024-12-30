@@ -7,6 +7,7 @@ using IT_Hardware.Infra;
 namespace IT_Hardware.Areas.Admin.Controllers
 {
     [Authorize(Policy = AuthorizationPolicies.ITStaffs)]
+    [Area("Admin")]
     public class Budget_UsesController : Controller
     {
         
@@ -21,7 +22,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             BL_Budget_Year b_year = new BL_Budget_Year();
             Mod_Budget_Uses.Budget_Year_List = b_year.budget_year_dropdown();
 
-            return View("~/Areas/Admin/Views/Budget_Uses/Budget_Uses_Details.cshtml", Mod_Budget_Uses);
+            return View( Mod_Budget_Uses);
         }
 
         
@@ -36,7 +37,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             Mod_data.Budget_Year_List = bud_year.budget_year_dropdown();
 
-            return View("~/Areas/Admin/Views/Budget_Uses/Budget_Uses_Create_Item.cshtml", Mod_data);
+            return View( Mod_data);
         }
 
         
@@ -94,7 +95,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             BL_data.Get_Budget_Head(Model_data, Model_data.Budget_Year);
 
 
-            return View("~/Areas/Admin/Views/Budget_Uses/Edit_Budget_Uses.cshtml", Model_data);
+            return View( Model_data);
         }
 
         

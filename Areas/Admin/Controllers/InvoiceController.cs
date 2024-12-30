@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace IT_Hardware.Areas.Admin.Controllers
 {
     [Authorize(Policy =AuthorizationPolicies.ITStaffs)]
+    [Area("Admin")]
     public class InvoiceController : Controller
     {
 
@@ -18,7 +19,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             List<Mod_Invoice> pc_List = objPO.Get_All_Invoice();
 
-            return View("~/Areas/Admin/Views/Invoice/Invoice_Details.cshtml", pc_List);
+            return View( pc_List);
         }
 
 
@@ -29,7 +30,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             mod_PO.Fin_Year_List = Inv_Data.Fin_Year_List();
             mod_PO.PO_list = Inv_Data.PO_List();
 
-            return View("~/Areas/Admin/Views/Invoice/Invoice_Create_Item.cshtml", mod_PO);
+            return View( mod_PO);
         }
 
 
@@ -98,7 +99,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             mod_PO.Fin_Year_List = Inv_Data.Fin_Year_List();
             mod_PO.PO_list = Inv_Data.PO_List();
 
-            return View("~/Areas/Admin/Views/Invoice/Edit_Invoice.cshtml", mod_PO);
+            return View(  mod_PO);
         }
 
 

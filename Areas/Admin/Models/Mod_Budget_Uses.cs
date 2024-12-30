@@ -25,8 +25,14 @@ namespace IT_Hardware.Areas.Admin.Models
         [Required]
         public int Remaning_Balance { get; set; }
         public string Remarks { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? Processing_Date { get; set; }
         public string Create_User { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? Create_date { get; set; }
 
         public List<SelectListItem> Budget_List { get; set; }

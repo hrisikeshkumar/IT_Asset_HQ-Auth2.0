@@ -21,7 +21,12 @@ namespace IT_Hardware.Areas.Admin.Models
         public int price { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? Proc_date { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         [Required]
         public DateTime? Warnt_end_dt { get; set; }
         public string Create_usr_id { get; set; }

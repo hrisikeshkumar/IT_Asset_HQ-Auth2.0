@@ -29,10 +29,10 @@ namespace IT_Hardware.Areas.Admin.Models
         public string Remarks { get; set; }
         public string Location { get; set; }
         public string Create_usr_id { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? Create_date { get; set; }
-        public string Verfd_status { get; set; }
-        public string Verfd_usr_id { get; set; }
-        public DateTime? Verfd_date { get; set; }
 
     }
 

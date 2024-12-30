@@ -8,6 +8,7 @@ using IT_Hardware.Infra;
 namespace IT_Hardware.Areas.Admin.Controllers
 {
     [Authorize(Policy = AuthorizationPolicies.ITSupportEngineers)]
+    [Area("Admin")]
     public class AppleIpadController : Controller
     {
         
@@ -17,9 +18,8 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             List<Mod_AppleIpad> pc_List = com.Get_AppleIpadData();
 
-            return View("~/Areas/Admin/Views/AppleIpad/AppleIpad_Details.cshtml", pc_List);
+            return View(pc_List);
         }
-
         
         [HttpGet]
         public ActionResult AppleIpad_Create_Item(string Message)
@@ -31,7 +31,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Mod_data.Item_Make_List = Make_List.Item_MakeModel_List("Ipad", "MAKE", "");
             Mod_data.Vendor_List = Make_List.Vendor_List();
 
-            return View("~/Areas/Admin/Views/AppleIpad/AppleIpad_Create_Item.cshtml", Mod_data);
+            return View(Mod_data);
 
         }
 
@@ -90,7 +90,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Model_data.Item_Model_List = Make_List.Item_MakeModel_List("Desktop", "MODEL", Model_data.Item_Make_id.Trim().ToString());
 
 
-            return View("~/Areas/Admin/Views/AppleIpad/Edit_AppleIpad.cshtml", Model_data);
+            return View(Model_data);
         }
 
         

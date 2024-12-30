@@ -8,6 +8,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 {
 
     [Authorize(Policy = AuthorizationPolicies.ITStaffs)]
+    [Area("Admin")]
     public class Budget_YearController : Controller
     {
 
@@ -19,7 +20,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             mod_data.List_Bud_Year=com.Get_Data();
 
-            return View("~/Areas/Admin/Views/Budget_Year/Budget_Year_Details.cshtml", mod_data);
+            return View( mod_data);
 
         }
 

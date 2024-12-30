@@ -20,11 +20,18 @@ namespace IT_Hardware.Areas.Admin.Models
         public int price { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? Proc_date { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? Warnt_end_dt { get; set; }
         public string Create_usr_id { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? Create_date { get; set; }
         public string Verfd_status { get; set; }
         public string Verfd_usr_id { get; set; }

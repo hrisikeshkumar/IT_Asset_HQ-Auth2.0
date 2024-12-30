@@ -8,6 +8,7 @@ using IT_Hardware.Infra;
 namespace IT_Hardware.Areas.Admin.Controllers
 {
     [Authorize(Policy = AuthorizationPolicies.ITStaffs)]
+    [Area("Admin")]
     public class SLAController : Controller
     {
 
@@ -17,7 +18,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             List<Mod_SLA> SLA_List = com.Get_SLAData();
 
-            return View("~/Areas/Admin/Views/SLA/SLA_Details.cshtml", SLA_List);
+            return View(SLA_List);
         }
 
         [HttpGet]
@@ -29,7 +30,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Mod_SLA Mod_data = new Mod_SLA();
             Mod_data.Vendor_List = BL_data.Vendor_List();
 
-            return View("~/Areas/Admin/Views/SLA/SLA_Create_Item.cshtml", Mod_data);
+            return View( Mod_data);
 
         }
 
@@ -113,7 +114,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             Mod_data.Vendor_List = BL_data.Vendor_List();
 
-            return View("~/Areas/Admin/Views/SLA/Edit_SLA.cshtml", Mod_data);
+            return View( Mod_data);
         }
 
         [HttpPost]

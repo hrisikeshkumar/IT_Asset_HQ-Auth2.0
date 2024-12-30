@@ -9,6 +9,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 {
 
     [Authorize(Policy = AuthorizationPolicies.ITManagers)]
+    [Area("Admin")]
     public class IT_Hardware_AMCController : Controller
     {
         // GET: Admin/IT_Hardware_AMC
@@ -19,7 +20,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             BL_Hardware_Amc Get_data = new BL_Hardware_Amc();
             Get_data.Get_Amc_Data(mod_data);
 
-           return View("~/Areas/Admin/Views/IT_Hardware_AMC/Amc_DashBoard.cshtml", mod_data);
+           return View(  mod_data);
         }
 
         public ActionResult Find_Warranty_Expired(Mod_Amc_Dtl mod_data, string Types)
@@ -42,7 +43,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             mod_data.Vendor_List=vendor_data.Vendor_List();
 
 
-            return View("~/Areas/Admin/Views/IT_Hardware_AMC/Find_Warranty_Expired.cshtml", mod_data);
+            return View( mod_data);
         }
 
      
@@ -69,7 +70,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
           
 
-            return View("~/Areas/Admin/Views/IT_Hardware_AMC/Get_AMC_List.cshtml", mod_data);
+            return View( mod_data);
         }
 
         public ActionResult Get_List_Warranty(string Types)
@@ -83,7 +84,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             ViewBag.Assettype = Types;
 
-            return View("~/Areas/Admin/Views/IT_Hardware_AMC/Get_Warranty_List.cshtml", mod_data);
+            return View(  mod_data);
         }
 
         public ActionResult Remove_From_AMC(string Item_Id, string Types)
@@ -169,7 +170,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
            
 
-            return View("~/Areas/Admin/Views/IT_Hardware_AMC/Bulk_AMC_Update.cshtml", mod_data);
+            return View( mod_data);
         }
 
         public ActionResult Update_Bulk_AMC_Data(Mod_Bulk_Amc_Update mod_Data)

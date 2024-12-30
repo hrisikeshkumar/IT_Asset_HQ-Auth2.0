@@ -8,6 +8,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 {
 
     [Authorize(Policy = AuthorizationPolicies.ITManagers)]
+    [Area("Admin")]
     public class Shift_ItemController : Controller
     {
         public ActionResult Shift_Item_Details()
@@ -16,7 +17,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             List<Mod_Shift_Item> pc_List = com.Get_Shift_ItemData();
 
-            return View("~/Areas/Admin/Views/Shift_Item/Shift_Item_Details.cshtml", pc_List);
+            return View(pc_List);
         }
 
 
@@ -26,7 +27,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         {
             ViewBag.Message = Message;
 
-            return View("~/Areas/Admin/Views/Shift_Item/Shift_Item_Create_Item.cshtml");
+            return View();
 
         }
 
@@ -76,7 +77,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             BL_Shift_Item Md_Com = new BL_Shift_Item();
             Mod_Shift_Item data = Md_Com.Get_Data_By_ID(id);
 
-            return View("~/Areas/Admin/Views/Shift_Item/Edit_Shift_Item.cshtml", data);
+            return View( data);
         }
 
 

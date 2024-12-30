@@ -8,6 +8,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 {
 
     [Authorize(Policy = AuthorizationPolicies.ITManagers)]
+    [Area("Admin")]
     public class Item_IssueController : Controller
     {
 
@@ -18,7 +19,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             List<Mod_Item_Issue> pc_List = com.Get_Item_IssueData();
 
-            return View("~/Areas/Admin/Views/Item_Issue/Item_Issue_Details.cshtml", pc_List);
+            return View( pc_List);
         }
 
 
@@ -28,7 +29,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         {
             ViewBag.Message = Message;
 
-            return View("~/Areas/Admin/Views/Item_Issue/Item_Issue_Create_Item.cshtml");
+            return View();
 
         }
 
@@ -79,7 +80,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             BL_Item_Issue Md_Com = new BL_Item_Issue();
             Mod_Item_Issue data = Md_Com.Get_Data_By_ID(id);
 
-            return View("~/Areas/Admin/Views/Item_Issue/Edit_Item_Issue.cshtml", data);
+            return View( data);
         }
 
 
@@ -181,13 +182,9 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             Emp_Details = Item_data.Issue_Employee(Emp_Details, Item_Id, "Item_Issue");
 
-
-
-
             return Json(Emp_Details);
 
         }
-
 
         
         [HttpPost]
@@ -201,9 +198,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-
-
-        
         public JsonResult Search_Item(string SL_Num)
         {
 

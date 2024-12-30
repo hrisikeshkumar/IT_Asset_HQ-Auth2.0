@@ -13,11 +13,12 @@ using IT_Hardware.Infra;
 namespace IT_Hardware.Areas.Admin.Controllers
 {
     [Authorize(Policy = AuthorizationPolicies.ITManagers)]
+    [Area("Admin")]
     public class Stock_ReportController : Controller
     {
         public ActionResult Stock_Report_Detail()
         {
-            return View("~/Areas/Admin/Views/Stock_Report/Stock_Report_Detail.cshtml");
+            return View();
         }
 
         
@@ -30,7 +31,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             Model = BL.Get_CompData(Item_Type);
 
-            return View("~/Areas/Admin/Views/Stock_Report/Inventary_Report.cshtml", Model);
+            return View( Model);
         }
 
 
@@ -43,7 +44,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Modal.BudYear = b_year.budget_year_dropdown();
 
 
-            return View("~/Areas/Admin/Views/Stock_Report/Budget_Report_Detail.cshtml", Modal);
+            return View( Modal);
         }
 
 
