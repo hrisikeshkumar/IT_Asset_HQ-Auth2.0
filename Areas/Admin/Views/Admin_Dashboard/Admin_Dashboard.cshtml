@@ -47,7 +47,7 @@
     <table class="   " style="width: 100%; background-color: #b2f3b2;">
         <tr>
             <td style="text-align:center; width:60%; ">
-                <h4>  Welcome to IT inventory Dashboard </h4>
+                <h4> Proposals / Invoices Dashboard </h4>
             </td>
             <td style="text-align:center; width:20%; ">
                 <h4>  Proposal : @Html.RadioButton("dashboard", "1", new { @id = "1", @checked = true }) </h4>
@@ -71,7 +71,7 @@
 
             <thead>
                 <tr style="background-color: #b2f3b2; font-weight: bold; ">
-                    <td style="width: 70%; font-weight: bold; font-size: large; text-align: left"> <h4> Proposal Initiated </h4></td>
+                    <td style="width: 70%; font-weight: bold; font-size: large; text-align: center"> <h4> Proposal Initiated </h4></td>
                     <td style="width: 15%; font-weight: bold; font-size: large; text-align: center"><h4>Initiate Date </h4></td>
                     <td style="width: 15%; font-weight: bold; font-size: large; text-align: center"> <h4>Status </h4></td>
                 </tr>
@@ -82,7 +82,7 @@
             {
                 <tbody>
                     <tr>
-                        <td style="width:70%;">
+                        <td style="width:70%; padding-left:1%;">
                             <a href=""
                                class=" "   style="font-size:medium"  data-toggle="modal" data-target="#myModal2" data-status="@Item.Proposal_Id" id="@Item.Proposal_Id">
                                 @Item.Utilization_Details
@@ -112,7 +112,7 @@
 
             <thead>
                 <tr style="background-color: #b2f3b2 ">
-                    <td style="width: 70%; font-weight: bold; font-size: large; text-align: left"> <h5> Bill Processed </h5> </td>
+                    <td style="width: 70%; font-weight: bold; font-size: large; text-align: center"> <h5> Bill Processed </h5> </td>
                     <td style="width: 15%; font-weight: bold; font-size: large; text-align: center"><h5> Initiate Date </h5></td>
                     <td style="width: 15%; font-weight: bold; text-align: center; font-size: large"> <h5> Status</h5></td>
 
@@ -124,7 +124,7 @@
             {
                 <tbody>
                     <tr>
-                        <td style="width:70%;">
+                        <td style="width:70%; padding-left:1%;">
                             <a href=""
                                class=" "  style="font-size:medium"  data-toggle="modal" data-target="#myModal2" data-status="@Item.Proposal_Id" id="@Item.Proposal_Id">
                                 @Item.Utilization_Details
@@ -151,7 +151,6 @@
 
 
 @*-------------------------------------------------------------Modal-----------------------------------------------------------------------------*@
-
 
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">

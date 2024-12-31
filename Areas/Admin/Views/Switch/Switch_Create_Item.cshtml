@@ -232,7 +232,7 @@
                     Date of Purchase
                 </td>
                 <td style="width:25%;">
-                    @Html.TextBoxFor(x => x.Proc_date, new { @class = "dateclass form-rounded date-format", @style = " width :80%; " })
+                    @Html.TextBoxFor(x => x.Proc_date, "{0:dd/MM/yyyy}", new { @class = "dateclass form-rounded date-format", @style = " width :80%; " })
                 </td>
 
             </tr>
@@ -241,7 +241,7 @@
                     Warrenty End Date
                 </td>
                 <td style="width:25%;">
-                    @Html.TextBoxFor(x => x.Warnt_end_dt, new { @class = "dateclass form-rounded date-format", @style = " width :80%; " })
+                    @Html.TextBoxFor(x => x.Warnt_end_dt, "{0:dd/MM/yyyy}", new { @class = "dateclass form-rounded date-format", @style = " width :80%; " })
                 </td>
 
                 <td style="width:25%;">

@@ -145,14 +145,14 @@
             <td style="width:25%;">
 
 
-                @Html.TextBoxFor(x => x.AMC_Start_DT, new { @class = "dateclass form-rounded", @style = " width :90%; " })
+                    @Html.TextBoxFor(x => x.AMC_Start_DT, "{0:dd/MM/yyyy}", new { @class = "dateclass form-rounded", @style = " width :90%; " })
             </td>
 
             <td style="width:25%;">
                 AMC End Date
             </td>
             <td style="width:25%;">
-                @Html.TextBoxFor(x => x.AMC_End_DT, new { @class = "dateclass form-rounded", @style = " width :90%; " })
+                    @Html.TextBoxFor(x => x.AMC_End_DT, "{0:dd/MM/yyyy}", new { @class = "dateclass form-rounded", @style = " width :90%; " })
             </td>
 
         </tr>

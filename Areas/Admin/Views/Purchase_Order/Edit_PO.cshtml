@@ -200,7 +200,7 @@
                     P.O. Date
                 </td>
                 <td style="width:25%;">
-                    @Html.TextBoxFor(x => x.PO_Date, new { @class = "dateclass form-rounded", @style = " width :90%; " })
+                    @Html.TextBoxFor(x => x.PO_Date, "{0:dd/MM/yyyy}", new { @class = "dateclass form-rounded", @style = " width :90%; " })
                 </td>
             </tr>
             <tr>
@@ -217,13 +217,13 @@
                     P.O. Start Date
                 </td>
                 <td style="width:25%;">
-                    @Html.TextBoxFor(x => x.PO_ST_Date, new { @class = "dateclass form-rounded", @style = " width :90%; " })
+                    @Html.TextBoxFor(x => x.PO_ST_Date, "{0:dd/MM/yyyy}", new { @class = "dateclass form-rounded", @style = " width :90%; " })
                 </td>
                 <td style="width:25%; height:50px;">
                     P.O Expiary Date
                 </td>
                 <td style="width:25%;">
-                    @Html.TextBoxFor(x => x.PO_End_Date, new { @class = "dateclass form-rounded", @style = " width :90%; " })
+                    @Html.TextBoxFor(x => x.PO_End_Date, "{0:dd/MM/yyyy}", new { @class = "dateclass form-rounded", @style = " width :90%; " })
                 </td>
             </tr>
             <tr>

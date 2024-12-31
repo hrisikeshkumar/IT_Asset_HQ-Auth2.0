@@ -19,9 +19,5 @@ namespace IT_Hardware.Areas.Admin.Models
         public string? Verfd_status { get; set; }
         //public List<IFormFile>? File_List { get; set; }
 
-
-
-
-
     }
 }

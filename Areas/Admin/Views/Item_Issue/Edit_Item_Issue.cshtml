@@ -227,7 +227,7 @@
                     Shift Date
                 </td>
                 <td style="width:25%;">
-                    @Html.TextBoxFor(x => x.Issued_date, new { @class = "dateclass form-rounded date-format", @style = " width :80%; " })
+                    @Html.TextBoxFor(x => x.Issued_date, "{0:dd/MM/yyyy}", new { @class = "dateclass form-rounded date-format", @style = " width :80%; " })
                 </td>
 
                 <td style="width:25%;">

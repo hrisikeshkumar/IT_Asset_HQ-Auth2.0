@@ -213,7 +213,7 @@
                     Transfer Date
                 </td>
                 <td style="width:25%;">
-                    @Html.TextBoxFor(x => x.Issued_date, new { @class = "dateclass form-rounded date-format", @style = " width :90%; border: 1px solid #0000FF; " })
+                    @Html.TextBoxFor(x => x.Issued_date, "{0:dd/MM/yyyy}", new { @class = "dateclass form-rounded date-format", @style = " width :90%; border: 1px solid #0000FF; " })
                     <i id="Icon_Issued_date" class="valid fa fa-question-circle" style="font-size:24px;color:red"></i>
                 </td>
             </tr>

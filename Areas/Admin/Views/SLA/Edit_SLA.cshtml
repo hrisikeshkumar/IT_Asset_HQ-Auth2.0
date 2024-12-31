@@ -225,14 +225,14 @@
                     Service Start Date
                 </td>
                 <td style="width:25%;">
-                    @Html.TextBoxFor(x => x.Service_ST_DT, new { @class = "dateclass form-rounded date-format", @style = " width :80%; " })
+                    @Html.TextBoxFor(x => x.Service_ST_DT, "{0:dd/MM/yyyy}", new { @class = "dateclass form-rounded date-format", @style = " width :80%; " })
                 </td>
 
                 <td style="width:25%;">
                     Expiry Date
                 </td>
                 <td style="width:25%;">
-                    @Html.TextBoxFor(x => x.Expiry_DT, new { @class = "dateclass form-rounded date-format", @style = " width :80%; " })
+                    @Html.TextBoxFor(x => x.Expiry_DT, "{0:dd/MM/yyyy}", new { @class = "dateclass form-rounded date-format", @style = " width :80%; " })
                 </td>
 
             </tr>
