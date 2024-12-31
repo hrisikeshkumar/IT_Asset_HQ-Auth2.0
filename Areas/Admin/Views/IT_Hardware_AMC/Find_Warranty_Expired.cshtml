@@ -14,99 +14,17 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 
-
-<script>
-    $(function () {
-        $(".dateclass").datepicker({
-            changeYear: true,
-            changeMonth: true,
-            dateFormat: 'dd/mm/yy',
-            minDate: new Date('01/01/1900'),
-            maxDate: '+10Y'
-        });
-    });
-</script>
-
-<style type="text/css">
-
-    .form-rounded {
-        border-radius: 3rem;
-    }
-</style>
-
-<style type="text/css">
-
-    @@import "compass/css3";
-
-    input[type=text], textarea {
-        @@include transition(all 0.30s ease-in-out);
-        outline: none;
-        padding: 3px 0px 3px 3px;
-        margin: 5px 1px 3px 0px;
-        border: 1px solid #DDDDDD;
-    }
-
-        input[type=text]:focus, textarea:focus {
-            @@include box-shadow(0 0 5px rgba(81, 203, 238, 1));
-            padding: 3px 0px 3px 3px;
-            margin: 5px 1px 3px 0px;
-            border: 1px solid rgba(81, 203, 238, 1);
-        }
-</style>
-
-<style type="text/css">
-    .button_cls {
-        background: #1AAB8A;
-        color: #fff;
-        border: none;
-        position: relative;
-        height: 25px;
-        font-size: 1em;
-        padding: 0 2em;
-        cursor: pointer;
-        transition: 800ms ease all;
-        outline: none;
-    }
-
-        .button_cls:hover {
-            background: #fff;
-            color: #1AAB8A;
-        }
-
-        .button_cls:before, button:after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            height: 2px;
-            width: 0;
-            background: #1AAB8A;
-            transition: 400ms ease all;
-        }
-
-        .button_cls:after {
-            right: inherit;
-            top: inherit;
-            left: 0;
-            bottom: 0;
-        }
-
-        .button_cls:hover:before, button:hover:after {
-            width: 100%;
-            transition: 800ms ease all;
-        }
-</style>
+<script src="~/js/commonjs.js"></script>
+<link href="~/css/commoncssclass.css" rel="stylesheet" />
 
 
-
-
-<div style=" margin-top: -100px;  text-align: center; height: 50px; align-content: center; width: 100% " class="card w-100 shadow p-3 mb-5 bg-white rounded">
+<div style=" margin-top: -100px;  text-align: center; height: 50px; align-content: center; width: 100% " class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
 
     <p style="font-size:large; padding-top:-5px; font-weight:400;">Desktop Pc Warranty to be Expired </p>
 
 </div>
 
-<div style=" align-content:center; width:100%" class="card w-100 shadow p-3 mb-5 bg-white rounded">
+<div style=" align-content:center; width:100%" class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
     @using (Html.BeginForm("Find_Warranty_Expired", "IT_Hardware_AMC", new { Types = Model.Asset_Type }, FormMethod.Post))
     {
         <table class=" table-hover table-striped shadow " style="width:100%">

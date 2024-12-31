@@ -68,7 +68,6 @@
 
         <table class=" table-hover table-striped shadow " style="width: 100%; ">
 
-
             <thead>
                 <tr style="background-color: #b2f3b2; font-weight: bold; ">
                     <td style="width: 70%; font-weight: bold; font-size: large; text-align: center"> <h4> Proposal Initiated </h4></td>
@@ -145,7 +144,6 @@
 
         </table>
     </div>
-
 
 </div>
 
@@ -302,9 +300,7 @@
     <script type="text/javascript">
 
     window.onload = function () {
-        /**/
         alert("@TempData["Message"]");
-    /**/
     };
     </script>
 
@@ -323,7 +319,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/Admin_Dashboard/Get_Proposal_Detail_for_Modal",
+                url: "@Url.Action("Get_Proposal_Detail_for_Modal", "Admin_Dashboard")",
                 dataType: "json",
                 data: { Proposal_Id: proposal_id },
                 success: function (response) {

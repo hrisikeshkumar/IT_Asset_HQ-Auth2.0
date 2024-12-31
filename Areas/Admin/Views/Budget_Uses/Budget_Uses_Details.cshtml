@@ -12,20 +12,15 @@
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Nunito'>
 
 
-<style type="text/css">
-
-    .form-rounded {
-        border-radius: 3rem;
-    }
-</style>
-
-<div style=" margin-top: -100px;  text-align: center; height: 50px; align-content: center; width: 100% " class="card w-100 shadow p-3 mb-5 bg-white rounded">
+<script src="~/js/commonjs.js"></script>
+<link href="~/css/commoncssclass.css" rel="stylesheet" />
+<div style=" margin-top: -100px;  text-align: center; height: 50px; align-content: center; width: 100% " class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
 
     <p style="font-size:large; padding-top:-5px; font-weight:400;">Budget Uses List</p>
 
 </div>
 
-<div style=" align-content:center; width:100%" class="card w-100 shadow p-3 mb-5 bg-white rounded">
+<div style=" align-content:center; width:100%" class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
     <table class=" table-hover table-striped shadow " style="width:100%">
         <tr>
             <td width="85%" colspan="2">
@@ -164,12 +159,12 @@
 
             $.ajax({
                 type: "POST",
-                url: "/Admin/Budget_Uses/Budget_List",
+                url: "@Url.Action("Budget_List", "Budget_Uses")",
                 datatype: "Json",
                 data: { Yearcode: $('#Budget_Year').val() },
                 success: function (data) {
                     $.each(data, function (index, value) {
-                        $('#Budget_Head_Id').append('<option value="' + value.Value + '">' + value.Text + '</option>');
+                        $('#Budget_Head_Id').append('<option value="' + value.value + '">' + value.text + '</option>');
                     });
                 }
 
@@ -189,7 +184,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/Admin/Budget_Uses/Budget_Uses_List",
+                url:  "@Url.Action("Budget_Uses_List", "Budget_Uses")",
                 datatype: "Json",
                 data: { Bud_head_Id: $('#Budget_Head_Id').val() },
                 success: function (response) {
@@ -216,12 +211,6 @@
                         alert("Something went wrong");
                     }
                 },
-                //success: function (data) {
-
-                //    $.each(data.Bud_Uses_List, function (index, value) {
-                //        $('#Bud_Uses_Grid').append('<option value="' + value.Value + '">' + value.Text + '</option>');
-                //    });
-                //}
 
             });
 
