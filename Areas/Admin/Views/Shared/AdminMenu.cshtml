@@ -19,17 +19,14 @@
             crossorigin="anonymous"></script>
 
     <!--hs Menu JS-->
-
-
     <script src="~/js/jquery.hsmenu.min.js"></script>
+    
     <!-- hs Menu CSS-->
-
     <link href="~/css/hs-menu.css" rel="stylesheet" />
     <link href="~/css/hs-menu.min.css" rel="stylesheet" />
 
-    <style type="text/css">
 
-        
+    <style type="text/css">
 
         .zui-table-rounded {
             border: none;
@@ -37,8 +34,7 @@
 
             .zui-table-rounded thead th {
                 border: none;
-                text-shadow: 1px 1px 1px ;
-                
+                text-shadow: 1px 1px 1px;
             }
 
                 .zui-table-rounded thead th:first-child {
@@ -54,30 +50,28 @@
                 border-top: solid 1px black;
             }
 
-
-        /* top-left border-radius */
+            /* top-left border-radius */
             .zui-table-rounded tbody tr:first-child th:first-child {
                 border-top-left-radius: 20px;
             }
 
-        /* top-right border-radius */
+            /* top-right border-radius */
             .zui-table-rounded tbody tr:first-child th:last-child {
                 border-top-right-radius: 20px;
             }
 
-        /* bottom-left border-radius */
+            /* bottom-left border-radius */
             .zui-table-rounded tbody tr:last-child td:first-child {
                 border-bottom-left-radius: 20px;
             }
 
-        /* bottom-right border-radius */
+            /* bottom-right border-radius */
             .zui-table-rounded tbody tr:last-child td:last-child {
                 border-bottom-right-radius: 20px;
             }
 
-
-
     </style>
+
 
     <script>
         $(document).ready(function () {
@@ -115,10 +109,7 @@
             <li> <a href="#1"><i class="zmdi zmdi-inbox"></i> Inbox </a> </li>
             <li> <a href="#1"> <i class="zmdi zmdi-delete"></i> Trash </a> </li>
             <li> <a href="#1"> <i class="zmdi zmdi-star"></i> Started  </a> </li>
-            <li> <a href="@Url.Action("Log_Out", null, new { area = string.Empty, controller = "Log_In" })"> <i class="zmdi zmdi-run"></i> Logout  </a>
-            
-            
-            </li>
+            <li> <a href="@Url.Action("Log_Out", null, new { area = string.Empty, controller = "Log_In" })"> <i class="zmdi zmdi-run"></i> Logout  </a> </li>
         </ul>
         <ul class="user-info">
             <li class="profile-pic"> </li>
@@ -288,7 +279,6 @@
         @RenderBody()
         
     </div>
-
 
 </body>
 </html>
