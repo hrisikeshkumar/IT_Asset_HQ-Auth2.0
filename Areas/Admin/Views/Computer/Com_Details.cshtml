@@ -1,11 +1,7 @@
-﻿
-@using IT_Hardware.Areas.Admin.Models
+﻿@using IT_Hardware.Areas.Admin.Models
 @model IList<Mod_Computer>
 
-@{
-    ViewBag.Title = "Index";
-    //Layout = "~/Views/Shared/_Layout.cshtml";
-}
+@{ ViewBag.Title = "Index";}
 
 
 <link href="~/CSS/SearchBox/searchbox.css" rel="stylesheet" />
@@ -24,9 +20,7 @@
 
                 <div class="col-rt-3 equal-height">
                     <div class="sb-example-3">
-                        <!-- partial:index.partial.html -->
                         <div class="search__container">
-
                             <input class="search__input" type="text" placeholder="Search">
                         </div>
                     </div>
@@ -36,8 +30,6 @@
             <td align="right" width="25%">
                 <h4>
                     @Html.ActionLink("Add New", "Com_Create_Item", "Computer")
-
-                    @*<a href="@Url.Action("Create", null, new { area = "Admin", controller = "Computer" })">Add New</a>*@
                 </h4>
             </td>
         </tr>
