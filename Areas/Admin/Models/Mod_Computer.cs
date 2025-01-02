@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
-
-
-
 namespace IT_Hardware.Areas.Admin.Models
 {
     public class Mod_Computer
