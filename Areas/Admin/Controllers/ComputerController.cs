@@ -13,6 +13,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         
         public ActionResult Com_Details()
         {
+            string userName = HttpContext.User.Identity.Name; 
             BL_Computer com= new BL_Computer();
 
             List<Mod_Computer> pc_List = com.Get_CompData();
@@ -32,7 +33,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             
             return View( Mod_data);
         }
-
 
         
         [HttpPost]
