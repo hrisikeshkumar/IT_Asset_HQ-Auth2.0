@@ -6,17 +6,17 @@ namespace IT_Hardware.Areas.Admin.Data
 {
     public class RoChapterInfo_BL
     {
-        public List<RoChapterInfo_Mod> Get_ChaptersData(string chapterName)
+        public List<RoChapterInfo> Get_ChaptersData(string chapterName)
         {
 
-            RoChapterInfo_Mod BL_data;
-            List<RoChapterInfo_Mod> Listdata = new List<RoChapterInfo_Mod>();
+            RoChapterInfo BL_data;
+            List<RoChapterInfo> Listdata = new List<RoChapterInfo>();
 
             try
             {
                 DataTable dt_Comuter;
 
-                SqlConnection con = new DBConnection().con;
+                SqlConnection con = new DBConnection().conChapter;
 
                 using (SqlCommand cmd = new SqlCommand("sp_ChapterInfo"))
                 {
@@ -39,7 +39,7 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 foreach (DataRow dr in dt_Comuter.Rows)
                 {
-                    BL_data = new RoChapterInfo_Mod();
+                    BL_data = new RoChapterInfo();
                     BL_data.ChapterName = Convert.ToString(dr["Unique_Id"]);
                     BL_data.ItemName = Convert.ToString(dr["Emp_Code"]);
                     BL_data.SerialNo = Convert.ToString(dr["Emp_Name"]);

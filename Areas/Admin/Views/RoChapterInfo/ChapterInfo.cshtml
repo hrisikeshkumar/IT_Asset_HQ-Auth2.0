@@ -1,10 +1,10 @@
 ﻿@using IT_Hardware.Areas.Admin.Models
-@model IList<RoChapterInfo_Mod>
+@model RoChapterInfo_Mod
 
 @{
     ViewBag.Title = "Index";
 }
-
+<link href="~/css/commoncssclass.css" rel="stylesheet" />
 
 <link href="~/CSS/SearchBox/searchbox.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -22,16 +22,17 @@
 
                 <div class="col-rt-3 equal-height">
                     <div class="sb-example-3">
-                        <div class="search__container">
-                            <input class="search__input" type="text" placeholder="Search">
-                        </div>
+                        Office Name: 
+
+                        @Html.DropDownListFor(x => x.ChapterName, Model.ChapterList, new { @class = " form-rounded", @style = " width :60%; " })
+
                     </div>
                 </div>
 
             </td>
             <td align="right" width="25%">
                 <h4>
-                    @Html.ActionLink("Add New", "Com_Create_Item", "Computer")
+                   
                 </h4>
             </td>
         </tr>
@@ -44,49 +45,43 @@
             <td colspan="2">
                 <table style="width:100%">
                     <tr>
-                        <th> Item Type </th>
-                        <th> Serial No </th>
-                        <th> Price </th>
-                        <th> ProcDate </th>
-                        <th> FundSource </th>
-                        <th> SOFile </th>
-                        <th> InvFile </th>
-                        <th> QuoteFiles </th>
+                        <th width="15%" align="left"> Item Type </th>
+                        <th width="10%" align="center"> Serial No </th>
+                        <th width="10%" align="center"> ProcDate </th>
+                        <th width="10%" align="right"> Price </th>
+                        <th width="10%" align="center"> Fund Source </th>
+                        <th width="15%" align="center"> Sanction Order </th>
+                        <th width="15%" align="center"> Invoice </th>
+                        <th width="15%" align="center"> Quotations</th>
                     </tr>
 
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.chapterDetail)
                     {
                         <tr>
-                            <td>
+                            <td align="left">
                                 @Html.DisplayFor(modelItem => item.ItemName)
                             </td>
-                            <td>
+                            <td align="center">
                                 @Html.DisplayFor(modelItem => item.SerialNo)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ItemName)
+                            <td align="center">
+                                @Html.DisplayFor(modelItem => item.ProcDate)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.SerialNo)
+                            <td align="right">
+                                @Html.DisplayFor(modelItem => item.Price)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ItemName)
+                            <td align="center">
+                                @Html.DisplayFor(modelItem => item.FundSource)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.SerialNo)
+                            <td align="center">
+                                @Html.DisplayFor(modelItem => item.SOFile)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ItemName)
+                            <td align="center">
+                                @Html.DisplayFor(modelItem => item.InvFile)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.SerialNo)
-                            </td><td>
-                                @Html.DisplayFor(modelItem => item.ItemName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.SerialNo)
-                            </td>
-                            
+                            <td align="center">
+                                @Html.DisplayFor(modelItem => item.QuoteFiles)
+                            </td>                                                   
                         </tr>
                     }
 
@@ -107,6 +102,7 @@
         toastr.error("Error:" + Msg);
     };
 </script>
+
 @if (ViewBag.JavaScriptFunction != null)
 {
     <script type="text/javascript">
@@ -126,7 +122,6 @@
         /**/
         };
     </script>
-
 }
 
 

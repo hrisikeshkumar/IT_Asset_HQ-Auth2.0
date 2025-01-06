@@ -1,8 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace IT_Hardware.Areas.Admin.Models
 {
+
     public class RoChapterInfo_Mod
+    {
+        public string ChapterName {get; set;}
+
+        public List<SelectListItem> ChapterList {get; set;}
+
+        public List<RoChapterInfo> chapterDetail { get; set; }
+
+    }
+
+    public class RoChapterInfo
     {
         public string ChapterName { get; set; }
         public string ItemName { get; set; }
