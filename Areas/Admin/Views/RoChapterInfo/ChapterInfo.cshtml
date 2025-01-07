@@ -18,31 +18,38 @@
 <div style=" align-content:center; width:100%" class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
     <table class=" table-hover table-striped shadow " style="width:100%">
         <tr>
-            <td width="75%">
+            <td>
+                @using(Html.BeginForm("ChapterInfo", "RoChapterInfo", FormMethod.Post))
+                {
+                    <table style="width: 100%">
+                        <tr>
+                            <td width="75%">
+                                <div class="col-rt-3 equal-height">
+                                    <div class="sb-example-3">
+                                        Office Name:
 
-                <div class="col-rt-3 equal-height">
-                    <div class="sb-example-3">
-                        Office Name: 
+                                        @Html.DropDownListFor(x => x.ChapterName, Model.ChapterList, new { @class = " form-rounded", @style = " width :60%; " })
+                                    </div>
+                                </div>
 
-                        @Html.DropDownListFor(x => x.ChapterName, Model.ChapterList, new { @class = " form-rounded", @style = " width :60%; " })
-
-                    </div>
-                </div>
-
-            </td>
-            <td align="right" width="25%">
-                <h4>
-                    <button class="button_cls form-rounded">Submit</button> 
-                </h4>
+                            </td>
+                            <td align="center" width="25%">
+                                <h4>
+                                    <button class="button_cls form-rounded">Submit</button>
+                                </h4>
+                            </td>
+                        </tr>
+                    </table>
+                }
             </td>
         </tr>
         <tr>
-            <td colspan="2">
+            <td>
                 </br>
             </td>
         </tr>
         <tr>
-            <td colspan="2">
+            <td>
                 <table style="width:100%">
                     <tr>
                         <th width="15%" align="left"> Item Type </th>

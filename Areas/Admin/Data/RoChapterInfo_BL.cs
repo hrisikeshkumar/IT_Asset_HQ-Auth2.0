@@ -1,6 +1,7 @@
 ﻿using IT_Hardware.Areas.Admin.Models;
 using System.Data.SqlClient;
 using System.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IT_Hardware.Areas.Admin.Data
 {
@@ -20,7 +21,7 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 using (SqlCommand cmd = new SqlCommand("sp_ChapterInfo"))
                 {
-                    SqlParameter sqlP_type = new SqlParameter("@Type", "Get_List");
+                    SqlParameter sqlP_type = new SqlParameter("@Type", "Get_OfficeData");
                     SqlParameter sqlP_chapterName = new SqlParameter("@chapterName", chapterName);
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection = con;
@@ -63,6 +64,53 @@ namespace IT_Hardware.Areas.Admin.Data
 
             return Listdata;
         }
+
+
+        public List<SelectListItem> Get_AllOfficeList()
+        {
+
+            List<SelectListItem> Listdata = new List<SelectListItem>();
+
+            try
+            {
+                DataTable dt_Comuter;
+
+                SqlConnection con = new DBConnection().conChapter;
+
+                using (SqlCommand cmd = new SqlCommand("sp_ChapterInfo"))
+                {
+                    SqlParameter sqlP_type = new SqlParameter("@Type", "Get_ChapterList");
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = con;
+                    cmd.Parameters.Add(sqlP_type);
+
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        sda.SelectCommand = cmd;
+                        using (DataTable dt = new DataTable())
+                        {
+                            sda.Fill(dt);
+                            dt_Comuter = dt;
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in dt_Comuter.Rows)
+                {
+                    SelectListItem data = new SelectListItem();
+
+                    data.Text = Convert.ToString(dr["ChapterName"]);
+                    data.Value = Convert.ToString(dr["Emailid"]);
+
+                    Listdata.Add(data);
+                }
+
+            }
+            catch (Exception ex) { }
+
+            return Listdata;
+        }
+
 
     }
 }

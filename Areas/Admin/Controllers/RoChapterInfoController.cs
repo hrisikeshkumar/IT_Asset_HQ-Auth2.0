@@ -10,19 +10,20 @@ namespace IT_Hardware.Areas.Admin.Controllers
     [Authorize(Policy = AuthorizationPolicies.ITManagers)]
     [Area("Admin")]
     public class RoChapterInfoController : Controller
-    {     
-        public ActionResult ChapterInfo(string chapterName)
+    {
+        public ActionResult ChapterInfo(RoChapterInfo_Mod data)
         {
             RoChapterInfo_BL com = new RoChapterInfo_BL();
 
-            RoChapterInfo_Mod data = new RoChapterInfo_Mod();
+            if (data.ChapterName == null)
+                data.ChapterName = "Agra";
 
-            data.ChapterList = new List<SelectListItem>();
-
-            data.chapterDetail = com.Get_ChaptersData(chapterName);
+            data.ChapterList = com.Get_AllOfficeList();
+            data.chapterDetail = com.Get_ChaptersData(data.ChapterName);
 
             return View(data);
         }
+
 
     }
 }

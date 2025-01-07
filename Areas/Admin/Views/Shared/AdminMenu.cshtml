@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using IT_Hardware.Areas.Admin.Models
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <meta charset="UTF-8" />
@@ -214,7 +215,7 @@
                     <li class="has-child">
                         <span class="its-parent"> Other Mislenious Items </span>
                         <ul class="its-children">
-
+                           
                             <li> <a href="@Url.Action("DataCard_Details", null, new { area = "Admin", controller = "DataCard" }  )">Data Card</a> </li>
                             <li> <a href="@Url.Action("AppleIpad_Details", null, new { area = "Admin", controller = "AppleIpad" }  )">Apple Ipad /Surface Pro</a> </li>
                             <li> <a href="@Url.Action("OtherItem_Details", null, new { area = "Admin", controller = "OtherItem" }  )"> Mislenious Items</a> </li>
@@ -251,8 +252,7 @@
                 </span>
                 <ul class="its-children">
 
-                    <li> <a href="@Url.Action("ChapterInfo", null, new { area = "Admin", controller = "RoChapterInfo" }  )"> Hardware</a> </li>
-                    
+                    <li> <a href="@Url.Action("ChapterInfo", null, new { area = "Admin", controller="RoChapterInfo" }  )"> Hardware</a> </li>
                 </ul>
             </li>
 
