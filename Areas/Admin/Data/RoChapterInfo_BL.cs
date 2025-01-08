@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using System.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using DocumentFormat.OpenXml.EMMA;
 
 namespace IT_Hardware.Areas.Admin.Data
 {
@@ -26,6 +27,7 @@ namespace IT_Hardware.Areas.Admin.Data
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection = con;
                     cmd.Parameters.Add(sqlP_type);
+                    cmd.Parameters.Add(sqlP_chapterName);
 
                     using (SqlDataAdapter sda = new SqlDataAdapter())
                     {
@@ -40,22 +42,32 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 foreach (DataRow dr in dt_Comuter.Rows)
                 {
-                    BL_data = new RoChapterInfo();
-                    BL_data.ChapterName = Convert.ToString(dr["Unique_Id"]);
-                    BL_data.ItemName = Convert.ToString(dr["Emp_Code"]);
-                    BL_data.SerialNo = Convert.ToString(dr["Emp_Name"]);
-                    BL_data.ProcDate = Convert.ToDateTime(dr["Emp_Designation"]);                   
-                    BL_data.Price = Convert.ToInt32(dr["Emp_Dept"]);
-                    BL_data.FundSource = Convert.ToString(dr["Emp_Type"]);
-                    BL_data.SOFile = Convert.ToString(dr["Emp_Location"]);
-                    BL_data.InvFile = Convert.ToString(dr["Dept_name"]);
 
-                    if(Convert.ToString(dr["Designation_name"]) != string.Empty)
-                        foreach (string file in Convert.ToString(dr["Designation_name"]).Split(','))
+                  
+                    BL_data = new RoChapterInfo();
+                    BL_data.ChapterName = chapterName;
+                    BL_data.ItemId = Convert.ToString(dr["Item_Id"]);
+                    BL_data.AssetType = Convert.ToString(dr["Asset_Type"]);
+                    BL_data.Model = Convert.ToString(dr["Model"]);
+                    BL_data.SerialNo = Convert.ToString(dr["Item_SlNo"]);
+                    BL_data.ProcDate = Convert.ToDateTime(dr["Proc_Date"]);                   
+                    BL_data.Price = Convert.ToInt32(dr["Asset_Price"]);
+                    BL_data.Inv_No = Convert.ToString(dr["Inv_No"]);
+                    BL_data.Inv_date = Convert.ToDateTime(dr["Inv_date"]);
+                    BL_data.FundSource = Convert.ToString(dr["OwnerName"]);
+                    BL_data.SOFile = Convert.ToString(dr["Sanction_FileName"]);                   
+                    BL_data.InvFile = Convert.ToString(dr["Inv_File_Name"]);
+                    BL_data.ApprovalFile = Convert.ToString(dr["Approval_File_Name"]);
+                    //BL_data.QuoteFile = Convert.ToString(dr["QuoteFile_Name"]);
+                    BL_data.QuoteFiles = new List<string>();
+
+                    if (Convert.ToString(dr["QuoteFile_Name"]) != string.Empty)
+                    { 
+                        foreach (string file in Convert.ToString(dr["QuoteFile_Name"]).Split(','))
                         {
                             BL_data.QuoteFiles.Add(file);
                         }
-
+                    }
                     Listdata.Add(BL_data);
                 }
 

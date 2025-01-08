@@ -52,42 +52,59 @@
             <td>
                 <table style="width:100%">
                     <tr>
-                        <th width="15%" align="left"> Item Type </th>
-                        <th width="10%" align="center"> Serial No </th>
-                        <th width="10%" align="center"> ProcDate </th>
-                        <th width="10%" align="right"> Price </th>
-                        <th width="10%" align="center"> Fund Source </th>
-                        <th width="15%" align="center"> Sanction Order </th>
-                        <th width="15%" align="center"> Invoice </th>
-                        <th width="15%" align="center"> Quotations</th>
+                        <th width="7%" align="left"> Asset Type </th>
+                        <th width="10%" align="left"> Model </th>
+                        <th width="7%" align="left"> Serial No </th>
+                        <th width="7%" align="left" style="padding-left:1px"> Invoice </th>
+                        <th width="7%" align="left" style="padding-left:1px"> ProcDate </th>
+                        <th width="7%" align="center" style="align-items:center"> Price </th>
+                        <th width="7%" align="left" style="padding-left:1px"> Fund  </th>
+                        <th width="12%" align="center"> Sanction Order </th>
+                        <th width="12%" align="center"> Approval </th>
+                        <th width="12%" align="center"> Invoice </th>
+                        <th width="12%" align="center"> Quotations</th>
                     </tr>
 
                     @foreach (var item in Model.chapterDetail)
                     {
                         <tr>
-                            <td align="left">
-                                @Html.DisplayFor(modelItem => item.ItemName)
+                            <td width="7%" align="left">
+                                @Html.DisplayFor(modelItem => item.AssetType)
+                                @Html.HiddenFor(modelItem => item.ItemId)
                             </td>
-                            <td align="center">
+                            <td width="10%" align="left">
+                                @Html.DisplayFor(modelItem => item.Model)
+                            </td>
+                            <td width="7%" align="left">
                                 @Html.DisplayFor(modelItem => item.SerialNo)
                             </td>
-                            <td align="center">
+                            <td width="7%" align="left" style="padding-left:1px">
+                                @Html.DisplayFor(modelItem => item.Inv_No)
+                            </td>
+                            <td width="7%" align="left" style="padding-left:1px">
                                 @Html.DisplayFor(modelItem => item.ProcDate)
                             </td>
-                            <td align="right">
+                            <td width="7%" align="right">
                                 @Html.DisplayFor(modelItem => item.Price)
                             </td>
-                            <td align="center">
+                            <td width="7%" align="left" style="padding-left:1px>
                                 @Html.DisplayFor(modelItem => item.FundSource)
                             </td>
-                            <td align="center">
+                            <td width="12%" align="center" >
                                 @Html.DisplayFor(modelItem => item.SOFile)
                             </td>
-                            <td align="center">
+                            <td width="12%" align="center">
+                                @Html.DisplayFor(modelItem => item.ApprovalFile)
+                            </td>
+                            <td width="12%" align="center">
                                 @Html.DisplayFor(modelItem => item.InvFile)
                             </td>
-                            <td align="center">
-                                @Html.DisplayFor(modelItem => item.QuoteFiles)
+                            <td width="12%" align="center">
+                                @foreach (var file in item.QuoteFiles)
+                                {
+                                    @Html.DisplayFor(modelItem => file)
+                                    <br>
+                                }       
                             </td>                                                   
                         </tr>
                     }
