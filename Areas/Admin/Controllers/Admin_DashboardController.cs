@@ -4,6 +4,8 @@ using IT_Hardware.Areas.Admin.Data;
 using IT_Hardware.Areas.Admin.Models;
 using System.Data.SqlClient;
 using IT_Hardware.Infra;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
@@ -12,6 +14,13 @@ namespace IT_Hardware.Areas.Admin.Controllers
     [Area("Admin")]
     public class Admin_DashboardController : Controller
     {
+
+        private IHostingEnvironment Environment;
+
+        public Admin_DashboardController(IHostingEnvironment _environment)
+        {
+            Environment = _environment;
+        }
 
         public ActionResult Admin_Dashboard()
         {
@@ -113,13 +122,13 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
 
-        private static List<File_List> GetFiles_By_Id(string SLA_Id)
+        private static List<File_List> GetFiles_By_Id(string Proposal_Id)
         {
             List<File_List> files = new List<File_List>();
             
             using (SqlConnection con = new DBConnection().con)
             {
-                using (SqlCommand cmd = new SqlCommand("SELECT File_Id, File_Name FROM File_table where  LTRIM(RTRIM(File_table))= 'Proposal' and  LTRIM(RTRIM(File_Ref_Id))=LTRIM(RTRIM('" + SLA_Id + "')) "))
+                using (SqlCommand cmd = new SqlCommand("SELECT Proposal_Id, FileName FROM Proposal_Status where  LTRIM(RTRIM(Proposal_Id))=LTRIM(RTRIM('" + Proposal_Id + "')) "))
                 {
                     cmd.Connection = con;
                     con.Open();
@@ -129,7 +138,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                         {
                             files.Add(new File_List
                             {
-                                File_Id = Convert.ToString(sdr["File_Id"]),
+                                File_Id = Convert.ToString(sdr["Proposal_Id"]),
                                 File_Name = Convert.ToString(sdr["File_Name"])
                             });
                         }
@@ -146,10 +155,48 @@ namespace IT_Hardware.Areas.Admin.Controllers
         public JsonResult FiliUpload( IFormFile postedFile)
         {
 
-            string SLA_Id = Request.Form["SLA_Id"].ToString();
+            string Proposal_Id = Request.Form["Proposal_Id"].ToString();
 
-           
+            if (postedFile != null)
+            {
+                using (SqlConnection con = new DBConnection().con)
+                {
+                    string query = " Select Proposal_Id from Proposal_Status where LTRIM(RTRIM(FileName))= LTRIM(RTRIM(@FileName)";
+                    using (SqlCommand cmd = new SqlCommand(query))
+                    {
+                        cmd.Connection = con;
+                        cmd.Parameters.AddWithValue("@FileName", Path.GetFileName(postedFile.FileName));
+                        con.Open();
 
+                        SqlDataReader sdr = cmd.ExecuteReader();
+
+                        //Looping through each record
+                        while (sdr.Read())
+                        {
+                            return Json(new SelectListItem("Duplicate","Please Rename the File and Upload"));
+                        }
+                        con.Close();
+                    }
+                }
+
+
+                string wwwPath = this.Environment.WebRootPath;
+                string contentPath = this.Environment.ContentRootPath;
+
+                string path = Path.Combine(this.Environment.WebRootPath, "Files\\ITDeptFile\\");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                using (FileStream stream = new FileStream(Path.Combine(path, postedFile.FileName), FileMode.Create))
+                {
+                    postedFile.CopyTo(stream);
+                }
+            }
+
+
+            /* Save File to DateBase 
             using (MemoryStream ms = new MemoryStream())
             {
                 postedFile.CopyTo(ms);
@@ -169,11 +216,9 @@ namespace IT_Hardware.Areas.Admin.Controllers
                         con.Close();
                     }
                 }
-            }
+            }*/
 
-
-
-            return Json(GetFiles_By_Id(SLA_Id));
+            return Json(GetFiles_By_Id(Proposal_Id));
 
         }
 
@@ -181,7 +226,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         public JsonResult DeleteFile(string FileId, string RefId)
         {
 
-            
+            /*   Delete File from Database        
             using (SqlConnection con = new DBConnection().con)
             {
                 string query = "delete from File_table where LTRIM(RTRIM(File_Id)) =LTRIM(RTRIM(@File_Id))";
@@ -193,44 +238,56 @@ namespace IT_Hardware.Areas.Admin.Controllers
                     cmd.ExecuteNonQuery();
                     con.Close();
                 }
-            }
-
+            } */
 
             return Json(GetFiles_By_Id(RefId));
 
         }
 
 
-        public FileResult Download(string fileId)
+        public ContentResult Download(string fileId)
         {
 
+            string wwwPath = this.Environment.WebRootPath;
+            string contentPath = this.Environment.ContentRootPath;
 
-            byte[] bytes;
-            string fileName, contentType;
-            
-            using (SqlConnection con = new DBConnection().con)
-            {
-                using (SqlCommand cmd = new SqlCommand())
-                {
-                    cmd.CommandText = "select File_Id, File_table, File_Name, ContentType, File_Data from File_table WHERE LTRIM(RTRIM(File_Id))= LTRIM(RTRIM(@Id))";
-                    cmd.Parameters.AddWithValue("@Id", fileId);
-                    cmd.Connection = con;
-                    con.Open();
-                    using (SqlDataReader sdr = cmd.ExecuteReader())
-                    {
-                        sdr.Read();
-                        bytes = (byte[])sdr["File_Data"];
-                        contentType = sdr["ContentType"].ToString();
-                        fileName = sdr["File_Name"].ToString();
-                    }
-                    con.Close();
-                }
-            }
+            string path = Path.Combine(this.Environment.WebRootPath, "Files\\ITDeptFile\\");
 
-            return File(bytes, contentType, fileName);
+            //Read the File as Byte Array.
+            byte[] bytes = System.IO.File.ReadAllBytes(path + fileId);
+
+            //Convert File to Base64 string and send to Client.
+            string base64 = Convert.ToBase64String(bytes, 0, bytes.Length);
+
+            return Content(base64);
+
+            /* Download File from Database
+            //byte[] bytes;
+            //string fileName, contentType;
+
+            //using (SqlConnection con = new DBConnection().con)
+            //{
+            //    using (SqlCommand cmd = new SqlCommand())
+            //    {
+            //        cmd.CommandText = "select File_Id, File_table, File_Name, ContentType, File_Data from File_table WHERE LTRIM(RTRIM(File_Id))= LTRIM(RTRIM(@Id))";
+            //        cmd.Parameters.AddWithValue("@Id", fileId);
+            //        cmd.Connection = con;
+            //        con.Open();
+            //        using (SqlDataReader sdr = cmd.ExecuteReader())
+            //        {
+            //            sdr.Read();
+            //            bytes = (byte[])sdr["File_Data"];
+            //            contentType = sdr["ContentType"].ToString();
+            //            fileName = sdr["File_Name"].ToString();
+            //        }
+            //        con.Close();
+            //    }
+            //}
+
+            return File(bytes, contentType, fileName);*/
         }
 
-
+        /* Own Authentication
         //protected override void OnAuthenticationChallenge(AuthenticationChallengeContext filterContext)
         //{
         //    if (filterContext.HttpContext.Request.IsAuthenticated)
@@ -245,7 +302,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         //    {
         //        filterContext.Result = new RedirectResult("~/Log_In/Log_In");
         //    }
-        //}
+        //} */
 
     }
 }

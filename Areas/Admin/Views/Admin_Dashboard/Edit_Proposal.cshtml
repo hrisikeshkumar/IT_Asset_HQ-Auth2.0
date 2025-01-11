@@ -10,146 +10,9 @@
 @*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>*@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+<script src="~/customjs/edit_sla.js"></script>
+<link href="~/css/commoncssclass.css" rel="stylesheet" />
 
-
-<script>
-    $(function () {
-        $(".dateclass").datepicker({
-            changeYear: true,
-            changeMonth: true,
-            dateFormat: 'dd/mm/yy',
-            minDate: new Date('01/01/1900'),
-            maxDate: '+10Y'
-        });
-    });
-</script>
-
-<style type="text/css">
-
-    .form-rounded {
-        border-radius: 3rem;
-    }
-
-
-
-    .btn_download {
-        display: inline-block;
-        outline: 0;
-        cursor: pointer;
-        padding: 5px 10px;
-        font-size: 14px;
-        font-weight: 500;
-        line-height: 10px;
-        vertical-align: middle;
-        border: 1px solid;
-        border-radius: 6px;
-        color: #ffffff;
-        background-color: #2ea44f;
-        border-color: #1b1f2326;
-        box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px 0px inset;
-        transition: 0.2s cubic-bezier(0.3, 0, 0.5, 1);
-        transition-property: color, background-color, border-color;
-    }
-
-        .btn_download:hover {
-            background-color: rgb(155 221 30 / 0.73);
-            border-color: #1b1f2326;
-            transition-duration: 0.1s;
-        }
-
-
-
-
-    .btn_delete {
-        display: inline-block;
-        outline: 0;
-        cursor: pointer;
-        padding: 5px 10px;
-        font-size: 14px;
-        font-weight: 500;
-        line-height: 10px;
-        vertical-align: middle;
-        border: 1px solid;
-        border-radius: 6px;
-        color: #000000;
-        background-color: #f59191;
-        border-color: #1b1f2326;
-        box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px 0px inset;
-        transition: 0.2s cubic-bezier(0.3, 0, 0.5, 1);
-        transition-property: color, background-color, border-color;
-    }
-
-        .btn_delete:hover {
-            background-color: #f70c0c;
-            border-color: #1b1f2326;
-            transition-duration: 0.1s;
-        }
-
-
-</style>
-
-<style type="text/css">
-
-    @@import "compass/css3";
-
-    input[type=text], textarea {
-        @@include transition(all 0.30s ease-in-out);
-        outline: none;
-        padding: 3px 0px 3px 3px;
-        margin: 5px 1px 3px 0px;
-        border: 1px solid #DDDDDD;
-    }
-
-        input[type=text]:focus, textarea:focus {
-            @@include box-shadow(0 0 5px rgba(81, 203, 238, 1));
-            padding: 3px 0px 3px 3px;
-            margin: 5px 1px 3px 0px;
-            border: 1px solid rgba(81, 203, 238, 1);
-        }
-</style>
-
-<style type="text/css">
-    .button_cls {
-        background: #1AAB8A;
-        color: #fff;
-        border: none;
-        position: relative;
-        height: 25px;
-        font-size: 1em;
-        padding: 0 2em;
-        cursor: pointer;
-        transition: 800ms ease all;
-        outline: none;
-    }
-
-        .button_cls:hover {
-            background: #fff;
-            color: #1AAB8A;
-        }
-
-        .button_cls:before, button:after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            height: 2px;
-            width: 0;
-            background: #1AAB8A;
-            transition: 400ms ease all;
-        }
-
-        .button_cls:after {
-            right: inherit;
-            top: inherit;
-            left: 0;
-            bottom: 0;
-        }
-
-        .button_cls:hover:before, button:hover:after {
-            width: 100%;
-            transition: 800ms ease all;
-        }
-</style>
 
 
 <div style="   text-align: center; height: 50px; align-content: center; width: 100% " class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
@@ -172,7 +35,6 @@
                     @Html.HiddenFor(X => X.Proposal_Id)
                 </td>
                 <td style="width:80%;" colspan="3">
-
                     @Html.TextAreaFor(x => x.Utilization_Details, new { @style = " width :100%; " })
                 </td>
 
@@ -205,7 +67,7 @@
             </tr>
             <tr>
                 <td style="width:20%;">
-                    Remarks of Secretary
+                    Remarks of Secretary Office
                 </td>
                 <td style="width:80%; " colspan="3">
                     @Html.TextAreaFor(x => x.Sec_Office_Remarks, new { @style = " width :100%; " })
@@ -221,7 +83,6 @@
             </tr>
 
             <tr style=" height: 50px; ">
-
 
                 <td align="left" style="width:25%; "> Upload File</td>
 
@@ -391,7 +252,7 @@
                     fileData.append(files[i].name, files[i]);
                 }
 
-                fileData.append('SLA_Id', fileRefId);
+                fileData.append('Proposal_Id', fileRefId);
 
                 $.ajax({
                     type: "POST",
@@ -401,26 +262,30 @@
                     contentType: false, // Not to set any content header
                     processData: false, // Not to process data
                     success: function (response) {
+                        if (response.key == '') {
+                            alert('');
+                        }
+                        else {
+                            $("#Files_Grid tr").remove();
 
-                        $("#Files_Grid tr").remove();
-
-                        markup = "<tr><th style='width: 50%;'> File Name </th> <th style='width: 25%;'> Download </th> <th style='width: 25%; text-align: center'> Delete </th> </tr>";
-                        tableBody = $("#Files_Grid tbody");
-                        tableBody.append(markup);
+                            markup = "<tr><th style='width: 50%;'> File Name </th> <th style='width: 25%;'> Download </th> <th style='width: 25%; text-align: center'> Delete </th> </tr>";
+                            tableBody = $("#Files_Grid tbody");
+                            tableBody.append(markup);
 
 
-                        if (response != null) {
+                            if (response != null) {
 
-                            $.each(response, function (key, val) {
+                                $.each(response, function (key, val) {
 
-                                markup = "<tr><td> " + val.File_Name + " </td> " +
-                                    "<td>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.File_Id + "' > </input> </td> " +
-                                    "<td style=' text-align: center'>  <input type='submit' class='appDetails btn_delete' id='" + val.File_Id + "' value='Delete' > </input> </td></tr> "
+                                    markup = "<tr><td> " + val.File_Name + " </td> " +
+                                        "<td>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.File_Id + "' > </input> </td> " +
+                                        "<td style=' text-align: center'>  <input type='submit' class='appDetails btn_delete' id='" + val.File_Id + "' value='Delete' > </input> </td></tr> "
 
-                                tableBody = $("#Files_Grid tbody");
-                                tableBody.append(markup);
+                                    tableBody = $("#Files_Grid tbody");
+                                    tableBody.append(markup);
 
-                            });
+                                });
+                            }
                         }
                     },
                     error: function (err) {
@@ -495,16 +360,55 @@
 
 <script type="text/javascript">
     $(document).on("click", ".cssdownload", function () {
+        
+        /* Standard Download
         var fileName = $(this).attr('id');
-
-
         window.location.href = "/Admin_Dashboard/Download?fileId=" + fileName + "";
-
-
         event.preventDefault();
+        */
+
+        /*  Async Download */
+        var file_Name = $(this).attr('id');
+        $.ajax({
+            type: "POST",
+            url: "/Admin_Dashboard/Download",
+            data: { fileName: file_Name },
+            success: function (r) {
+                //Convert Base64 string to Byte Array.
+                var bytes = Base64ToBytes(r);
+
+                //Convert Byte Array to BLOB.
+                var blob = new Blob([bytes], { type: "application/octetstream" });
+
+                //Check the Browser type and download the File.
+                var isIE = false || !!document.documentMode;
+                if (isIE) {
+                    window.navigator.msSaveBlob(blob, file_Name);
+                }
+                else {
+                    var url = window.URL || window.webkitURL;
+                    link = url.createObjectURL(blob);
+                    var a = $("<a />");
+                    a.attr("download", file_Name);
+                    a.attr("href", link);
+                    $("body").append(a);
+                    a[0].click();
+                    $("body").remove(a);
+                }
+            }
+        });
+
+
     });
 
-
+    function Base64ToBytes(base64) {
+        var s = window.atob(base64);
+        var bytes = new Uint8Array(s.length);
+        for (var i = 0; i < s.length; i++) {
+            bytes[i] = s.charCodeAt(i);
+        }
+        return bytes;
+    };
 
 </script>
 
