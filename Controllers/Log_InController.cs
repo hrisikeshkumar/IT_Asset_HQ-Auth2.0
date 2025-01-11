@@ -30,6 +30,12 @@ namespace IT_Hardware.Controllers
             return RedirectToAction("Admin_Dashboard", "Admin_Dashboard", new { area = "Admin" });
         }
 
+        public ActionResult CustomAccessDenied()
+        {
+            return View();
+        }
+
+
         //--------------------------------------------------------------------------------------
 
         private readonly IOptionsMonitor<MicrosoftIdentityOptions> _optionsMonitor;
@@ -126,7 +132,6 @@ namespace IT_Hardware.Controllers
         /// </summary>
         /// <param name="scheme">Authentication scheme.</param>
         /// <returns>Sign out result.</returns>
-        //[HttpGet("{scheme?}")]
         public IActionResult Log_Out(
             [FromRoute] string scheme)
         {
@@ -152,6 +157,8 @@ namespace IT_Hardware.Controllers
             }
         }
 
+
+
         /// <summary>
         /// In B2C applications handles the Reset password policy.
         /// </summary>
@@ -167,6 +174,8 @@ namespace IT_Hardware.Controllers
             properties.Items[Constants.Policy] = _optionsMonitor.Get(scheme).ResetPasswordPolicyId;
             return Challenge(properties, scheme);
         }
+
+
 
         /// <summary>
         /// In B2C applications, handles the Edit Profile policy.
@@ -190,9 +199,7 @@ namespace IT_Hardware.Controllers
         }
 
 
-
-
     }
-}
+} 
 
 

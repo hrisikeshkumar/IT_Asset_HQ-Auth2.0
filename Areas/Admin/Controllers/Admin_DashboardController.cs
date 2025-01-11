@@ -54,9 +54,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
         
         //-----------------------------------         Proposal Details       --------------------------------------------------
 
-
-
-        
         public ActionResult Edit_proposal(Mod_Admin_dashB Proposal)
         {
 
@@ -232,9 +229,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             return File(bytes, contentType, fileName);
         }
-
-
-
 
 
         //protected override void OnAuthenticationChallenge(AuthenticationChallengeContext filterContext)

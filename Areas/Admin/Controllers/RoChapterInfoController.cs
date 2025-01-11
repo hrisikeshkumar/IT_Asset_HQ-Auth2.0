@@ -4,6 +4,9 @@ using IT_Hardware.Infra;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Graph.Models;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
@@ -11,6 +14,12 @@ namespace IT_Hardware.Areas.Admin.Controllers
     [Area("Admin")]
     public class RoChapterInfoController : Controller
     {
+        private IHostingEnvironment Environment;
+        public RoChapterInfoController(IHostingEnvironment _environment)
+        {
+            Environment = _environment;
+        }
+
         public ActionResult ChapterInfo(RoChapterInfo_Mod data)
         {
             RoChapterInfo_BL com = new RoChapterInfo_BL();
@@ -24,6 +33,78 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return View(data);
         }
 
+
+        public ContentResult InvoiceDownload(string fileName)
+        {
+
+           
+            string wwwPath = this.Environment.WebRootPath;
+            string contentPath = this.Environment.ContentRootPath;
+
+            string path = Path.Combine(this.Environment.WebRootPath, "wwwroot\\Files\\ChapterFile\\Invoice");
+
+            //Read the File as Byte Array.
+            byte[] bytes = System.IO.File.ReadAllBytes(path + fileName);
+
+            //Convert File to Base64 string and send to Client.
+            string base64 = Convert.ToBase64String(bytes, 0, bytes.Length);
+
+            return Content(base64);
+
+        }
+
+        public ContentResult QuotationDownload(string fileName)
+        {
+            string wwwPath = this.Environment.WebRootPath;
+            string contentPath = this.Environment.ContentRootPath;
+
+            string path = Path.Combine(this.Environment.WebRootPath, "Files\\ChapterFile\\Quotation\\Procurement\\");
+
+            //Read the File as Byte Array.
+            byte[] bytes = System.IO.File.ReadAllBytes(path + fileName);
+
+            //Convert File to Base64 string and send to Client.
+            string base64 = Convert.ToBase64String(bytes, 0, bytes.Length);
+
+            return Content(base64);
+        }
+
+        [HttpPost]
+        public ContentResult SanctionOrderDownload(string fileName)
+        {
+
+            string wwwPath = this.Environment.WebRootPath;
+            string contentPath = this.Environment.ContentRootPath;
+
+            string path = Path.Combine(this.Environment.WebRootPath, "Files\\ChapterFile\\SanctionOrder\\");
+
+
+            //Read the File as Byte Array.
+            byte[] bytes = System.IO.File.ReadAllBytes(path + fileName);
+
+            //Convert File to Base64 string and send to Client.
+            string base64 = Convert.ToBase64String(bytes, 0, bytes.Length);
+
+            return Content(base64);
+        }
+
+
+        public ContentResult ApprovalDownload(string fileName)
+        {
+
+            string wwwPath = this.Environment.WebRootPath;
+            string contentPath = this.Environment.ContentRootPath;
+
+            string path = Path.Combine(this.Environment.WebRootPath, "Files\\ChapterFile\\Approval\\ ");
+
+            //Read the File as Byte Array.
+            byte[] bytes = System.IO.File.ReadAllBytes(path + fileName);
+
+            //Convert File to Base64 string and send to Client.
+            string base64 = Convert.ToBase64String(bytes, 0, bytes.Length);
+
+            return Content(base64);
+        }
 
     }
 }

@@ -17,6 +17,9 @@ using System.Threading.Tasks;
 using IT_Hardware.Infra;
 using Microsoft.Graph.Models.ExternalConnectors;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,13 +35,11 @@ CacheSettings cacheSettings = new CacheSettings
 
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
-    
     // This lambda determines whether user consent for non-essential cookies is needed for a given request.
     options.CheckConsentNeeded = context => true;
     options.MinimumSameSitePolicy = SameSiteMode.Unspecified;
     // Handling SameSite cookie according to https://docs.microsoft.com/en-us/aspnet/core/security/samesite
     options.HandleSameSiteCookieCompatibility();
-
 });
 
 // <summary>
@@ -47,8 +48,6 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 // 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role' instead of 'roles'
 // This flag ensures that the ClaimsIdentity claims collection will be built from the claims in the token
 //</summary>
-
-
 JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
 // Adds Microsoft Identity platform (AAD v2.0) support to protect this Api
@@ -91,10 +90,14 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     .AddMicrosoftGraph(builder.Configuration.GetSection("GraphAPI"))
     .AddInMemoryTokenCaches();
 
+builder.Services.Configure<CookieAuthenticationOptions>(CookieAuthenticationDefaults.AuthenticationScheme, options => {
+    options.AccessDeniedPath = new PathString("/Log_In/CustomAccessDenied");
+});
+
+
 // Adding authorization policies that enforce authorization using Azure AD security groups.
 builder.Services.AddAuthorization(options =>
 {
-
     // this policy stipulates that users in IT Staffs can access resources
     options.AddPolicy(AuthorizationPolicies.AllAccess, policy => policy.RequireRole(builder.Configuration["Groups:ITStaffs"],
         builder.Configuration["Groups:ITSupportEngineers"], builder.Configuration["Groups:ITManagers"]));
@@ -153,6 +156,28 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+
+var culture = CultureInfo.CreateSpecificCulture("en-US");
+var dateformat = new DateTimeFormatInfo
+{
+    ShortDatePattern = "dd/MM/yyyy",
+    LongDatePattern = "dd/MM/yyyy hh:mm:ss tt"
+};
+culture.DateTimeFormat = dateformat;
+
+var supportedCultures = new[]
+{
+    culture
+};
+
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture(culture),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+});
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

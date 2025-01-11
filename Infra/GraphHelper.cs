@@ -76,6 +76,7 @@ namespace IT_Hardware.Infra
             }
         }
 
+
         /// <summary>
         /// Checks if 'Group Overage' claim exists for signed-in user.
         /// </summary>
@@ -85,6 +86,7 @@ namespace IT_Hardware.Infra
         {
             return identity.Claims.Any(x => x.Type == "hasgroups" || (x.Type == "_claim_names" && x.Value == "{\"groups\":\"src1\"}"));
         }
+
 
         /// <summary>
         /// ID Token does not contain 'scp' claim.
@@ -96,6 +98,7 @@ namespace IT_Hardware.Infra
         {
             return identity.Claims.Any(x => x.Type == "scp" || x.Type == "http://schemas.microsoft.com/identity/claims/scope");
         }
+
 
         /// <summary>
         /// This method inspects the claims collection created from the ID or Access token issued to a user and returns the groups that are present in the token . If it detects groups overage,
@@ -181,6 +184,8 @@ namespace IT_Hardware.Infra
             return null;
         }
 
+
+
         /// <summary>
         /// Re-populate the `groups` claim with the complete list of groups fetched from MS Graph
         /// </summary>
@@ -200,6 +205,8 @@ namespace IT_Hardware.Infra
             }
         }
 
+
+
         /// <summary>
         /// Remove groups claims if already exists.
         /// </summary>
@@ -217,6 +224,8 @@ namespace IT_Hardware.Infra
             }
         }
 
+
+
         /// <summary>
         /// Gets the signed-in user's object identifier.
         /// </summary>
@@ -227,6 +236,8 @@ namespace IT_Hardware.Infra
         {
             return principal.Claims.FirstOrDefault(x => x.Type == "oid").Value;
         }
+
+
 
         /// <summary>
         /// Retrieves all the groups saved in Cache.
@@ -246,6 +257,8 @@ namespace IT_Hardware.Infra
 
             return null;
         }
+
+
 
         /// <summary>
         /// Saves the users groups to the memory cache.
@@ -269,5 +282,6 @@ namespace IT_Hardware.Infra
 
             _memoryCache.Set(cacheKey, usersGroups, cacheEntryOptions);
         }
+  
     }
 }
