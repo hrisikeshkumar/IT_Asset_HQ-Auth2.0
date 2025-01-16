@@ -9,16 +9,13 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 @*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>*@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-<script src="~/customjs/edit_sla.js"></script>
+ 
 <link href="~/css/commoncssclass.css" rel="stylesheet" />
-
+<script src="~/customjs/commonjs.js"></script>
 
 
 <div style="   text-align: center; height: 50px; align-content: center; width: 100% " class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
-
     <p style="font-size:large; font-weight:bold;">Update Status of Proposal</p>
-
 </div>
 
 <div style=" align-content:center; width:100%" class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
@@ -28,7 +25,6 @@
     {
 
         <table class=" table-hover table-striped shadow " style="width:100%">
-
             <tr>
                 <td style="width:20%; ">
                     Utilization Details
@@ -37,7 +33,6 @@
                 <td style="width:80%;" colspan="3">
                     @Html.TextAreaFor(x => x.Utilization_Details, new { @style = " width :100%; " })
                 </td>
-
             </tr>
             <tr>
                 <td style="width:20%;">
@@ -46,7 +41,6 @@
                 <td style="width:80%;" colspan="3">
                     @Html.TextAreaFor(x => x.Dte_IT_Remarks, new { @style = " width :100%; " })
                 </td>
-
             </tr>
             <tr>
                 <td style="width: 20%; ">
@@ -56,7 +50,6 @@
                     @Html.TextAreaFor(x => x.FA_Remarks, new { @style = " width :100%; " })
                 </td>
             </tr>
-
             <tr>
                 <td style="width:20%;">
                     Dte. of Purchase Remarks
@@ -118,19 +111,13 @@
                                             <td>
                                                 <input type='submit' class='appDetails btn_delete' id='@item.File_Id' value='Delete' />
                                             </td>
-
                                         </tr>
                                     }
 
                                 </table>
                             </td>
-
                         </tr>
-
                     </table>
-
-
-
                 </td>
             </tr>
 
@@ -212,23 +199,16 @@
                         $('#Item_Model_id').append('<option value="' + value.value + '">' + value.text + '</option>');
                     });
                 }
-
             });
-
         });
     });
 </script>
 
 
 
-
-
-
 @*------------------------------------ File Function--------------------------------------------------------------*@
 
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
 
 
 <script type="text/javascript">
@@ -256,7 +236,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "/Admin_Dashboard/FiliUpload",
+                    url: "@Url.Action("FiliUpload", "Admin_Dashboard")",
                     datatype: "Json",
                     data: fileData,
                     contentType: false, // Not to set any content header
@@ -267,23 +247,18 @@
                         }
                         else {
                             $("#Files_Grid tr").remove();
-
                             markup = "<tr><th style='width: 50%;'> File Name </th> <th style='width: 25%;'> Download </th> <th style='width: 25%; text-align: center'> Delete </th> </tr>";
                             tableBody = $("#Files_Grid tbody");
                             tableBody.append(markup);
 
-
                             if (response != null) {
-
                                 $.each(response, function (key, val) {
-
                                     markup = "<tr><td> " + val.File_Name + " </td> " +
                                         "<td>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.File_Id + "' > </input> </td> " +
                                         "<td style=' text-align: center'>  <input type='submit' class='appDetails btn_delete' id='" + val.File_Id + "' value='Delete' > </input> </td></tr> "
 
                                     tableBody = $("#Files_Grid tbody");
                                     tableBody.append(markup);
-
                                 });
                             }
                         }
@@ -291,12 +266,9 @@
                     error: function (err) {
                         alert(err.statusText);
                     }
-
                 });
             }
-
             event.preventDefault();
-
         });
     });
 </script>
@@ -366,8 +338,8 @@
         window.location.href = "/Admin_Dashboard/Download?fileId=" + fileName + "";
         event.preventDefault();
         */
+        /*  Async Download */ 
 
-        /*  Async Download */
         var file_Name = $(this).attr('id');
         $.ajax({
             type: "POST",
@@ -412,12 +384,6 @@
 
 </script>
 
-
 @*---------------------------------------------------------------------------------------------------------------*@
-
-
-
-
-
 
 

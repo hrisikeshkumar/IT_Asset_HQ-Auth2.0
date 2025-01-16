@@ -9,14 +9,14 @@ namespace IT_Hardware
 
         public DBConnection()
         {
-            var configuation = GetConfiguration();
+            var configuation = new ConfigurationDoc().GetConfiguration();
             con = new SqlConnection(configuation.GetSection("ConnectionStrings").GetSection("SQLConnection").Value);
             conChapter = new SqlConnection(configuation.GetSection("ConnectionStrings").GetSection("ChapterConn").Value);
         }
-        public IConfigurationRoot GetConfiguration()
-        {
-            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            return builder.Build();
-        }
+        //public IConfigurationRoot GetConfiguration()
+        //{
+        //    var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+        //    return builder.Build();
+        //}
     }
 }

@@ -15,9 +15,11 @@ namespace IT_Hardware.Areas.Admin.Controllers
     public class RoChapterInfoController : Controller
     {
         private IHostingEnvironment Environment;
+        private string fileloc;
         public RoChapterInfoController(IHostingEnvironment _environment)
         {
             Environment = _environment;
+            fileloc = new ConfigurationDoc().GetFileLoc;
         }
 
         public ActionResult ChapterInfo(RoChapterInfo_Mod data)
@@ -38,10 +40,11 @@ namespace IT_Hardware.Areas.Admin.Controllers
         {
 
            
-            string wwwPath = this.Environment.WebRootPath;
-            string contentPath = this.Environment.ContentRootPath;
+            //string wwwPath = this.Environment.WebRootPath;
+            //string contentPath = this.Environment.ContentRootPath;
 
-            string path = Path.Combine(this.Environment.WebRootPath, "wwwroot\\Files\\ChapterFile\\Invoice");
+            
+            string path = Path.Combine(fileloc, "\\Invoice");
 
             //Read the File as Byte Array.
             byte[] bytes = System.IO.File.ReadAllBytes(path + fileName);
@@ -55,10 +58,11 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
         public ContentResult QuotationDownload(string fileName)
         {
-            string wwwPath = this.Environment.WebRootPath;
-            string contentPath = this.Environment.ContentRootPath;
-
-            string path = Path.Combine(this.Environment.WebRootPath, "Files\\ChapterFile\\Quotation\\Procurement\\");
+            //string wwwPath = this.Environment.WebRootPath;
+            //string contentPath = this.Environment.ContentRootPath;
+            //string path = Path.Combine(this.Environment.WebRootPath, "Files\\ChapterFile\\Quotation\\Procurement\\");
+            
+            string path = Path.Combine(fileloc, "Quotation\\Procurement\\");
 
             //Read the File as Byte Array.
             byte[] bytes = System.IO.File.ReadAllBytes(path + fileName);
@@ -73,11 +77,11 @@ namespace IT_Hardware.Areas.Admin.Controllers
         public ContentResult SanctionOrderDownload(string fileName)
         {
 
-            string wwwPath = this.Environment.WebRootPath;
-            string contentPath = this.Environment.ContentRootPath;
+            //string wwwPath = this.Environment.WebRootPath;
+            //string contentPath = this.Environment.ContentRootPath;
+            //string path = Path.Combine(this.Environment.WebRootPath, "Files\\ChapterFile\\SanctionOrder\\");
 
-            string path = Path.Combine(this.Environment.WebRootPath, "Files\\ChapterFile\\SanctionOrder\\");
-
+            string path = Path.Combine(fileloc, "Quotation\\SanctionOrder\\");
 
             //Read the File as Byte Array.
             byte[] bytes = System.IO.File.ReadAllBytes(path + fileName);
@@ -92,10 +96,11 @@ namespace IT_Hardware.Areas.Admin.Controllers
         public ContentResult ApprovalDownload(string fileName)
         {
 
-            string wwwPath = this.Environment.WebRootPath;
-            string contentPath = this.Environment.ContentRootPath;
+            //string wwwPath = this.Environment.WebRootPath;
+            //string contentPath = this.Environment.ContentRootPath;
+            //string path = Path.Combine(this.Environment.WebRootPath, "Files\\ChapterFile\\Approval\\ ");
 
-            string path = Path.Combine(this.Environment.WebRootPath, "Files\\ChapterFile\\Approval\\ ");
+            string path = Path.Combine(fileloc, "Approval\\");
 
             //Read the File as Byte Array.
             byte[] bytes = System.IO.File.ReadAllBytes(path + fileName);

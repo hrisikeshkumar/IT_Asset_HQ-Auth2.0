@@ -121,80 +121,85 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-
         private static List<File_List> GetFiles_By_Id(string Proposal_Id)
         {
             List<File_List> files = new List<File_List>();
-            
-            using (SqlConnection con = new DBConnection().con)
-            {
-                using (SqlCommand cmd = new SqlCommand("SELECT Proposal_Id, FileName FROM Proposal_Status where  LTRIM(RTRIM(Proposal_Id))=LTRIM(RTRIM('" + Proposal_Id + "')) "))
-                {
-                    cmd.Connection = con;
-                    con.Open();
-                    using (SqlDataReader sdr = cmd.ExecuteReader())
-                    {
-                        while (sdr.Read())
-                        {
-                            files.Add(new File_List
-                            {
-                                File_Id = Convert.ToString(sdr["Proposal_Id"]),
-                                File_Name = Convert.ToString(sdr["File_Name"])
-                            });
-                        }
-                    }
-                    con.Close();
-                }
-            }
-            return files;
-        }
 
-
-
-        [HttpPost]
-        public JsonResult FiliUpload( IFormFile postedFile)
-        {
-
-            string Proposal_Id = Request.Form["Proposal_Id"].ToString();
-
-            if (postedFile != null)
+            try
             {
                 using (SqlConnection con = new DBConnection().con)
                 {
-                    string query = " Select Proposal_Id from Proposal_Status where LTRIM(RTRIM(FileName))= LTRIM(RTRIM(@FileName)";
-                    using (SqlCommand cmd = new SqlCommand(query))
+                    using (SqlCommand cmd = new SqlCommand("SELECT Proposal_Id, FileName FROM Proposal_Status where  LTRIM(RTRIM(Proposal_Id))=LTRIM(RTRIM('" + Proposal_Id + "')) "))
                     {
                         cmd.Connection = con;
-                        cmd.Parameters.AddWithValue("@FileName", Path.GetFileName(postedFile.FileName));
                         con.Open();
-
-                        SqlDataReader sdr = cmd.ExecuteReader();
-
-                        //Looping through each record
-                        while (sdr.Read())
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
-                            return Json(new SelectListItem("Duplicate","Please Rename the File and Upload"));
+                            while (sdr.Read())
+                            {
+                                files.Add(new File_List
+                                {
+                                    File_Id = Convert.ToString(sdr["Proposal_Id"]),
+                                    File_Name = Convert.ToString(sdr["FileName"])
+                                });
+                            }
                         }
                         con.Close();
                     }
                 }
 
-
-                string wwwPath = this.Environment.WebRootPath;
-                string contentPath = this.Environment.ContentRootPath;
-
-                string path = Path.Combine(this.Environment.WebRootPath, "Files\\ITDeptFile\\");
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-
-                using (FileStream stream = new FileStream(Path.Combine(path, postedFile.FileName), FileMode.Create))
-                {
-                    postedFile.CopyTo(stream);
-                }
             }
+            catch (Exception ex) { }
 
+            return files;
+        }
+
+
+        [HttpPost]
+        public JsonResult FiliUpload( IFormFile postedFile)
+        {
+            string Proposal_Id = Request.Form["Proposal_Id"].ToString();
+            try
+            {              
+                if (postedFile != null)
+                {
+                    using (SqlConnection con = new DBConnection().con)
+                    {
+                        string query = " Select Proposal_Id from Proposal_Status where LTRIM(RTRIM(FileName))= LTRIM(RTRIM(@FileName)";
+                        using (SqlCommand cmd = new SqlCommand(query))
+                        {
+                            cmd.Connection = con;
+                            cmd.Parameters.AddWithValue("@FileName", Path.GetFileName(postedFile.FileName));
+                            con.Open();
+
+                            SqlDataReader sdr = cmd.ExecuteReader();
+
+                            //Looping through each record
+                            while (sdr.Read())
+                            {
+                                return Json(new SelectListItem("Duplicate", "Please Rename the File and Upload"));
+                            }
+                            con.Close();
+                        }
+                    }
+
+                    string wwwPath = this.Environment.WebRootPath;
+                    string contentPath = this.Environment.ContentRootPath;
+
+                    string path = Path.Combine(this.Environment.WebRootPath, "Files\\ITDeptFile\\");
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+
+                    using (FileStream stream = new FileStream(Path.Combine(path, postedFile.FileName), FileMode.Create))
+                    {
+                        postedFile.CopyTo(stream);
+                    }
+                }
+
+            }
+            catch (Exception ex) { }
 
             /* Save File to DateBase 
             using (MemoryStream ms = new MemoryStream())
@@ -219,13 +224,11 @@ namespace IT_Hardware.Areas.Admin.Controllers
             }*/
 
             return Json(GetFiles_By_Id(Proposal_Id));
-
         }
 
 
         public JsonResult DeleteFile(string FileId, string RefId)
         {
-
             /*   Delete File from Database        
             using (SqlConnection con = new DBConnection().con)
             {
@@ -241,7 +244,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             } */
 
             return Json(GetFiles_By_Id(RefId));
-
         }
 
 
