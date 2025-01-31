@@ -13,13 +13,13 @@ namespace IT_Hardware.Areas.Admin.Controllers
     {
 
         public ActionResult Printer_Details()
-            {
-                BL_Printer com = new BL_Printer();
+        {
+            BL_Printer com = new BL_Printer();
 
-                List<Mod_Printer> pc_List = com.Get_PrinterData();
+            List<Mod_Printer> pc_List = com.Get_PrinterData();
 
-                return View( pc_List);
-            }
+            return View( pc_List);
+        }
 
 
 

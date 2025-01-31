@@ -53,7 +53,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             string base64 = Convert.ToBase64String(bytes, 0, bytes.Length);
 
             return Content(base64);
-
         }
 
         public ContentResult QuotationDownload(string fileName)
@@ -95,10 +94,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
         public ContentResult ApprovalDownload(string fileName)
         {
-
-            //string wwwPath = this.Environment.WebRootPath;
-            //string contentPath = this.Environment.ContentRootPath;
-            //string path = Path.Combine(this.Environment.WebRootPath, "Files\\ChapterFile\\Approval\\ ");
 
             string path = Path.Combine(fileloc, "Approval\\");
 

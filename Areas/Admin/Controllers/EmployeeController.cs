@@ -23,8 +23,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-
-        [Authorize(Roles = "SU, Admin")]
         [HttpGet]
         public ActionResult Create_Employee(string Message)
         {
@@ -43,8 +41,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-
-        [Authorize(Roles = "SU, Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Employee_Create_Post(Mod_Employee Get_Data)
@@ -58,7 +54,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                     BL_Employee save_data = new BL_Employee();
                     int status = save_data.Save_Employee_data(Get_Data, "Add_new");
 
-                    if (status == 1)
+                    if (status < 1)
                     {
                         TempData["Message"] = String.Format("Data is not saved");
                     }
@@ -84,7 +80,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-        [Authorize(Roles = "SU, Admin")]
         public ActionResult Edit_Employee(string id)
         {
             BL_Employee Emp_Data = new BL_Employee();
@@ -101,8 +96,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-
-        [Authorize(Roles = "SU, Admin")]
         [HttpPost]
         public ActionResult Update_Employee(Mod_Employee Get_Data)
         {
@@ -138,7 +131,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
 
-        [Authorize(Roles = "SU, Admin")]
         public ActionResult Delete_Employee(Mod_Employee Get_Data)
         {
             int status = 0;
@@ -147,10 +139,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
                 if (ModelState.IsValid)
                 {
-
-
                     BL_Employee Md_Emp = new BL_Employee();
-
                     status = Md_Emp.Save_Employee_data(Get_Data, "Delete");
 
                     if (status == 1)
@@ -165,9 +154,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-
                 TempData["Message"] = string.Format("ShowFailure();");
-
             }
 
             return RedirectToAction("Employee_Details", "Employee");
@@ -178,19 +165,12 @@ namespace IT_Hardware.Areas.Admin.Controllers
         
         public JsonResult Get_Designation(string Emp_Type)
         {
-
             BL_Employee data = new BL_Employee();
-
             Mod_Employee Mod_emp = new Mod_Employee();
-
             Mod_emp.Designation_List = data.Bind_Designation(Emp_Type);
-
             return Json(Mod_emp.Designation_List);
           
         }
-
-
-
 
     }
 }

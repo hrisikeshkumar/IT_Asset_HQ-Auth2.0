@@ -24,11 +24,16 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 using (SqlCommand cmd = new SqlCommand("sp_Employee"))
                 {
-                    SqlParameter sqlP_type = new SqlParameter("@Type", "Get_List");
+                    
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection = con;
+                    SqlParameter sqlP_type = new SqlParameter("@Type", "Get_List");
                     cmd.Parameters.Add(sqlP_type);
 
+                    //SqlParameter sqlP_User = new SqlParameter("@Type", "Get_List");
+                    //cmd.Parameters.Add(sqlP_User);
+
+  
                     using (SqlDataAdapter sda = new SqlDataAdapter())
                     {
                         sda.SelectCommand = cmd;

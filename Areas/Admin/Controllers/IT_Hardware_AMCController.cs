@@ -204,7 +204,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return RedirectToAction("Get_List_AMC", "IT_Hardware_AMC", new { AssetTypes = "" });
 
 
-
         }
 
     }

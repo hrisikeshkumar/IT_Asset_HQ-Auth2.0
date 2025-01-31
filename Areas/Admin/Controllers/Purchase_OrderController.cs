@@ -18,7 +18,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
         public ActionResult PO_Details(string Message)
         {
             BL_Porder objPO = new BL_Porder();
-
             List<Mod_POrder> pc_List = objPO.Get_All_PO_Data();
 
             return View( pc_List);
@@ -27,14 +26,11 @@ namespace IT_Hardware.Areas.Admin.Controllers
         
         public ActionResult PO_Create_Item()
         {
-
             Mod_POrder mod_PO = new Mod_POrder();
             BL_Porder com = new BL_Porder();
-
             mod_PO.Vendor_List = com.Vendor_List();
 
             return View( mod_PO);
-
         }
 
 
