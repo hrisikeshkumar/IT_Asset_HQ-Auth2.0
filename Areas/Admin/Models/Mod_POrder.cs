@@ -19,12 +19,12 @@ namespace IT_Hardware.Areas.Admin.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         [Required]
-        public DateTime PO_ST_Date { get; set; }
+        public DateTime? PO_ST_Date { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         [Required]
-        public DateTime PO_End_Date { get; set; }
+        public DateTime? PO_End_Date { get; set; }
 
 
         [Required]

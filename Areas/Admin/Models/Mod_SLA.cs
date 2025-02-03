@@ -5,8 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace IT_Hardware.Areas.Admin.Models
 {
     public class Mod_SLA
-    {
-        
+    {   
         public string? SLA_Id { get; set; }   /*pp*/
         public string Vendor_id { get; set; }
         public string? Vendor_Name { get; set; }   /*pp*/
@@ -27,7 +26,5 @@ namespace IT_Hardware.Areas.Admin.Models
         public DateTime? Create_date { get; set; }    /*pp*/
         public string? Verfd_status { get; set; }    /*pp*/
         public IFormFile? All_Files { get; set; }
-
-      
     }
 }

@@ -102,8 +102,8 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter Vendor_ID = new SqlParameter("@Vendor_ID", Data.Vendor_id);
                 cmd.Parameters.Add(Vendor_ID);
 
-                SqlParameter File_extension = new SqlParameter("@SLA_File_Name", Data.@SLA_File_Name);
-                cmd.Parameters.Add(File_extension);
+                SqlParameter PO_ID = new SqlParameter("@PO_Id", Data.Vendor_id);
+                cmd.Parameters.Add(PO_ID);
 
                 SqlParameter Service_Type_Short = new SqlParameter("@Service_Type_Short", Data.Service_Type_Short);
                 cmd.Parameters.Add(Service_Type_Short);
@@ -131,7 +131,6 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter User_Id = new SqlParameter("@Create_Usr_Id", Data.Create_usr_id);
                 cmd.Parameters.Add(User_Id);
 
-
                 using (SqlDataAdapter sda = new SqlDataAdapter())
                 {
                    
@@ -146,7 +145,6 @@ namespace IT_Hardware.Areas.Admin.Data
                             SLA_File_Name = Convert.ToString(dt.Rows[0]["SLA_File_temp"]);
                             status = Convert.ToInt32(dt.Rows[0]["Row_Effect"]);
                         }
-
                     }
                 }
 

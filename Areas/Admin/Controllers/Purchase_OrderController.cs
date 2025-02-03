@@ -54,7 +54,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                         PO_Data.PO_File_Name = "Y";
                         status = save_data.Save_PO_data(PO_Data, "Add_new", "", out string PO_Id, out string PO_File_Name);
 
-                        string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/PO/");
+                        string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/HQ/PO/");
 
                         //create folder if not exist
                         if (!Directory.Exists(path))

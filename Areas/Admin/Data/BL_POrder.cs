@@ -85,6 +85,9 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter PO_No = new SqlParameter("@PO_No", Data.PO_No);   
                 cmd.Parameters.Add(PO_No);
 
+                SqlParameter PO_Date = new SqlParameter("@PO_Date", Data.PO_Date);
+                cmd.Parameters.Add(PO_Date);
+
                 SqlParameter PO_Value = new SqlParameter("@PO_Value", Data.PO_Value);
                 cmd.Parameters.Add(PO_Value);
 
