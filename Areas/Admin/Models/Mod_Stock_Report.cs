@@ -6,7 +6,7 @@ namespace IT_Hardware.Areas.Admin.Models
 {
     public class Mod_Stock_Report
     {
-        public string Bud_year_Id { get; set; }
-        public List<SelectListItem> BudYear { get; set; }
+        public string? Bud_year_Id { get; set; }
+        public List<SelectListItem>? BudYear { get; set; }
     }
 }

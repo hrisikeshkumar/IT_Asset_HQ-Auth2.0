@@ -53,7 +53,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
                         if (Data.File_Invoice.Length > 0)
                         {
-                            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/Invoice");
+                            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/HQ/Invoice");
 
                             //create folder if not exist
                             if (!Directory.Exists(path))
@@ -193,7 +193,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         {
 
             //Build the File Path.
-            string path = Path.Combine("wwwroot/Files/Invoice/") + fileId;
+            string path = Path.Combine("wwwroot/Files/HQ/Invoice/") + fileId;
 
             //Read the File data into Byte Array.
             byte[] bytes = System.IO.File.ReadAllBytes(path);

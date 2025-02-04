@@ -59,7 +59,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                         Get_Data.SLA_File_Name= fileInfo.Extension;
                         status = save_data.Save_SLA_data(Get_Data, "Add_new", "", out SLA_Id, out SLA_FileName);
 
-                        string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/SLA");
+                        string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/HQ/SLA");
 
                         //create folder if not exist
                         if (!Directory.Exists(path))
@@ -135,7 +135,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                         Get_Data.SLA_File_Name = fileInfo.Extension;
                         status = save_data.Save_SLA_data(Get_Data, "Update", Get_Data.SLA_Id, out SLA_Id_I, out SLA_FileName);
 
-                        string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/SLA");
+                        string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/HQ/SLA");
 
                         //create folder if not exist
                         if (!Directory.Exists(path))
@@ -245,7 +245,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             if (postedFile.Length > 0)
             {
 
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/SLA");
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/HQ/SLA");
 
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
@@ -352,7 +352,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         {
 
             //Build the File Path.
-            string path = Path.Combine("wwwroot/Files/SLA/") + fileId;
+            string path = Path.Combine("wwwroot/Files/HQ/SLA/") + fileId;
 
             //Read the File data into Byte Array.
             byte[] bytes = System.IO.File.ReadAllBytes(path);

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using IT_Hardware.Areas.Admin.Data;
 using IT_Hardware.Areas.Admin.Models;
 using IT_Hardware.Infra;
+using DocumentFormat.OpenXml.EMMA;
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
@@ -19,18 +20,18 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Mod_Budget_Year mod_data = new Mod_Budget_Year();
 
             mod_data.List_Bud_Year=com.Get_Data();
+           
+
 
             return View( mod_data);
-
         }
 
         
         public ActionResult Budget_Year_Insert(Mod_Budget_Year data)
         {
-           
-            try
-            {
 
+            try
+            {              
                 if (ModelState.IsValid)
                 {
                     BL_Budget_Year save_data = new BL_Budget_Year();
@@ -63,7 +64,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         
         public ActionResult Budget_Year_Update(string Bud_Id)
         {
-           
+            
             try
             {
 
