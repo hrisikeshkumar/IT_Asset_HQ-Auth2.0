@@ -158,7 +158,8 @@
      aria-hidden="true">
     <div class="modal-dialog-centered">
         <div class="modal-content ">
-            @using (Html.BeginForm("Edit_proposal", "Admin_Dashboard", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("Edit_proposal", "Admin_Dashboard", FormMethod.Post, 
+                        new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }) )
             {
                 <div class="modal-header badge-warning k-i-align-items-center-alt">
                     <h4 style="font-weight:bold">
@@ -175,7 +176,6 @@
                                 Utilization Details
                             </td>
                             <td style="text-align:center; width:85%; ">
-
                                 @Html.TextAreaFor(x => x.Prop_detail.Utilization_Details, new { @readonly = "true", @class = " form-rounded", @style = " width :100%; " })
                             </td>
                         </tr>
@@ -265,11 +265,7 @@
     </div>
 </div>
 
-
 @*--------------------------------------------------------------Radio Button------------------------------------------------------------------------------*@
-
-
-
 
 <script type="text/javascript">
 
@@ -286,11 +282,9 @@
             $("#budget").removeClass("hidetable");
 
         }
-
     });
 
 </script>
-
 
 
 @if (TempData["Message"] != null && TempData["Message"] != "" && TempData["Message"] != string.Empty)
@@ -303,8 +297,6 @@
     </script>
 
 }
-
-
 
 
 <script type="text/javascript">
@@ -323,12 +315,12 @@
                 success: function (response) {
                     if (response != null) {
                         $('#Prop_detail_Utilization_Details').val(response.prop_detail.utilization_Details);
-                        $('#Prop_Detail_Proposal_Id').val(response.prop_detail.proposal_Id);
-                        $('#Prop_Detail_Dte_IT_Remarks').val(response.prop_detail.dte_IT_Remarks);
-                        $('#Prop_Detail_FA_Remarks').val(response.prop_detail.fa_remarks);
-                        $('#Prop_Detail_Sec_Office_Remarks').val(response.prop_detail.sec_Office_Remarks);
-                        $('#Prop_Detail_Purchase_Remarks').val(response.prop_detail.purchase_Remarks);
-                        $('#Prop_Detail_Other_Dept_Remarks').val(response.prop_detail.other_Dept_Remarks);
+                        $('#Prop_detail_Proposal_Id').val(response.prop_detail.proposal_Id);  
+                        $('#Prop_detail_Dte_IT_Remarks').val(response.prop_detail.dte_IT_Remarks);
+                        $('#Prop_detail_FA_Remarks').val(response.prop_detail.fa_remarks);
+                        $('#Prop_detail_Sec_Office_Remarks').val(response.prop_detail.sec_Office_Remarks);
+                        $('#Prop_detail_Purchase_Remarks').val(response.prop_detail.purchase_Remarks);
+                        $('#Prop_detail_Other_Dept_Remarks').val(response.prop_detail.other_Dept_Remarks);
 
                         markup = "  <tr> <th style='width: 70%; text-align: left; border: 1px solid black; height: 30px; background-color: #ffcc00 '> File Name </th> " +
                             "<th style='width: 30%; text-align: center; border: 1px solid black; background-color: #ffcc00 '> Download </th> </tr> "
@@ -336,7 +328,7 @@
                         tableBody = $("#Files_Grid tbody");
                         tableBody.append(markup);
 
-                        $.each(response.Prop_detail.Prop_Files, function (key, val) {
+                        $.each(response.prop_detail.prop_Files, function (key, val) {
 
                             markup = "<tr><td  style='width: 70%; text-align: left; height: 30px;'> " + val.file_Name + " </td> " +
                                 "<td  style='width: 30%; text-align: center; '>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.file_Id + "' > </input> </td> </tr > "
@@ -368,18 +360,14 @@
 </script>
 
 
-
 <script type="text/javascript">
     $(document).on("click", ".cssdownload", function () {
         var fileName = $(this).attr('id');
 
-
         window.location.href = "/Admin_Dashboard/Download?fileId=" + fileName + "";
-
 
         event.preventDefault();
     });
-
 
     function Base64ToBytes(base64) {
         var s = window.atob(base64);
@@ -389,7 +377,6 @@
         }
         return bytes;
     };
-
 
 </script>
 

@@ -73,9 +73,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             detail_Data.Prop_Files = GetFiles_By_Id(Proposal.Prop_detail.Proposal_Id);
 
             Mod_Admin_dashB mod_Data = new Mod_Admin_dashB();
-
             mod_Data.Prop_detail = detail_Data;
-
             B_Layer.Get_Proposal_By_Id(mod_Data, Proposal.Prop_detail.Proposal_Id);
 
             return View(mod_Data.Prop_detail);
@@ -90,7 +88,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             try
             {
                
-
                 if (ModelState.IsValid)
                 {
                     BL_Admin_DashB B_Layer = new BL_Admin_DashB();
@@ -208,7 +205,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
                 using (SqlConnection con = new DBConnection().con)
                 {
-                    string query = "INSERT INTO tblFiles VALUES (@Name, @ContentType, @Data)";
+                    string query = "INSERT INTO   VALUES (@Name, @ContentType, @Data)";
                     using (SqlCommand cmd = new SqlCommand(query))
                     {
                         cmd.Connection = con;

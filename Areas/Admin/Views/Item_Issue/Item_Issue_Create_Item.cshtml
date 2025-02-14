@@ -194,20 +194,14 @@
         source: function (request, response) {
             $.ajax({
                 url: "@Url.Action("AutoComplete", "Item_Issue")",
-                data: "{'SL_No': '" + request.term + "'}",
+                data: {SL_No: request.term},
                 dataType: "json",
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     response($.map(data, function (item) {
                         return item.Item_SL_Number + ' -- ' + item.Item_Type + '--' + item.Item_Id;
-                        //return item ;
-
-                        //return {
-                        //    label: item.Item_SL_Number + '  ' + item.Item_Type + ' )',
-                        //    value: item.Item_Id,
-                        //    valeeee: item.ItemId
-                        //};
+                       
                     }))
                 },
                 failure: function (response) {

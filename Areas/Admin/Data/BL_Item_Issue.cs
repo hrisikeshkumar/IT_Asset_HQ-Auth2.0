@@ -293,8 +293,6 @@ namespace IT_Hardware.Areas.Admin.Data
         public Mod_Item_Issue_Employee Issue_Employee(Mod_Item_Issue_Employee Emp_Details, string Sl_No, string Type)
         {
 
-            
-
             try
             {
                 DataTable dt_Comuter;

@@ -220,9 +220,9 @@
                 data: { Yearcode: $('#Budget_Year').val(), Bud_Head_Id: $('#Budget_Head_Id').val() },
                 success: function (response) {
                     if (response != null) {
-                        $('#Total_Approved_Budget').val(response.Total_Approved_Budget);
-                        $('#Amount_Utilized_Before').val(response.Amount_Utilized_Before);
-                        $('#Balance_Available').val(response.Balance_Available);
+                        $('#Total_Approved_Budget').val(response.total_Approved_Budget);
+                        $('#Amount_Utilized_Before').val(response.amount_Utilized_Before);
+                        $('#Balance_Available').val(response.balance_Available);
                     } else {
                         alert("Something went wrong");
                     }

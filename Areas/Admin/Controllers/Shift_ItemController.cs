@@ -19,9 +19,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             return View(pc_List);
         }
-
-
-        
+    
         [HttpGet]
         public ActionResult Shift_Item_Create_Item(string Message)
         {
