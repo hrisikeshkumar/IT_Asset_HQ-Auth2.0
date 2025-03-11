@@ -153,9 +153,10 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public JsonResult FiliUpload( IFormFile postedFile)
+        public JsonResult FiliUpload()
         {
             string Proposal_Id = Request.Form["Proposal_Id"].ToString();
+            IFormFile postedFile = Request.Form.Files[0];
             string ext = System.IO.Path.GetExtension(postedFile.FileName);
             if (ext != ".pdf") 
             {
@@ -170,7 +171,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                    
                     using (SqlConnection con = new DBConnection().con)
                     {
-                        string query = " Select Proposal_File_ID, Proposal_Id, FileName from Proposal_Files where LTRIM(RTRIM(FileName))= LTRIM(RTRIM(@FileName)";
+                        string query = " Select Proposal_File_ID, Proposal_Id, FileName from Proposal_Files where LTRIM(RTRIM(FileName))= LTRIM(RTRIM(@FileName))";
                         using (SqlCommand cmd = new SqlCommand(query))
                         {
                             cmd.Connection = con;
@@ -185,10 +186,13 @@ namespace IT_Hardware.Areas.Admin.Controllers
                                 return Json(new SelectListItem("Duplicate", "Please Rename the File and Upload"));
                             }
 
+                            sdr.Close();
+
                             query = " insert into Proposal_Files (Proposal_Id, FileName, Updated_By , Update_Time) " +
-                                          " values (@ProposalID, @FileName, @UserId, @Datetime ) ";
+                                          " values (@ProposalID, @FileName, @UserId, @Datetime ); SELECT SCOPE_IDENTITY(); ";
 
                             cmd.Parameters.Clear();
+                            cmd.CommandText = query;
                             cmd.Parameters.AddWithValue("@ProposalID", Proposal_Id);
                             cmd.Parameters.AddWithValue("@FileName", Path.GetFileName(postedFile.FileName));
                             cmd.Parameters.AddWithValue("@UserId", HttpContext.User.Identity.Name.ToString());
@@ -286,10 +290,11 @@ namespace IT_Hardware.Areas.Admin.Controllers
             string wwwPath = this.Environment.WebRootPath;
             string contentPath = this.Environment.ContentRootPath;
 
-            string path = Path.Combine(this.Environment.WebRootPath, "Files\\ITDeptFile\\");
+            string path = Path.Combine(this.Environment.WebRootPath, "Files\\FileMovement\\");
 
+            string file_name = fileId + ".pdf";
             //Read the File as Byte Array.
-            byte[] bytes = System.IO.File.ReadAllBytes(path + fileId);
+            byte[] bytes = System.IO.File.ReadAllBytes(path + file_name);
 
             //Convert File to Base64 string and send to Client.
             string base64 = Convert.ToBase64String(bytes, 0, bytes.Length);
