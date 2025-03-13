@@ -284,7 +284,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-        public ContentResult Download(string fileId)
+        public ContentResult Download(string fileName)
         {
 
             string wwwPath = this.Environment.WebRootPath;
@@ -292,7 +292,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             string path = Path.Combine(this.Environment.WebRootPath, "Files\\FileMovement\\");
 
-            string file_name = fileId + ".pdf";
+            string file_name = fileName + ".pdf";
             //Read the File as Byte Array.
             byte[] bytes = System.IO.File.ReadAllBytes(path + file_name);
 
