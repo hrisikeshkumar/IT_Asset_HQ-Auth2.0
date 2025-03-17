@@ -303,9 +303,9 @@
 
                             $.each(response, function (key, val) {
 
-                                markup = "<tr><td> " + val.File_Name + " </td> " +
-                                    "<td>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.File_Id + "' > </input> </td> " +
-                                    "<td style=' text-align: center'>  <input type='submit' class='appDetails btn_delete' id='" + val.File_Id + "' value='Delete' > </input> </td></tr> "
+                                markup = "<tr><td> " + val.file_Name + " </td> " +
+                                    "<td>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.file_Id + "' > </input> </td> " +
+                                    "<td style=' text-align: center'>  <input type='submit' class='appDetails btn_delete' id='" + val.file_Id + "' value='Delete' > </input> </td></tr> "
 
                                 tableBody = $("#Files_Grid tbody");
                                 tableBody.append(markup);
@@ -321,7 +321,7 @@
 
                 });
 
-            
+            }
 
             event.preventDefault();
 
