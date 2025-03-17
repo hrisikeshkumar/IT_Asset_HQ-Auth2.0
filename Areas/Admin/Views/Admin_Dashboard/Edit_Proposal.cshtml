@@ -101,9 +101,9 @@
 
                                     @foreach (var item in Model.Prop_Files)
                                     {
-                                        <tr> 
+                                        <tr>
                                             <td class='filename'>
-                                                @Html.DisplayFor(modelItem => item.File_Name)
+                                                <p>@Html.DisplayFor(modelItem => item.File_Name)</p>
                                             </td>
                                             <td>
                                                 <input type='submit' value='Download' class='cssdownload btn_download' id='@item.File_Id' />
@@ -321,7 +321,7 @@
 
                 });
 
-            }
+            
 
             event.preventDefault();
 
@@ -335,7 +335,8 @@
         
         var fileID = $(this).attr('id');
         var FileName = $(this).closest("tr")   // Finds the closest row <tr>
-                       .find(".filename")     // Gets a descendent with class="nr"
+                       .find(".filename")
+                       .find("p")
                        .text();
         $.ajax({
             type: "POST",
