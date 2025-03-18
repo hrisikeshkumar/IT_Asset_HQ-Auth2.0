@@ -199,9 +199,9 @@ namespace IT_Hardware.Areas.Admin.Data
                     Data.Service_Type_Details = Convert.ToString(dt_Comuter.Rows[0]["Service_Type_Details"]);
 
 
-                    if (Convert.ToString(dt_Comuter.Rows[0]["SLA_File"]) != "")
+                    if (Convert.ToString(dt_Comuter.Rows[0]["SLA_FileName"]) != "")
                     {
-                        Data.SLA_File_Name = Convert.ToString(dt_Comuter.Rows[0]["SLA_File"]);
+                        Data.SLA_File_Name = Convert.ToString(dt_Comuter.Rows[0]["SLA_FileName"]);
                     }
                     
 
