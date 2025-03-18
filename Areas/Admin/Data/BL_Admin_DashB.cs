@@ -157,7 +157,7 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     BL_data.Prop_detail.Utilization_Details = Convert.ToString(dt_Comuter.Rows[0]["Utilization_Details"]);
 
-                    BL_data.Prop_detail.Dte_IT_Remarks = Convert.ToString(dt_Comuter.Rows[0]["Dte_IT_Remarks"]);
+                    BL_data.Prop_detail.Dte_IT_Remarks = Convert.ToString(dt_Comuter.Rows[0]["Dte_IT_Copy"]);
 
                     BL_data.Prop_detail.FA_Remarks = Convert.ToString(dt_Comuter.Rows[0]["FA_Remarks"]);
 
@@ -198,7 +198,7 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter Proposal_Id = new SqlParameter("@Proposal_Id", Proposal.Proposal_Id);
                 cmd.Parameters.Add(Proposal_Id);
 
-                SqlParameter Dte_IT_Remarks = new SqlParameter("Dte_IT_Remarks", Proposal.Dte_IT_Remarks);
+                SqlParameter Dte_IT_Remarks = new SqlParameter("@Dte_IT_Remarks", Proposal.Dte_IT_Remarks);
                 cmd.Parameters.Add(Dte_IT_Remarks);
 
                 SqlParameter FA_Remarks = new SqlParameter("@FA_Remarks", Proposal.FA_Remarks);

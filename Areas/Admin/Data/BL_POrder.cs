@@ -184,7 +184,11 @@ namespace IT_Hardware.Areas.Admin.Data
                     if (Convert.ToString(dt_PObyID.Rows[0]["PO_End_Date"]) != string.Empty)
                         Data.PO_End_Date = Convert.ToDateTime(dt_PObyID.Rows[0]["PO_End_Date"]);
 
-                    Data.PO_File_Name = Convert.ToString(dt_PObyID.Rows[0]["PO_File"]);
+                    Data.PO_File_Name = Convert.ToString(dt_PObyID.Rows[0]["PO_File"]) ;
+
+                    if (Data.PO_File_Name != string.Empty)
+                        Data.PO_File_Name = Data.PO_File_Name + ".pdf";
+
                     Data.Vendor_id = Convert.ToString(dt_PObyID.Rows[0]["Vendor_Id"]);
                     Data.Remarks = Convert.ToString(dt_PObyID.Rows[0]["Remarks"]); 
 

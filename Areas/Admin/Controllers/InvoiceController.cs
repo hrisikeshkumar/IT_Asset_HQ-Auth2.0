@@ -2,40 +2,44 @@
 using Microsoft.AspNetCore.Mvc;
 using IT_Hardware.Areas.Admin.Data;
 using IT_Hardware.Areas.Admin.Models;
+using System.Data.SqlClient;
 using IT_Hardware.Infra;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
-    [Authorize(Policy =AuthorizationPolicies.ITStaffs)]
+    [Authorize(Policy = AuthorizationPolicies.ITStaffs)]
     [Area("Admin")]
     public class InvoiceController : Controller
     {
+        private IHostingEnvironment Environment;
 
-        [HttpGet]
-        public ActionResult Invoice_Details(string Message)
+        public InvoiceController(IHostingEnvironment _environment)
         {
-            BL_Invoice objPO = new BL_Invoice();
-
-            List<Mod_Invoice> pc_List = objPO.Get_All_Invoice();
-
-            return View( pc_List);
+            Environment = _environment;
         }
 
-
-        public ActionResult Invoice_Create_Item()
+        [HttpGet]
+        public ActionResult List_Invoice(string Message)
         {
-            Mod_Invoice mod_PO = new Mod_Invoice();
-            BL_Invoice Inv_Data = new BL_Invoice();
-            mod_PO.Fin_Year_List = Inv_Data.Fin_Year_List();
-            mod_PO.PO_list = Inv_Data.PO_List();
+            Invoice_BL objPO = new Invoice_BL();
+            List<Invoice_Mod> Inv_List = objPO.Get_All_Invoice(HttpContext.User.Identity.Name.ToString());
 
+            return View(Inv_List);
+        }
+
+        public ActionResult Create_Invoice()
+        {
+            Invoice_Mod mod_PO = new Invoice_Mod();
+            Invoice_BL Inv_Data = new Invoice_BL();
+            mod_PO.SanctionOrder_list = Inv_Data.SanctionOrder_List(HttpContext.User.Identity.Name.ToString());
+            mod_PO.Invoice_Date = DateTime.Today;
             return View( mod_PO);
         }
 
-
         [HttpPost]
-        public ActionResult Invoice_Create_Post(Mod_Invoice Data)
+        public ActionResult Invoice_Create_Post(Invoice_Mod Data)
         {
             string Message = "";
             try
@@ -44,8 +48,26 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 string Vendor_Id = string.Empty;
                 if (ModelState.IsValid)
                 {
-                    BL_Invoice save_data = new BL_Invoice();
-                    int status = save_data.Save_data(Data, "Add_new", "", out string Inv_Id, out string Inv_File_Name);
+                    Invoice_BL save_data = new Invoice_BL();
+                    string InvFileInfo=string.Empty;
+                    string AppFileInfo = string.Empty;
+                    if (Data.File_Invoice != null)
+                    {
+                        if (Data.File_Invoice.Length > 0)
+                        {
+                            InvFileInfo = new FileInfo(Data.File_Invoice.FileName).Extension;
+                        }
+                    }
+                    if (Data.File_CommitteeApproval != null)
+                    {
+                        if (Data.File_CommitteeApproval.Length > 0)
+                        {
+                            AppFileInfo = new FileInfo(Data.File_CommitteeApproval.FileName).Extension;
+                        }
+                    }
+
+                    int status = save_data.Save_data(Data, "Add_new", AppFileInfo, InvFileInfo,
+                              out string Inv_Id, out string Inv_File_Name, out string approval_File);
 
                     if (status > 0)
                     {
@@ -53,21 +75,37 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
                         if (Data.File_Invoice.Length > 0)
                         {
-                            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/HQ/Invoice");
+                            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files\\ChapterFile\\Invoice\\");
 
                             //create folder if not exist
                             if (!Directory.Exists(path))
                                 Directory.CreateDirectory(path);
 
                             //get file extension
-                            FileInfo fileInfo = new FileInfo(Data.File_Invoice.FileName);
-                            string fileName = Inv_File_Name + fileInfo.Extension;
-
-                            string fileNameWithPath = Path.Combine(path, fileName);
+                            
+                            string fileNameWithPath = Path.Combine(path, Inv_File_Name);
 
                             using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
                             {
                                 Data.File_Invoice.CopyTo(stream);
+                            }
+                        }
+
+                        if (Data.File_CommitteeApproval.Length > 0)
+                        {
+                            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files\\ChapterFile\\Approval");
+
+                            //create folder if not exist
+                            if (!Directory.Exists(path))
+                                Directory.CreateDirectory(path);
+
+                            //get file extension
+
+                            string fileNameWithPath = Path.Combine(path, approval_File);
+
+                            using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                            {
+                                Data.File_CommitteeApproval.CopyTo(stream);
                             }
                         }
                     }
@@ -86,23 +124,21 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 TempData["Message"] = string.Format("ShowFailure();");
             }
 
-            return RedirectToAction("Invoice_Create_Item", "Invoice");
+            return RedirectToAction("Create_Invoice", "Invoice");
         }
 
         [HttpGet]
         public ActionResult Edit_Invoice(string id)
         {      
-            BL_Invoice Inv_Data = new BL_Invoice();
-            Mod_Invoice mod_PO = Inv_Data.Get_Data_By_ID(id);
-            mod_PO.Fin_Year_List = Inv_Data.Fin_Year_List();
-            mod_PO.PO_list = Inv_Data.PO_List();
-
-            return View(  mod_PO);
+            Invoice_BL Inv_Data = new Invoice_BL();
+            Invoice_Mod mod_PO = Inv_Data.Get_Data_By_ID(id, HttpContext.User.Identity.Name.ToString());
+            mod_PO.SanctionOrder_list = Inv_Data.SanctionOrder_List(HttpContext.User.Identity.Name.ToString());
+            return View(mod_PO);
         }
 
 
         [HttpPost]
-        public ActionResult Update_Invoice(Mod_Vendor Get_Data)
+        public ActionResult Update_Invoice(Invoice_Mod Get_Data)
         {
             int status = 0;
             try
@@ -110,11 +146,11 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 Get_Data.Create_usr_id = HttpContext.User.Identity.Name;
                 if (ModelState.IsValid)
                 {
-                    BL_Vendor Md_Asset = new BL_Vendor();
+                    Invoice_BL Md_Asset = new Invoice_BL();
 
                     string out_param = string.Empty;
 
-                    status = Md_Asset.Save_Vendor_data(Get_Data, "Update", Get_Data.Vendor_id, out out_param);
+                    //status = Md_Asset.Save_data(Get_Data, "Update", Get_Data., out out_param);
 
                     if (status > 0)
                     {
@@ -137,25 +173,26 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             }
 
-            return RedirectToAction("Invoice_Details", "Invoice");
+            return RedirectToAction("List_Invoice", "Invoice");
         }
 
 
-        public ActionResult Delete_Invoice(Mod_Vendor Get_Data, string id)
+        public ActionResult Delete_Invoice(Invoice_Mod Get_Data, string id)
         {
             int status = 0;
             try
             {
+
                 Get_Data.Create_usr_id = HttpContext.User.Identity.Name;
+
                 if (ModelState.IsValid)
                 {
 
-
-                    BL_Vendor Md_Asset = new BL_Vendor();
+                    Invoice_BL Md_Asset = new Invoice_BL();
 
                     string out_param = string.Empty;
 
-                    status = Md_Asset.Save_Vendor_data(Get_Data, "Delete", id, out out_param);
+                    //---------status = Md_Asset.Save_Vendor_data(Get_Data, "Delete", id, out out_param);
 
                     if (status > 0)
                     {
@@ -165,6 +202,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                     {
                         TempData["Message"] = String.Format("Data is not saved");
                     }
+
                 }
             }
             catch (Exception ex)
@@ -177,23 +215,11 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return RedirectToAction("Vendor_Details", "Vendor");
         }
 
-
-        public JsonResult Bud_Head_List(string Fin_Year)
-        {
-
-            BL_Invoice data = new BL_Invoice();
-            Mod_Invoice Mod_Invoice = new Mod_Invoice();
-            Mod_Invoice.Budget_List = data.Budget_Head_List(Fin_Year);
-
-            return Json(Mod_Invoice.Budget_List);
-        }
-
-
         public FileResult Download(string fileId)
         {
 
             //Build the File Path.
-            string path = Path.Combine("wwwroot/Files/HQ/Invoice/") + fileId;
+            string path = Path.Combine("wwwroot\\Files\\ChapterFile\\Approval\\") + fileId;
 
             //Read the File data into Byte Array.
             byte[] bytes = System.IO.File.ReadAllBytes(path);
@@ -201,9 +227,36 @@ namespace IT_Hardware.Areas.Admin.Controllers
             //Send the File to Download.
             return File(bytes, "application/octet-stream", fileId);
 
-           
         }
 
+        public JsonResult ReplaceFile(IFormFile file, string FileType, string fileName)
+        {
+            string message = "Error Occoured";
+           
+            if (file != null)
+            {
+                try
+                {
+                    string wwwPath = this.Environment.WebRootPath;
+                    string contentPath = this.Environment.ContentRootPath;
+
+                    string path = Path.Combine(this.Environment.WebRootPath, "Files\\ChapterFile\\Invoice");
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+
+                    using (FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                    message = "File Replaced Successfully";
+                }
+                catch (Exception ex) { }
+            }
+
+            return Json(message);
+        }
 
     }
 }

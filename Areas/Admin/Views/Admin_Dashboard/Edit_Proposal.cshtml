@@ -253,7 +253,7 @@
 
                             if (response != null) {
                                 $.each(response, function (key, val) {
-                                    markup = "<tr><td class='filename'> " + val.file_Name + " </td> " +
+                                    markup = "<tr><td class='filename'> <p>" + val.file_Name + "</p> </td> " +
                                         "<td>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.file_Id + "' > </input> </td> " +
                                         "<td style=' text-align: center'>  <input type='submit' class='appDetails btn_delete' id='" + val.file_Id + "' value='Delete' > </input> </td></tr> "
 

@@ -1,4 +1,4 @@
-﻿@model IT_Hardware.Areas.Admin.Models.Mod_Invoice
+﻿@model IT_Hardware.Areas.Admin.Models.Invoice_Mod
 
 
 @{
@@ -12,16 +12,17 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 
-<script src="~/js/commonjs.js"></script>
 <link href="~/css/commoncssclass.css" rel="stylesheet" />
+<script src="~/js/commonjs.js"></script>
 
-<div style="   text-align: center; height: 50px; align-content: center; width: 100% " class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
 
-    <p style="font-size:large; font-weight:bold;">New Invoice</p>
+<div style=" text-align: center; align-content: center; width: 100% " class=" h-10 w-100 shadow p-1 mb-1 bg-white rounded">
+
+    <p style="font-size:large; font-weight:400;">New Invoice</p>
 
 </div>
 
-<div style=" align-content:center; width:100%" class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
+<div style=" align-content:center; width:100%" class=" h-10 w-100 shadow p-1 mb-1 bg-white rounded">
 
 
     @using (Html.BeginForm("Invoice_Create_Post", "Invoice", FormMethod.Post, new { encType = "multipart/form-data" }))
@@ -47,29 +48,15 @@
                     Subject
                 </td>
                 <td style="width:80%;" colspan="3">
-                    @Html.TextAreaFor(x => x.Invoice_Subject, new { @rows = "3", @style = " width :95%; " })
+                    @Html.TextAreaFor(x => x.Invoice_Subject, new { @rows = "2", @style = " width :95%; " })
                 </td>
             </tr>
             <tr>
                 <td style="width:20%; height:50px;">
-                    Financial Year
+                    Sanction Order
                 </td>
                 <td style="width:30%;">
-                    @Html.DropDownListFor(x => x.Fin_Year, Model.Fin_Year_List, new { @class = "dateclass form-rounded", @style = " width :90%; " })
-                </td>
-                <td style="width:20%; height:50px;">
-                    Budget Head
-                </td>
-                <td style="width:30%;">
-                    @Html.DropDownListFor(x => x.Budget_Id, new SelectList(string.Empty, "Value", "Text"), new { @class = "dateclass form-rounded", @style = " width :90%; " })
-                </td>
-            </tr>
-            <tr>
-                <td style="width:20%; height:50px;">
-                    Purchase Order
-                </td>
-                <td style="width:30%;">
-                    @Html.DropDownListFor(x => x.PO_Id, Model.PO_list, new { @class = "form-rounded", @style = " width :90%; " })
+                    @Html.DropDownListFor(x => x.SanctionOrder_Id, Model.SanctionOrder_list, new { @class = "form-rounded", @style = " width :90%; " })
                 </td>
                 <td style="width:20%; height:50px;">
                     Invoice Value
@@ -79,28 +66,12 @@
                 </td>
             </tr>
             <tr>
-                <td style="width:20%;">
-                    Invoice Period
-                </td>
-                <td style="width:80%;" colspan="3">
-                    @Html.TextAreaFor(x => x.Penalty_Reason, new { @rows = "2", @style = " width :96%; " })
-                </td>
-            </tr>
-            <tr>
                 <td style="width:20%; height:50px;">
                     Penalty Amount
                 </td>
                 <td style="width:30%;"  >
                     @Html.TextBoxFor(x => x.Penalty_Amount, new { @class = " form-rounded", @style = " width :95%; " })
                 </td>
-                <td style="width:20%; height:50px;">
-                    Invoice File
-                </td>
-                <td style="width:30%;">
-                    @Html.TextBoxFor(model => model.File_Invoice, "", new { @type = "file" })
-                </td>
-            </tr>
-            <tr>
                 <td style="width:20%;">
                     Penalty Reason
                 </td>
@@ -109,13 +80,29 @@
                 </td>
             </tr>
             <tr>
+                <td style="width:20%; height:50px;">
+                    Management Committee Approval
+                </td>
+                <td style="width:30%;">
+                    @Html.TextBoxFor(model => model.File_CommitteeApproval, "", new { @type = "file" })
+                </td>
+
+                <td style="width:20%; height:50px;">
+                    Invoice File
+                </td>
+                <td style="width:30%;">
+                    @Html.TextBoxFor(model => model.File_Invoice, "", new { @type = "file" })
+                </td>
+            </tr>
+            <tr>
                 <td style="width:25%;">
                     Remarks
                 </td>
                 <td style="width:75%; " colspan="3">
-                    @Html.TextAreaFor(x => x.Remarks, new { @rows = "4", @style = " width :96%; " })
+                    @Html.TextAreaFor(x => x.Remarks, new { @rows = "2", @style = " width :96%; " })
                 </td>
             </tr>
+         
             <tr>
                 <td style="width:100%; height:10px;" colspan="4">
                 </td>
@@ -127,7 +114,7 @@
                     <button class="button_cls form-rounded">Submit</button>
                 </td>
                 <td style="width: 25%; padding-top: 10px; padding-bottom: 5px" align="center">
-                    @Html.ActionLink("Back", "Invoice_Details", "Invoice", null, new { @class = "button_cls form-rounded", })
+                    @Html.ActionLink("Back", "List_Invoice", "Invoice", null, new { @class = "button_cls form-rounded", })
                 </td>
                 <td align="left" style="width:25%;"></td>
             </tr>

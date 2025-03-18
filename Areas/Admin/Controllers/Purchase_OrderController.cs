@@ -4,6 +4,9 @@ using IT_Hardware.Areas.Admin.Data;
 using IT_Hardware.Areas.Admin.Models;
 using DocumentFormat.OpenXml.EMMA;
 using IT_Hardware.Infra;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Data.SqlClient;
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
@@ -13,7 +16,13 @@ namespace IT_Hardware.Areas.Admin.Controllers
     public class Purchase_OrderController : Controller
     {
 
-        
+        private IHostingEnvironment Environment;
+
+        public Purchase_OrderController(IHostingEnvironment _environment)
+        {
+            Environment = _environment;
+        }
+
         [HttpGet]
         public ActionResult PO_Details(string Message)
         {
@@ -40,6 +49,16 @@ namespace IT_Hardware.Areas.Admin.Controllers
             string Message = "";
             try
             {
+
+                if (PO_Data.File_PO !=null)
+                {
+                    if (Path.GetExtension(PO_Data.File_PO.FileName) != ".pdf")
+                    {
+                        TempData["Message"] = String.Format("Only PDF files are accepted");
+                        return RedirectToAction("PO_Create_Item");
+                    }
+                }
+
                 PO_Data.Create_usr_id = HttpContext.User.Identity.Name;
                 string Vendor_Id = string.Empty;
                 if (ModelState.IsValid)
@@ -49,7 +68,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
                     int status = 0;
 
-                    if (PO_Data.File_PO.Length > 0)
+                    if (PO_Data.File_PO != null)
                     {
                         PO_Data.PO_File_Name = "Y";
                         status = save_data.Save_PO_data(PO_Data, "Add_new", "", out string PO_Id, out string PO_File_Name);
@@ -115,33 +134,83 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public JsonResult FiliUpload(string SLA_Id)
+        public ActionResult Update_PO(Mod_POrder PO_Data)
         {
-
-
-            string SLA_Id1 = SLA_Id.ToString();
-            IFormFile postedFile = Request.Form.Files[0];
-            if (postedFile.Length > 0)
+            string Message = "";
+            try
             {
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/PO");
 
-                if (!Directory.Exists(path))
-                    Directory.CreateDirectory(path);
-
-                //get file extension
-                FileInfo fileInfo = new FileInfo(postedFile.FileName);
-                string fileName = SLA_Id + fileInfo.Extension;
-
-                string fileNameWithPath = Path.Combine(path, fileName);
-
-                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                if (PO_Data.File_PO != null)
                 {
-                    postedFile.CopyTo(stream);
+                    if (Path.GetExtension(PO_Data.File_PO.FileName) != ".pdf")
+                    {
+                        TempData["Message"] = String.Format("Only PDF files are accepted");
+                        return RedirectToAction("PO_Create_Item");
+                    }
+                }
+
+                PO_Data.Create_usr_id = HttpContext.User.Identity.Name;
+                string Vendor_Id = string.Empty;
+                if (ModelState.IsValid)
+                {
+
+                    BL_Porder save_data = new BL_Porder();
+
+                    int status = 0;
+
+                    if (PO_Data.File_PO != null)
+                    {
+                        PO_Data.PO_File_Name = "Y";
+                        status = save_data.Save_PO_data(PO_Data, "Update", "", out string PO_Id, out string PO_File_Name);
+
+                        string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/HQ/PO/");
+
+                        //create folder if not exist
+                        if (!Directory.Exists(path))
+                            Directory.CreateDirectory(path);
+
+                        //get file extension
+                        FileInfo fileInfo = new FileInfo(PO_Data.File_PO.FileName);
+                        string fileName = PO_File_Name + fileInfo.Extension;
+
+                        string fileNameWithPath = Path.Combine(path, fileName);
+
+                        using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                        {
+                            PO_Data.File_PO.CopyTo(stream);
+                        }
+                    }
+                    else
+                    {
+                        PO_Data.PO_File_Name = "N";
+                        status = save_data.Save_PO_data(PO_Data, "Add_new", "", out string PO_Id, out string PO_File_Name);
+                    }
+
+                    if (status > 0)
+                    {
+                        TempData["Message"] = String.Format("Data save successfully");
+                    }
+                    else
+                    {
+
+                        TempData["Message"] = String.Format("Data is not saved");
+                    }
+                }
+                else
+                {
+                    TempData["Message"] = String.Format("Required Data are not Provided");
                 }
             }
+            catch (Exception ex)
+            {
 
-            return Json("");
+                TempData["Message"] = string.Format("ShowFailure();");
+
+            }
+
+            return RedirectToAction("PO_Create_Item", "Purchase_Order");
         }
+
 
 
         public ActionResult Delete_PO(Mod_Vendor Get_Data, string id)
@@ -181,19 +250,23 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-        public FileResult Download(string fileId)
+        public ContentResult Download(string fileName)
         {
 
-            //Build the File Path.
-            string path = Path.Combine("wwwroot/Files/PO/") + fileId;
+            string wwwPath = this.Environment.WebRootPath;
+            string contentPath = this.Environment.ContentRootPath;
 
-            //Read the File data into Byte Array.
-            byte[] bytes = System.IO.File.ReadAllBytes(path);
+            string path = Path.Combine(this.Environment.WebRootPath, "Files\\HQ\\PO\\");
 
-            //Send the File to Download.
-            return File(bytes, "application/octet-stream", fileId);
+            byte[] bytes = System.IO.File.ReadAllBytes(path + fileName);
+
+            //Convert File to Base64 string and send to Client.
+            string base64 = Convert.ToBase64String(bytes, 0, bytes.Length);
+
+            return Content(base64);
 
         }
 
+   
     }
 }

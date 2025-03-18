@@ -1,6 +1,6 @@
 ﻿@using IT_Hardware.Areas.Admin.Models
 
-@model IList<Mod_Invoice>
+@model IList<Invoice_Mod>
 
 @{
     ViewBag.Title = "Index";
@@ -11,15 +11,16 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Nunito'>
 
+<link href="~\css\commoncssclass.css" rel="stylesheet" />
+<script src="~\js\commonjs.js"></script>
 
-<div style="   text-align: center; height: 50px; align-content: center; width: 100% " class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
-
-    <p style="font-size:large; font-weight:bold;">List of Purchase Order</p>
-
+<div style=" text-align: center; align-content: center; width: 100% " class=" h-10 w-100 shadow p-1 mb-1 bg-white rounded">
+    <p style="font-size:large; font-weight:400;">List of Invoices</p>
 </div>
 
-<div style=" align-content:center; width:100%" class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
-    <table class=" table-hover table-striped shadow " style="width:100%">
+
+<div style=" text-align:center; width:100%" class=" h-10 w-100 shadow p-1 mb-1 bg-white rounded">
+    <table style="width:100%">
         <tr>
             <td width="75%">
 
@@ -32,21 +33,21 @@
                         </div>
                     </div>
                 </div>
-
-
             </td>
             <td align="right" width="25%">
                 <h4>
-                    @Html.ActionLink("Add New", "Invoice_Create_Item", "Invoice")
-
+                    @Html.ActionLink("Add New", "Create_Invoice", "Invoice")
                 </h4>
             </td>
         </tr>
-        <tr>
-            <td colspan="2">
-                </br>
-            </td>
-        </tr>
+    </table>
+</div>
+
+
+
+<div style=" align-content:center; width:100%" class=" h-10 w-100 shadow p-1 mb-1 bg-white rounded">
+    <table class=" table-hover table-striped shadow " style="width:100%">
+       
         <tr>
             <td colspan="2">
                 <table style="width:100%">

@@ -16,23 +16,23 @@ namespace IT_Hardware.Areas.Admin.Models
 
     public class Proposal_details
     {
-        public string Proposal_Id { get; set; }
-        public string Budget_Name { get; set; }
-        public string Budget_Year { get; set; }
-        public string Utilization_Details { get; set; }      
-        public string Dte_IT_Copy { get; set; }
-        public string Dte_IT_Remarks { get; set; }
-        public string FA_Remarks { get; set; }
-        public string Secretary_Approval_Required { get; set; }
-        public string Sec_Office_Remarks { get; set; }
-        public string Purchase_Remarks { get; set; }
-        public string Other_Dept_Remarks { get; set; }
-        public string Completed_Status { get; set; }
+        public string? Proposal_Id { get; set; }
+        public string? Budget_Name { get; set; }
+        public string? Budget_Year { get; set; }
+        public string? Utilization_Details { get; set; }      
+        public string? Dte_IT_Copy { get; set; }
+        public string? Dte_IT_Remarks { get; set; }
+        public string? FA_Remarks { get; set; }
+        public string? Secretary_Approval_Required { get; set; }
+        public string? Sec_Office_Remarks { get; set; }
+        public string? Purchase_Remarks { get; set; }
+        public string? Other_Dept_Remarks { get; set; }
+        public string? Completed_Status { get; set; }
         public bool Status { get; set; }
 
-        public string Update_UserId { get; set; }
+        public string? Update_UserId { get; set; }
 
-        public List<File_List> Prop_Files { get; set; }
+        public List<File_List>? Prop_Files { get; set; }
 
     }
 
