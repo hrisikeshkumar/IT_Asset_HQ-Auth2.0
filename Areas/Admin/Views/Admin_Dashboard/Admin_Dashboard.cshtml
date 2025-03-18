@@ -330,9 +330,8 @@
 
                         $.each(response.prop_detail.prop_Files, function (key, val) {
 
-                            markup = "<tr><td  style='width: 70%; text-align: left; height: 30px;'> " + val.file_Name + " </td> " +
+                            markup = "<tr><td  style='width: 70%; text-align: left; height: 30px;' class='filename' > <p>" + val.file_Name + "</p> </td> " +
                                 "<td  style='width: 30%; text-align: center; '>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.file_Id + "' > </input> </td> </tr > "
-
 
                             tableBody = $("#Files_Grid tbody");
                             tableBody.append(markup);
@@ -360,11 +359,72 @@
 </script>
 
 
+
+
+<script type="text/javascript">
+
+    $(document).on("click", ".cssdownload", function (event) {
+        
+        var fileID = $(this).attr('id');
+        var FileName = $(this).closest("tr")   // Finds the closest row <tr>
+                       .find(".filename")     // Gets a descendent with class="nr"
+                       .find("p")
+                       .text();
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Download", "Admin_Dashboard" )",
+            data: { fileName: fileID },
+            success: function (r) {
+                //Convert Base64 string to Byte Array.
+                var bytes = Base64ToBytes(r);
+
+                //Convert Byte Array to BLOB.
+                var blob = new Blob([bytes], { type: "application/octetstream" });
+
+                //Check the Browser type and download the File.
+                var isIE = false || !!document.documentMode;
+                if (isIE) {
+                    window.navigator.msSaveBlob(blob, FileName);
+                }
+                else {
+                    var url = window.URL || window.webkitURL;
+                    link = url.createObjectURL(blob);
+                    var a = $("<a />");
+                    a.attr("download", FileName);
+                    a.attr("href", link);
+                    $("body").append(a);
+                    a[0].click();
+                    $("body").remove(a);
+                }
+            }
+        });
+
+      event.preventDefault();
+    });
+
+    function Base64ToBytes(base64) {
+        var s = window.atob(base64);
+        var bytes = new Uint8Array(s.length);
+        for (var i = 0; i < s.length; i++) {
+            bytes[i] = s.charCodeAt(i);
+        }
+        return bytes;
+    };
+
+</script>
+
+
+
+
+
+@* 
 <script type="text/javascript">
     $(document).on("click", ".cssdownload", function () {
         var fileName = $(this).attr('id');
-
+      
         window.location.href = "/Admin_Dashboard/Download?fileId=" + fileName + "";
+
+        window.location.href = @Url.Action("Download", "Admin_Dashboard", fileName);
 
         event.preventDefault();
     });
@@ -378,5 +438,7 @@
         return bytes;
     };
 
-</script>
+</script> *@
+
+
 

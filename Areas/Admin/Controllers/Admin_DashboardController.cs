@@ -126,7 +126,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             {
                 using (SqlConnection con = new DBConnection().con)
                 {
-                    using (SqlCommand cmd = new SqlCommand("SELECT Proposal_Id, FileName FROM Proposal_Status where  LTRIM(RTRIM(Proposal_Id))=LTRIM(RTRIM('" + Proposal_Id + "')) "))
+                    using (SqlCommand cmd = new SqlCommand("SELECT  Proposal_File_ID, Proposal_Id, FileName from Proposal_Files where  LTRIM(RTRIM(Proposal_Id))=LTRIM(RTRIM('" + Proposal_Id + "')) "))
                     {
                         cmd.Connection = con;
                         con.Open();
@@ -136,7 +136,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                             {
                                 files.Add(new File_List
                                 {
-                                    File_Id = Convert.ToString(sdr["Proposal_Id"]),
+                                    File_Id = Convert.ToString(sdr["Proposal_File_ID"]),
                                     File_Name = Convert.ToString(sdr["FileName"])
                                 });
                             }
@@ -153,16 +153,25 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public JsonResult FiliUpload( IFormFile postedFile)
+        public JsonResult FiliUpload()
         {
             string Proposal_Id = Request.Form["Proposal_Id"].ToString();
+            IFormFile postedFile = Request.Form.Files[0];
+            string ext = System.IO.Path.GetExtension(postedFile.FileName);
+            if (ext != ".pdf") 
+            {
+                return Json(new SelectListItem("Duplicate", "Accept Pdf Files only"));
+            }
+            
             try
             {              
                 if (postedFile != null)
                 {
+                    int FileId=0;
+                   
                     using (SqlConnection con = new DBConnection().con)
                     {
-                        string query = " Select Proposal_Id from Proposal_Status where LTRIM(RTRIM(FileName))= LTRIM(RTRIM(@FileName)";
+                        string query = " Select Proposal_File_ID, Proposal_Id, FileName from Proposal_Files where LTRIM(RTRIM(FileName))= LTRIM(RTRIM(@FileName))";
                         using (SqlCommand cmd = new SqlCommand(query))
                         {
                             cmd.Connection = con;
@@ -176,23 +185,42 @@ namespace IT_Hardware.Areas.Admin.Controllers
                             {
                                 return Json(new SelectListItem("Duplicate", "Please Rename the File and Upload"));
                             }
+
+                            sdr.Close();
+
+                            query = " insert into Proposal_Files (Proposal_Id, FileName, Updated_By , Update_Time) " +
+                                          " values (@ProposalID, @FileName, @UserId, @Datetime ); SELECT SCOPE_IDENTITY(); ";
+
+                            cmd.Parameters.Clear();
+                            cmd.CommandText = query;
+                            cmd.Parameters.AddWithValue("@ProposalID", Proposal_Id);
+                            cmd.Parameters.AddWithValue("@FileName", Path.GetFileName(postedFile.FileName));
+                            cmd.Parameters.AddWithValue("@UserId", HttpContext.User.Identity.Name.ToString());
+                            cmd.Parameters.AddWithValue("@Datetime", DateTime.Now);
+
+                            FileId = Convert.ToInt32(cmd.ExecuteScalar());
+
                             con.Close();
+
                         }
                     }
 
                     string wwwPath = this.Environment.WebRootPath;
                     string contentPath = this.Environment.ContentRootPath;
 
-                    string path = Path.Combine(this.Environment.WebRootPath, "Files\\ITDeptFile\\");
+                    string path = Path.Combine(this.Environment.WebRootPath, "Files\\FileMovement\\");
                     if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);
                     }
 
-                    using (FileStream stream = new FileStream(Path.Combine(path, postedFile.FileName), FileMode.Create))
+
+                    using (FileStream stream = new FileStream(Path.Combine(path,  FileId.ToString()+ ext), FileMode.Create))
                     {
                         postedFile.CopyTo(stream);
                     }
+
+
                 }
 
             }
@@ -226,34 +254,47 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
         public JsonResult DeleteFile(string FileId, string RefId)
         {
-            /*   Delete File from Database        
-            using (SqlConnection con = new DBConnection().con)
+            try
             {
-                string query = "delete from File_table where LTRIM(RTRIM(File_Id)) =LTRIM(RTRIM(@File_Id))";
-                using (SqlCommand cmd = new SqlCommand(query))
+                /*   Delete File from Database       */
+                using (SqlConnection con = new DBConnection().con)
                 {
-                    cmd.Connection = con;
-                    cmd.Parameters.AddWithValue("@File_Id", FileId);
-                    con.Open();
-                    cmd.ExecuteNonQuery();
-                    con.Close();
+                    string query = "delete from Proposal_Files where LTRIM(RTRIM(Proposal_File_ID)) =LTRIM(RTRIM(@File_Id))";
+                    using (SqlCommand cmd = new SqlCommand(query))
+                    {
+                        cmd.Connection = con;
+                        cmd.Parameters.AddWithValue("@File_Id", FileId);
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                    }
                 }
-            } */
+
+                string file_name = FileId + ".pdf" ;
+                string path = Path.Combine(this.Environment.WebRootPath, "Files\\FileMovement\\", file_name);
+                FileInfo file = new FileInfo(path);
+                if (file.Exists)//check file exsit or not  
+                {
+                    file.Delete();
+                }
+              
+            }catch (Exception ex) { }   
 
             return Json(GetFiles_By_Id(RefId));
         }
 
 
-        public ContentResult Download(string fileId)
+        public ContentResult Download(string fileName)
         {
 
             string wwwPath = this.Environment.WebRootPath;
             string contentPath = this.Environment.ContentRootPath;
 
-            string path = Path.Combine(this.Environment.WebRootPath, "Files\\ITDeptFile\\");
+            string path = Path.Combine(this.Environment.WebRootPath, "Files\\FileMovement\\");
 
+            string file_name = fileName + ".pdf";
             //Read the File as Byte Array.
-            byte[] bytes = System.IO.File.ReadAllBytes(path + fileId);
+            byte[] bytes = System.IO.File.ReadAllBytes(path + file_name);
 
             //Convert File to Base64 string and send to Client.
             string base64 = Convert.ToBase64String(bytes, 0, bytes.Length);

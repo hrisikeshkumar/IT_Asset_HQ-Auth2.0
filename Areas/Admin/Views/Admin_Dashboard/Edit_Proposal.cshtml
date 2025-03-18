@@ -102,8 +102,8 @@
                                     @foreach (var item in Model.Prop_Files)
                                     {
                                         <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.File_Name)
+                                            <td class='filename'>
+                                                <p>@Html.DisplayFor(modelItem => item.File_Name)</p>
                                             </td>
                                             <td>
                                                 <input type='submit' value='Download' class='cssdownload btn_download' id='@item.File_Id' />
@@ -253,9 +253,9 @@
 
                             if (response != null) {
                                 $.each(response, function (key, val) {
-                                    markup = "<tr><td> " + val.File_Name + " </td> " +
-                                        "<td>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.File_Id + "' > </input> </td> " +
-                                        "<td style=' text-align: center'>  <input type='submit' class='appDetails btn_delete' id='" + val.File_Id + "' value='Delete' > </input> </td></tr> "
+                                    markup = "<tr><td class='filename'> " + val.file_Name + " </td> " +
+                                        "<td>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.file_Id + "' > </input> </td> " +
+                                        "<td style=' text-align: center'>  <input type='submit' class='appDetails btn_delete' id='" + val.file_Id + "' value='Delete' > </input> </td></tr> "
 
                                     tableBody = $("#Files_Grid tbody");
                                     tableBody.append(markup);
@@ -303,9 +303,9 @@
 
                             $.each(response, function (key, val) {
 
-                                markup = "<tr><td> " + val.File_Name + " </td> " +
-                                    "<td>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.File_Id + "' > </input> </td> " +
-                                    "<td style=' text-align: center'>  <input type='submit' class='appDetails btn_delete' id='" + val.File_Id + "' value='Delete' > </input> </td></tr> "
+                                markup = "<tr><td> " + val.file_Name + " </td> " +
+                                    "<td>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.file_Id + "' > </input> </td> " +
+                                    "<td style=' text-align: center'>  <input type='submit' class='appDetails btn_delete' id='" + val.file_Id + "' value='Delete' > </input> </td></tr> "
 
                                 tableBody = $("#Files_Grid tbody");
                                 tableBody.append(markup);
@@ -333,18 +333,15 @@
 <script type="text/javascript">
     $(document).on("click", ".cssdownload", function () {
         
-        /* Standard Download
-        var fileName = $(this).attr('id');
-        window.location.href = "/Admin_Dashboard/Download?fileId=" + fileName + "";
-        event.preventDefault();
-        */
-        /*  Async Download */ 
-
-        var file_Name = $(this).attr('id');
+        var fileID = $(this).attr('id');
+        var FileName = $(this).closest("tr")   // Finds the closest row <tr>
+                       .find(".filename")
+                       .find("p")
+                       .text();
         $.ajax({
             type: "POST",
-            url: "/Admin_Dashboard/Download",
-            data: { fileName: file_Name },
+            url: "@Url.Action("Download", "Admin_Dashboard")",
+            data: { fileName: fileID },
             success: function (r) {
                 //Convert Base64 string to Byte Array.
                 var bytes = Base64ToBytes(r);
@@ -355,13 +352,13 @@
                 //Check the Browser type and download the File.
                 var isIE = false || !!document.documentMode;
                 if (isIE) {
-                    window.navigator.msSaveBlob(blob, file_Name);
+                    window.navigator.msSaveBlob(blob, FileName);
                 }
                 else {
                     var url = window.URL || window.webkitURL;
                     link = url.createObjectURL(blob);
                     var a = $("<a />");
-                    a.attr("download", file_Name);
+                    a.attr("download", FileName);
                     a.attr("href", link);
                     $("body").append(a);
                     a[0].click();
@@ -370,6 +367,7 @@
             }
         });
 
+        event.preventDefault();
 
     });
 
