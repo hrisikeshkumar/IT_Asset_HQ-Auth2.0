@@ -197,10 +197,10 @@
                 data: {SL_No: request.term},
                 dataType: "json",
                 type: "POST",
-                contentType: "application/json; charset=utf-8",
+                // contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     response($.map(data, function (item) {
-                        return item.Item_SL_Number + ' -- ' + item.Item_Type + '--' + item.Item_Id;
+                        return item.item_SL_Number + ' -- ' + item.item_Type + '--' + item.item_Id;
                        
                     }))
                 },
@@ -230,37 +230,36 @@
     $(document).ready(function () {
 
         $("#Item_SerialNo").focusout(function () {
-            $.ajax({
-                type: "POST",
+            $.ajax({               
                 url:  "@Url.Action("Find_Item_Issue", "Item_Issue")",
-                datatype: "Json",
-                data: { Item_Id: $('#Item_Id').val() },
+                data: {Item_Id: $('#Item_Id').val()},
+                dataType: "json",
+                type: "POST",
                 success: function (data) {
-                    $.each(data, function (index, value) {
+                    $.each(data, function (key, val) {
 
-                        if (value === null) {
+                        if (val === null) {
 
-
-                            if (index === 'Previous_Emp_Name') {
+                            if (key === 'previous_Emp_Name') {
                                 alert('Item does not issued Previously ');
                             }
                         }
                         else {
 
-                            if (index === 'Previous_Emp_Name') {
-                                $('#Previous_Emp_Name').val(value);
+                            if (key === 'previous_Emp_Name') {
+                                $('#Previous_Emp_Name').val(val);
                             }
-                            else if (index === 'Previous_Custady_Id') {
-                                $('#Previous_Custady_Id').val(value);
+                            else if (key === 'previous_Custady_Id') {
+                                $('#Previous_Custady_Id').val(val);
                             }
-                            else if (index === 'Previous_Emp_Designation') {
-                                $('#Previous_Emp_Designation').val(value);
+                            else if (key === 'previous_Emp_Designation') {
+                                $('#Previous_Emp_Designation').val(val);
                             }
-                            else if (index === 'Previous_Emp_Dept') {
-                                $('#Previous_Emp_Dept').val(value);
+                            else if (key === 'previous_Emp_Dept') {
+                                $('#Previous_Emp_Dept').val(val);
                             }
-                            else if (index === 'Previous_Emp_Location') {
-                                $('#Previous_Emp_Location').val(value);
+                            else if (key === 'previous_Emp_Location') {
+                                $('#Previous_Emp_Location').val(val);
                             }
 
 
@@ -299,14 +298,13 @@
         source: function (request, response) {
             $.ajax({
                 url:  "@Url.Action("AutoComplete_TransferEmployee", "Item_Issue")",
-                data: "{'EmpID': '" + request.term + "'}",
+                data: {EmpID:  request.term },
                 dataType: "json",
                 type: "POST",
-                contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     response($.map(data, function (item) {
-                        return item.Transfered_Emp_Name + ' -- ' + item.Transfered_Emp_Designation + '--' + item.Transfered_Emp_Dept
-                            + '--' + item.Transfered_Emp_Location + '--' + item.Transfered_Custady_Id;
+                        return item.transfered_Emp_Name + ' -- ' + item.transfered_Emp_Designation + '--' + item.transfered_Emp_Dept
+                            + '--' + item.transfered_Emp_Location + '--' + item.transfered_Custady_Id;
                     }))
                 },
                 failure: function (response) {

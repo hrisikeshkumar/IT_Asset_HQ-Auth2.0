@@ -23,7 +23,7 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlConnection con = new DBConnection().con;
 
 
-                using (SqlCommand cmd = new SqlCommand("sp_Item_Issue"))
+                using (SqlCommand cmd = new SqlCommand("sp_Item_Issue_HQ"))
                 {
                     SqlParameter sqlP_type = new SqlParameter("@Type", "Get_List");
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -83,7 +83,7 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlConnection con = new DBConnection().con;
 
 
-                using (SqlCommand cmd = new SqlCommand("sp_Item_Issue"))
+                using (SqlCommand cmd = new SqlCommand("sp_Item_Issue_HQ"))
                 {
 
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -144,7 +144,7 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "sp_Item_Issue";
+                cmd.CommandText = "sp_Item_Issue_HQ";
 
                 cmd.Connection = con;
 
@@ -253,7 +253,7 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlConnection con = new DBConnection().con;
 
 
-                using (SqlCommand cmd = new SqlCommand("Item_List_Serial_No_Wise"))
+                using (SqlCommand cmd = new SqlCommand("Item_List_Serial_No_Wise_HQ"))
                 {
 
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -359,7 +359,7 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlConnection con = new DBConnection().con;
 
 
-                using (SqlCommand cmd = new SqlCommand("Emp_List"))
+                using (SqlCommand cmd = new SqlCommand("Emp_List_HQ"))
                 {
 
                     cmd.CommandType = CommandType.StoredProcedure;

@@ -24,7 +24,6 @@
                     <div class="sb-example-3">
                         <!-- partial:index.partial.html -->
                         <div class="search__container">
-
                             <input class="search__input" id="SL_Number" type="text" placeholder="Search  by Person Name or Serial Number">
                         </div>
                     </div>
@@ -35,7 +34,6 @@
             <td align="right" width="25%">
                 <h4>
                     @Html.ActionLink("Add New", "Item_Issue_Create_Item", "Item_Issue")
-
                 </h4>
             </td>
         </tr>
@@ -66,8 +64,8 @@
                         <th>
                             Issue Date
                         </th>
-
                     </tr>
+
 
                     @foreach (var item in Model)
                     {
@@ -93,6 +91,8 @@
 
                         </tr>
                     }
+
+
 
                 </table>
 
@@ -159,13 +159,13 @@
 
                             //var date = new Date(val.Issued_date);
 
-                            var date = new Date(parseInt(val.Issued_date.substr(6)));
+                            var date = new Date(parseInt(val.issued_date.substr(6)));
 
-                            markup = "<tr><td> " + val.Item_Type + " </td> " +
-                                "<td> " + val.Item_SerialNo + " </td> " +
-                                "<td> " + val.Transfered_Emp_Name + " </td> " +
-                                "<td> " + val.Transfered_Emp_Designation + " </td> " +
-                                "<td> " + val.Previous_Emp_Name + " </td> " +
+                            markup = "<tr><td> " + val.item_Type + " </td> " +
+                                "<td> " + val.item_SerialNo + " </td> " +
+                                "<td> " + val.transfered_Emp_Name + " </td> " +
+                                "<td> " + val.transfered_Emp_Designation + " </td> " +
+                                "<td> " + val.previous_Emp_Name + " </td> " +
                                 "<td> " + date.toDateString() + " </td> </tr> "
                             tableBody = $("#Bud_Uses_Grid tbody");
                             tableBody.append(markup);

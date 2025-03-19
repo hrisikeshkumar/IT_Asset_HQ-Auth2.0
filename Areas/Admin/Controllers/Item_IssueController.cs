@@ -159,7 +159,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
         [HttpPost]
-        
         public JsonResult AutoComplete(string SL_No)
         {
 

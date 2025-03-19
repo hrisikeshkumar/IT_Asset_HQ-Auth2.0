@@ -197,15 +197,14 @@
                         //$.each(response.Bud_Uses_List[i], function (Budget_Uses_Id, Budget_Name, Budget_Amount, Budget_Type ) {
                         $.each(response, function (key, val) {
                           
-                            markup = "<tr><td> " + val.Budget_Name + " </td> " +
-                                "<td> " + val.Budget_Amount + " </td> " +
-                                "<td> " + val.Budget_Type + " </td> " +
-                                "<td style=' text-align: center'>   <a href='/Admin/Budget_Uses/Edit_Budget_Uses/" + val.Budget_Uses_Id + "'> Edit </a > </td></tr> "
+                            markup = "<tr><td> " + val.budget_Name + " </td> " +
+                                "<td> " + val.budget_Amount + " </td> " +
+                                "<td> " + val.budget_Type + " </td> " +
+                                "<td style=' text-align: center'>   <a href='/Admin/Budget_Uses/Edit_Budget_Uses/" + val.budget_Uses_Id + "'> Edit </a > </td></tr> "
                             tableBody = $("#Bud_Uses_Grid tbody");
                             tableBody.append(markup);
                           
                           
-
                     });
                     } else {
                         alert("Something went wrong");

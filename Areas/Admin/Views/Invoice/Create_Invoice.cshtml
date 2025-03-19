@@ -53,25 +53,28 @@
             </tr>
             <tr>
                 <td style="width:20%; height:50px;">
-                    Sanction Order
+                    Purchase Order
                 </td>
-                <td style="width:30%;">
-                    @Html.DropDownListFor(x => x.SanctionOrder_Id, Model.SanctionOrder_list, new { @class = "form-rounded", @style = " width :90%; " })
+                <td style="width:80%;" colspan="3">
+                    @Html.DropDownListFor(x => x.PO_Id, Model.PO_list, new { @class = "form-rounded", @style = " width :90%; " })
                 </td>
+            </tr>
+            <tr>
                 <td style="width:20%; height:50px;">
                     Invoice Value
                 </td>
                 <td style="width:30%;">
                     @Html.TextBoxFor(x => x.Invoice_Value, new { @class = "form-rounded", @style = " width :90%; " })
                 </td>
-            </tr>
-            <tr>
+
                 <td style="width:20%; height:50px;">
                     Penalty Amount
                 </td>
-                <td style="width:30%;"  >
+                <td style="width:30%;">
                     @Html.TextBoxFor(x => x.Penalty_Amount, new { @class = " form-rounded", @style = " width :95%; " })
                 </td>
+            </tr>
+            <tr>
                 <td style="width:20%;">
                     Penalty Reason
                 </td>
@@ -79,18 +82,14 @@
                     @Html.TextAreaFor(x => x.Penalty_Reason, new { @rows = "2", @style = " width :96%; " })
                 </td>
             </tr>
-            <tr>
-                <td style="width:20%; height:50px;">
-                    Management Committee Approval
-                </td>
-                <td style="width:30%;">
-                    @Html.TextBoxFor(model => model.File_CommitteeApproval, "", new { @type = "file" })
-                </td>
 
-                <td style="width:20%; height:50px;">
+            <tr>
+               
+
+                <td style=" height:50px;">
                     Invoice File
                 </td>
-                <td style="width:30%;">
+                <td  colspan="3">
                     @Html.TextBoxFor(model => model.File_Invoice, "", new { @type = "file" })
                 </td>
             </tr>

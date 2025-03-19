@@ -33,7 +33,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         {
             Invoice_Mod mod_PO = new Invoice_Mod();
             Invoice_BL Inv_Data = new Invoice_BL();
-            mod_PO.SanctionOrder_list = Inv_Data.SanctionOrder_List(HttpContext.User.Identity.Name.ToString());
+            mod_PO.PO_list = Inv_Data.PO_List(HttpContext.User.Identity.Name.ToString());
             mod_PO.Invoice_Date = DateTime.Today;
             return View( mod_PO);
         }
@@ -58,13 +58,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                             InvFileInfo = new FileInfo(Data.File_Invoice.FileName).Extension;
                         }
                     }
-                    if (Data.File_CommitteeApproval != null)
-                    {
-                        if (Data.File_CommitteeApproval.Length > 0)
-                        {
-                            AppFileInfo = new FileInfo(Data.File_CommitteeApproval.FileName).Extension;
-                        }
-                    }
+                    
 
                     int status = save_data.Save_data(Data, "Add_new", AppFileInfo, InvFileInfo,
                               out string Inv_Id, out string Inv_File_Name, out string approval_File);
@@ -73,9 +67,9 @@ namespace IT_Hardware.Areas.Admin.Controllers
                     {
                         TempData["Message"] = String.Format("Data save successfully");
 
-                        if (Data.File_Invoice.Length > 0)
+                        if (Data.File_Invoice != null)
                         {
-                            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files\\ChapterFile\\Invoice\\");
+                            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files\\HQ\\Invoice\\");
 
                             //create folder if not exist
                             if (!Directory.Exists(path))
@@ -91,23 +85,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                             }
                         }
 
-                        if (Data.File_CommitteeApproval.Length > 0)
-                        {
-                            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files\\ChapterFile\\Approval");
-
-                            //create folder if not exist
-                            if (!Directory.Exists(path))
-                                Directory.CreateDirectory(path);
-
-                            //get file extension
-
-                            string fileNameWithPath = Path.Combine(path, approval_File);
-
-                            using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
-                            {
-                                Data.File_CommitteeApproval.CopyTo(stream);
-                            }
-                        }
+                       
                     }
                     else
                     {
@@ -132,7 +110,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         {      
             Invoice_BL Inv_Data = new Invoice_BL();
             Invoice_Mod mod_PO = Inv_Data.Get_Data_By_ID(id, HttpContext.User.Identity.Name.ToString());
-            mod_PO.SanctionOrder_list = Inv_Data.SanctionOrder_List(HttpContext.User.Identity.Name.ToString());
+            mod_PO.PO_list = Inv_Data.PO_List(HttpContext.User.Identity.Name.ToString());
             return View(mod_PO);
         }
 
@@ -219,7 +197,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         {
 
             //Build the File Path.
-            string path = Path.Combine("wwwroot\\Files\\ChapterFile\\Approval\\") + fileId;
+            string path = Path.Combine("wwwroot\\Files\\HQ\\Invoice\\") + fileId;
 
             //Read the File data into Byte Array.
             byte[] bytes = System.IO.File.ReadAllBytes(path);
@@ -240,7 +218,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                     string wwwPath = this.Environment.WebRootPath;
                     string contentPath = this.Environment.ContentRootPath;
 
-                    string path = Path.Combine(this.Environment.WebRootPath, "Files\\ChapterFile\\Invoice");
+                    string path = Path.Combine(this.Environment.WebRootPath, "wwwroot\\Files\\HQ\\Invoice\\");
                     if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);

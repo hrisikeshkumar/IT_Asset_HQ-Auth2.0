@@ -22,15 +22,15 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlConnection con = new DBConnection().con;
 
 
-                using (SqlCommand cmd = new SqlCommand("sp_Invoice"))
+                using (SqlCommand cmd = new SqlCommand("sp_Invoice_HQ"))
                 {
                     SqlParameter sqlP_type = new SqlParameter("@Type", "Get_List");
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection = con;
                     cmd.Parameters.Add(sqlP_type);
 
-                    SqlParameter sqlP_User = new SqlParameter("@Create_Usr_Id", UserId);
-                    cmd.Parameters.Add(sqlP_User);
+                    //SqlParameter sqlP_User = new SqlParameter("@Create_Usr_Id", UserId);
+                    //cmd.Parameters.Add(sqlP_User);
 
                     using (SqlDataAdapter sda = new SqlDataAdapter())
                     {
@@ -47,10 +47,10 @@ namespace IT_Hardware.Areas.Admin.Data
                 {
                     BL_data = new Invoice_Mod();
 
-                    BL_data.Invoice_id = Convert.ToString(dr["ID"]);
-                    BL_data.Invoice_No = Convert.ToString(dr["Inv_No"]);
-                    BL_data.Invoice_Subject = Convert.ToString(dr["Subject"]);
-                    BL_data.Invoice_Date =  Convert.ToDateTime(dr["Inv_date"]);
+                    BL_data.Invoice_id = Convert.ToString(dr["Invoice_Id"]);
+                    BL_data.Invoice_No = Convert.ToString(dr["Invoice_No"]);
+                    BL_data.Invoice_Subject = Convert.ToString(dr["InvSubject"]);
+                    BL_data.Invoice_Date =  Convert.ToDateTime(dr["Invoice_Date"]);
                     BL_data.Invoice_Value = Convert.ToInt32(dr["Inv_Value"]);
                     BL_data.Penalty_Amount = Convert.ToInt32(dr["Penalty_Amt"]);
                     BL_data.Penalty_Reason = Convert.ToString(dr["Penalty_Reason"]);
@@ -98,7 +98,7 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter Invoice_Subject = new SqlParameter("@Subject", Data.Invoice_Subject);
                 cmd.Parameters.Add(Invoice_Subject);
 
-                SqlParameter PO_Id = new SqlParameter("@SO_Id", Data.SanctionOrder_Id);
+                SqlParameter PO_Id = new SqlParameter("@PO_Id", Data.PO_Id);
                 cmd.Parameters.Add(PO_Id);
 
                 SqlParameter Invoice_Value = new SqlParameter("@Inv_Value", Data.Invoice_Value);
@@ -113,6 +113,9 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter Invoice_Date = new SqlParameter("@Inv_date", Data.Invoice_Date);
                 cmd.Parameters.Add(Invoice_Date);
 
+                SqlParameter Remarks = new SqlParameter("@Remarks", Data.Remarks);
+                cmd.Parameters.Add(Remarks);
+
 
                 if (Data.File_Invoice != null)
                 {
@@ -123,17 +126,7 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter InvFile_Ext = new SqlParameter("@Inv_File_Ext", InvFile_Extension);
                 cmd.Parameters.Add(InvFile_Ext);
 
-                if (Data.File_CommitteeApproval != null)
-                {
-                    SqlParameter ApprovalFile_Exit = new SqlParameter("@Approval_FileExist", 1);
-                    cmd.Parameters.Add(ApprovalFile_Exit);
-                }
-
-                SqlParameter ApprovalFile_Ext = new SqlParameter("@Approval_File_Ext", AppFile_Extension);
-                cmd.Parameters.Add(ApprovalFile_Ext);
-
-                SqlParameter Remarks = new SqlParameter("@Remarks", Data.Remarks);
-                cmd.Parameters.Add(Remarks);
+                
 
                 SqlParameter User_Id = new SqlParameter("@Create_Usr_Id", Data.Create_usr_id);
                 cmd.Parameters.Add(User_Id);
@@ -147,10 +140,9 @@ namespace IT_Hardware.Areas.Admin.Data
 
                         if (dt.Rows.Count > 0)
                         {
-                            Inv_ID_Update = Convert.ToString(dt.Rows[0]["Inv_Id"]);
+                            Inv_ID_Update = Convert.ToString(dt.Rows[0]["Invoice_Id"]);
                             status = Convert.ToInt32(dt.Rows[0]["Row_Effect"]);
                             Inv_File_Name = Convert.ToString(dt.Rows[0]["Invoice_File"]);
-                            Approval_FileName = Convert.ToString(dt.Rows[0]["Approval_File"]);
                         }
                     }
                 }
@@ -181,8 +173,8 @@ namespace IT_Hardware.Areas.Admin.Data
                     SqlParameter Inv_Id = new SqlParameter("@Inv_id", Invoice_Id);
                     cmd.Parameters.Add(Inv_Id);
 
-                    SqlParameter sqlUserId = new SqlParameter("@Create_Usr_Id", UserId);
-                    cmd.Parameters.Add(sqlUserId);
+                    //SqlParameter sqlUserId = new SqlParameter("@Create_Usr_Id", UserId);
+                    //cmd.Parameters.Add(sqlUserId);
 
                     using (SqlDataAdapter sda = new SqlDataAdapter())
                     {
@@ -199,16 +191,15 @@ namespace IT_Hardware.Areas.Admin.Data
                 {
                         Data = new Invoice_Mod();
 
-                        Data.Invoice_id = Convert.ToString(dt_Comuter.Rows[0]["ID"]);
-                        Data.Invoice_No = Convert.ToString(dt_Comuter.Rows[0]["Inv_No"]);
-                        Data.Invoice_Subject = Convert.ToString(dt_Comuter.Rows[0]["Subject"]);
-                        Data.Invoice_Date = Convert.ToDateTime(dt_Comuter.Rows[0]["Inv_date"]);
+                        Data.Invoice_id = Convert.ToString(dt_Comuter.Rows[0]["Invoice_Id"]);
+                        Data.Invoice_No = Convert.ToString(dt_Comuter.Rows[0]["Invoice_No"]);
+                        Data.Invoice_Subject = Convert.ToString(dt_Comuter.Rows[0]["InvSubject"]);
+                        Data.Invoice_Date = Convert.ToDateTime(dt_Comuter.Rows[0]["Invoice_Date"]);
                         Data.Invoice_Value = Convert.ToInt32(dt_Comuter.Rows[0]["Inv_Value"]);
-                        Data.SanctionOrder_Id = Convert.ToString(dt_Comuter.Rows[0]["SO_Id"]);
+                        Data.PO_Id = Convert.ToString(dt_Comuter.Rows[0]["PO_Id"]);
                         Data.Penalty_Amount = Convert.ToInt32(dt_Comuter.Rows[0]["Penalty_Amt"]);
                         Data.Penalty_Reason = Convert.ToString(dt_Comuter.Rows[0]["Penalty_Reason"]);
                         Data.FileName_Invoice = Convert.ToString(dt_Comuter.Rows[0]["Inv_File_Name"]);
-                        Data.Filename_CommitteeApproval  = Convert.ToString(dt_Comuter.Rows[0]["Approval_File_Name"]);
                 }
 
             }
@@ -218,7 +209,7 @@ namespace IT_Hardware.Areas.Admin.Data
         }
 
 
-        public List<SelectListItem> SanctionOrder_List(string UserId)
+        public List<SelectListItem> PO_List(string UserId)
         {
 
             List<SelectListItem> List_Item = new List<SelectListItem>();
