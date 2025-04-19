@@ -57,6 +57,23 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     BL_data.Item_id = Convert.ToString(dr["Item_Id"]);
 
+                    BL_data.Make_Name = Convert.ToString(dr["Make"]);
+
+                    BL_data.Model_Name = Convert.ToString(dr["model"]);
+
+                    if (dr["Proc_Date"] != DBNull.Value)
+                        BL_data.Proc_date = Convert.ToDateTime(dr["Proc_Date"]);
+
+                    if (dr["Asset_Price"] != DBNull.Value)
+                        BL_data.price = Convert.ToInt32(dr["Asset_Price"]);
+
+                    BL_data.PO_No = Convert.ToString(dr["PO_No"]);
+
+                    if (dr["PO_Date"] != DBNull.Value)
+                        BL_data.PO_Date = Convert.ToDateTime(dr["PO_Date"]);
+
+
+
                     current_data.Add(BL_data);
                 }
 

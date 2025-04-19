@@ -49,36 +49,73 @@
         </tr>
         <tr>
             <td colspan="2">
+
                 <table style="width:100%">
                     <tr>
                         <th>
-                            Item Type
+                            Make
                         </th>
                         <th>
-                            serial No
+                            model
+                        </th>
+                        <th>
+                            Serial No
+                        </th>
+                        <th>
+                            Proc Date
+                        </th>
+                        <th>
+                            Warranty Date
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                        <th>
+                            PO No
+                        </th>
+                        <th>
+                            PO Date
                         </th>
                         <th> Action </th>
                     </tr>
 
                     @foreach (var item in Model)
                     {
+
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Item_Type)
+                                @Html.DisplayFor(modelItem => item.Make_Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Model_Name)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Item_serial_No)
                             </td>
                             <td>
-
-                                @Html.ActionLink("Edit", "Edit_Monitor", new { id = item.Item_id }) |
-                                @Html.ActionLink("Details", "Get_Detail", new { id = item.Item_id }) |
+                                @Html.DisplayFor(modelItem => item.Proc_date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Warnt_end_dt)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Asset_Price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PO_No)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PO_Date)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit_AppleIpad", new { id = item.Item_id }) |
                                 @Html.ActionLink("Delete", "Delete_Item", new { id = item.Item_id })
                             </td>
                         </tr>
                     }
 
                 </table>
+
 
             </td>
 
