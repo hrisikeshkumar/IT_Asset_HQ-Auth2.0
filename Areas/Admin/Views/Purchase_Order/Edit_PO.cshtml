@@ -95,25 +95,27 @@
                         <tr>
                             <td>
                                 @{
-                                    if (Model.PO_File_Name != string.Empty)
+                                    if (Model.PO_File_Id != string.Empty)
                                     {
                                       <table id="Files_Grid" style="width:100%;">
                                         <tr>
+                                            <td style="width:50%; font-weight:bold">File Name</td>
                                             <td style="width:50%; font-weight:bold">File Name</td>
                                             <td style="width: 25%; font-weight: bold"> Download</td>
                                         </tr>
 
                                         <tr>
                                             <td>
+                                                    @Html.DisplayFor(x => x.PO_File_Id)
+                                            </td>
+                                            <td>
                                                 <div id="abcdefgh">
                                                     @Html.DisplayFor(x => x.PO_File_Name)
                                                 </div>
-
                                             </td>
                                             <td>
-                                                <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.PO_File_Name' />
+                                                    <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.PO_File_Id' />
                                             </td>
-
                                         </tr>
 
                                     </table>
@@ -183,7 +185,6 @@
     /**/
     };
     </script>
-
 }
 
 
@@ -259,7 +260,7 @@
         $.ajax({
             type: "POST",
             url: "@Url.Action("Download", "Purchase_Order")",
-            data: { fileName: fileID },
+            data: { fileName: fileID  },
             success: function (r) {
                 //Convert Base64 string to Byte Array.
                 var bytes = Base64ToBytes(r);
@@ -276,7 +277,7 @@
                     var url = window.URL || window.webkitURL;
                     link = url.createObjectURL(blob);
                     var a = $("<a />");
-                    a.attr("download", fileID);
+                    a.attr("download", fileID + '.pdf');
                     a.attr("href", link);
                     $("body").append(a);
                     a[0].click();

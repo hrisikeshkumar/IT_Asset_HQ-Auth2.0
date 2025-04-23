@@ -19,7 +19,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             List<Mod_SLA> SLA_List = com.Get_SLAData();
 
             return View(SLA_List);
-        }
+        } 
 
         [HttpGet]
         public ActionResult SLA_Create_Item(string Message)
@@ -104,6 +104,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return RedirectToAction("SLA_Create_Item", "SLA");
         }
 
+
         [HttpGet]
         public ActionResult Edit_SLA(string id)
         {
@@ -116,6 +117,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             return View( Mod_data);
         }
+
 
         [HttpPost]
         public ActionResult Update_SLA(Mod_SLA Get_Data)

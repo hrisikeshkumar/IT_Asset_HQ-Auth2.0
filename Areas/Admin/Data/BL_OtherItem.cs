@@ -69,6 +69,8 @@ namespace IT_Hardware.Areas.Admin.Data
                     if (dr["PO_Date"] != DBNull.Value)
                         BL_data.PO_Date = Convert.ToDateTime(dr["PO_Date"]);
 
+                    if (dr["Warnt_end_DT"] != DBNull.Value)
+                        BL_data.Warnt_end_dt = Convert.ToDateTime(dr["Warnt_end_DT"]);
 
 
                     current_data.Add(BL_data);

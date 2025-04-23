@@ -70,6 +70,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
                     if (PO_Data.File_PO != null)
                     {
+                        
                         PO_Data.PO_File_Name = "Y";
                         status = save_data.Save_PO_data(PO_Data, "Add_new", "", out string PO_Id, out string PO_File_Name);
 
@@ -89,6 +90,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                         {
                             PO_Data.File_PO.CopyTo(stream);
                         }
+
                     }
                     else 
                     {
@@ -123,8 +125,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
         public ActionResult Edit_PO(string id)
-        {
-            
+        { 
             BL_Porder data = new BL_Porder();
             Mod_POrder mod_PO = data.Get_Data_By_ID( id);
             mod_PO.Vendor_List = data.Vendor_List();
@@ -258,7 +259,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             string path = Path.Combine(this.Environment.WebRootPath, "Files\\HQ\\PO\\");
 
-            byte[] bytes = System.IO.File.ReadAllBytes(path + fileName);
+            byte[] bytes = System.IO.File.ReadAllBytes(path + fileName + ".pdf");
 
             //Convert File to Base64 string and send to Client.
             string base64 = Convert.ToBase64String(bytes, 0, bytes.Length);

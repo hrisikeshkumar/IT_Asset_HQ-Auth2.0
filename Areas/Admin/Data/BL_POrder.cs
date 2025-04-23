@@ -103,6 +103,9 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter PO_File_Present = new SqlParameter("@PO_File_Present", Data.PO_File_Name);
                 cmd.Parameters.Add(PO_File_Present);
 
+                SqlParameter PO_File = new SqlParameter("@PO_File_Name", Data.File_PO.FileName);
+                cmd.Parameters.Add(PO_File);
+
                 SqlParameter PO_Subject = new SqlParameter("@PO_Subject", Data.PO_Subject);
                 cmd.Parameters.Add(PO_Subject);
 
@@ -184,10 +187,10 @@ namespace IT_Hardware.Areas.Admin.Data
                     if (Convert.ToString(dt_PObyID.Rows[0]["PO_End_Date"]) != string.Empty)
                         Data.PO_End_Date = Convert.ToDateTime(dt_PObyID.Rows[0]["PO_End_Date"]);
 
-                    Data.PO_File_Name = Convert.ToString(dt_PObyID.Rows[0]["PO_File"]) ;
+                    Data.PO_File_Name = Convert.ToString(dt_PObyID.Rows[0]["PO_File_Name"]) ;
+                    Data.PO_File_Id = Convert.ToString(dt_PObyID.Rows[0]["PO_File_Id"]);
 
-                    if (Data.PO_File_Name != string.Empty)
-                        Data.PO_File_Name = Data.PO_File_Name + ".pdf";
+                    
 
                     Data.Vendor_id = Convert.ToString(dt_PObyID.Rows[0]["Vendor_Id"]);
                     Data.Remarks = Convert.ToString(dt_PObyID.Rows[0]["Remarks"]); 
