@@ -64,14 +64,11 @@ namespace IT_Hardware.Areas.Admin.Data
             return current_data;
         }
 
-        public int Save_data(Invoice_Mod Data, string type, string AppFile_Extension, string InvFile_Extension, 
-                               out string Inv_ID_Update, out string Inv_File_Name , out string Approval_FileName)
+        public int Save_data(Invoice_Mod Data, string type,  out string Inv_File_Name )
         {
 
             int status = -1;
-            Inv_ID_Update = string.Empty;
             Inv_File_Name = string.Empty;
-            Approval_FileName = string.Empty;
 
             SqlConnection con = new DBConnection().con;
             try
@@ -79,7 +76,7 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "sp_Invoice";
+                cmd.CommandText = "sp_Invoice_HQ";
 
                 cmd.Connection = con;
 
@@ -113,20 +110,22 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter Invoice_Date = new SqlParameter("@Inv_date", Data.Invoice_Date);
                 cmd.Parameters.Add(Invoice_Date);
 
+                SqlParameter Invoice_FileName = new SqlParameter("@Inv_FileName", Data.File_Invoice.FileName);
+                cmd.Parameters.Add(Invoice_FileName);
+
+                SqlParameter Invoice_FileExt = new SqlParameter("@Inv_File_Ext", Data.FileName_Invoice);
+                cmd.Parameters.Add(Invoice_FileExt);
+
                 SqlParameter Remarks = new SqlParameter("@Remarks", Data.Remarks);
                 cmd.Parameters.Add(Remarks);
 
 
-                if (Data.File_Invoice != null)
-                {
-                    SqlParameter InvFile_Exit = new SqlParameter("@Inv_FileExist", 1);
-                    cmd.Parameters.Add(InvFile_Exit);
-                }
+                //if (Data.File_Invoice != null)
+                //{
+                //    SqlParameter InvFile_Exit = new SqlParameter("@Inv_FileExist", 1);
+                //    cmd.Parameters.Add(InvFile_Exit);
+                //}
 
-                SqlParameter InvFile_Ext = new SqlParameter("@Inv_File_Ext", InvFile_Extension);
-                cmd.Parameters.Add(InvFile_Ext);
-
-                
 
                 SqlParameter User_Id = new SqlParameter("@Create_Usr_Id", Data.Create_usr_id);
                 cmd.Parameters.Add(User_Id);
@@ -140,7 +139,6 @@ namespace IT_Hardware.Areas.Admin.Data
 
                         if (dt.Rows.Count > 0)
                         {
-                            Inv_ID_Update = Convert.ToString(dt.Rows[0]["Invoice_Id"]);
                             status = Convert.ToInt32(dt.Rows[0]["Row_Effect"]);
                             Inv_File_Name = Convert.ToString(dt.Rows[0]["Invoice_File"]);
                         }

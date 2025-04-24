@@ -72,7 +72,7 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "sp_POrder";
+                cmd.CommandText = "sp_Invoice_HQ";
 
                 cmd.Connection = con;
 

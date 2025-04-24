@@ -44,51 +44,60 @@ namespace IT_Hardware.Areas.Admin.Controllers
             string Message = "";
             try
             {
+
+                if (Data.File_Invoice != null)
+                {
+                    if (Path.GetExtension(Data.File_Invoice.FileName) != ".pdf")
+                    {
+                        TempData["Message"] = String.Format("Only PDF files are accepted");
+                        return RedirectToAction("PO_Create_Item");
+                    }
+                }
+
                 Data.Create_usr_id = HttpContext.User.Identity.Name;
                 string Vendor_Id = string.Empty;
                 if (ModelState.IsValid)
                 {
+
                     Invoice_BL save_data = new Invoice_BL();
-                    string InvFileInfo=string.Empty;
-                    string AppFileInfo = string.Empty;
+
+                    int status = 0;
+
                     if (Data.File_Invoice != null)
                     {
-                        if (Data.File_Invoice.Length > 0)
+                        Data.FileName_Invoice = "Y";
+                        status = save_data.Save_data(Data, "Add_new", out string Inv_Id);
+
+                        string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/HQ/Invoice/");
+
+                        //create folder if not exist
+                        if (!Directory.Exists(path))
+                            Directory.CreateDirectory(path);
+
+                        //get file extension
+                        FileInfo fileInfo = new FileInfo(Data.File_Invoice.FileName);
+                        string fileName = Inv_Id + fileInfo.Extension;
+
+                        string fileNameWithPath = Path.Combine(path, fileName);
+
+                        using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
                         {
-                            InvFileInfo = new FileInfo(Data.File_Invoice.FileName).Extension;
+                            Data.File_Invoice.CopyTo(stream);
                         }
                     }
-                    
-
-                    int status = save_data.Save_data(Data, "Add_new", AppFileInfo, InvFileInfo,
-                              out string Inv_Id, out string Inv_File_Name, out string approval_File);
+                    else
+                    {
+                        Data.FileName_Invoice = "N";
+                        status = save_data.Save_data(Data, "Add_new", out string Inv_Id);
+                    }
 
                     if (status > 0)
                     {
                         TempData["Message"] = String.Format("Data save successfully");
-
-                        if (Data.File_Invoice != null)
-                        {
-                            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files\\HQ\\Invoice\\");
-
-                            //create folder if not exist
-                            if (!Directory.Exists(path))
-                                Directory.CreateDirectory(path);
-
-                            //get file extension
-                            
-                            string fileNameWithPath = Path.Combine(path, Inv_File_Name);
-
-                            using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
-                            {
-                                Data.File_Invoice.CopyTo(stream);
-                            }
-                        }
-
-                       
                     }
                     else
                     {
+
                         TempData["Message"] = String.Format("Data is not saved");
                     }
                 }
