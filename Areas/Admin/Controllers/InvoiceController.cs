@@ -97,7 +97,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
                     }
                     else
                     {
-
                         TempData["Message"] = String.Format("Data is not saved");
                     }
                 }
@@ -118,9 +117,9 @@ namespace IT_Hardware.Areas.Admin.Controllers
         public ActionResult Edit_Invoice(string id)
         {      
             Invoice_BL Inv_Data = new Invoice_BL();
-            Invoice_Mod mod_PO = Inv_Data.Get_Data_By_ID(id, HttpContext.User.Identity.Name.ToString());
-            mod_PO.PO_list = Inv_Data.PO_List(HttpContext.User.Identity.Name.ToString());
-            return View(mod_PO);
+            Invoice_Mod mod_Inv= Inv_Data.Get_Data_By_ID(id, HttpContext.User.Identity.Name.ToString());
+            mod_Inv.PO_list = Inv_Data.PO_List(HttpContext.User.Identity.Name.ToString());
+            return View(mod_Inv);
         }
 
 

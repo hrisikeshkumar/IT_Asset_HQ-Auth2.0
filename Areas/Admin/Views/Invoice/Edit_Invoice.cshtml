@@ -75,9 +75,49 @@
                     @Html.TextAreaFor(x => x.Penalty_Reason, new { @rows = "2", @style = " width :96%; " })
                 </td>
             </tr>
+
+
+            <tr>
+                <td>File Details</td>
+                <td colspan="3">
+                    @{
+                        if (Model.FileId_Invoice != string.Empty)
+                        {
+                            <table id="Files_Grid" style="width:100%;">
+                                <tr>
+                                    <td style="width:50%; font-weight:bold">File Id</td>
+                                    <td style="width:50%; font-weight:bold">File Name</td>
+                                    <td style="width: 25%; font-weight: bold"> Download</td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(x => x.FileId_Invoice)
+                                    </td>
+                                    <td>
+                                        <div id="abcdefgh">
+                                            @Html.DisplayFor(x => x.FileName_Invoice)
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.FileId_Invoice' />
+                                    </td>
+                                </tr>
+
+                            </table>
+                        }
+                    }
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <br />
+                </td>
+            </tr>
+
            
-           
-            <tr style=" height: 50px; ">
+           @*  <tr style=" height: 50px; ">
                 <td align="left" style="width:25%; "> Invoice File</td>
                 <td style="width: 75%;" colspan="3">
                     <table style="width: 100%;">
@@ -106,7 +146,7 @@
                         </tr>
                     </table>
                 </td>
-            </tr>
+            </tr> *@
 
 
             <tr>
@@ -154,28 +194,19 @@
 }
 
 
-<script type="text/javascript">
 
-
-    $(document).on("click", ".cssdownload", function () {
-        var fileName = $(this).attr('id');
-
-            window.location.href = "/Invoice/Download?fileId=" + fileName + "";
-
-        event.preventDefault();
-    });
-
-
-</script>
 
 
 <script type="text/javascript">
 
-    function DownloadFile(file_Name) {
+    $(document).on("click", ".cssdownload", function (event) {
+
+        var fileID = $(this).attr('id');
+
         $.ajax({
             type: "POST",
-            url: "@Url.Action("DownloadFile", "Invoice")",
-            data: { fileId: file_Name },
+            url: "@Url.Action("Download", "Purchase_Order")",
+            data: { fileName: fileID  },
             success: function (r) {
                 //Convert Base64 string to Byte Array.
                 var bytes = Base64ToBytes(r);
@@ -186,13 +217,13 @@
                 //Check the Browser type and download the File.
                 var isIE = false || !!document.documentMode;
                 if (isIE) {
-                    window.navigator.msSaveBlob(blob, file_Name);
+                    window.navigator.msSaveBlob(blob, fileID);
                 }
                 else {
                     var url = window.URL || window.webkitURL;
                     link = url.createObjectURL(blob);
                     var a = $("<a />");
-                    a.attr("download", file_Name);
+                    a.attr("download", fileID + '.pdf');
                     a.attr("href", link);
                     $("body").append(a);
                     a[0].click();
@@ -200,7 +231,9 @@
                 }
             }
         });
-    };
+
+      event.preventDefault();
+    });
 
     function Base64ToBytes(base64) {
         var s = window.atob(base64);
@@ -212,6 +245,9 @@
     };
 
 </script>
+
+
+
 
 
 @* ----------------------------  Modal -------------------------------*@

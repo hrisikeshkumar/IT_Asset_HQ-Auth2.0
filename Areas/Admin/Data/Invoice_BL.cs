@@ -54,6 +54,8 @@ namespace IT_Hardware.Areas.Admin.Data
                     BL_data.Invoice_Value = Convert.ToInt32(dr["Inv_Value"]);
                     BL_data.Penalty_Amount = Convert.ToInt32(dr["Penalty_Amt"]);
                     BL_data.Penalty_Reason = Convert.ToString(dr["Penalty_Reason"]);
+                    BL_data.FileId_Invoice = Convert.ToString(dr["Inv_File_ID"]);
+                    BL_data.FileName_Invoice = Convert.ToString(dr["Inv_File_Name"]);
 
                     current_data.Add(BL_data);
                 }
@@ -161,7 +163,7 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 SqlConnection con = new DBConnection().con;
 
-                using (SqlCommand cmd = new SqlCommand("sp_Invoice"))
+                using (SqlCommand cmd = new SqlCommand("sp_Invoice_HQ"))
                 {
                     SqlParameter sqlP_type = new SqlParameter("@Type", "Get_Data_By_ID");
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -197,7 +199,9 @@ namespace IT_Hardware.Areas.Admin.Data
                         Data.PO_Id = Convert.ToString(dt_Comuter.Rows[0]["PO_Id"]);
                         Data.Penalty_Amount = Convert.ToInt32(dt_Comuter.Rows[0]["Penalty_Amt"]);
                         Data.Penalty_Reason = Convert.ToString(dt_Comuter.Rows[0]["Penalty_Reason"]);
+                        Data.FileId_Invoice = Convert.ToString(dt_Comuter.Rows[0]["Inv_File_ID"]);
                         Data.FileName_Invoice = Convert.ToString(dt_Comuter.Rows[0]["Inv_File_Name"]);
+
                 }
 
             }
@@ -220,12 +224,11 @@ namespace IT_Hardware.Areas.Admin.Data
 
 
                 using (SqlCommand cmd = 
-                    new SqlCommand("SELECT * from  dbo.Get_All_SO(@UserId)"))
+                    new SqlCommand("SELECT * from  dbo.Get_All_PO()"))
                 {
 
                     cmd.CommandType = CommandType.Text;
                     cmd.Connection = con;
-                    cmd.Parameters.AddWithValue("@UserId", UserId.Trim());
 
                     using (SqlDataAdapter sda = new SqlDataAdapter())
                     {
@@ -241,8 +244,8 @@ namespace IT_Hardware.Areas.Admin.Data
                 foreach (DataRow dr in dt_PO.Rows)
                 {
                     SelectListItem Listdata = new SelectListItem();
-                    Listdata.Value = Convert.ToString(dr["ID"]);
-                    Listdata.Text = Convert.ToString(dr["SO_No"]);
+                    Listdata.Value = Convert.ToString(dr["PO_id"]);
+                    Listdata.Text = Convert.ToString(dr["PO_Name"]);
 
                     List_Item.Add(Listdata);
                 }
