@@ -34,18 +34,14 @@
 
             <tr>
                 <td style="width:25%; height:50px;">
-                    Vendor Name
+                    Purchase Order
                     @Html.HiddenFor(x => x.SLA_Id)
                 </td>
                 <td style="width:75%;" colspan="3">
-
-                    @Html.DropDownListFor(x => x.Vendor_id, Model.Vendor_List, new { @class = " form-rounded", @style = " width :60%; " })
-
+                    @Html.DropDownListFor(x => x.PO_id, Model.PO_List, new { @class = " form-rounded", @style = " width :60%; " })
                 </td>
-
             </tr>
             <tr>
-
                 <td style="width:25%;">
                     Service Type Overview
                 </td>
@@ -67,12 +63,11 @@
                 <td style="width:25%;">
                     @Html.TextBoxFor(x => x.Expiry_DT, "{0:dd/MM/yyyy}", new { @class = "dateclass form-rounded date-format", @style = " width :80%; " })
                 </td>
-
             </tr>
 
 
-            <tr style=" height: 50px; ">
 
+            <tr style=" height: 50px; ">
 
                 <td align="left" style="width:25%; "> Upload File</td>
 
@@ -80,39 +75,46 @@
                     <table style="width: 100%;">
                         <tr>
                             <td style="width:100%;" colspan="3">
-                                <input type="file" name="All_Files" id="All_Files" />
-                               @*  <input type="submit" id="btnFileUpload" class="btn_download" value="Upload" />
+                                <input type="file" name="postedFile" id="FileUpload_Id" />
+
                                 <progress id="fileProgress" style="display: none"></progress>
-                                <span id="lblMessage" style="color: Green"></span> *@
+                                <span id="lblMessage" style="color: Green"></span>
                             </td>
                         </tr>
                         <tr><td colspan="3" style="height:10px;"></td></tr>
                         <tr>
                             <td>
-                                <table id="Files_Grid" style="width:100%;">
-                                    <tr>
-                                        <td style="width:50%; font-weight:bold">File Name</td>
-                                        <td style="width: 25%; font-weight: bold"> Download</td>                                     
-                                    </tr>
+                                @{
+                                    if (Model.SLA_File.FileName != string.Empty)
+                                    {
+                                        <table id="Files_Grid" style="width:100%;">
+                                            <tr>
+                                                <td style="width:50%; font-weight:bold">File Name</td>
+                                                <td style="width: 25%; font-weight: bold"> Download</td>
+                                            </tr>
 
-                                    <tr>
-                                            <td>
-                                                <div id="abcdefgh">
-                                                    @Html.DisplayFor(x => x.SLA_File_Name)
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.SLA_File_Name' />
-                                            </td>
+                                            <tr>                                             
+                                                <td>
+                                                    <div id="abcdefgh">
+                                                        @Html.DisplayFor(x => x.SLA_File.FileName)
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.SLA_File.FileName' />
+                                                </td>
+                                            </tr>
 
-                                        </tr>
-                                    
-                                </table>
+                                        </table>
+                                    }
+                                }
                             </td>
 
                         </tr>
 
                     </table>
+
+
+
                 </td>
             </tr>
 
@@ -194,6 +196,59 @@
         });
     });
 </script>
+
+
+
+
+<script type="text/javascript">
+
+    $(document).on("click", ".cssdownload", function (event) {
+
+        var fileID = $(this).attr('id');
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Download", "SLA")",
+            data: { fileName: fileID  },
+            success: function (r) {
+                //Convert Base64 string to Byte Array.
+                var bytes = Base64ToBytes(r);
+
+                //Convert Byte Array to BLOB.
+                var blob = new Blob([bytes], { type: "application/octetstream" });
+
+                //Check the Browser type and download the File.
+                var isIE = false || !!document.documentMode;
+                if (isIE) {
+                    window.navigator.msSaveBlob(blob, fileID);
+                }
+                else {
+                    var url = window.URL || window.webkitURL;
+                    link = url.createObjectURL(blob);
+                    var a = $("<a />");
+                    a.attr("download", fileID );
+                    a.attr("href", link);
+                    $("body").append(a);
+                    a[0].click();
+                    $("body").remove(a);
+                }
+            }
+        });
+
+      event.preventDefault();
+    });
+
+    function Base64ToBytes(base64) {
+        var s = window.atob(base64);
+        var bytes = new Uint8Array(s.length);
+        for (var i = 0; i < s.length; i++) {
+            bytes[i] = s.charCodeAt(i);
+        }
+        return bytes;
+    };
+
+</script>
+
 
 
 

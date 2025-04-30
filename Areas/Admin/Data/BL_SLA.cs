@@ -43,18 +43,15 @@ namespace IT_Hardware.Areas.Admin.Data
                     }
                 }
 
-
-
-
                 foreach (DataRow dr in dt_Comuter.Rows)
                 {
                     BL_data = new Mod_SLA();
 
                     BL_data.SLA_Id = Convert.ToString(dr["Unique_Id"]);
 
-                    BL_data.Vendor_id = Convert.ToString(dr["Vendor_ID"]);
+                    BL_data.PO_id = Convert.ToString(dr["Vendor_ID"]);
 
-                    BL_data.Vendor_Name = Convert.ToString(dr["Vendor_name"]);
+                    BL_data.PO_Details = Convert.ToString(dr["Vendor_name"]);
 
                     if (Convert.ToString(dr["Expiry_DT"]) != null && Convert.ToString(dr["Expiry_DT"]) != string.Empty && Convert.ToString(dr["Expiry_DT"]) !="")
                     {
@@ -73,11 +70,9 @@ namespace IT_Hardware.Areas.Admin.Data
         }
 
 
-        public int Save_SLA_data(Mod_SLA Data, string type, string SLA_ID , out string SLA_Id_Update, out string SLA_File_Name)
+        public int Save_data(Mod_SLA Data, string type)
         {
             int status = 0;
-            SLA_Id_Update = string.Empty;
-            SLA_File_Name = string.Empty;
 
             SqlConnection con = new DBConnection().con;
             try
@@ -95,14 +90,12 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 if (type == "Update" || type == "Delete")
                 {
-                    SqlParameter Asset_Id = new SqlParameter("@Unique_Id", SLA_ID );
+                    SqlParameter Asset_Id = new SqlParameter("@Unique_Id", Data.SLA_Id);
                     cmd.Parameters.Add(Asset_Id);
                 }
 
-                SqlParameter Vendor_ID = new SqlParameter("@Vendor_ID", Data.Vendor_id);
-                cmd.Parameters.Add(Vendor_ID);
 
-                SqlParameter PO_ID = new SqlParameter("@PO_Id", Data.Vendor_id);
+                SqlParameter PO_ID = new SqlParameter("@PO_Id", Data.PO_id);
                 cmd.Parameters.Add(PO_ID);
 
                 SqlParameter Service_Type_Short = new SqlParameter("@Service_Type_Short", Data.Service_Type_Short);
@@ -121,12 +114,16 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter Remarks = new SqlParameter("@Remarks", Data.Remarks);
                 cmd.Parameters.Add(Remarks);
 
+                SqlParameter SLA_FileName = new SqlParameter("@SLA_fileName", new FileInfo(Data.SLA_File.FileName).Name);
+                cmd.Parameters.Add(Remarks);
+
                 SqlParameter SLA_File;
-                if (Data.All_Files is null)
-                    SLA_File = new SqlParameter("@SLA_Copy", 0);
+                if (Data.SLA_File != null)
+                    SLA_File = new SqlParameter("@File_Exist", 1);
                 else
-                    SLA_File = new SqlParameter("@SLA_Copy", 1);
+                    SLA_File = new SqlParameter("@File_Exist", 0);
                 cmd.Parameters.Add(SLA_File);
+
 
                 SqlParameter User_Id = new SqlParameter("@Create_Usr_Id", Data.Create_usr_id);
                 cmd.Parameters.Add(User_Id);
@@ -141,8 +138,6 @@ namespace IT_Hardware.Areas.Admin.Data
                       
                         if (dt.Rows.Count>0)
                         {
-                            SLA_Id_Update = Convert.ToString(dt.Rows[0]["SLA_Id"]);
-                            SLA_File_Name = Convert.ToString(dt.Rows[0]["SLA_File_temp"]);
                             status = Convert.ToInt32(dt.Rows[0]["Row_Effect"]);
                         }
                     }
@@ -194,7 +189,8 @@ namespace IT_Hardware.Areas.Admin.Data
                 if (dt_Comuter.Rows.Count > 0)
                 {
                     Data.SLA_Id = Convert.ToString(dt_Comuter.Rows[0]["Unique_Id"]);
-                    Data.Vendor_id = Convert.ToString(dt_Comuter.Rows[0]["Vendor_id"]);
+                    Data.Vender_Name = Convert.ToString(dt_Comuter.Rows[0]["Vendor_name"]);
+                    Data.PO_id = Convert.ToString(dt_Comuter.Rows[0]["Vendor_id"]);
                     Data.Service_Type_Short = Convert.ToString(dt_Comuter.Rows[0]["Service_Type_Short"]);
                     Data.Service_Type_Details = Convert.ToString(dt_Comuter.Rows[0]["Service_Type_Details"]);
 

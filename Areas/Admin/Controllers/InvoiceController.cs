@@ -76,7 +76,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
                         //get file extension
                         FileInfo fileInfo = new FileInfo(Data.File_Invoice.FileName);
-                        string fileName = Inv_Id + fileInfo.Extension;
+                        string fileName = Inv_Id ;
 
                         string fileNameWithPath = Path.Combine(path, fileName);
 
@@ -201,19 +201,26 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return RedirectToAction("Vendor_Details", "Vendor");
         }
 
-        public FileResult Download(string fileId)
+       
+        public ContentResult Download(string fileName)
         {
 
-            //Build the File Path.
-            string path = Path.Combine("wwwroot\\Files\\HQ\\Invoice\\") + fileId;
+            string wwwPath = this.Environment.WebRootPath;
+            string contentPath = this.Environment.ContentRootPath;
 
-            //Read the File data into Byte Array.
-            byte[] bytes = System.IO.File.ReadAllBytes(path);
+            string path = Path.Combine(this.Environment.WebRootPath, "Files\\HQ\\Invoice\\");
 
-            //Send the File to Download.
-            return File(bytes, "application/octet-stream", fileId);
+            byte[] bytes = System.IO.File.ReadAllBytes(path + fileName );
+
+            //Convert File to Base64 string and send to Client.
+            string base64 = Convert.ToBase64String(bytes, 0, bytes.Length);
+
+            return Content(base64);
 
         }
+
+
+
 
         public JsonResult ReplaceFile(IFormFile file, string FileType, string fileName)
         {

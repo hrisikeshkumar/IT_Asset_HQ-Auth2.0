@@ -54,7 +54,10 @@
                 <table style="width:100%">
                     <tr>
                         <th>
-                            Vendor Name
+                            Vender Name
+                        </th>
+                        <th>
+                            PO Details
                         </th>
                         <th>
                             Service Type
@@ -69,7 +72,10 @@
                     {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Vendor_Name)
+                        @Html.DisplayFor(modelItem => item.Vender_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PO_Details)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Service_Type_Short)

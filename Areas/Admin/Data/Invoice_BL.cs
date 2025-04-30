@@ -50,12 +50,18 @@ namespace IT_Hardware.Areas.Admin.Data
                     BL_data.Invoice_id = Convert.ToString(dr["Invoice_Id"]);
                     BL_data.Invoice_No = Convert.ToString(dr["Invoice_No"]);
                     BL_data.Invoice_Subject = Convert.ToString(dr["InvSubject"]);
-                    BL_data.Invoice_Date =  Convert.ToDateTime(dr["Invoice_Date"]);
-                    BL_data.Invoice_Value = Convert.ToInt32(dr["Inv_Value"]);
-                    BL_data.Penalty_Amount = Convert.ToInt32(dr["Penalty_Amt"]);
-                    BL_data.Penalty_Reason = Convert.ToString(dr["Penalty_Reason"]);
-                    BL_data.FileId_Invoice = Convert.ToString(dr["Inv_File_ID"]);
-                    BL_data.FileName_Invoice = Convert.ToString(dr["Inv_File_Name"]);
+                    if(dr["Invoice_Date"] != DBNull.Value)
+                        BL_data.Invoice_Date =  Convert.ToDateTime(dr["Invoice_Date"]);
+                    if (dr["Inv_Value"] != DBNull.Value)
+                        BL_data.Invoice_Value = Convert.ToInt32(dr["Inv_Value"]);
+                    if (dr["Penalty_Amt"] != DBNull.Value)
+                        BL_data.Penalty_Amount = Convert.ToInt32(dr["Penalty_Amt"]);
+                    if (dr["Penalty_Reason"] != DBNull.Value)
+                        BL_data.Penalty_Reason = Convert.ToString(dr["Penalty_Reason"]);
+                    if (dr["Inv_File_ID"] != DBNull.Value)
+                        BL_data.FileId_Invoice = Convert.ToString(dr["Inv_File_ID"]);
+                    if (dr["Inv_File_Name"] != DBNull.Value)
+                        BL_data.FileName_Invoice = Convert.ToString(dr["Inv_File_Name"]);
 
                     current_data.Add(BL_data);
                 }
@@ -115,18 +121,18 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter Invoice_FileName = new SqlParameter("@Inv_FileName", Data.File_Invoice.FileName);
                 cmd.Parameters.Add(Invoice_FileName);
 
-                SqlParameter Invoice_FileExt = new SqlParameter("@Inv_File_Ext", Data.FileName_Invoice);
+                SqlParameter Invoice_FileExt = new SqlParameter("@Inv_File_Extension", Path.GetExtension(Data.File_Invoice.FileName).ToString());
                 cmd.Parameters.Add(Invoice_FileExt);
 
                 SqlParameter Remarks = new SqlParameter("@Remarks", Data.Remarks);
                 cmd.Parameters.Add(Remarks);
 
 
-                //if (Data.File_Invoice != null)
-                //{
-                //    SqlParameter InvFile_Exit = new SqlParameter("@Inv_FileExist", 1);
-                //    cmd.Parameters.Add(InvFile_Exit);
-                //}
+                if (Data.File_Invoice != null)
+                {
+                    SqlParameter InvFile_Exit = new SqlParameter("@Inv_FileExist", 1);
+                    cmd.Parameters.Add(InvFile_Exit);
+                }
 
 
                 SqlParameter User_Id = new SqlParameter("@Create_Usr_Id", Data.Create_usr_id);
@@ -194,13 +200,22 @@ namespace IT_Hardware.Areas.Admin.Data
                         Data.Invoice_id = Convert.ToString(dt_Comuter.Rows[0]["Invoice_Id"]);
                         Data.Invoice_No = Convert.ToString(dt_Comuter.Rows[0]["Invoice_No"]);
                         Data.Invoice_Subject = Convert.ToString(dt_Comuter.Rows[0]["InvSubject"]);
-                        Data.Invoice_Date = Convert.ToDateTime(dt_Comuter.Rows[0]["Invoice_Date"]);
-                        Data.Invoice_Value = Convert.ToInt32(dt_Comuter.Rows[0]["Inv_Value"]);
-                        Data.PO_Id = Convert.ToString(dt_Comuter.Rows[0]["PO_Id"]);
-                        Data.Penalty_Amount = Convert.ToInt32(dt_Comuter.Rows[0]["Penalty_Amt"]);
-                        Data.Penalty_Reason = Convert.ToString(dt_Comuter.Rows[0]["Penalty_Reason"]);
-                        Data.FileId_Invoice = Convert.ToString(dt_Comuter.Rows[0]["Inv_File_ID"]);
-                        Data.FileName_Invoice = Convert.ToString(dt_Comuter.Rows[0]["Inv_File_Name"]);
+
+
+                        if (dt_Comuter.Rows[0]["Invoice_Date"] != DBNull.Value)
+                            Data.Invoice_Date = Convert.ToDateTime(dt_Comuter.Rows[0]["Invoice_Date"]);
+                        if (dt_Comuter.Rows[0]["Inv_Value"] != DBNull.Value)
+                            Data.Invoice_Value = Convert.ToInt32(dt_Comuter.Rows[0]["Inv_Value"]);
+                        if (dt_Comuter.Rows[0]["PO_Id"] != DBNull.Value)
+                            Data.Penalty_Amount = Convert.ToInt32(dt_Comuter.Rows[0]["PO_Id"]);
+                        if (dt_Comuter.Rows[0]["Penalty_Amt"] != DBNull.Value)
+                            Data.Penalty_Amount = Convert.ToInt32(dt_Comuter.Rows[0]["Penalty_Amt"]);
+                        if (dt_Comuter.Rows[0]["Penalty_Reason"] != DBNull.Value)
+                            Data.Penalty_Reason = Convert.ToString(dt_Comuter.Rows[0]["Penalty_Reason"]);
+                        if (dt_Comuter.Rows[0]["Inv_File_ID"] != DBNull.Value)
+                            Data.FileId_Invoice = Convert.ToString(dt_Comuter.Rows[0]["Inv_File_ID"]);
+                        if (dt_Comuter.Rows[0]["Inv_File_Name"] != DBNull.Value)
+                            Data.FileName_Invoice = Convert.ToString(dt_Comuter.Rows[0]["Inv_File_Name"]);
 
                 }
 
