@@ -103,8 +103,11 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter PO_File_Present = new SqlParameter("@PO_File_Present", Data.PO_File_Name);
                 cmd.Parameters.Add(PO_File_Present);
 
-                SqlParameter PO_File = new SqlParameter("@PO_File_Name", Data.File_PO.FileName);
-                cmd.Parameters.Add(PO_File);
+                if (Data.File_PO != null)
+                {
+                    SqlParameter PO_File = new SqlParameter("@PO_File_Name", Data.File_PO.FileName);
+                    cmd.Parameters.Add(PO_File);
+                }
 
                 SqlParameter PO_Subject = new SqlParameter("@PO_Subject", Data.PO_Subject);
                 cmd.Parameters.Add(PO_Subject);

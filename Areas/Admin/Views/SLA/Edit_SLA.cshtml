@@ -85,7 +85,7 @@
                         <tr>
                             <td>
                                 @{
-                                    if (Model.SLA_File.FileName != string.Empty)
+                                    if (Model.SLA_File_Name != string.Empty)
                                     {
                                         <table id="Files_Grid" style="width:100%;">
                                             <tr>
@@ -96,11 +96,11 @@
                                             <tr>                                             
                                                 <td>
                                                     <div id="abcdefgh">
-                                                        @Html.DisplayFor(x => x.SLA_File.FileName)
+                                                        @Html.DisplayFor(x => x.SLA_File_Name)
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.SLA_File.FileName' />
+                                                    <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.SLA_File_Name' />
                                                 </td>
                                             </tr>
 

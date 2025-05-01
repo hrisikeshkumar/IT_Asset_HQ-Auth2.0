@@ -49,7 +49,7 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     BL_data.SLA_Id = Convert.ToString(dr["Unique_Id"]);
 
-                    BL_data.PO_id = Convert.ToString(dr["Vendor_ID"]);
+                    BL_data.PO_id = Convert.ToString(dr["PODetail"]);
 
                     BL_data.PO_Details = Convert.ToString(dr["Vendor_name"]);
 
@@ -114,16 +114,13 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter Remarks = new SqlParameter("@Remarks", Data.Remarks);
                 cmd.Parameters.Add(Remarks);
 
-                SqlParameter SLA_FileName = new SqlParameter("@SLA_fileName", new FileInfo(Data.SLA_File.FileName).Name);
-                cmd.Parameters.Add(Remarks);
-
-                SqlParameter SLA_File;
                 if (Data.SLA_File != null)
-                    SLA_File = new SqlParameter("@File_Exist", 1);
-                else
-                    SLA_File = new SqlParameter("@File_Exist", 0);
-                cmd.Parameters.Add(SLA_File);
-
+                {
+                    SqlParameter SLA_FileName = new SqlParameter("@SLA_fileName", new FileInfo(Data.SLA_File.FileName).Name);
+                    cmd.Parameters.Add(SLA_FileName);
+                    SqlParameter SLA_File = new SqlParameter("@File_Exist", 1);
+                    cmd.Parameters.Add(SLA_File);
+                }
 
                 SqlParameter User_Id = new SqlParameter("@Create_Usr_Id", Data.Create_usr_id);
                 cmd.Parameters.Add(User_Id);
@@ -190,17 +187,18 @@ namespace IT_Hardware.Areas.Admin.Data
                 {
                     Data.SLA_Id = Convert.ToString(dt_Comuter.Rows[0]["Unique_Id"]);
                     Data.Vender_Name = Convert.ToString(dt_Comuter.Rows[0]["Vendor_name"]);
-                    Data.PO_id = Convert.ToString(dt_Comuter.Rows[0]["Vendor_id"]);
+                    
+                    if (dt_Comuter.Rows[0]["PO_ID"] != DBNull.Value)
+                        Data.PO_id = Convert.ToString(dt_Comuter.Rows[0]["PO_ID"]);
+
                     Data.Service_Type_Short = Convert.ToString(dt_Comuter.Rows[0]["Service_Type_Short"]);
                     Data.Service_Type_Details = Convert.ToString(dt_Comuter.Rows[0]["Service_Type_Details"]);
-
 
                     if (Convert.ToString(dt_Comuter.Rows[0]["SLA_FileName"]) != "")
                     {
                         Data.SLA_File_Name = Convert.ToString(dt_Comuter.Rows[0]["SLA_FileName"]);
                     }
                     
-
                     if ( Convert.ToString( dt_Comuter.Rows[0]["Service_ST_DT"] )!= "" || Convert.ToString(dt_Comuter.Rows[0]["Service_ST_DT"]) != string.Empty)
                     {
                         Data.Service_ST_DT = Convert.ToDateTime(dt_Comuter.Rows[0]["Service_ST_DT"]).Date;

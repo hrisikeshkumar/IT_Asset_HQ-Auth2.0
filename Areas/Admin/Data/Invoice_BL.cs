@@ -118,11 +118,7 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter Invoice_Date = new SqlParameter("@Inv_date", Data.Invoice_Date);
                 cmd.Parameters.Add(Invoice_Date);
 
-                SqlParameter Invoice_FileName = new SqlParameter("@Inv_FileName", Data.File_Invoice.FileName);
-                cmd.Parameters.Add(Invoice_FileName);
-
-                SqlParameter Invoice_FileExt = new SqlParameter("@Inv_File_Extension", Path.GetExtension(Data.File_Invoice.FileName).ToString());
-                cmd.Parameters.Add(Invoice_FileExt);
+                
 
                 SqlParameter Remarks = new SqlParameter("@Remarks", Data.Remarks);
                 cmd.Parameters.Add(Remarks);
@@ -132,6 +128,12 @@ namespace IT_Hardware.Areas.Admin.Data
                 {
                     SqlParameter InvFile_Exit = new SqlParameter("@Inv_FileExist", 1);
                     cmd.Parameters.Add(InvFile_Exit);
+
+                    SqlParameter Invoice_FileName = new SqlParameter("@Inv_FileName", Data.File_Invoice.FileName);
+                    cmd.Parameters.Add(Invoice_FileName);
+
+                    SqlParameter Invoice_FileExt = new SqlParameter("@Inv_File_Extension", Path.GetExtension(Data.File_Invoice.FileName).ToString());
+                    cmd.Parameters.Add(Invoice_FileExt);
                 }
 
 
