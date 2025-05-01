@@ -112,6 +112,9 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter PO_Subject = new SqlParameter("@PO_Subject", Data.PO_Subject);
                 cmd.Parameters.Add(PO_Subject);
 
+                SqlParameter Proposal_Id= new SqlParameter("@Proposal_Id", Data.Proposal_Id);
+                cmd.Parameters.Add(Proposal_Id);
+
                 SqlParameter Remarks = new SqlParameter("@Remarks", Data.Remarks);
                 cmd.Parameters.Add(Remarks);
 
@@ -135,7 +138,6 @@ namespace IT_Hardware.Areas.Admin.Data
                             status = Convert.ToInt32(dt.Rows[0]["Row_Effect"]);
                             PO_File_Name = Convert.ToString(dt.Rows[0]["PO_File_Name"]);
                         }
-
                     }
                 }
 
@@ -182,6 +184,8 @@ namespace IT_Hardware.Areas.Admin.Data
                     Data.PO_No = Convert.ToString(dt_PObyID.Rows[0]["PO_No"]);
                     Data.PO_Subject = Convert.ToString(dt_PObyID.Rows[0]["PO_Sub"]);
                     Data.PO_Value = Convert.ToInt32(dt_PObyID.Rows[0]["PO_Value"]);
+                    Data.Proposal_Id = Convert.ToString(dt_PObyID.Rows[0]["Proposal_Id"]);
+                    Data.Approval_Details = Convert.ToString(dt_PObyID.Rows[0]["Approval_Details"]);
 
                     if (Convert.ToString( dt_PObyID.Rows[0]["PO_Date"]) != string.Empty)
                         Data.PO_Date = Convert.ToDateTime(dt_PObyID.Rows[0]["PO_Date"]);
