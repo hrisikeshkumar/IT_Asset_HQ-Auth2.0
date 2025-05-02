@@ -268,6 +268,17 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
         }
 
-   
+
+        public JsonResult AutoComplete(string SL_No)
+        {
+
+            BL_Porder data = new BL_Porder();
+            List<Item_SL_Wise> list = data.Approval_List(SL_No);
+
+
+            return Json(list);
+        }
+
+
     }
 }

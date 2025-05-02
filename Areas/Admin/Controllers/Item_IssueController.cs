@@ -30,7 +30,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             ViewBag.Message = Message;
 
             return View();
-
         }
 
 
@@ -53,13 +52,11 @@ namespace IT_Hardware.Areas.Admin.Controllers
                     }
                     else
                     {
-
                         TempData["Message"] = String.Format("Data save successfully");
                     }
                 }
                 else
                 {
-
                     TempData["Message"] = String.Format("Required field are not provided");
                 }
             }
@@ -90,7 +87,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             int status = 0;
             try
             {
-
                 if (ModelState.IsValid)
                 {
                     BL_Item_Issue Md_Asset = new BL_Item_Issue();

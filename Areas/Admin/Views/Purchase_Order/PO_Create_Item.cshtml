@@ -75,6 +75,14 @@
                 </td>         
             </tr>
             <tr>
+                <td style="width:25%; height:50px;">
+                    Approval Details @Html.HiddenFor(x=>x.Proposal_Id)
+                </td>
+                <td style="width:75%;" colspan="3">
+                    @Html.TextAreaFor(x => x.Approval_Details, new { @rows = "2", @style = " width :96%; " })
+                </td>
+            </tr>
+            <tr>
                 <td style="width: 25%; height: 50px;">
                     Upload Related Files
                 </td>
@@ -103,7 +111,7 @@
                     Remarks
                 </td>
                 <td style="width:75%; " colspan="3">
-                    @Html.TextAreaFor(x => x.Remarks, new { @rows = "4", @style = " width :96%; " })
+                    @Html.TextAreaFor(x => x.Remarks, new { @rows = "2", @style = " width :96%; " })
                 </td>
             </tr>
             <tr>
@@ -202,6 +210,42 @@
 </script>
 
 
+
+<link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css" rel="Stylesheet" type="text/css" />
+
+<script type="text/javascript">
+    $('#Approval_Details').autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: "@Url.Action("AutoComplete", "Purchase_Order")",
+                data: {SL_No: request.term},
+                dataType: "json",
+                type: "POST",
+                // contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return   item.item_Id + '--' + item.item_SL_Number ;
+
+                    }))
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (xmlHttpRequest, textStatus, errorThrown) {
+                    console.log('some error occured', textStatus, errorThrown);
+                }
+            });
+        },
+        minLength: 1,
+        select: function (event, ui) {
+            
+            $('#Proposal_Id').val(ui.item.label.split('--')[0]);
+            $('#Approval_Details').val(ui.item.value.split('--')[1]);
+
+            return false;
+        }
+    });
+</script>
 
 
 

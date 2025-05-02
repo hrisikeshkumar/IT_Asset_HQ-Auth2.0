@@ -72,7 +72,7 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "sp_Invoice_HQ";
+                cmd.CommandText = "sp_POrder";
 
                 cmd.Connection = con;
 
@@ -259,6 +259,54 @@ namespace IT_Hardware.Areas.Admin.Data
 
             return "";
         }
+
+        public List<Item_SL_Wise> Approval_List(string input)
+        {
+
+            List<Item_SL_Wise> List_Item = new List<Item_SL_Wise>();
+
+            try
+            {
+                DataTable dt_Comuter;
+
+                SqlConnection con = new DBConnection().con;
+
+
+                using (SqlCommand cmd = new SqlCommand("select Proposal_Id, Utilization_Details from [dbo].[get_ApprovalDetails](@input)"))
+                {
+
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection = con;
+
+                    SqlParameter sqlP_Input = new SqlParameter("@input", input);
+                    cmd.Parameters.Add(sqlP_Input);
+
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        sda.SelectCommand = cmd;
+                        using (DataTable dt = new DataTable())
+                        {
+                            sda.Fill(dt);
+                            dt_Comuter = dt;
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in dt_Comuter.Rows)
+                {
+                    Item_SL_Wise item = new Item_SL_Wise();
+                    item.Item_Id = Convert.ToString(dr["Proposal_Id"]);
+                    item.Item_SL_Number = Convert.ToString(dr["Utilization_Details"]);
+
+                    List_Item.Add(item);
+                }
+
+            }
+            catch (Exception ex) { }
+
+            return List_Item;
+        }
+
 
 
     }
