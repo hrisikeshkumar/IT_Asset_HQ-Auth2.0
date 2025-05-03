@@ -77,6 +77,15 @@
                 </td>
             </tr>
 
+            <tr>
+                <td style="width:25%; height:50px;">
+                    Approval Details @Html.HiddenFor(x => x.Proposal_Id)
+                </td>
+                <td style="width:75%;" colspan="3">
+                    @Html.TextAreaFor(x => x.Approval_Details, new { @rows = "2", @style = " width :96%; " })
+                </td>
+            </tr>
+
             <tr style=" height: 50px; ">
 
                 <td align="left" style="width:25%; "> Upload File</td>
@@ -100,14 +109,10 @@
                                       <table id="Files_Grid" style="width:100%;">
                                         <tr>
                                             <td style="width:50%; font-weight:bold">File Name</td>
-                                            <td style="width:50%; font-weight:bold">File Name</td>
                                             <td style="width: 25%; font-weight: bold"> Download</td>
                                         </tr>
 
-                                        <tr>
-                                            <td>
-                                                    @Html.DisplayFor(x => x.PO_File_Id)
-                                            </td>
+                                        <tr>                                           
                                             <td>
                                                 <div id="abcdefgh">
                                                     @Html.DisplayFor(x => x.PO_File_Name)
@@ -134,17 +139,23 @@
 
 
             <tr>
-                <td style="width:25%; height:50px;">
-                    SLA Required
-                </td>
                 <td style="width:25%;">
-                    @Html.CheckBoxFor(model => model.SLA_Required, new { @class = " form-rounded", @style = " width :60%; " })
+                    P.O. Value
                 </td>
-                <td style="width:25%;">
-                    P.O. Value (Yearly)
-                </td>
-                <td style="width:25%;">
+                <td colspan="2" style="width:50%;">
                     @Html.TextBoxFor(x => x.PO_Value, new { @class = " form-rounded", @style = " width :90%; " })
+                </td>
+                <td style="width:25%; height:50px;">
+                    <table width="100%">
+                        <tr>
+                            <td style="text-align:left; width:75%;">
+                                SLA Required
+                            </td>
+                            <td style="text-align:left; width:25%;">
+                                @Html.CheckBoxFor(model => model.SLA_Required, new { @class = " form-rounded", @style = " width :60%; " })
+                            </td>
+                        </tr>
+                    </table>
                 </td>
             </tr>
             <tr>
@@ -240,7 +251,6 @@
         });
     });
 
-
     $(function () {
         $('#Budget_Amount').focusout(function () {
             $('#Remaning_Balance').val($('#Balance_Available').val() - $('#Budget_Amount').val());
@@ -301,6 +311,42 @@
 </script>
 
 
+
+<link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css" rel="Stylesheet" type="text/css" />
+
+<script type="text/javascript">
+    $('#Approval_Details').autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: "@Url.Action("AutoComplete", "Purchase_Order")",
+                data: {SL_No: request.term},
+                dataType: "json",
+                type: "POST",
+                // contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return   item.item_Id + '--' + item.item_SL_Number ;
+
+                    }))
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (xmlHttpRequest, textStatus, errorThrown) {
+                    console.log('some error occured', textStatus, errorThrown);
+                }
+            });
+        },
+        minLength: 1,
+        select: function (event, ui) {
+
+            $('#Proposal_Id').val(ui.item.label.split('--')[0]);
+            $('#Approval_Details').val(ui.item.value.split('--')[1]);
+
+            return false;
+        }
+    });
+</script>
 
 
 
