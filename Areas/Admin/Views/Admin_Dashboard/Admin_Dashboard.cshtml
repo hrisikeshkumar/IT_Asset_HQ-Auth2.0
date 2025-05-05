@@ -75,7 +75,6 @@
                 </tr>
             </thead>
 
-
             @foreach (var Item in Model.List_Proposal)
             {
                 <tbody>
@@ -134,8 +133,6 @@
                         <td style="width: 15%; text-align: center">
                             @Html.DisplayFor(modelitem => Item.Status, new { @class = "form-rounded", @style = " width :80%; font-size:medium " })
                         </td>
-
-
                     </tr>
                 </tbody>
             }
@@ -299,6 +296,7 @@
 }
 
 
+
 <script type="text/javascript">
     $(function () {
         $('#myModal2').on('show.bs.modal', function (e) {
@@ -359,8 +357,6 @@
 </script>
 
 
-
-
 <script type="text/javascript">
 
     $(document).on("click", ".cssdownload", function (event) {
@@ -414,31 +410,6 @@
 </script>
 
 
-
-
-
-@* 
-<script type="text/javascript">
-    $(document).on("click", ".cssdownload", function () {
-        var fileName = $(this).attr('id');
-      
-        window.location.href = "/Admin_Dashboard/Download?fileId=" + fileName + "";
-
-        window.location.href = @Url.Action("Download", "Admin_Dashboard", fileName);
-
-        event.preventDefault();
-    });
-
-    function Base64ToBytes(base64) {
-        var s = window.atob(base64);
-        var bytes = new Uint8Array(s.length);
-        for (var i = 0; i < s.length; i++) {
-            bytes[i] = s.charCodeAt(i);
-        }
-        return bytes;
-    };
-
-</script> *@
 
 
 

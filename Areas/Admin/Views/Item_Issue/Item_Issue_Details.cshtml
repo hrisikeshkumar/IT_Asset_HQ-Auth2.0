@@ -1,6 +1,6 @@
 ﻿@using IT_Hardware.Areas.Admin.Models
 
-@model IList<Mod_Item_Issue>
+@model ItemIssue_Mod
 
 
 
@@ -67,14 +67,19 @@
                     </tr>
 
 
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.Item_Issues)
                     {
                         <tr>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Item_Type)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Item_SerialNo)
+                               @*  @Html.DisplayFor(modelItem => item.Item_SerialNo) *@
+                                <a href=""
+                                   class=" " style="font-size:medium" data-toggle="modal" data-target="#myModal2" data-status="@item.Item_SerialNo" id="@item.Item_SerialNo">
+                                    @Html.DisplayFor(modelItem => item.Item_SerialNo)
+                                </a>
+
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Transfered_Emp_Name)
@@ -183,6 +188,171 @@
 
         });
     });
+
+</script>
+
+
+
+
+@*-------------------------------------------------------------Modal-----------------------------------------------------------------------------*@
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<!--Modal quantity-->
+
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+                <div class="modal-header badge-warning k-i-align-items-center-alt">
+                    <h4 style="font-weight:bold">
+                        Details Information of the Item
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="align-content:center; text-align:center; align-items:center">
+                    <table style="width:100%; border-width:1px;">
+                        <tr>
+                            <td style="text-align:left; width:30%; background-color:moccasin ">
+                                Particular
+                            </td>
+                        <td style="text-align:center; width:50%; background-color:moccasin ">
+                                File Name
+                            </td>
+                            <td style="text-align:center; width:20%; background-color:moccasin ">
+                                Action
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;  ">
+                                Invoice
+                            </td>
+                            <td style="text-align:center;  ">
+                                @Html.DisplayFor(x => x.itemInfo.Invoice_Info, new { @readonly = "true", @class = " form-rounded", @style = " width :100%; " })
+                            </td>
+                            <td style="text-align:center; width:20%; ">
+                            <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.itemInfo.Serial_No' FileType='Invoice' />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="height:10px;"></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left; "> P.O. </td>
+                            <td style="text-align:center;  ">
+                            @Html.DisplayFor(x => x.itemInfo.PO_Info)
+                            </td>                           
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="height:10px;"></td>
+                        </tr>
+                        <tr>
+                        <td style="text-align: left; "> Approval </td>
+                            <td style="text-align:center;  ">
+                            @Html.DisplayFor(x => x.itemInfo.Approval_Info)
+                            </td>
+                        </tr>
+                </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                    
+                </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+    $(function () {
+        $('#myModal2').on('show.bs.modal', function (e) {
+            var button = $(e.relatedTarget) // Button that triggered the modal
+            var ItemInfo = button.data('status') // Extract info from data-* attributes
+
+            $("#Files_Grid tr").remove();
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetDetails", "Item_Info")",
+                dataType: "json",
+                data: { serialno: ItemInfo },
+                success: function (response) {
+                    if (response != null) {
+
+                        $('#Invoice').val(response.prop_detail.utilization_Details);
+                        $('#PurchaseOrder').val(response.prop_detail.proposal_Id);
+                        $('#Approval').val(response.prop_detail.dte_IT_Remarks);
+                                             
+                    } else {
+                        alert("Something went wrong");
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+
+<script type="text/javascript">
+
+    $(document).on("click", ".cssdownload", function (event) {
+
+        var fileID = $(this).attr('id');
+        var File_Type = $(this).attr('FileType');
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Download", "Item_Info")",
+            data: { SerialNo: fileID ; FileType : File_Type  },
+            success: function (r) {
+                //Convert Base64 string to Byte Array.
+                var bytes = Base64ToBytes(r);
+
+                //Convert Byte Array to BLOB.
+                var blob = new Blob([bytes], { type: "application/octetstream" });
+
+                //Check the Browser type and download the File.
+                var isIE = false || !!document.documentMode;
+                if (isIE) {
+                    window.navigator.msSaveBlob(blob, fileID);
+                }
+                else {
+                    var url = window.URL || window.webkitURL;
+                    link = url.createObjectURL(blob);
+                    var a = $("<a />");
+                    a.attr("download", fileID );
+                    a.attr("href", link);
+                    $("body").append(a);
+                    a[0].click();
+                    $("body").remove(a);
+                }
+            }
+        });
+
+      event.preventDefault();
+    });
+
+    function Base64ToBytes(base64) {
+        var s = window.atob(base64);
+        var bytes = new Uint8Array(s.length);
+        for (var i = 0; i < s.length; i++) {
+            bytes[i] = s.charCodeAt(i);
+        }
+        return bytes;
+    };
 
 </script>
 

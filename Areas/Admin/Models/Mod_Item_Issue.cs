@@ -5,6 +5,13 @@ using System.ComponentModel.DataAnnotations;
 namespace IT_Hardware.Areas.Admin.Models
 {
 
+
+    public class ItemIssue_Mod
+    {
+        public ItemInfo_Mod? itemInfo{ get; set; }
+        public List<Mod_Item_Issue>? Item_Issues { get; set; }
+    }
+
     public class Mod_Item_Issue_Employee
     {
         public string? Previous_Custady_Id { get; set; }

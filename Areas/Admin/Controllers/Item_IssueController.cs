@@ -11,19 +11,19 @@ namespace IT_Hardware.Areas.Admin.Controllers
     [Area("Admin")]
     public class Item_IssueController : Controller
     {
-
-        
+    
         public ActionResult Item_Issue_Details()
         {
-            BL_Item_Issue com = new BL_Item_Issue();
+            BL_Item_Issue item = new BL_Item_Issue();
 
-            List<Mod_Item_Issue> pc_List = com.Get_Item_IssueData();
+            ItemIssue_Mod model = new ItemIssue_Mod();
 
-            return View( pc_List);
+            model.Item_Issues= item.Get_Item_IssueData();
+            model.itemInfo = new ItemInfo_Mod();
+
+            return View(model);
         }
 
-
-        
         [HttpGet]
         public ActionResult Item_Issue_Create_Item(string Message)
         {
@@ -32,11 +32,11 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return View();
         }
 
-
-        
         [HttpPost]
         public ActionResult Item_Issue_Create_Post(Mod_Item_Issue Get_Data)
         {
+
+
             string Message = "";
             try
             {
@@ -69,9 +69,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             return RedirectToAction("Item_Issue_Create_Item", "Item_Issue");
         }
-
-
-        
+     
         public ActionResult Edit_Item_Issue(string id)
         {
             BL_Item_Issue Md_Com = new BL_Item_Issue();
@@ -79,9 +77,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             return View( data);
         }
-
-
-        
+       
         public ActionResult Update_Item_Issue(Mod_Item_Issue Get_Data, string Asset_ID)
         {
             int status = 0;
@@ -116,9 +112,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             return RedirectToAction("Item_Issue_Details", "Item_Issue");
         }
-
-
-        
+    
         public ActionResult Delete_Item_Issue(Mod_Item_Issue Get_Data, string id)
         {
             int status = 0;
@@ -202,6 +196,8 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
         }
 
+
+       
 
     }
 }
