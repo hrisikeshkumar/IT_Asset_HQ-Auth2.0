@@ -1,4 +1,5 @@
 ﻿using IT_Hardware.Areas.Admin.Models;
+using Microsoft.Graph.Models;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -7,9 +8,25 @@ namespace IT_Hardware.Areas.Admin.Data
     public class ItemInfo_BL
     {
 
-        public ItemInfo_Mod Get_Item_IssueData(string serialNO)
+        public ItemInfo_Mod Get_Item_IssueData(ItemInfo_Mod itemInfo)
+        {            
+            getdetails(itemInfo);
+
+            return itemInfo;
+        }
+
+        public ItemdetailInfo_Mod Get_Item_IssueData(ItemdetailInfo_Mod itemInfo)
         {
-            ItemInfo_Mod itemInfo = new ItemInfo_Mod();
+            getdetails(itemInfo);
+            return itemInfo;
+        }
+
+
+        private void getdetails(ItemInfo_Mod item)
+        {
+
+            ItemdetailInfo_Mod data = new ItemdetailInfo_Mod();
+
             try
             {
                 DataTable dt_Comuter;
@@ -19,7 +36,7 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 using (SqlCommand cmd = new SqlCommand("sp_ItemInfo"))
                 {
-                    SqlParameter sqlP_type = new SqlParameter("@SerialNo", serialNO);
+                    SqlParameter sqlP_type = new SqlParameter("@SerialNo", item.Serial_No);
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection = con;
                     cmd.Parameters.Add(sqlP_type);
@@ -34,19 +51,23 @@ namespace IT_Hardware.Areas.Admin.Data
                         }
                     }
                 }
+                data.Serial_No = item.Serial_No;
 
-                itemInfo.Serial_No = serialNO;
                 if (dt_Comuter.Rows.Count > 0)
                 {
-                    itemInfo.Invoice_Info = Convert.ToString(dt_Comuter.Rows[0]["Invoice_File"]);
-                    itemInfo.PO_Info = Convert.ToString(dt_Comuter.Rows[0]["PO_File"]);
-                    itemInfo.Approval_Info = Convert.ToString(dt_Comuter.Rows[0]["Proposal_File"]);
+                    data.Invoice_Info = Convert.ToString(dt_Comuter.Rows[0]["Invoice_File"]);
+                    data.PO_Info = Convert.ToString(dt_Comuter.Rows[0]["PO_File"]);
+                    data.Approval_Info = Convert.ToString(dt_Comuter.Rows[0]["Proposal_File"]);
+                    data.Invoice_FileId = Convert.ToString(dt_Comuter.Rows[0]["Invoice_File_Id"]);
+                    data.PO_Info_FileId = Convert.ToString(dt_Comuter.Rows[0]["PO_File_Id"]);
+                    data.Approval_Info_FileId = Convert.ToString(dt_Comuter.Rows[0]["Proposal_File_Id"]);
                 }
+
+                item = data;
 
             }
             catch (Exception ex) { }
-
-            return itemInfo;
         }
+
     }
 }

@@ -206,8 +206,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
                 <div class="modal-header badge-warning k-i-align-items-center-alt">
-                    <h4 style="font-weight:bold">
-                        Details Information of the Item
+                    <h4 style="font-weight:bold; ">
+                        Details Information of the Assets
                     </h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -222,7 +222,7 @@
                         <td style="text-align:center; width:50%; background-color:moccasin ">
                                 File Name
                             </td>
-                            <td style="text-align:center; width:20%; background-color:moccasin ">
+                            <td style="text-align:right; width:20%; background-color:moccasin ">
                                 Action
                             </td>
                         </tr>
@@ -230,29 +230,41 @@
                             <td style="text-align:left;  ">
                                 Invoice
                             </td>
-                            <td style="text-align:center;  ">
-                                @Html.DisplayFor(x => x.itemInfo.Invoice_Info, new { @readonly = "true", @class = " form-rounded", @style = " width :100%; " })
+                            <td style="text-align:left;  ">
+                            @Html.DisplayFor(x => x.itemInfo.Invoice_Info, new { @class = "FileClass" })
                             </td>
-                            <td style="text-align:center; width:20%; ">
-                            <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.itemInfo.Serial_No' FileType='Invoice' />
-                            </td>
+                            <td style="text-align:right; width:20%; ">
+                                <div class="btnShown">
+                                    <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.itemInfo.Serial_No' FileType='Invoice' />
+                                </div>
+                             </td>
                         </tr>
                         <tr>
                             <td colspan="2" style="height:10px;"></td>
                         </tr>
                         <tr>
                             <td style="text-align: left; "> P.O. </td>
-                            <td style="text-align:center;  ">
-                            @Html.DisplayFor(x => x.itemInfo.PO_Info)
-                            </td>                           
+                            <td style="text-align:left;  ">
+                            @Html.DisplayFor(x => x.itemInfo.PO_Info, new { @class = "FileClass" })
+                            </td>
+                        <td style="text-align:right; width:20%; " >
+                            <div class="btnShown">
+                                <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.itemInfo.Serial_No' FileType='PO' />
+                            </div>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="2" style="height:10px;"></td>
                         </tr>
                         <tr>
-                        <td style="text-align: left; "> Approval </td>
-                            <td style="text-align:center;  ">
-                            @Html.DisplayFor(x => x.itemInfo.Approval_Info)
+                            <td style="text-align: left; "> Approval </td>
+                            <td style="text-align:left;  ">
+                                @Html.DisplayFor(x => x.itemInfo.Approval_Info, new{@class="FileClass"})
+                            </td>
+                            <td style="text-align:right; width:20%; " >
+                                <div class="btnShown">
+                                    <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.itemInfo.Serial_No' FileType='Approval' />
+                                </div>
                             </td>
                         </tr>
                 </table>
@@ -283,6 +295,8 @@
                 success: function (response) {
                     if (response != null) {
 
+                        $(".btnShown").addClass("hidediv");
+
                         $('#Invoice').val(response.prop_detail.utilization_Details);
                         $('#PurchaseOrder').val(response.prop_detail.proposal_Id);
                         $('#Approval').val(response.prop_detail.dte_IT_Remarks);
@@ -304,12 +318,13 @@
 
 
 
-
-
 <script type="text/javascript">
 
     $(document).on("click", ".cssdownload", function (event) {
 
+
+        var row = $(this).closest("tr");
+        var Filename = row.find('.FileClass').text();;
         var fileID = $(this).attr('id');
         var File_Type = $(this).attr('FileType');
 
@@ -356,6 +371,15 @@
 
 </script>
 
+<style type="text/css">
+    .hidediv{
+        display: none;
+    }
+
+    .showdiv {
+        display: none;
+    }
+</style>
 
 
 
