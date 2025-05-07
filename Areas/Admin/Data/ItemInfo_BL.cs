@@ -9,22 +9,24 @@ namespace IT_Hardware.Areas.Admin.Data
     {
 
         public ItemInfo_Mod Get_Item_IssueData(ItemInfo_Mod itemInfo)
-        {            
-            getdetails(itemInfo);
+        {
+            ItemdetailInfo_Mod itemdtlInfo=new ItemdetailInfo_Mod();
 
-            return itemInfo;
+            itemdtlInfo.Serial_No = itemInfo.Serial_No;
+
+
+            return getdetails(itemdtlInfo);
         }
 
         public ItemdetailInfo_Mod Get_Item_IssueData(ItemdetailInfo_Mod itemInfo)
         {
-            getdetails(itemInfo);
-            return itemInfo;
+            
+            return getdetails(itemInfo);
         }
 
 
-        private void getdetails(ItemInfo_Mod item)
+        private ItemdetailInfo_Mod getdetails(ItemdetailInfo_Mod item)
         {
-
             ItemdetailInfo_Mod data = new ItemdetailInfo_Mod();
 
             try
@@ -67,6 +69,8 @@ namespace IT_Hardware.Areas.Admin.Data
 
             }
             catch (Exception ex) { }
+
+            return item;
         }
 
     }

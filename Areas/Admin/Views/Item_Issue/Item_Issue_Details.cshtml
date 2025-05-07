@@ -193,7 +193,6 @@
 
 
 
-
 @*-------------------------------------------------------------Modal-----------------------------------------------------------------------------*@
 
 
@@ -216,26 +215,26 @@
                 <div class="modal-body" style="align-content:center; text-align:center; align-items:center">
                     <table style="width:100%; border-width:1px;">
                         <tr>
-                            <td style="text-align:left; width:30%; background-color:moccasin ">
+                            <td style="text-align:left; width:20%; background-color:moccasin ">
                                 Particular
                             </td>
-                        <td style="text-align:center; width:50%; background-color:moccasin ">
+                        <td style="text-align:center; width:70%; background-color:moccasin ">
                                 File Name
                             </td>
-                            <td style="text-align:right; width:20%; background-color:moccasin ">
+                            <td style="text-align:right; width:10%; background-color:moccasin ">
                                 Action
                             </td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;  ">
+                            <td style="text-align:left;"  >
                                 Invoice
                             </td>
                             <td style="text-align:left;  ">
-                            @Html.DisplayFor(x => x.itemInfo.Invoice_Info, new { @class = "FileClass" })
+                            @Html.TextBoxFor(x => x.itemInfo.Invoice_Info, new { @readonly = "True", @style = "border: 0px none; width:100%", @class = "FileClass" })
                             </td>
                             <td style="text-align:right; width:20%; ">
-                                <div class="btnShown">
-                                    <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.itemInfo.Serial_No' FileType='Invoice' />
+                            <div class="btnShown btnInvoice">
+                                <input type='submit' value='Download' class='cssdownload btn_download' data-min="" FileType='Invoice' />
                                 </div>
                              </td>
                         </tr>
@@ -245,11 +244,11 @@
                         <tr>
                             <td style="text-align: left; "> P.O. </td>
                             <td style="text-align:left;  ">
-                            @Html.DisplayFor(x => x.itemInfo.PO_Info, new { @class = "FileClass" })
+                            @Html.TextBoxFor(x => x.itemInfo.PO_Info, new { @readonly = "True", @style = "border: 0px none; width:100%", @class = "FileClass" })
                             </td>
                         <td style="text-align:right; width:20%; " >
-                            <div class="btnShown">
-                                <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.itemInfo.Serial_No' FileType='PO' />
+                            <div class="btnShown btnPO">
+                                <input type='submit' value='Download' class='cssdownload btn_download' data-min="" FileType='PO' />
                             </div>
                             </td>
                         </tr>
@@ -259,11 +258,11 @@
                         <tr>
                             <td style="text-align: left; "> Approval </td>
                             <td style="text-align:left;  ">
-                                @Html.DisplayFor(x => x.itemInfo.Approval_Info, new{@class="FileClass"})
+                            @Html.TextBoxFor(x => x.itemInfo.Approval_Info, new { @readonly = "True", @style = "border: 0px none; width:100%", @class = "FileClass" })
                             </td>
                             <td style="text-align:right; width:20%; " >
-                                <div class="btnShown">
-                                    <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.itemInfo.Serial_No' FileType='Approval' />
+                            <div class="btnShown btnApproval">
+                                <input type='submit' value='Download' class='cssdownload btn_download' data-min="" FileType='Approval' />
                                 </div>
                             </td>
                         </tr>
@@ -297,9 +296,21 @@
 
                         $(".btnShown").addClass("hidediv");
 
-                        $('#Invoice').val(response.prop_detail.utilization_Details);
-                        $('#PurchaseOrder').val(response.prop_detail.proposal_Id);
-                        $('#Approval').val(response.prop_detail.dte_IT_Remarks);
+                        $('#itemInfo_Invoice_Info').val(response.invoice_Info);
+                        $('#itemInfo_PO_Info').val(response.pO_Info);
+                        $('#itemInfo_Approval_Info').val(response.approval_Info);
+                        
+                        if(response.invoice_Info !='')
+                            $(".btnInvoice").removeClass("hidediv");
+
+                        if(response.pO_Info !='')
+                            $(".btnPO").removeClass("hidediv");
+
+                        if(response.approval_Info !='')
+                            $(".btnApproval").removeClass("hidediv");
+
+
+                            $(".cssdownload").attr('data-min',ItemInfo);
                                              
                     } else {
                         alert("Something went wrong");
@@ -325,13 +336,13 @@
 
         var row = $(this).closest("tr");
         var Filename = row.find('.FileClass').text();;
-        var fileID = $(this).attr('id');
+        var fileID = $(this).attr('data-min');
         var File_Type = $(this).attr('FileType');
 
         $.ajax({
             type: "POST",
             url: "@Url.Action("Download", "Item_Info")",
-            data: { SerialNo: fileID ; FileType : File_Type  },
+            data: { SerialNo: fileID , FileType : File_Type  },
             success: function (r) {
                 //Convert Base64 string to Byte Array.
                 var bytes = Base64ToBytes(r);
