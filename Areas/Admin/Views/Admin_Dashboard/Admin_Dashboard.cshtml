@@ -234,7 +234,7 @@
                             <td colspan="2" style="height:10px;"></td>
                         </tr>
                         <tr>
-                            <td style="text-align: left; width: 15%; "> Uploaded Files </td>
+                            <td style="text-align: left; width: 15%; "> Approval Files </td>
                             <td>
 
                                 <table id="Files_Grid" style="width: 100%; border: 1px solid black;">
@@ -245,6 +245,32 @@
                                     </tr>
                                 </table>
 
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td style="text-align: left; width: 15%; ">Purchase Order </td>
+                            <td>
+                                @* @Html.TextBoxFor(x => x.Prop_detail.PO_File, new { @readonly = "true", @style = " width :100%; border: 0px none;" }) *@
+
+                                <table  style="width: 100%; border: 1px solid black;">
+                                    <tr>
+                                        <th style="width: 70%; text-align: left; border: 1px solid black; height: 30px; background-color: #ffcc00 "> File Name </th>
+
+                                        <th style="width: 30%; text-align: center; border: 1px solid black; background-color: #ffcc00 "> Download </th>
+                                    </tr>
+                                    <tr>
+                                        <td style='width: 70%; text-align: left; height: 30px;' class="POfilename">
+                                            @Html.TextBoxFor(x => x.Prop_detail.PO_File, new { @readonly = "true", @style = " width :100%; border: 0px none;" }) 
+                                        </td>
+                                        <td style='width: 30%; text-align: center; height: 30px;' >
+                                            <input type='submit' value='Download' class='POdownload btn_download' id='@Model.Prop_detail.PO_File'> </input>
+                                        </td>
+
+                                    </tr>                                  
+                                </table>
+                                
+                                
                             </td>
                         </tr>
                         <tr>
@@ -319,6 +345,8 @@
                         $('#Prop_detail_Sec_Office_Remarks').val(response.prop_detail.sec_Office_Remarks);
                         $('#Prop_detail_Purchase_Remarks').val(response.prop_detail.purchase_Remarks);
                         $('#Prop_detail_Other_Dept_Remarks').val(response.prop_detail.other_Dept_Remarks);
+                        $('#Prop_detail_PO_File').val(response.prop_detail.pO_File);
+                        // $('#Prop_detail_PO_File').attr('id').val(response.prop_detail.pO_File);
 
                         markup = "  <tr> <th style='width: 70%; text-align: left; border: 1px solid black; height: 30px; background-color: #ffcc00 '> File Name </th> " +
                             "<th style='width: 30%; text-align: center; border: 1px solid black; background-color: #ffcc00 '> Download </th> </tr> "
@@ -410,6 +438,60 @@
 </script>
 
 
+ @* ----------------------------------- PO download ------------------------------------ *@
+
+<script type="text/javascript">
+
+    $(document).on("click", ".POdownload", function (event) {
+
+        var fileID = $(this).attr('id');
+        var FileName = $(this).closest("tr")      // Gets a descendent with class="nr"
+                       .find("Prop_detail.PO_File")
+                       .text();
+
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Download", "Purchase_Order")",
+            data: { fileName: FileName },
+            success: function (r) {
+                //Convert Base64 string to Byte Array.
+                var bytes = Base64ToBytes(r);
+
+                //Convert Byte Array to BLOB.
+                var blob = new Blob([bytes], { type: "application/octetstream" });
+
+                //Check the Browser type and download the File.
+                var isIE = false || !!document.documentMode;
+                if (isIE) {
+                    window.navigator.msSaveBlob(blob, FileName);
+                }
+                else {
+                    var url = window.URL || window.webkitURL;
+                    link = url.createObjectURL(blob);
+                    var a = $("<a />");
+                    a.attr("download", FileName);
+                    a.attr("href", link);
+                    $("body").append(a);
+                    a[0].click();
+                    $("body").remove(a);
+                }
+            }
+        });
+
+      event.preventDefault();
+    });
+
+    function Base64ToBytes(base64) {
+        var s = window.atob(base64);
+        var bytes = new Uint8Array(s.length);
+        for (var i = 0; i < s.length; i++) {
+            bytes[i] = s.charCodeAt(i);
+        }
+        return bytes;
+    };
+
+</script>
 
 
 

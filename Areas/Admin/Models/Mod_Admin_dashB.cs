@@ -27,6 +27,7 @@ namespace IT_Hardware.Areas.Admin.Models
         public string? Sec_Office_Remarks { get; set; }
         public string? Purchase_Remarks { get; set; }
         public string? Other_Dept_Remarks { get; set; }
+        public string? PO_File { get; set; }
         public string? Completed_Status { get; set; }
         public bool Status { get; set; }
 

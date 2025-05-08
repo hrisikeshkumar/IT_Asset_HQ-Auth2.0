@@ -29,12 +29,13 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             Mod_Admin_dashB mod_Data = new Mod_Admin_dashB();
 
+            mod_Data.Prop_detail = new Proposal_details();
+
             mod_Data.List_Proposal = B_Layer.Get_List_Proposal();
 
             mod_Data.List_Bill_Process = B_Layer.Get_List_Bills();
 
            
-
             //return View("~/Areas/Admin/Views/Admin_Dashboard/Admin_Dashboard.cshtml", mod_Data);
 
             return View(mod_Data);

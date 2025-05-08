@@ -300,13 +300,13 @@
                         $('#itemInfo_PO_Info').val(response.pO_Info);
                         $('#itemInfo_Approval_Info').val(response.approval_Info);
                         
-                        if(response.invoice_Info !='')
+                        if(response.invoice_Info !=null)
                             $(".btnInvoice").removeClass("hidediv");
 
-                        if(response.pO_Info !='')
+                        if(response.pO_Info !=null)
                             $(".btnPO").removeClass("hidediv");
 
-                        if(response.approval_Info !='')
+                        if(response.approval_Info !=null)
                             $(".btnApproval").removeClass("hidediv");
 
 

@@ -167,6 +167,8 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     BL_data.Prop_detail.Other_Dept_Remarks = Convert.ToString(dt_Comuter.Rows[0]["Other_Dept_Remarks"]);
 
+                    BL_data.Prop_detail.PO_File = Convert.ToString(dt_Comuter.Rows[0]["PO_FileId"]);
+
                     BL_data.Prop_detail.Completed_Status = Convert.ToString(dt_Comuter.Rows[0]["Completed_Status"]);
 
 
