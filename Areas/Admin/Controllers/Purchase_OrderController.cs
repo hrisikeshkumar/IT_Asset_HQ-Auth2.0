@@ -90,7 +90,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
                         {
                             PO_Data.File_PO.CopyTo(stream);
                         }
-
                     }
                     else 
                     {
@@ -259,7 +258,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             string path = Path.Combine(this.Environment.WebRootPath, "Files\\HQ\\PO\\");
 
-            byte[] bytes = System.IO.File.ReadAllBytes(path + fileName + ".pdf");
+            byte[] bytes = System.IO.File.ReadAllBytes(path + fileName );
 
             //Convert File to Base64 string and send to Client.
             string base64 = Convert.ToBase64String(bytes, 0, bytes.Length);

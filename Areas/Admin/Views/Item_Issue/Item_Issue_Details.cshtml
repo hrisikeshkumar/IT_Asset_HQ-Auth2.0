@@ -335,7 +335,7 @@
 
 
         var row = $(this).closest("tr");
-        var Filename = row.find('.FileClass').text();;
+        var Filename = row.find('.FileClass').val();
         var fileID = $(this).attr('data-min');
         var File_Type = $(this).attr('FileType');
 
@@ -353,13 +353,13 @@
                 //Check the Browser type and download the File.
                 var isIE = false || !!document.documentMode;
                 if (isIE) {
-                    window.navigator.msSaveBlob(blob, fileID);
+                    window.navigator.msSaveBlob(blob, Filename);
                 }
                 else {
                     var url = window.URL || window.webkitURL;
                     link = url.createObjectURL(blob);
                     var a = $("<a />");
-                    a.attr("download", fileID );
+                    a.attr("download", Filename );
                     a.attr("href", link);
                     $("body").append(a);
                     a[0].click();

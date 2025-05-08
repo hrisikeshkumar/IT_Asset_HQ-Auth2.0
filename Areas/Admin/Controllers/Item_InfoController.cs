@@ -37,9 +37,9 @@ namespace IT_Hardware.Areas.Admin.Controllers
             string FileName = string.Empty;
 
             ItemInfo_BL itemInfo = new ItemInfo_BL();
-            ItemdetailInfo_Mod data = new ItemdetailInfo_Mod();
-            data.Serial_No = SerialNo;
-            itemInfo.Get_Item_IssueData(data);
+            ItemdetailInfo_Mod inpitdata = new ItemdetailInfo_Mod();
+            inpitdata.Serial_No = SerialNo;
+            ItemdetailInfo_Mod data =itemInfo.Get_Item_IssueData(inpitdata);
 
 
             if (FileType == "PO")
@@ -55,11 +55,11 @@ namespace IT_Hardware.Areas.Admin.Controllers
             else if (FileType == "Approval")
             {
                 path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/FileMovement/");
-                FileName = data.Approval_Info_FileId;
+                FileName = data.Approval_Info_FileId +".pdf";
             }
             
 
-            byte[] bytes = System.IO.File.ReadAllBytes(path + data.Invoice_FileId);
+            byte[] bytes = System.IO.File.ReadAllBytes(path + FileName);
 
             //Convert File to Base64 string and send to Client.
             string base64 = Convert.ToBase64String(bytes, 0, bytes.Length);
