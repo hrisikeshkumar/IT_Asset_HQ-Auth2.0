@@ -15,6 +15,9 @@ namespace IT_Hardware.Areas.Admin.Models
         public string? Utilization_Details { get; set; }
         [Required]
         public string? Budget_Type { get; set; }
+
+        public string? PO_id { get; set; }
+        public string? PO_No { get; set; }
         public int? Total_Approved_Budget { get; set; }
         [Required]
         public int? Amount_Utilized_Before { get; set; }
@@ -48,6 +51,16 @@ namespace IT_Hardware.Areas.Admin.Models
         public string Budget_Name { get; set; }
         public int Budget_Amount { get; set; }
         public string Budget_Type { get; set; }
-    } 
+    }
+
+
+    public class PO_Info
+    {
+        public string PO_Id { get; set; }
+        public string PO_No { get; set; }
+        public string PO_Date { get; set; }
+        public string PO_Detail { get; set; }
+        public string Vendor_Name { get; set; }
+    }
 
 }

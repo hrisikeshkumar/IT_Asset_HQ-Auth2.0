@@ -28,12 +28,25 @@
     @using (Html.BeginForm("Update_Budget_Uses", "Budget_Uses", FormMethod.Post))
     {
 
-
-
         <table class=" table-hover table-striped shadow " style="width:100%">
 
-
             <tr>
+
+                <td style="width:25%; height:50px;">
+                    Budget Uses for
+                </td>
+                <td style="width:25%;">
+
+                    @Html.DropDownListFor(x => x.Budget_Type,
+                             new List<SelectListItem>()
+                {
+                new SelectListItem() { Text= "Budget Only", Value = "Budget" },
+                new SelectListItem() { Text= "Invoice Processing", Value = "Payment"},
+                }
+                             , "Please select a Type", new { @class = " form-rounded", @disabled = "true", @style = " width :96%; " })
+
+                </td>
+
                 <td style="width:25%; ">
                     Budget Year
                 </td>
@@ -42,23 +55,18 @@
                     @Html.DropDownListFor(x => x.Budget_Year, Model.Budget_Year_List, new { @class = " form-rounded", @disabled = "true", @style = " width :90%; " })
 
                 </td>
-
-                <td style="width:25%; height:50px;">
-                    Budget Uses for
-                </td>
-                <td style="width:25%;">
-
-                    @Html.DropDownListFor(x => x.Budget_Type,
-                    new List<SelectListItem>()
-                      {
-                        new SelectListItem() { Text= "Budget Only", Value = "Budget" },
-                        new SelectListItem() { Text= "Payment Processing", Value = "Payment"},
-                      }
-                    , "Please select a Type", new { @class = " form-rounded", @style = " width :96%; " })
-
-                </td>
+     
             </tr>
 
+            <tr id="PO_Required" class="hideRow">
+                <td style="width:25%; height:50px;">
+                    Purchase Order
+                    @Html.HiddenFor(x => x.PO_id, new { @class = " form-rounded", @style = " width :90%; " })
+                </td>
+                <td style="width:75%;" colspan="3">
+                    @Html.TextBoxFor(x => x.PO_No, new { @class = " form-rounded", @disabled = "true", @style = " width :90%; " })
+                </td>
+            </tr>
 
             <tr>
                 <td style="width:25%; height:50px;">
@@ -80,7 +88,7 @@
                     Utilization Details
                 </td>
                 <td style="width:75%; " colspan="3">
-                    @Html.TextAreaFor(x => x.Utilization_Details, new { @rows = "4", @style = " width :96%; " })
+                    @Html.TextAreaFor(x => x.Utilization_Details, new { @rows = "4", @disabled = "true", @style = " width :96%; " })
                 </td>
             </tr>
 
@@ -250,6 +258,81 @@
 </script>
 
 
+
+
+@*---------------------------------------- Budget uses type --------------------------------------*@
+<script type="text/javascript">
+
+    $(document).ready(function () {
+    
+            if( $('#Budget_Type').val() !='Payment')
+                $('#PO_Required').addClass('hideRow');
+            else
+                $('#PO_Required').removeClass('hideRow');
+        }); 
+
+
+    $(function () {
+
+       $('#Budget_Type').change(function () {
+               if( $('#Budget_Type').val() !='Payment')
+                   $('#PO_Required').addClass('hideRow');
+               else
+                   $('#PO_Required').removeClass('hideRow');
+       });
+
+    });
+
+
+</script>
+
+<style type="text/css">
+
+    .hideRow {
+        display: none;
+    }
+
+</style>
+
+
+
+@* -----------------------------------------------    Auto Complete     -------------------------------------------------- *@
+
+<link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css" rel="Stylesheet" type="text/css" />
+
+<script type="text/javascript">
+    $('#PO_No').autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: "@Url.Action("AutoComplete", "Budget_Uses")",
+                data: {InputData: request.term},
+                dataType: "json",
+                type: "POST",
+                // contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return   item.pO_Id + '--' + item.vendor_Name + '--' + item.pO_No + '--' + item.pO_Date + '--' + item.pO_Detail ;
+
+                    }))
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (xmlHttpRequest, textStatus, errorThrown) {
+                    console.log('some error occured', textStatus, errorThrown);
+                }
+            });
+        },
+        minLength: 1,
+        select: function (event, ui) {
+
+            $('#PO_id').val(ui.item.label.split('--')[0]);
+            $('#PO_No').val(ui.item.value.split('--')[2]);
+
+            return false;
+        }
+    });
+</script>
 
 
 

@@ -97,6 +97,9 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter Budget_Type = new SqlParameter("@Budget_Type", Data.Budget_Type);
                 cmd.Parameters.Add(Budget_Type);
 
+                SqlParameter PO_Id = new SqlParameter("@PO_Id", Data.PO_id);
+                cmd.Parameters.Add(PO_Id);
+
                 SqlParameter Utilization_Details = new SqlParameter("@Utilization_Details", Data.Utilization_Details);
                 cmd.Parameters.Add(Utilization_Details);
 
@@ -177,6 +180,8 @@ namespace IT_Hardware.Areas.Admin.Data
                     Data.Budget_Year = Convert.ToString(dt_Comuter.Rows[0]["Budget_Year"]);
                     Data.Utilization_Details = Convert.ToString(dt_Comuter.Rows[0]["Utilization_Details"]);
                     Data.Budget_Type = Convert.ToString(dt_Comuter.Rows[0]["Budget_Type"]);
+                    Data.PO_id = Convert.ToString(dt_Comuter.Rows[0]["PO_id"]);
+                    Data.PO_No = Convert.ToString(dt_Comuter.Rows[0]["PO_No"]);
                     Data.Total_Approved_Budget = Convert.ToInt32(dt_Comuter.Rows[0]["Total_Budget_Amount"]);
                     Data.Amount_Utilized_Before = Convert.ToInt32(dt_Comuter.Rows[0]["Amount_Utilized"]);
                     Data.Balance_Available = Convert.ToInt32(dt_Comuter.Rows[0]["Balance_Available"]);
@@ -298,7 +303,6 @@ namespace IT_Hardware.Areas.Admin.Data
             catch (Exception ex) { }
         }
 
-
         public List<Bud_Uses_List> Get_BudgetUses_By_BudId(string Bud_head_Id)
         {
 
@@ -355,6 +359,68 @@ namespace IT_Hardware.Areas.Admin.Data
 
             return current_data;
         }
+
+
+        public List<PO_Info> Get_PO_Info(string PO_No)
+        {
+
+            
+            List<PO_Info> data = new List<PO_Info>();
+
+            try
+            {
+                DataTable dt_Comuter;
+
+                SqlConnection con = new DBConnection().con;
+
+
+                using (SqlCommand cmd = new SqlCommand("sp_PO_Info"))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = con;
+
+
+                    SqlParameter sqlP_Year = new SqlParameter("@Variable", PO_No);
+                    cmd.Parameters.Add(sqlP_Year);
+
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        sda.SelectCommand = cmd;
+                        using (DataTable dt = new DataTable())
+                        {
+                            sda.Fill(dt);
+                            dt_Comuter = dt;
+                        }
+                    }
+                }
+
+
+                foreach (DataRow dr in dt_Comuter.Rows)
+                {
+                    PO_Info PO_data = new PO_Info();
+
+                    PO_data.PO_Id = Convert.ToString(dr["PO_id"]);
+
+                    PO_data.Vendor_Name = Convert.ToString(dr["Vendor_name"]);
+
+                    PO_data.PO_No = Convert.ToString(dr["PO_No"]);
+
+                    PO_data.PO_Date =  Convert.ToDateTime(dr["PO_Date"]).ToString().Substring(0,10);
+
+                    PO_data.PO_Detail = Convert.ToString(dr["PO_Sub"]);
+        
+
+                    data.Add(PO_data);
+                }
+
+            }
+            catch (Exception ex) { }
+
+            return data;
+        }
+
+
+
 
     }
 }

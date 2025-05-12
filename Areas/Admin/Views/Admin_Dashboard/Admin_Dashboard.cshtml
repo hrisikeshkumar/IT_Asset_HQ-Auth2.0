@@ -261,12 +261,11 @@
                                     </tr>
                                     <tr>
                                         <td style='width: 70%; text-align: left; height: 30px;' class="POfilename">
-                                            @Html.TextBoxFor(x => x.Prop_detail.PO_File, new { @readonly = "true", @style = " width :100%; border: 0px none;" }) 
+                                            <p id="Prop_detail_PO_File"  style="width :100%; border: 0px none;"> </p>
                                         </td>
-                                        <td style='width: 30%; text-align: center; height: 30px;' >
-                                            <input type='submit' value='Download' class='POdownload btn_download' id='@Model.Prop_detail.PO_File'> </input>
+                                        <td style='width: 30%; text-align: center; height: 30px;' id='btn_POFile'>
+                                            <input type='submit' value='Download' class='POdownload btn_download' > </input>
                                         </td>
-
                                     </tr>                                  
                                 </table>
                                 
@@ -345,7 +344,17 @@
                         $('#Prop_detail_Sec_Office_Remarks').val(response.prop_detail.sec_Office_Remarks);
                         $('#Prop_detail_Purchase_Remarks').val(response.prop_detail.purchase_Remarks);
                         $('#Prop_detail_Other_Dept_Remarks').val(response.prop_detail.other_Dept_Remarks);
-                        $('#Prop_detail_PO_File').val(response.prop_detail.pO_File);
+
+                         $('#btn_POFile').removeClass("hidetable");
+                        if(response.prop_detail.pO_File !='')
+                            $('#Prop_detail_PO_File').text(response.prop_detail.pO_File);
+                        else
+                        {
+                            $('#btn_POFile').addClass("hidetable");
+                            $('#Prop_detail_PO_File').text('Purchase Order has not been issued as on date');
+                        }
+                            
+
                         // $('#Prop_detail_PO_File').attr('id').val(response.prop_detail.pO_File);
 
                         markup = "  <tr> <th style='width: 70%; text-align: left; border: 1px solid black; height: 30px; background-color: #ffcc00 '> File Name </th> " +
@@ -438,7 +447,7 @@
 </script>
 
 
- @* ----------------------------------- PO download ------------------------------------ *@
+@* ----------------------------------- PO download ------------------------------------ *@
 
 <script type="text/javascript">
 
@@ -446,9 +455,9 @@
 
         var fileID = $(this).attr('id');
         var FileName = $(this).closest("tr")      // Gets a descendent with class="nr"
-                       .find("Prop_detail.PO_File")
+                       .find(".POfilename")
+                       .find("p")
                        .text();
-
 
         $.ajax({
             type: "POST",
@@ -492,6 +501,5 @@
     };
 
 </script>
-
 
 

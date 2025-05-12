@@ -212,6 +212,13 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
+        public JsonResult AutoComplete(string InputData)
+        {
+            BL_Budget_Uses data = new BL_Budget_Uses();
+            List<PO_Info> list = data.Get_PO_Info(InputData);
+
+            return Json(list);
+        }
 
     }
 
