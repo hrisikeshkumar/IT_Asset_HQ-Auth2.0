@@ -28,6 +28,7 @@ namespace IT_Hardware.Areas.Admin.Models
         public string? Purchase_Remarks { get; set; }
         public string? Other_Dept_Remarks { get; set; }
         public string? PO_File { get; set; }
+        public string? PO_Id { get; set; }
         public string? Completed_Status { get; set; }
         public bool Status { get; set; }
 
@@ -78,4 +79,13 @@ namespace IT_Hardware.Areas.Admin.Models
         public string Status { get; set; }
 
     }
+
+    public class Grid_Class
+    {
+        public string Particular { get; set; }
+        public string Proposal_Id { get; set; }
+        public string StartDate { get; set; }
+        public string Status { get; set; }
+    }
+
 }

@@ -328,6 +328,25 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return File(bytes, contentType, fileName);*/
         }
 
+
+        public JsonResult GridData( string Input, string Type, int Page_No)
+        {
+            BL_Admin_DashB B_Layer = new BL_Admin_DashB();
+
+            string dataType = string.Empty;
+
+            if (Type == "PODetail")
+                dataType = "Get_Invoice_By_PO";
+            else if (Type == "Budget")
+                dataType = "Paging_Budget";
+            else
+                dataType = "Paging_Invoice";
+
+            return Json(B_Layer.Get_Dashboard_Grid(Input, dataType, Page_No));
+        }
+
+
+
         /* Own Authentication
         //protected override void OnAuthenticationChallenge(AuthenticationChallengeContext filterContext)
         //{

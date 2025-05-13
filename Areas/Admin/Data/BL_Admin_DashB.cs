@@ -233,5 +233,63 @@ namespace IT_Hardware.Areas.Admin.Data
 
             return status;
         }
+
+
+        public List<Grid_Class> Get_Dashboard_Grid(string input, string Type, int PageNo)
+        {
+
+            Grid_Class BL_data;
+            List<Grid_Class> data = new List<Grid_Class>();
+
+            try
+            {
+                DataTable dt_Comuter;
+                SqlConnection con = new DBConnection().con;
+
+                using (SqlCommand cmd = new SqlCommand("sp_Dashboard_Grid_Data"))
+                {
+                    SqlParameter sqlP_type = new SqlParameter("@Type", Type);
+                    cmd.Parameters.Add(sqlP_type);
+                    SqlParameter Proposal_Id = new SqlParameter("@Proposal_Id", input);
+                    cmd.Parameters.Add(Proposal_Id);
+                    SqlParameter sql_PageNo = new SqlParameter("@Page_No", PageNo);
+                    cmd.Parameters.Add(sql_PageNo);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = con;
+                    
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        sda.SelectCommand = cmd;
+                        using (DataTable dt = new DataTable())
+                        {
+                            sda.Fill(dt);
+                            dt_Comuter = dt;
+                        }
+                    }
+                }
+
+
+                foreach (DataRow dr in dt_Comuter.Rows)
+                {
+                    BL_data = new Grid_Class();
+
+                    BL_data.Proposal_Id = Convert.ToString(dr["Proposal_Id"]);
+
+                    BL_data.Particular = Convert.ToString(dr["Utilization_Details"]);
+
+                    BL_data.StartDate = Convert.ToDateTime(dr["IT_Initiate_Date"]).ToString().Substring(0,10);
+
+                    BL_data.Status = Convert.ToString(dr["Completed_Status"]);
+
+                    data.Add(BL_data);
+                }
+
+            }
+            catch (Exception ex) { }
+
+            return data;
+        }
+
+
     }
 }
