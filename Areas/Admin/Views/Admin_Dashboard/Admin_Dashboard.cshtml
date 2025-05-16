@@ -56,7 +56,7 @@
                 <h4>  Proposal : @Html.RadioButton("dashboard", "1", new { @id = "1", @checked = true }) </h4>
             </td>
             <td style="text-align: center; width: 20%; ">
-                <h4> Bill Processed :  @Html.RadioButton("dashboard", "2", new { @id = "2" }) </h4>
+                <h4> Invoice Processed :  @Html.RadioButton("dashboard", "2", new { @id = "2" }) </h4>
             </td>
         </tr>
         <tr>
@@ -106,9 +106,7 @@
     @*-------------------------------------------------- Invoice Processing --------------------------------------------------------------------------*@
 
     <div id="budget" style="width: 100%;" class="hidetable">
-
-        <table class=" table-hover table-striped shadow " style="width: 100%; " id="tbl_Invoice"  >
-
+        <table class=" table-hover table-striped shadow " style="width: 100%; ">
             <tr>
                 <td colspan="3">
                     <table style="width: 100%;">
@@ -119,7 +117,7 @@
                                 <table style="width: 100%;">
                                     <tr>
                                         <td style="width: 40%; text-align:center">
-                                           Search by Purchase Order No
+                                            Search by Purchase Order No
                                         </td>
                                         <td style="width: 50%; text-align:center">
                                             <input id="Find_PO_id" width="100%" class="form-rounded" type="text" />
@@ -134,10 +132,12 @@
                     </table>
                 </td>
             </tr>
+        </table>
+        <table class=" table-hover table-striped shadow " style="width: 100%; " id="tbl_Invoice"  >
 
             <thead>
                 <tr style="background-color: #b2f3b2 ;  font-weight: bold;">
-                    <td style="width: 70%; font-weight: bold; font-size: large; text-align: center"> <h4> Bill Processed </h4> </td>
+                    <td style="width: 70%; font-weight: bold; font-size: large; text-align: center"> <h4> Invoice Processed </h4> </td>
                     <td style="width: 15%; font-weight: bold; font-size: large; text-align: center"><h4> Initiate Date </h4></td>
                     <td style="width: 15%; font-weight: bold; text-align: center; font-size: large"> <h4> Status</h4></td>
                 </tr>
@@ -392,11 +392,10 @@
                         tableBody.append(markup);
 
                         $.each(response.prop_detail.prop_Files, function (key, val) {
-
+                            markup="";
                             markup = "<tr><td  style='width: 70%; text-align: left; height: 30px;' class='filename' > <p>" + val.file_Name + "</p> </td> " +
-                                "<td  style='width: 30%; text-align: center; '>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.file_Id + "' > </input> </td> </tr > "
+                                "<td  style='width: 30%; text-align: center; '>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.file_Id + "' >  </td> </tr > "
 
-                            tableBody = $("#Files_Grid tbody");
                             tableBody.append(markup);
 
                         });
@@ -559,9 +558,9 @@
             data: { Input: Input, Type: Type, Page_No: Page_No  },
             success: function (response) {
 
-                markup = "  <tr><th style='width: 70%; font-weight: bold; ; font-size: large; text-align: center'> <h4> Invoice Processing </h4> </th>"
-                            + "<th style='width: 15%; font-weight: bold; font-size: large; text-align: center'> <h4> Processing Date </h4> </th>"
-                            +" <th style='width: 15%; font-weight: bold; font-size: large; text-align: center'> <h4> Status </h4> </th>  </tr>";
+                markup = "  <tr><th style='background-color: #b2f3b2; width: 70%; font-weight: bold; ; font-size: large; text-align: center'> <h4> Invoice Processed </h4> </th>"
+                            + "<th style='background-color: #b2f3b2; width: 15%; font-weight: bold; font-size: large; text-align: center'> <h4> Processing Date </h4> </th>"
+                            +" <th style='background-color: #b2f3b2; width: 15%; font-weight: bold; font-size: large; text-align: center'> <h4> Status </h4> </th>  </tr>";
 
                 tableBody = $("#tbl_Invoice thead");
                 tableBody.append(markup);
@@ -570,15 +569,13 @@
                     
                     $.each(response, function (key, val) {
 
-                        var date = new Date(parseInt(val.issued_date.substr(6)));
-
+                        markup="";
                         markup ="<tr> <td style='width:70%; padding-left:1%;'> <a href=''  class=''  style='font-size:medium'  "
-                                     + " data-toggle='modal' data-target='#myModal2' data-status='" + val.item_Type + "' </td> " +
-                                     + " id='" + val.item_Type + "' "+ val.type +"  </a> </td> " +                              
-                                     + "<td style='width:15%; text-align: center' " + val.item_SerialNo + " </td> "
-                                     + "<td style='width:15%; text-align: center'> " + val.transfered_Emp_Name + " </td> </tr>  "
+                                     + " data-toggle='modal' data-target='#myModal2' data-status='" + val.proposal_Id + "' " 
+                                     + " id='" + val.proposal_Id + "' >"+ val.particular +"  </a> </td> " 
+                                     + "<td style='width:15%; text-align: center'> " + val.startDate + " </td> "
+                                     + "<td style='width:15%; text-align: center'> " + val.status + " </td> </tr>  "
 
-                        tableBody = $("#tbl_Invoice tbody");
                         tableBody.append(markup);
 
                       });

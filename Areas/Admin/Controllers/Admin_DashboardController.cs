@@ -337,6 +337,8 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             if (Type == "PODetail")
                 dataType = "Get_Invoice_By_PO";
+            else if (Type == "Get_By_Proposal")
+                dataType = "Get_Invoice_By_ProposalId";
             else if (Type == "Budget")
                 dataType = "Paging_Budget";
             else
