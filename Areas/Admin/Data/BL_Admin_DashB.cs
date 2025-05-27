@@ -234,7 +234,6 @@ namespace IT_Hardware.Areas.Admin.Data
             return status;
         }
 
-
         public List<Grid_Class> Get_Dashboard_Grid(string input, string Type, int PageNo)
         {
 
