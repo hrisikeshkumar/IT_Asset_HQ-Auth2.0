@@ -121,7 +121,7 @@ namespace IT_Hardware.Areas.Admin.Data
 
             try
             {
-                DataTable dt_Comuter;
+                DataSet DB_Proposal= new DataSet();
                 
                 SqlConnection con = new DBConnection().con;
 
@@ -141,38 +141,52 @@ namespace IT_Hardware.Areas.Admin.Data
                     using (SqlDataAdapter sda = new SqlDataAdapter())
                     {
                         sda.SelectCommand = cmd;
-                        using (DataTable dt = new DataTable())
-                        {
-                            sda.Fill(dt);
-                            dt_Comuter = dt;
-                        }
+                        sda.Fill(DB_Proposal);
+
                     }
                 }
 
 
-                if (dt_Comuter.Rows.Count > 0)
+                if (DB_Proposal.Tables[0].Rows.Count > 0)
                 {
 
-                    BL_data.Prop_detail.Proposal_Id = Convert.ToString(dt_Comuter.Rows[0]["Proposal_Id"]);
+                    BL_data.Prop_detail.Proposal_Id = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Proposal_Id"]);
 
-                    BL_data.Prop_detail.Utilization_Details = Convert.ToString(dt_Comuter.Rows[0]["Utilization_Details"]);
+                    BL_data.Prop_detail.Utilization_Details = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Utilization_Details"]);
 
-                    BL_data.Prop_detail.Dte_IT_Remarks = Convert.ToString(dt_Comuter.Rows[0]["Dte_IT_Copy"]);
+                    BL_data.Prop_detail.Dte_IT_Remarks = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Dte_IT_Copy"]);
 
-                    BL_data.Prop_detail.FA_Remarks = Convert.ToString(dt_Comuter.Rows[0]["FA_Remarks"]);
+                    BL_data.Prop_detail.FA_Remarks = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["FA_Remarks"]);
 
-                    BL_data.Prop_detail.Sec_Office_Remarks = Convert.ToString(dt_Comuter.Rows[0]["Sec_Office_Remarks"]);
+                    BL_data.Prop_detail.Sec_Office_Remarks = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Sec_Office_Remarks"]);
 
-                    BL_data.Prop_detail.Purchase_Remarks = Convert.ToString(dt_Comuter.Rows[0]["Purchase_Remarks"]);
+                    BL_data.Prop_detail.Purchase_Remarks = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Purchase_Remarks"]);
 
-                    BL_data.Prop_detail.Other_Dept_Remarks = Convert.ToString(dt_Comuter.Rows[0]["Other_Dept_Remarks"]);
+                    BL_data.Prop_detail.Other_Dept_Remarks = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Other_Dept_Remarks"]);
 
-                    BL_data.Prop_detail.PO_File = Convert.ToString(dt_Comuter.Rows[0]["PO_FileId"]);
+                   
+                    BL_data.Prop_detail.Budget_Head_Type = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Budget_Head_Type"]);
+                    BL_data.Prop_detail.PO_Info = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["PO_Info"]);
+                    BL_data.Prop_detail.Assets_Info = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Completed_Status"]);
+                    BL_data.Prop_detail.Invoice_Info = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Completed_Status"]);
 
-                    BL_data.Prop_detail.Completed_Status = Convert.ToString(dt_Comuter.Rows[0]["Completed_Status"]);
-
+                    BL_data.Prop_detail.Completed_Status = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Completed_Status"]);
 
                 }
+
+                List<File_List> ApprovalFileList = new List<File_List>();
+                foreach (DataRow dr in DB_Proposal.Tables[1].Rows)
+                {
+                    File_List file = new File_List();
+                    file.File_Id = Convert.ToString(dr["Proposal_File_ID"]);
+                    file.File_Name = Convert.ToString(dr["FileName"]);
+
+                    ApprovalFileList.Add(file);
+
+                }
+
+                BL_data.Prop_detail.Prop_Files = ApprovalFileList;
+
             }
             catch (Exception ex) { }
 

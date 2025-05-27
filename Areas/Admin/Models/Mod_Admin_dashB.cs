@@ -28,7 +28,11 @@ namespace IT_Hardware.Areas.Admin.Models
         public string? Purchase_Remarks { get; set; }
         public string? Other_Dept_Remarks { get; set; }
         public string? PO_File { get; set; }
-        public string? PO_Id { get; set; }
+        public string? Proposal_Type { get; set; }
+        public string? Budget_Head_Type { get; set; }
+        public string? PO_Info { get; set; }
+        public string? Invoice_Info { get; set; }
+        public string? Assets_Info { get; set; }
         public string? Completed_Status { get; set; }
         public bool Status { get; set; }
 
