@@ -376,7 +376,17 @@
                             $('#Prop_detail_Purchase_Remarks').val(response.prop_detail.purchase_Remarks);
                             $('#Prop_detail_Other_Dept_Remarks').val(response.prop_detail.other_Dept_Remarks);
 
-                            //-------------------  purchase order ---------------------
+
+                            //------------------- Table Variable ---------------------
+
+                            var ApprovalFiles = response.prop_detail.prop_Files;
+                            var PO_Info = response.prop_detail.pO_Info;
+                            var Invoice_Info = response.prop_detail.invoice_Info;
+                            var Assets_Info = response.prop_detail.assets_Info;
+
+
+
+                            //-------------------  Table Binding ---------------------
 
                             tbl_ApprovalFile_Body = $("#Files_Grid tr");
                             tbl_PO_Body = $("#tbl_PurchaseOrder tbody");
@@ -391,26 +401,26 @@
 
                             //------------------- Approval Files ---------------------------------------------
 
-                            if(response.prop_detail.pO_File !='')
+                            if(ApprovalFiles.length > 0)
                             {
                                 markup = "  <tr> <th style='width: 70%; text-align: left; border: 1px solid black; height: 30px; background-color: #ffcc00 '> File Name </th> " +
                                 "<th style='width: 30%; text-align: center; border: 1px solid black; background-color: #ffcc00 '> Download </th> </tr> "
 
-                                 $.each(response.prop_detail.prop_Files, function (key, val) {
+                                 $.each(ApprovalFiles, function (key, val) {
                                 markup = + "<tr><td  style='width: 70%; text-align: left; height: 30px;' class='filename' > <p>" + val.file_Name + "</p> </td> " +
                                     "<td  style='width: 30%; text-align: center; '>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.file_Id + "' >  </td> </tr > "
 
-                                tableBody.append(markup);
+                                tbl_ApprovalFile_Body.append(markup);}
                             }
-                            else
+                            else 
                             {
-                                markup = "<tr><td  style='width: 100%; text-align: left; height: 30px;' > Purchase Order has not been issued as on date </td> </tr > ";
-                                tbl_PO_Body.append(markup);
+                                markup = "<tr><td  style='width: 100%; text-align: left; height: 30px;' > Please upload  </td> </tr > ";
+                                tbl_ApprovalFile_Body.append(markup);
                             }
 
                             //-------------------Purchase Order ---------------------------------------------
 
-                            if(response.prop_detail.pO_File !='')
+                            if(response.prop_detail.PO_Info !='')
                             {
                                 markup = "  <tr> <th style='width: 70%; text-align: left; border: 1px solid black; height: 30px; background-color: #ffcc00 '> File Name </th> " +
                                 "<th style='width: 30%; text-align: center; border: 1px solid black; background-color: #ffcc00 '> Download </th> </tr> "
@@ -419,7 +429,7 @@
                                 markup = + "<tr><td  style='width: 70%; text-align: left; height: 30px;' class='filename' > <p>" + val.file_Name + "</p> </td> " +
                                     "<td  style='width: 30%; text-align: center; '>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.file_Id + "' >  </td> </tr > "
 
-                                tableBody.append(markup);
+                                tbl_PO_Body.append(markup);
                             }
                             else
                             {
