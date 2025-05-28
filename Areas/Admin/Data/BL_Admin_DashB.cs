@@ -166,26 +166,30 @@ namespace IT_Hardware.Areas.Admin.Data
 
                    
                     BL_data.Prop_detail.Budget_Head_Type = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Budget_Head_Type"]);
-                    BL_data.Prop_detail.PO_Info = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["PO_Info"]);
-                    BL_data.Prop_detail.Assets_Info = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Completed_Status"]);
-                    BL_data.Prop_detail.Invoice_Info = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Completed_Status"]);
-
+                    BL_data.Prop_detail.PO_File_Id = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["PO_File_Id"]);
+                    BL_data.Prop_detail.PO_File_Name = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["PO_File_Name"]);
+                    BL_data.Prop_detail.Assets_Info = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Assets_Info"]);
+                    BL_data.Prop_detail.Invoice_Info = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Invoice_Info"]);
                     BL_data.Prop_detail.Completed_Status = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Completed_Status"]);
 
                 }
 
-                List<File_List> ApprovalFileList = new List<File_List>();
-                foreach (DataRow dr in DB_Proposal.Tables[1].Rows)
-                {
-                    File_List file = new File_List();
-                    file.File_Id = Convert.ToString(dr["Proposal_File_ID"]);
-                    file.File_Name = Convert.ToString(dr["FileName"]);
 
-                    ApprovalFileList.Add(file);
+                //List<File_List> ApprovalFileList = new List<File_List>();
+                //if (BL_data.Prop_detail.Proposal_Type == "Budget")
+                //{
+                //    foreach (DataRow dr in DB_Proposal.Tables[1].Rows)
+                //    {
+                //        File_List file = new File_List();
+                //        file.File_Id = Convert.ToString(dr["Proposal_File_ID"]);
+                //        file.File_Name = Convert.ToString(dr["FileName"]);
 
-                }
+                //        ApprovalFileList.Add(file);
 
-                BL_data.Prop_detail.Prop_Files = ApprovalFileList;
+                //    }
+                //}
+
+                //BL_data.Prop_detail.Prop_Files = ApprovalFileList;
 
             }
             catch (Exception ex) { }

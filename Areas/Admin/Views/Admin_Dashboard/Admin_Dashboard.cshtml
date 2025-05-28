@@ -200,7 +200,7 @@
                                 Utilization Details
                             </td>
                             <td style="text-align:center; width:85%; ">
-                                @Html.TextAreaFor(x => x.Prop_detail.Utilization_Details, new { @readonly = "true", @class = " form-rounded", @style = " width :100%; " })
+                                @Html.TextAreaFor(x => x.Prop_detail.Utilization_Details, new { @readonly = "true", @class = " ", @style = " width :100%; " })
                             </td>
                         </tr>
                         <tr>
@@ -297,7 +297,7 @@
 
                             <td style="text-align: left; width: 15%; "> Assets Information </td>
                             <td id="td_Assets">
-                                <table id="tbl_itemInfo" style="width: 100%; border: 1px solid black;">
+                                <table id="tbl_Assets" style="width: 100%; border: 1px solid black;">
 
                                 </table>                               
                             </td>
@@ -367,7 +367,10 @@
                 dataType: "json",
                 data: { Proposal_Id: proposal_id },
                 success: function (response) {
-                    if (response != null) {
+
+                    if (response != null) 
+                    {
+
                             $('#Prop_detail_Utilization_Details').val(response.prop_detail.utilization_Details);
                             $('#Prop_detail_Proposal_Id').val(response.prop_detail.proposal_Id);  
                             $('#Prop_detail_Dte_IT_Remarks').val(response.prop_detail.dte_IT_Remarks);
@@ -380,121 +383,109 @@
                             //------------------- Table Variable ---------------------
 
                             var ApprovalFiles = response.prop_detail.prop_Files;
-                            var PO_Info = response.prop_detail.pO_Info;
                             var Invoice_Info = response.prop_detail.invoice_Info;
                             var Assets_Info = response.prop_detail.assets_Info;
 
-
-
                             //-------------------  Table Binding ---------------------
 
-                            tbl_ApprovalFile_Body = $("#Files_Grid tr");
-                            tbl_PO_Body = $("#tbl_PurchaseOrder tbody");
-                            tbl_Invoice_Body = $("#tbl_Invoice tbody");
-                            tbl_Item_Body = $("#tbl_itemInfo tbody");
+                           $("#tbl_ApprovalFile tr").remove();
+                           $("#tbl_PurchaseOrder tr").remove();
+                           $("#tbl_Invoice tr").remove();
+                           $("#tbl_Assets tr").remove();
 
-
-                            tbl_ApprovalFile_Body.remove();
-                            tbl_PO_Body.remove();
-                            tbl_Invoice_Body.remove();
-                            tbl_Item_Body.remove();
-
+                          
                             //------------------- Approval Files ---------------------------------------------
 
                             if(ApprovalFiles.length > 0)
                             {
-                                markup = "  <tr> <th style='width: 70%; text-align: left; border: 1px solid black; height: 30px; background-color: #ffcc00 '> File Name </th> " +
-                                "<th style='width: 30%; text-align: center; border: 1px solid black; background-color: #ffcc00 '> Download </th> </tr> "
+                                markup = "  <tr> <th style='width: 70%; text-align: center; border: 1px solid black; height: 30px; background-color: #ffcc00 '> Approval File </th> " +
+                                "<th style='width: 30%; text-align: center; border: 1px solid black; background-color: #ffcc00 '> Download </th> </tr> ";
+                                 $("#tbl_ApprovalFile").append(markup);
 
                                  $.each(ApprovalFiles, function (key, val) {
-                                markup = + "<tr><td  style='width: 70%; text-align: left; height: 30px;' class='filename' > <p>" + val.file_Name + "</p> </td> " +
-                                    "<td  style='width: 30%; text-align: center; '>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.file_Id + "' >  </td> </tr > "
+                                    markup =  "<tr><td  style='width: 70%; text-align: center; height: 30px;' class='filename' > <p>" + val.file_Name + "</p> </td> " +
+                                        "<td  style='width: 30%; text-align: center; '>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.file_Id + "' >  </td> </tr > ";
 
-                                tbl_ApprovalFile_Body.append(markup);}
+                                    $("#tbl_ApprovalFile").append(markup);
+                                 });
                             }
                             else 
                             {
-                                markup = "<tr><td  style='width: 100%; text-align: left; height: 30px;' > Please upload  </td> </tr > ";
-                                tbl_ApprovalFile_Body.append(markup);
+                                markup = "<tr><td  style='width: 100%; text-align: left; height: 30px;' > Please upload Approval File </td> </tr > ";
+                                $("#tbl_ApprovalFile").append(markup);
                             }
 
-                            //-------------------Purchase Order ---------------------------------------------
 
-                            if(response.prop_detail.PO_Info !='')
+                            if(response.prop_detail.proposal_Type='Budget')
                             {
-                                markup = "  <tr> <th style='width: 70%; text-align: left; border: 1px solid black; height: 30px; background-color: #ffcc00 '> File Name </th> " +
-                                "<th style='width: 30%; text-align: center; border: 1px solid black; background-color: #ffcc00 '> Download </th> </tr> "
 
-                                 $.each(response.prop_detail.prop_Files, function (key, val) {
-                                markup = + "<tr><td  style='width: 70%; text-align: left; height: 30px;' class='filename' > <p>" + val.file_Name + "</p> </td> " +
-                                    "<td  style='width: 30%; text-align: center; '>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.file_Id + "' >  </td> </tr > "
+                                //-------------------Purchase Order ---------------------------------------------
 
-                                tbl_PO_Body.append(markup);
-                            }
-                            else
-                            {
-                                markup = "<tr><td  style='width: 100%; text-align: left; height: 30px;' > Purchase Order has not been issued as on date </td> </tr > ";
-                                tbl_PO_Body.append(markup);
-                            }
+                                if(response.prop_detail.pO_File_Id !='')
+                                {
+                                    markup = "  <tr> <th style='width: 70%; text-align: center; border: 1px solid black; height: 30px; background-color: #ffcc00 '> P.O. File details </th> " +
+                                    "<th style='width: 30%; text-align: center; border: 1px solid black; background-color: #ffcc00 '> Download </th> </tr> ";
 
-                            //-------------------  Invoice ---------------------
+                                    markup = + "<tr><td  style='width: 70%; text-align: center; height: 30px;'  > <p>" + response.prop_detail.pO_File_Name + "</p> </td> " +
+                                        "<td  style='width: 30%; text-align: center; '>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + response.prop_detail.PO_File_Id + "' >  </td> </tr > ";
 
-                            if(response.prop_detail.pO_File !='')
-                            {
-                                markup = "  <tr> <th style='width: 70%; text-align: left; border: 1px solid black; height: 30px; background-color: #ffcc00 '> File Name </th> " +
-                                    "<th style='width: 30%; text-align: center; border: 1px solid black; background-color: #ffcc00 '> Download </th> </tr> "
+                                    $("#tbl_PurchaseOrder").append(markup);
+                                }
+                                else
+                                {
+                                    markup = "<tr><td  style='width: 100%; text-align: center; height: 30px;' > Purchase Order has not been issued as on date </td> </tr > ";
+                                    $("#tbl_PurchaseOrder").append(markup);
+                                }
 
-                                $.each(response.prop_detail.prop_Files, function (key, val) {
-                                    markup = + "<tr><td  style='width: 70%; text-align: left; height: 30px;' class='filename' > <p>" + val.file_Name + "</p> </td> " +
-                                        "<td  style='width: 30%; text-align: center; '>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.file_Id + "' >  </td> </tr > "
+                                //-------------------  Invoice ---------------------
 
-                                tbl_Invoice_Body.append(markup);
-                            }
-                            else
-                            {
-                                markup = "<tr><td  style='width: 100%; text-align: left; height: 30px;' > Invoice has not been processed as on date </td> </tr > ";
-                                tbl_Invoice_Body.append(markup);
-                            }
+                                if(Invoice_Info !='')
+                                {                             
+                                    markup =  "<tr> <td  style='width: 100%; text-align: center; height: 30px;' > <a href='@Url.Action("test", "test")'> View the Invoice processing documents against this Proposal</a>   </td>  </tr > ";
 
+                                    $("#tbl_Invoice").append(markup);
+                                }
+                                else
+                                {
+                                    markup = "<tr><td  style='width: 100%; text-align: center; height: 30px;' > Invoice has not been processed as on date </td> </tr > ";
+                                    $("#tbl_Invoice").append(markup);
+                                }
+                                //--------------------------------------------------
 
-                            //-------------------  Item Info ---------------------
+                                if(response.prop_detail.Budget_Head_Type=1)
+                                {
+                                    //-------------------  Assets Info ---------------------
                             
-                            if(response.prop_detail.pO_File !='')
-                            {
-                                markup = "  <tr> <th style='width: 70%; text-align: left; border: 1px solid black; height: 30px; background-color: #ffcc00 '> File Name </th> " +
-                                    "<th style='width: 30%; text-align: center; border: 1px solid black; background-color: #ffcc00 '> Download </th> </tr> "
+                                    if(Assets_Info !='')
+                                    {
 
-                                $.each(response.prop_detail.prop_Files, function (key, val) {
-                                    markup = + "<tr><td  style='width: 70%; text-align: left; height: 30px;' class='filename' > <p>" + val.file_Name + "</p> </td> " +
-                                        "<td  style='width: 30%; text-align: center; '>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.file_Id + "' >  </td> </tr > "
+                                            markup =  "<tr><td  style='width: 70%; text-align: center; height: 30px;'>  <a href='@Url.Action("test", "test")'> View the Assets Location procured against this Proposal</a> >  </td> </tr > "
+                                            $("#tbl_Assets").append(markup);
 
-                                tbl_Item_Body.append(markup);
+                                    }
+                                    else 
+                                    {
+                                        markup = "<tr><td  style='width: 100%; text-align: center; height: 30px;' > Item has not been received as on date </td> </tr > ";
+                                        $("#tbl_Assets").append(markup);
+                                    }
+
+                                    //-------------------------------------------------------
+                                }
                             }
-                            else 
-                            {
-                                markup = "<tr><td  style='width: 100%; text-align: left; height: 30px;' > Item has not been received as on date </td> </tr > ";
-                                tbl_Item_Body.append(markup);
-                            }
 
-                            //-------------------------------------------------------
-                        } 
-                        else
-                        {                           
-                            $('#Prop_detail_PO_File').text('Purchase Order has not been issued as on date');
-                        }
-                            
-                        
-
+   
                     } 
-                    else {
+                    else 
+                    {
                         alert("Something went wrong");
                     }
+
                 },
                 failure: function (response) {
-                    alert(response.responseText);
+                    alert("Something went wrong");
                 },
                 error: function (response) {
-                    alert(response.responseText);
+                    alert("Something went wrong");
                 }
             });
 
