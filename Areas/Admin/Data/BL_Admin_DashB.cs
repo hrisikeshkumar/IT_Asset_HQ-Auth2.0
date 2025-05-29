@@ -62,7 +62,7 @@ namespace IT_Hardware.Areas.Admin.Data
         }
 
 
-        public List<mod_Admin_Bill_Process_List> Get_List_Bills()
+        public List<mod_Admin_Bill_Process_List> Get_List_Bills(string PO_Id, string SP_Type )
         {
 
             mod_Admin_Bill_Process_List BL_data;
@@ -77,10 +77,14 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 using (SqlCommand cmd = new SqlCommand("sp_IT_Proposal"))
                 {
-                    SqlParameter sqlP_type = new SqlParameter("@Type", "Get_Bill_List");
+                    
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection = con;
+                    SqlParameter sqlP_type = new SqlParameter("@Type", SP_Type);
                     cmd.Parameters.Add(sqlP_type);
+
+                    SqlParameter sqlP_PO_Id = new SqlParameter("@PO_Id", PO_Id);
+                    cmd.Parameters.Add(sqlP_PO_Id);
 
                     using (SqlDataAdapter sda = new SqlDataAdapter())
                     {

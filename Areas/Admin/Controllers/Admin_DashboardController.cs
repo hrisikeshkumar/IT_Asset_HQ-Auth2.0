@@ -22,7 +22,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Environment = _environment;
         }
 
-        public ActionResult Admin_Dashboard()
+        public ActionResult Admin_Dashboard(string PO_Id)
         {
             
             BL_Admin_DashB B_Layer = new BL_Admin_DashB();
@@ -33,14 +33,28 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             mod_Data.List_Proposal = B_Layer.Get_List_Proposal();
 
-            mod_Data.List_Bill_Process = B_Layer.Get_List_Bills();
+            string sqlTpye= string.Empty;
+            if (PO_Id != string.Empty)
+            {
+                sqlTpye = "Get_Bill_by_PO";
+                ViewBag.FilterBy_PO = "Yes";
+            }
+            else 
+            {
+                sqlTpye = "Get_Bill_List";
+            }
 
+            mod_Data.List_Bill_Process = B_Layer.Get_List_Bills(PO_Id, sqlTpye);
+
+           
 
             return View(mod_Data);
         }
 
 
-        
+
+
+
         public JsonResult Get_Proposal_Detail_for_Modal( string Proposal_Id)
         {
             BL_Admin_DashB B_Layer = new BL_Admin_DashB();
