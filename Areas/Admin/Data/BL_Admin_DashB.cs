@@ -62,12 +62,12 @@ namespace IT_Hardware.Areas.Admin.Data
         }
 
 
-        public List<mod_Admin_Bill_Process_List> Get_List_Bills(string PO_Id, string SP_Type )
+        public List<mod_Admin_Bill_Process_List> Get_List_Bills(string PO_Id, string SP_Type , out string PO_No)
         {
 
             mod_Admin_Bill_Process_List BL_data;
             List<mod_Admin_Bill_Process_List> current_data = new List<mod_Admin_Bill_Process_List>();
-
+            PO_No = string.Empty;
             try
             {
                 DataTable dt_Comuter;
@@ -109,6 +109,8 @@ namespace IT_Hardware.Areas.Admin.Data
                     BL_data.IT_Initiate_Date = Convert.ToDateTime(dr["IT_Initiate_Date"]);
 
                     BL_data.Status = Convert.ToString(dr["Completed_Status"]);
+
+                    PO_No =  Convert.ToString(dr["PO_No"]);
 
                     current_data.Add(BL_data);
                 }
@@ -169,6 +171,7 @@ namespace IT_Hardware.Areas.Admin.Data
                     BL_data.Prop_detail.Other_Dept_Remarks = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Other_Dept_Remarks"]);
 
                    
+                    BL_data.Prop_detail.Proposal_Type = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Proposal_Type"]);
                     BL_data.Prop_detail.Budget_Head_Type = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Budget_Head_Type"]);
                     BL_data.Prop_detail.PO_File_Id = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["PO_File_Id"]);
                     BL_data.Prop_detail.PO_File_Name = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["PO_File_Name"]);

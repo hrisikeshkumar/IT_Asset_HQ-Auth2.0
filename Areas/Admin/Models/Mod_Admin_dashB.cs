@@ -63,6 +63,7 @@ namespace IT_Hardware.Areas.Admin.Models
     public class mod_Admin_Bill_Process_List
     {
         public string Proposal_Id { get; set; }
+
         public string Utilization_Details { get; set; }
 
         [DataType(DataType.Date)]

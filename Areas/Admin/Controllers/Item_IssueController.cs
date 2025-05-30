@@ -12,14 +12,25 @@ namespace IT_Hardware.Areas.Admin.Controllers
     public class Item_IssueController : Controller
     {
     
-        public ActionResult Item_Issue_Details()
+        public ActionResult Item_Issue_Details(string PO_Id)
         {
-            BL_Item_Issue item = new BL_Item_Issue();
+
+            if (PO_Id is null)
+                PO_Id = string.Empty;
 
             ItemIssue_Mod model = new ItemIssue_Mod();
 
-            model.Item_Issues= item.Get_Item_IssueData();
-            model.itemInfo = new ItemInfo_Mod();
+            BL_Item_Issue item = new BL_Item_Issue();
+
+            if (PO_Id != string.Empty)
+            {
+                model.Item_Issues = item.Get_Item_By_Sl(PO_Id, "PONo_Wise");
+            }
+            else
+            {
+                model.Item_Issues = item.Get_Item_IssueData();
+            }
+                
 
             return View(model);
         }
@@ -187,12 +198,12 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-        public JsonResult Search_Item(string SL_Num)
+        public JsonResult Search_Item(string SearchVal, string SearchType)
         {
 
             BL_Item_Issue com = new BL_Item_Issue();
 
-            return Json(com.Get_Item_By_Sl(SL_Num));
+            return Json(com.Get_Item_By_Sl( SearchVal,  SearchType));
 
         }
 

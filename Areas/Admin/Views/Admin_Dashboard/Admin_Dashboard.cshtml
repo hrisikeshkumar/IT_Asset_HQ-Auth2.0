@@ -339,14 +339,18 @@
 
     $(document).ready( function(){
    
-        if (ViewBag.FilterBy_PO !="Yes") 
+        var ViewType =  "@ViewBag.FilterBy_PO" ;
+        if (ViewType  !="Yes")
         {
+           
             $("#proposal").removeClass("hidetable");
             $("#budget").addClass("hidetable");
 
         } 
-        else {
-
+        else
+        {       
+            $("#Find_PO_id").val("@ViewBag.PO_No");
+            $('input[type=radio][name=dashboard][value="2"]').prop('checked', true);
             $("#proposal").addClass("hidetable");
             $("#budget").removeClass("hidetable");
 
@@ -440,7 +444,7 @@
                             }
 
 
-                            if(response.prop_detail.proposal_Type='Budget')
+                            if(response.prop_detail.proposal_Type=='Budget')
                             {
 
                                 //-------------------Purchase Order ---------------------------------------------
@@ -450,8 +454,8 @@
                                     markup = "  <tr> <th style='width: 70%; text-align: center; border: 1px solid black; height: 30px; background-color: #ffcc00 '> P.O. File details </th> " +
                                     "<th style='width: 30%; text-align: center; border: 1px solid black; background-color: #ffcc00 '> Download </th> </tr> ";
 
-                                    markup = markup + "<tr><td  style='width: 70%; text-align: center; height: 30px;'  > <p>" + response.prop_detail.pO_File_Name + "</p> </td> " +
-                                        "<td  style='width: 30%; text-align: center; '>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + response.prop_detail.PO_File_Id + "' >  </td> </tr > ";
+                                    markup = markup + "<tr><td  style='width: 70%; text-align: center; height: 30px;' class='POfilename' > <p>" + response.prop_detail.pO_File_Name + "</p> </td> " +
+                                        "<td  style='width: 30%; text-align: center; '>  <input type='submit' value='Download' class=' POdownload btn_download' id='" + response.prop_detail.pO_File_Id + "' >  </td> </tr > ";
 
                                     $("#tbl_PurchaseOrder").append(markup);
                                 }
@@ -479,14 +483,15 @@
                                 }
                                 //--------------------------------------------------
 
-                                if(response.prop_detail.Budget_Head_Type=1)
+                                if(response.prop_detail.budget_Head_Type==1)
                                 {
                                     //-------------------  Assets Info ---------------------
                             
                                     if(Assets_Info !='')
                                     {
+                                            var url = '@Url.Action("Item_Issue_Details", "Item_Issue")' + '?PO_Id=' + Assets_Info;
 
-                                            markup =  "<tr><td  style='width: 70%; text-align: center; height: 30px;'>  <a href='@Url.Action("Admin_Filtered_Dashboard", "Admin_Dashboard")'> View the Assets Location procured against this Proposal</a> >  </td> </tr > "
+                                            markup =  "<tr><td  style='width: 70%; text-align: center; height: 30px;'>  <a href='"+url+"'> View the Assets Location procured against this Proposal</a> >  </td> </tr > "
                                             $("#tbl_Assets").append(markup);
 
                                     }
@@ -497,6 +502,10 @@
                                     }
 
                                     //-------------------------------------------------------
+                                }
+                                else
+                                {
+                                     $("#tr_Assets").addClass("hidetable");
                                 }
 
                             }
@@ -546,7 +555,7 @@
         $.ajax({
             type: "POST",
             url: "@Url.Action("Download", "Purchase_Order")",
-            data: { fileName: FileName },
+            data: { fileName: fileID },
             success: function (r) {
                 //Convert Base64 string to Byte Array.
                 var bytes = Base64ToBytes(r);

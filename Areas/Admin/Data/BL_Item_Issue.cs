@@ -70,7 +70,7 @@ namespace IT_Hardware.Areas.Admin.Data
         }
 
 
-        public List<Mod_Item_Issue> Get_Item_By_Sl(string Sl_Num)
+        public List<Mod_Item_Issue> Get_Item_By_Sl(string SearchVal, string SearchType)
         {
 
             Mod_Item_Issue BL_data;
@@ -90,7 +90,9 @@ namespace IT_Hardware.Areas.Admin.Data
                     cmd.Connection = con;
                     SqlParameter sqlP_type = new SqlParameter("@Type", "Get_By_SL");
                     cmd.Parameters.Add(sqlP_type);
-                    SqlParameter Sl_No = new SqlParameter("@Item_Id", Sl_Num);
+                    SqlParameter sqlP_SearchType = new SqlParameter("@SearchType", SearchType);
+                    cmd.Parameters.Add(sqlP_SearchType);
+                    SqlParameter Sl_No = new SqlParameter("@Item_Id", SearchVal);
                     cmd.Parameters.Add(Sl_No);
 
                     using (SqlDataAdapter sda = new SqlDataAdapter())

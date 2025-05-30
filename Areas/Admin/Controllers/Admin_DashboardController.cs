@@ -24,7 +24,10 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
         public ActionResult Admin_Dashboard(string PO_Id)
         {
-            
+
+            if (PO_Id is null)
+                PO_Id = string.Empty;
+
             BL_Admin_DashB B_Layer = new BL_Admin_DashB();
 
             Mod_Admin_dashB mod_Data = new Mod_Admin_dashB();
@@ -33,21 +36,24 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             mod_Data.List_Proposal = B_Layer.Get_List_Proposal();
 
-            string sqlTpye= string.Empty;
-            if (PO_Id != string.Empty)
+            string sqlTpye = string.Empty;
+            if (PO_Id != string.Empty )
             {
                 sqlTpye = "Get_Bill_by_PO";
                 ViewBag.FilterBy_PO = "Yes";
+               
             }
-            else 
+            else
             {
                 sqlTpye = "Get_Bill_List";
+                ViewBag.FilterBy_PO = "No";
             }
 
-            mod_Data.List_Bill_Process = B_Layer.Get_List_Bills(PO_Id, sqlTpye);
 
-           
+            string PO_No = string.Empty;
+            mod_Data.List_Bill_Process = B_Layer.Get_List_Bills(PO_Id, sqlTpye, out PO_No);
 
+            ViewBag.PO_No = PO_No;
             return View(mod_Data);
         }
 

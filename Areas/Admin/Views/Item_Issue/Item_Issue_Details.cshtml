@@ -9,16 +9,19 @@
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Nunito'>
 
 
+<link href="~/css/commoncssclass.css" rel="stylesheet" />
+
+
 <div style="   text-align: center; height: 50px; align-content: center; width: 100% " class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
 
-    <p style="font-size:large; font-weight:bold;">Item Issued List</p>
+    <p style="font-size:large; font-weight:bold;">Assets Location</p>
 
 </div>
 
 <div style=" align-content:center; width:100%" class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
     <table class=" table-hover table-striped shadow " style="width:100%">
         <tr>
-            <td width="75%">
+            <td width="60%">
 
                 <div class="col-rt-3 equal-height">
                     <div class="sb-example-3">
@@ -28,13 +31,36 @@
                         </div>
                     </div>
                 </div>
-
-
             </td>
-            <td align="right" width="25%">
-                <h4>
-                    @Html.ActionLink("Add New", "Item_Issue_Create_Item", "Item_Issue")
-                </h4>
+
+
+            <td align="right" width="40%">
+
+                <table style="width:100%;">
+                    <tr>
+                        <td style="width:80%;">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td style="width: 40%; text-align:center">
+                                         Purchase Order No
+                                    </td>
+                                    <td style="width: 50%; text-align:center">
+                                        <input id="Find_PO_id" width="100%" class="form-rounded" type="text" />
+                                    </td>
+                                    <td style="width: 10%; text-align:right">
+                                        <button type="submit" id="btn_Find_Invoice_By_PO" class="btn_download"> Search</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="width:20%; text-align:right">
+                            <h4>
+                                @Html.ActionLink("Change", "Item_Issue_Create_Item", "Item_Issue")
+                            </h4>
+                        </td>
+                    </tr>
+                </table>
+               
             </td>
         </tr>
         <tr>
@@ -45,6 +71,7 @@
         <tr>
             <td colspan="2">
                 <table id="Bud_Uses_Grid" style="width:100%">
+
                     <tr>
                         <th>
                             Item Type
@@ -74,7 +101,7 @@
                                 @Html.DisplayFor(modelItem => item.Item_Type)
                             </td>
                             <td>
-                               @*  @Html.DisplayFor(modelItem => item.Item_SerialNo) *@
+                               
                                 <a href=""
                                    class=" " style="font-size:medium" data-toggle="modal" data-target="#myModal2" data-status="@item.Item_SerialNo" id="@item.Item_SerialNo">
                                     @Html.DisplayFor(modelItem => item.Item_SerialNo)
@@ -96,7 +123,6 @@
 
                         </tr>
                     }
-
 
 
                 </table>
@@ -142,16 +168,34 @@
 
 
 <script type="text/javascript">
-    $(function () {
+   
 
-        $("#SL_Number").keyup(function () {
+     $(document).on("keyup", "#SL_Number", function (event) {
+      
+        $("#Find_PO_id").val("");
+        AsynchronousGridBinding ( $('#SL_Number').val(), "SerialNo_Wise" );
+
+     });
+
+
+     $(document).on("click", "#btn_Find_Invoice_By_PO", function (event) {
+
+        var pO_No =  $("#Find_PO_id").val();
+        AsynchronousGridBinding (pO_No , "PONo_Wise" );
+
+     });
+
+
+    function AsynchronousGridBinding (val, type)
+    {
+
             $("#Bud_Uses_Grid tr").remove();
 
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("Search_Item", "Item_Issue")",
                 datatype: "Json",
-                data: { SL_Num: $('#SL_Number').val() },
+                data: { SearchVal: val, SearchType: type },
                 success: function (response) {
 
                     markup = "<tr><th style='width: 15%;'> Item Type </th> <th style='width: 15%;'>  Serial Number </th> <th style='width: 15%;'> Issued Employee </th> <th style='width: 15%; '> Designation </th>  <th style='width: 15%;'> Previous Employee </th>  <th style='width: 15%; '> Issued Date </th>  </tr>";
@@ -162,32 +206,34 @@
                         //$.each(response.Bud_Uses_List[i], function (Budget_Uses_Id, Budget_Name, Budget_Amount, Budget_Type ) {
                         $.each(response, function (key, val) {
 
-                            //var date = new Date(val.Issued_date);
 
-                            var date = new Date(parseInt(val.issued_date.substr(6)));
+                            const date = new Date(val.issued_date.substring(0, 10));
+                            const year = date.getFullYear();
+                            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+                            const day = String(date.getDate()).padStart(2, '0');
+                            const formattedDate = `${day}-${month}-${year}`; // Output:
 
                             markup = "<tr><td> " + val.item_Type + " </td> " +
-                                "<td> " + val.item_SerialNo + " </td> " +
+                                "<td>  <a href='' class='' style='font-size:medium' data-toggle='modal' data-target='#myModal2' data-status='"+ val.item_SerialNo + "' id='"+ val.item_SerialNo +"'  > " + val.item_SerialNo + " </a> </td> " +
                                 "<td> " + val.transfered_Emp_Name + " </td> " +
                                 "<td> " + val.transfered_Emp_Designation + " </td> " +
                                 "<td> " + val.previous_Emp_Name + " </td> " +
-                                "<td> " + date.toDateString() + " </td> </tr> "
+                                "<td> " + formattedDate + " </td> </tr> "
+
                             tableBody = $("#Bud_Uses_Grid tbody");
                             tableBody.append(markup);
-
-
 
                         });
                     } else {
                         alert("Something went wrong");
                     }
                 },
-              
+
 
             });
 
-        });
-    });
+    }
+
 
 </script>
 
