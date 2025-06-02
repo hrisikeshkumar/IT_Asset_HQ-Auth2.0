@@ -26,7 +26,7 @@
 <div style=" align-content:center; width:100%" class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
 
 
-    @using (Html.BeginForm("PO_Create_Post", "Purchase_Order", FormMethod.Post, new { encType = "multipart/form-data" }))
+    @using (Html.BeginForm("PO_Create_Post", "Purchase_Order", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <table class=" table-hover table-striped shadow " style="width:100%">
             <tr>
@@ -76,15 +76,57 @@
             </tr>
             <tr>
                 <td style="width:25%; height:50px;">
-                    Approval Details @Html.HiddenFor(x=>x.Proposal_Id)
+                    Approval Details
                 </td>
                 <td style="width:75%;" colspan="3">
-                    @Html.TextAreaFor(x => x.Approval_Details, new { @rows = "2", @style = " width :96%; " })
+
+                    <table style="width:100%">
+                        <tr>
+                            <td>
+                                <table id="ApprovalList" name="ApprovalList" style="width:100%; border: 1px solid black;">
+                                    <thead>
+                                        <tr>
+                                            <td style="width:0%; display:none;">
+                                                Proposal Id
+                                            </td>
+                                            <td style="width:80%">
+                                                Proposal Details
+                                            </td>
+                                            <td style="width:20%">
+                                                Action
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table style="width:100%;">
+                                    <tr>
+                                        <td style="width:0%; display:none;">
+                                            @Html.HiddenFor(x => x.Proposal_Id)
+                                        </td>
+                                        <td style="width:90%">
+                                            @Html.TextAreaFor(x => x.Approval_Details, new { @rows = "2", @style = " width :95%; " })
+                                        </td>
+                                        <td style="width:10%">
+                                            <input type='submit' value='Add' class='cssdownload btn_delete' id='btn_Approval_Add'>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>                           
+                        </tr>
+
+                    </table>
+                    
                 </td>
-            </tr>
+            </tr>         
             <tr>
                 <td style="width: 25%; height: 50px;">
-                    Upload Related Files
+                    Upload Purchase Order
                 </td>
                 <td style="width:75%;" colspan="3">
                     <input id="File_PO" type="file"
@@ -135,9 +177,7 @@
                 <td align="left" style="width:25%;"></td>
             </tr>
         </table>
-
     }
-
 
 </div>
 
@@ -250,6 +290,48 @@
             return false;
         }
     });
+</script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        let rowIndex = 0;
+
+        $("#btn_Approval_Add").click(function (event) {
+            event.preventDefault();
+
+            const proposalId = $('#Proposal_Id').val();
+            const proposalDetails = $('#Approval_Details').val();
+
+            const newRow = `
+                <tr>
+                    <td style="width:0%; display:none;">
+                        <input type="hidden"   name="ApprovalList[${rowIndex}][Proposal_ID]" value="${proposalId}" />
+                        ${proposalId}
+                    </td>
+                    <td style="width:90%;">
+                        <input type="text" readonly style="width:90%;" name="ApprovalList[${rowIndex}][Proposal_Details]" value="${proposalDetails}" />
+                    </td>
+                    <td>
+                        <button type="button" class="btn_delete">Delete</button>
+                    </td>
+                </tr>
+            `;
+
+            $('#ApprovalList tbody').append(newRow);
+            //$('#ApprovalList > tbody > tr').eq(1).after(newRow);
+            rowIndex++;
+
+            // Clear input fields
+            $('#Proposal_Id').val('');
+            $('#Approval_Details').val('');
+        });
+    });
+
+    // $(document).on('click', '.btn_delete', function () {
+    //     $(this).closest('tr').remove();
+    // });
+
 </script>
 
 

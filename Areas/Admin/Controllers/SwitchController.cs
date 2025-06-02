@@ -32,7 +32,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Mod_Switch Mod_data = new Mod_Switch();
             Item_MakeModel Make_List = new Item_MakeModel();
             Mod_data.Item_Make_List = Make_List.Item_MakeModel_List("Switch", "MAKE", "");
-            Mod_data.Vendor_List = Make_List.Vendor_List();
+            Mod_data.PO_List = Make_List.Vendor_and_PO_List("PO");
             return View(Mod_data);
 
         }

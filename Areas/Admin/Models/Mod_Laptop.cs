@@ -19,6 +19,7 @@ namespace IT_Hardware.Areas.Admin.Models
         public string? Make_Name { get; set; }
         public string? Model_Name { get; set; }
         public string? Asset_Price { get; set; }
+        public string? PO_Id { get; set; }
         public string? PO_No { get; set; }
         public DateTime? PO_Date { get; set; }
         public DateTime? WrntEnd_Date { get; set; }
@@ -47,8 +48,7 @@ namespace IT_Hardware.Areas.Admin.Models
         public string? Verfd_status { get; set; }
         public string? Verfd_usr_id { get; set; }
         public DateTime? Verfd_date { get; set; }
-        public List<SelectListItem>? Vendor_List { get; set; }
-        public string? Vendor_id { get; set; }
+        public List<SelectListItem>? PO_List { get; set; }
 
 
     }

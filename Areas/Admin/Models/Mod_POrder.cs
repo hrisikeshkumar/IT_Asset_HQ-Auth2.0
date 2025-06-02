@@ -42,5 +42,16 @@ namespace IT_Hardware.Areas.Admin.Models
         public DateTime? Create_date { get; set; }
         public string? Verfd_status { get; set; }
         public IFormFile? File_PO { get; set; }
+
+        public List<Approval_PO> ApprovalList { get; set; } 
+
+
     }
+
+    public class Approval_PO
+    {
+        string Proposal_ID { get; set; }
+        string Proposal_Details { get; set; }
+    }
+
 }

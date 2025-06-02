@@ -9,8 +9,6 @@ namespace IT_Hardware.Areas.Admin.Data
 {
     public class BL_AppleIpad
     {
-
-
             public List<Mod_AppleIpad> Get_AppleIpadData()
             {
 
@@ -118,10 +116,10 @@ namespace IT_Hardware.Areas.Admin.Data
                     SqlParameter Proc_Date = new SqlParameter("@Proc_Date", Data.Proc_date);
                     cmd.Parameters.Add(Proc_Date);
 
-                SqlParameter sql_Vendor_Id = new SqlParameter("@Vendor_Id", Data.Vendor_id);
-                cmd.Parameters.Add(sql_Vendor_Id);
+                    SqlParameter sql_PO_Id = new SqlParameter("@PO_Id", Data.PO_Id);
+                    cmd.Parameters.Add(sql_PO_Id);
 
-                SqlParameter Warnt_end_dt = new SqlParameter("@Warnt_end_DT", Data.Warnt_end_dt);
+                    SqlParameter Warnt_end_dt = new SqlParameter("@Warnt_end_DT", Data.Warnt_end_dt);
                     cmd.Parameters.Add(Warnt_end_dt);
 
                     SqlParameter Asset_Price = new SqlParameter("@Asset_Price", Data.price);
@@ -181,6 +179,7 @@ namespace IT_Hardware.Areas.Admin.Data
                     if (dt_Comuter.Rows.Count > 0)
                     {
                         Data.Item_id = Convert.ToString(dt_Comuter.Rows[0]["Item_Id"]);
+                        Data.PO_Id = Convert.ToString(dt_Comuter.Rows[0]["PO_Id"]);
                         Data.Item_Make_id = Convert.ToString(dt_Comuter.Rows[0]["Make"]);
                         Data.Item_Model_id = Convert.ToString(dt_Comuter.Rows[0]["Item_MakeId"]);
                         Data.Item_serial_No = Convert.ToString(dt_Comuter.Rows[0]["Item_SlNo"]);

@@ -29,8 +29,8 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 Mod_Monitor Mod_data = new Mod_Monitor();
                 Item_MakeModel Make_List = new Item_MakeModel();
                 Mod_data.Item_Make_List = Make_List.Item_MakeModel_List("Desktop", "MAKE", "");
-                Mod_data.Vendor_List = Make_List.Vendor_List();
-                return View( Mod_data);
+                Mod_data.PO_List = Make_List.Vendor_and_PO_List("PO");
+            return View( Mod_data);
 
             }
 

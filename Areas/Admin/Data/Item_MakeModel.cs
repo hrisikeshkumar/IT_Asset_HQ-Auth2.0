@@ -69,7 +69,7 @@ namespace IT_Hardware.Areas.Admin.Data
 
 
 
-        public List<SelectListItem> Vendor_List()
+        public List<SelectListItem> Vendor_and_PO_List(string type)
         {
 
             List<SelectListItem> List_Item = new List<SelectListItem>();
@@ -84,6 +84,8 @@ namespace IT_Hardware.Areas.Admin.Data
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection = con;
+
+                    cmd.Parameters.AddWithValue("@Type", type);
 
                     using (SqlDataAdapter sda = new SqlDataAdapter())
                     {
