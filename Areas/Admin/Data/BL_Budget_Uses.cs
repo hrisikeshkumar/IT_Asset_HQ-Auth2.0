@@ -52,6 +52,8 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     BL_data.Budget_Uses_Id = Convert.ToString(dr["Budget_Uses_Id"]);
 
+                    BL_data.Utilization_Details = Convert.ToString(dr["Utilization_Details"]);
+
                     BL_data.Budget_Name = Convert.ToString(dr["Budget_Name"]);
 
                     BL_data.Budget_Amount = Convert.ToInt32(dr["Budget_Amount"]);
@@ -344,6 +346,8 @@ namespace IT_Hardware.Areas.Admin.Data
                     BL_data = new Bud_Uses_List();
 
                     BL_data.Budget_Uses_Id = Convert.ToString(dr["Budget_Uses_Id"]);
+
+                    BL_data.Utilization_Details = Convert.ToString(dr["Utilization_Details"]);
 
                     BL_data.Budget_Name = Convert.ToString(dr["Budget_Name"]);
 

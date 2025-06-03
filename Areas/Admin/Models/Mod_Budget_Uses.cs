@@ -47,6 +47,7 @@ namespace IT_Hardware.Areas.Admin.Models
 
     public class Bud_Uses_List
     {
+        public string? Utilization_Details { get; set; }
         public string Budget_Uses_Id { get; set; }
         public string Budget_Name { get; set; }
         public int Budget_Amount { get; set; }

@@ -50,8 +50,8 @@ namespace IT_Hardware.Areas.Admin.Models
 
     public class Approval_PO
     {
-        string Proposal_ID { get; set; }
-        string Proposal_Details { get; set; }
+        public string Proposal_ID { get; set; }
+        public string Proposal_Details { get; set; }
     }
 
 }

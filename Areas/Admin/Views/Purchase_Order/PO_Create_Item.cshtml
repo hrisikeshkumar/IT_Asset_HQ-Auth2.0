@@ -1,11 +1,4 @@
-﻿
-@model IT_Hardware.Areas.Admin.Models.Mod_POrder
-
-
-@{
-    ViewBag.Title = "Index";
-    //Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿@model IT_Hardware.Areas.Admin.Models.Mod_POrder
 
 
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -83,7 +76,7 @@
                     <table style="width:100%">
                         <tr>
                             <td>
-                                <table id="ApprovalList" name="ApprovalList" style="width:100%; border: 1px solid black;">
+                                <table id="tbl_ApprovalList" name="tbl_ApprovalList" style="width:100%; border: 1px solid black;">
                                     <thead>
                                         <tr>
                                             <td style="width:0%; display:none;">
@@ -169,7 +162,7 @@
                 <td align="left" style="width:25%; "></td>
 
                 <td style="width: 25%; padding-top: 10px; padding-bottom: 5px" align="center">
-                    <button class="button_cls form-rounded">Submit</button>
+                    <button id="btnSave" class="button_cls form-rounded">Submit</button>
                 </td>
                 <td style="width: 25%; padding-top: 10px; padding-bottom: 5px" align="center">
                     @Html.ActionLink("Back", "PO_Details", "Purchase_Order", null, new { @class = "button_cls form-rounded", })
@@ -193,69 +186,7 @@
 }
 
 
-<script type="text/javascript">
-    $(function () {
-
-        $('#Budget_Year').change(function () {
-            $('#Budget_Head_Id').empty();
-
-            $.ajax({
-                type: "POST",
-                url:  "@Url.Action("Budget_List", "Budget_Uses")",
-                datatype: "Json",
-                data: { Yearcode: $('#Budget_Year').val() },
-                success: function (data) {
-                    $.each(data, function (index, value) {
-                        $('#Budget_Head_Id').append('<option value="' + value.value + '">' + value.text + '</option>');
-                    });
-                }
-
-            });
-
-        });
-    });
-
-
-    $(function () {
-
-        $('#Budget_Head_Id').change(function () {
-
-            $.ajax({
-                type: "POST",
-                url:  "@Url.Action("Prev_Budget_info", "Budget_Uses")",
-                dataType: "json",
-                data: { Yearcode: $('#Budget_Year').val(), Bud_Head_Id: $('#Budget_Head_Id').val() },
-                success: function (response) {
-                    if (response != null) {
-                        $('#Total_Approved_Budget').val(response.Total_Approved_Budget);
-                        $('#Amount_Utilized_Before').val(response.Amount_Utilized_Before);
-                        $('#Balance_Available').val(response.Balance_Available);
-                    } else {
-                        alert("Something went wrong");
-                    }
-                },
-                failure: function (response) {
-                    alert(response.responseText);
-                },
-                error: function (response) {
-                    alert(response.responseText);
-                }
-            });
-
-        });
-    });
-
-
-    $(function () {
-        $('#Budget_Amount').focusout(function () {
-            $('#Remaning_Balance').val($('#Balance_Available').val() - $('#Budget_Amount').val());
-        });
-    });
-
-</script>
-
-
-
+@* //---------------------------------------  Auto Complete  --------------------------------------------------------------------------- *@
 <link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css" rel="Stylesheet" type="text/css" />
 
 <script type="text/javascript">
@@ -292,6 +223,8 @@
     });
 </script>
 
+@* //------------------------------------------------------------------------------------------------------------------------------- *@
+
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -306,20 +239,19 @@
             const newRow = `
                 <tr>
                     <td style="width:0%; display:none;">
-                        <input type="hidden"   name="ApprovalList[${rowIndex}][Proposal_ID]" value="${proposalId}" />
+                        <input type="hidden"   name="ApprovalList[${rowIndex}].Proposal_ID" value="${proposalId}" />
                         ${proposalId}
                     </td>
                     <td style="width:90%;">
-                        <input type="text" readonly style="width:90%;" name="ApprovalList[${rowIndex}][Proposal_Details]" value="${proposalDetails}" />
+                        <input type="text" readonly style="width:95%;" name="ApprovalList[${rowIndex}].Proposal_Details" value="${proposalDetails}" />
                     </td>
                     <td>
-                        <button type="button" class="btn_delete">Delete</button>
+                        <button type="button" class="btn_delete btn_deleterow">Delete</button>
                     </td>
                 </tr>
             `;
 
-            $('#ApprovalList tbody').append(newRow);
-            //$('#ApprovalList > tbody > tr').eq(1).after(newRow);
+            $('#tbl_ApprovalList tbody').append(newRow);
             rowIndex++;
 
             // Clear input fields
@@ -328,13 +260,92 @@
         });
     });
 
-    // $(document).on('click', '.btn_delete', function () {
-    //     $(this).closest('tr').remove();
-    // });
+
+    $(document).on('click', '.btn_deleterow', function () {
+        $(this).closest('tr').remove();
+        reindexApprovalRows(); // Recalculate indices after deletion
+    });
+
+
+
+    function reindexApprovalRows() {
+        $('#tbl_ApprovalList tbody tr').each(function (index) {
+            $(this).find('input[name^="ApprovalList"]').each(function () {
+                const name = $(this).attr('name');
+                const newName = name.replace(/\[\d+\]/, `[${index}]`);
+                $(this).attr('name', newName);
+            });
+        });
+    }
+
 
 </script>
 
 
+
+
+<script type="text/javascript">
+    // $("body").on("click", "#btnSave", function (event) {
+    //     //Loop through the Table rows and build a JSON array.
+    //     ///event.preventDefault();
+    //     var Approval_List = [];
+    //     $("#tbl_ApprovalList TBODY TR").each(function () {
+    //         var row = $(this);
+    //         var Approval = {};
+    //         Approval.Proposal_ID = row.find("TD").eq(0).find("input").val();
+    //         Approval.Proposal_Details = row.find("TD").eq(1).find("input").val();
+    //         Approval_List.push(Approval);
+    //     });
+
+    //     var PO_No = $("#PO_No").val();
+    //     var PO_Date = $("#PO_Date").val();
+    //     var Vendor_id = $("#Vendor_id").val();
+    //     var PO_Value = $("#PO_Value").val();
+    //     var PO_ST_Date = $("#PO_ST_Date").val();
+    //     var PO_End_Date = $("#PO_End_Date").val();
+    //     var PO_Subject = $("#PO_Subject").val();
+    //     var SLA_Required = $("#QuoteSubject").val();
+    //     var Remarks = $("#Remarks").val();
+
+    //     var formData = new FormData();
+    //     formData.append("PO_No", PO_No);
+    //     formData.append("Vendor_id", Vendor_id);
+    //     formData.append("PO_Date", PO_Date);
+    //     formData.append("PO_Value", PO_Value);
+    //     formData.append("PO_ST_Date", PO_ST_Date);
+    //     formData.append("PO_End_Date", PO_End_Date);
+    //     formData.append("PO_Subject", PO_Subject);
+    //     formData.append("SLA_Required", SLA_Required);        
+    //     formData.append("Remarks", Remarks);
+
+
+    //     var fileInput = $("#File_PO")[0];
+    //     if (fileInput.files.length > 0) {
+    //         formData.append("File_PO", fileInput.files[0]);
+    //     }
+
+
+    //     Approval_List.forEach(function (Approval, index) {
+    //         formData.append(`ApprovalList[${index}].Proposal_ID`, Approval.Proposal_ID);
+    //         formData.append(`ApprovalList[${index}].Proposal_Details`, Approval.Proposal_Details);
+    //     });
+
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "@Url.Action("PO_Create_Post", "Purchase_Order")",
+    //         data: formData,
+    //         contentType: false,
+    //         processData: false,
+    //         cache: false,
+    //         success: function (r) {
+    //             alert(r);
+
+    //         }
+    //     });
+
+
+    // });
+</script>
 
 
 

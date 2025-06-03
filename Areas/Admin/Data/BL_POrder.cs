@@ -112,11 +112,24 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter PO_Subject = new SqlParameter("@PO_Subject", Data.PO_Subject);
                 cmd.Parameters.Add(PO_Subject);
 
-                SqlParameter Proposal_Id= new SqlParameter("@Proposal_Id", Data.Proposal_Id);
-                cmd.Parameters.Add(Proposal_Id);
 
                 SqlParameter Remarks = new SqlParameter("@Remarks", Data.Remarks);
                 cmd.Parameters.Add(Remarks);
+
+
+                DataTable Approval_Dt = new DataTable();
+                Approval_Dt.Columns.Add( new DataColumn("Proposal_ID"));
+
+                foreach (Approval_PO app in Data.ApprovalList)
+                {
+                    DataRow dr = Approval_Dt.NewRow();
+                    dr["Proposal_ID"] = app.Proposal_ID;
+                    Approval_Dt.Rows.Add(dr);                  
+                }
+                Approval_Dt.AcceptChanges();
+
+                SqlParameter ApprovalList = new SqlParameter("@ApprovalList", Approval_Dt);
+                cmd.Parameters.Add(ApprovalList);
 
                 SqlParameter User_Id = new SqlParameter("@Create_Usr_Id", Data.Create_usr_id);
                 cmd.Parameters.Add(User_Id);

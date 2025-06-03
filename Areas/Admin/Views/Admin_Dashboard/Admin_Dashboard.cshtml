@@ -439,7 +439,7 @@
                             }
                             else 
                             {
-                                markup = "<tr><td  style='width: 100%; text-align: left; height: 30px;' > Please upload Approval File </td> </tr > ";
+                                markup = "<tr><td  style='width: 100%; text-align: center; height: 30px;' > Please upload Approval File </td> </tr > ";
                                 $("#tbl_ApprovalFile").append(markup);
                             }
 
@@ -491,7 +491,7 @@
                                     {
                                             var url = '@Url.Action("Item_Issue_Details", "Item_Issue")' + '?PO_Id=' + Assets_Info;
 
-                                            markup =  "<tr><td  style='width: 70%; text-align: center; height: 30px;'>  <a href='"+url+"'> View the Assets Location procured against this Proposal</a> >  </td> </tr > "
+                                            markup =  "<tr><td  style='width: 70%; text-align: center; height: 30px;'>  <a href='"+url+"'> Find Location of the Assets procured against this Proposal</a>   </td> </tr > "
                                             $("#tbl_Assets").append(markup);
 
                                     }

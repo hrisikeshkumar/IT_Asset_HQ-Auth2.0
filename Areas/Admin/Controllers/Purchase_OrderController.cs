@@ -43,7 +43,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-        [HttpPost]
+        
         public ActionResult PO_Create_Post(Mod_POrder PO_Data)
         {
             string Message = "";
@@ -97,7 +97,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                         status = save_data.Save_PO_data(PO_Data, "Add_new", "", out string PO_Id, out string PO_File_Name);
                     }
 
-                    if (status>0)
+                    if (status>=0)
                     {
                         TempData["Message"] = String.Format("Data save successfully");
                     }

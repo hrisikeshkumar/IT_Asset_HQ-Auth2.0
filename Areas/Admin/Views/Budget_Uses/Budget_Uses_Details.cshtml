@@ -63,16 +63,16 @@
             <td colspan="3" style="width:100%;">
                 <table id="Bud_Uses_Grid" style="width:100%">
                     <tr>
-                        <th style="width:35%; font-weight:bold">
-                            Budget Name
+                        <th style="width:60%; font-weight:bold">
+                            Budget Uses
                         </th>
-                        <th  style="width: 20%; font-weight: bold">
+                        <th  style="width: 15%; font-weight: bold">
                             Budget Amount 
                         </th>
-                        <th  style="width: 20%; font-weight: bold">
+                        <th  style="width: 15%; font-weight: bold">
                             Budget Type
                         </th>
-                        <th  style="width: 25%; text-align: center; font-weight: bold">
+                        <th  style="width:10%; text-align: center; font-weight: bold">
                             Action
                         </th>
                     </tr>
@@ -81,7 +81,7 @@
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Budget_Name)
+                                @Html.DisplayFor(modelItem => item.Utilization_Details)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Budget_Amount)
@@ -189,7 +189,7 @@
                 data: { Bud_head_Id: $('#Budget_Head_Id').val() },
                 success: function (response) {
                  
-                    markup = "<tr><th style='width: 35%;'> Budget Name </th> <th style='width: 20%;'> Budget Amount  </th> <th style='width: 20%;'>Budget Type </th> <th style='width: 25%; text-align: center'>Action </th> </tr>";
+                    markup = "<tr><th style='width: 60%;'> Budget Uses </th> <th style='width: 15%;'> Budget Amount  </th> <th style='width: 15%;'>Budget Type </th> <th style='width: 10%; text-align: center'>Action </th> </tr>";
                     tableBody = $("#Bud_Uses_Grid tbody");
                     tableBody.append(markup);
 
@@ -197,7 +197,7 @@
                         //$.each(response.Bud_Uses_List[i], function (Budget_Uses_Id, Budget_Name, Budget_Amount, Budget_Type ) {
                         $.each(response, function (key, val) {
                           
-                            markup = "<tr><td> " + val.budget_Name + " </td> " +
+                            markup = "<tr><td> " + val.utilization_Details + " </td> " +
                                 "<td> " + val.budget_Amount + " </td> " +
                                 "<td> " + val.budget_Type + " </td> " +
                                 "<td style=' text-align: center'>   <a href='/Admin/Budget_Uses/Edit_Budget_Uses/" + val.budget_Uses_Id + "'> Edit </a > </td></tr> "
