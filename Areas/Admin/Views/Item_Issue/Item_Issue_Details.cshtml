@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Nunito'>
 
-
 <link href="~/css/commoncssclass.css" rel="stylesheet" />
 
 
@@ -25,7 +24,6 @@
 
                 <div class="col-rt-3 equal-height">
                     <div class="sb-example-3">
-                        <!-- partial:index.partial.html -->
                         <div class="search__container">
                             <input class="search__input" id="SL_Number" type="text" placeholder="Search  by Person Name or Serial Number">
                         </div>
@@ -42,7 +40,7 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td style="width: 40%; text-align:center">
-                                         Purchase Order No
+                                        Purchase Order No
                                     </td>
                                     <td style="width: 50%; text-align:center">
                                         <input id="Find_PO_id" width="100%" class="form-rounded" type="text" />
@@ -60,7 +58,7 @@
                         </td>
                     </tr>
                 </table>
-               
+
             </td>
         </tr>
         <tr>
@@ -73,23 +71,26 @@
                 <table id="Bud_Uses_Grid" style="width:100%">
 
                     <tr>
-                        <th>
+                        <th style="width:10%;  text-align: left;">
                             Item Type
                         </th>
-                        <th>
+                        <th style="width:10%; text-align: left;">
                             Item Serial No.
-                        </th>
-                        <th>
+                        </th >
+                        <th style="width:20%; text-align: left;">
                             Presently Issued
                         </th>
-                        <th>
+                        <th style="width:20%; text-align: left; height:25px;">
                             Emp Designation
                         </th>
-                        <th>
+                        <th style="width:20%; text-align: left;">
                             Previously Issued
                         </th>
-                        <th>
+                        <th style="width:10%; text-align: left;">
                             Issue Date
+                        </th>
+                        <th style="width:10%; text-align: center;">
+                            Document
                         </th>
                     </tr>
 
@@ -97,28 +98,35 @@
                     @foreach (var item in Model.Item_Issues)
                     {
                         <tr>
-                            <td>
+                            <td style="text-align:left;">
                                 @Html.DisplayFor(modelItem => item.Item_Type)
                             </td>
-                            <td>
-                               
+                            <td style="text-align:left;">
+
                                 <a href=""
-                                   class=" " style="font-size:medium" data-toggle="modal" data-target="#myModal2" data-status="@item.Item_SerialNo" id="@item.Item_SerialNo">
+                                class=" " style="font-size:medium" data-toggle="modal" data-target="#myModal2" data-status="@item.Item_SerialNo" id="@item.Item_SerialNo">
                                     @Html.DisplayFor(modelItem => item.Item_SerialNo)
                                 </a>
 
                             </td>
-                            <td>
+                            <td style="text-align:left;">
                                 @Html.DisplayFor(modelItem => item.Transfered_Emp_Name)
                             </td>
-                            <td>
+                            <td style="text-align:left;">
                                 @Html.DisplayFor(modelItem => item.Transfered_Emp_Designation)
                             </td>
-                            <td>
+                            <td style="text-align:left;">
                                 @Html.DisplayFor(modelItem => item.Previous_Emp_Name)
                             </td>
-                            <td>
+                            <td style="text-align:left; ">
                                 @Html.DisplayFor(modelItem => item.Issued_date, "{0:dd/MM/yyyy}" )
+                            </td>
+                            <td style="text-align:center; height:25px;">
+                                @if (item.Issue_File_Id != "0")
+                                {
+
+                                    <input type='submit' style=" height:20px;" value='Download' class='btn_download IssueFile' id='@item.Issue_File_Id'>
+                                }
                             </td>
 
                         </tr>
@@ -198,7 +206,7 @@
                 data: { SearchVal: val, SearchType: type },
                 success: function (response) {
 
-                    markup = "<tr><th style='width: 15%;'> Item Type </th> <th style='width: 15%;'>  Serial Number </th> <th style='width: 15%;'> Issued Employee </th> <th style='width: 15%; '> Designation </th>  <th style='width: 15%;'> Previous Employee </th>  <th style='width: 15%; '> Issued Date </th>  </tr>";
+                    markup = "<tr><th style='width: 10%; text-align:left; height:50px;'> Item Type </th> <th style='width: 10%; text-align:left;'>  Serial Number </th> <th style='width: 20%; text-align:left;'> Issued Employee </th> <th style='width: 20%; text-align:left;'> Designation </th>  <th style='width: 20%;'> Previous Employee </th>  <th style='width: 10%; text-align:left;'> Issued Date </th> <th style='width: 10%; '> Document </th>   </tr>";
                     tableBody = $("#Bud_Uses_Grid tbody");
                     tableBody.append(markup);
 
@@ -213,12 +221,21 @@
                             const day = String(date.getDate()).padStart(2, '0');
                             const formattedDate = `${day}-${month}-${year}`; // Output:
 
-                            markup = "<tr><td> " + val.item_Type + " </td> " +
-                                "<td>  <a href='' class='' style='font-size:medium' data-toggle='modal' data-target='#myModal2' data-status='"+ val.item_SerialNo + "' id='"+ val.item_SerialNo +"'  > " + val.item_SerialNo + " </a> </td> " +
-                                "<td> " + val.transfered_Emp_Name + " </td> " +
-                                "<td> " + val.transfered_Emp_Designation + " </td> " +
-                                "<td> " + val.previous_Emp_Name + " </td> " +
-                                "<td> " + formattedDate + " </td> </tr> "
+                            markup = "<tr><td style='text-align: left;'> " + val.item_Type + " </td> " +
+                                "<td style='text-align: left;'>  <a href='' class='' style='font-size:medium' data-toggle='modal' data-target='#myModal2' data-status='"+ val.item_SerialNo + "' id='"+ val.item_SerialNo +"'  > " + val.item_SerialNo + " </a> </td> " +
+                                "<td style='text-align: left;'> " + val.transfered_Emp_Name + " </td> " +
+                                "<td style='text-align: left;'> " + val.transfered_Emp_Designation + " </td> " +
+                                "<td style='text-align: left;'> " + val.previous_Emp_Name + " </td> " +
+                                "<td style='text-align: left; '> " + formattedDate + " </td> ";
+                                 if(val.issue_File_Id !=0)
+                                 {
+                                    markup= markup +  "<td style='text-align: center; height:25px;'>  <input type='submit' style='height:20px;' value='Download' class='btn_download IssueFile' id='"+ val.issue_File_Id +"'> </td> </tr> ";
+                                 }
+                                 else
+                                 {
+                                    markup= markup +  "<td> </td> </tr> ";
+                                 }
+                               
 
                             tableBody = $("#Bud_Uses_Grid tbody");
                             tableBody.append(markup);
@@ -229,11 +246,9 @@
                     }
                 },
 
-
             });
 
     }
-
 
 </script>
 
@@ -435,9 +450,62 @@
     }
 </style>
 
-@*-------------------------------------------------------------------------------------------------------------------*@
+@*--------------------------------------------Item Issue Download --------------------------------------------------------------*@
+
+
+
+<script type="text/javascript">
+
+    $(document).on("click", ".IssueFile", function (event) {
+
+        var fileID = $(this).attr('id');
+       
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Download", "Item_Issue")",
+            data: { fileName: fileID },
+            success: function (r) {
+                //Convert Base64 string to Byte Array.
+                var bytes = Base64ToBytes(r);
+
+                //Convert Byte Array to BLOB.
+                var blob = new Blob([bytes], { type: "application/octetstream" });
+
+                //Check the Browser type and download the File.
+                var isIE = false || !!document.documentMode;
+                if (isIE) {
+                    window.navigator.msSaveBlob(blob, fileID);
+                }
+                else {
+                    var url = window.URL || window.webkitURL;
+                    link = url.createObjectURL(blob);
+                    var a = $("<a />");
+                    a.attr("download", fileID);
+                    a.attr("href", link);
+                    $("body").append(a);
+                    a[0].click();
+                    $("body").remove(a);
+                }
+            }
+        });
+
+      event.preventDefault();
+    });
+
+    function Base64ToBytes(base64) {
+        var s = window.atob(base64);
+        var bytes = new Uint8Array(s.length);
+        for (var i = 0; i < s.length; i++) {
+            bytes[i] = s.charCodeAt(i);
+        }
+        return bytes;
+    };
+
+</script>
 
 
 
 
+
+@* --------------------------------------------------------------------------------------------------------------------------------*@
 

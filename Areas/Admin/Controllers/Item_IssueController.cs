@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using IT_Hardware.Areas.Admin.Data;
 using IT_Hardware.Areas.Admin.Models;
 using IT_Hardware.Infra;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
@@ -11,7 +12,14 @@ namespace IT_Hardware.Areas.Admin.Controllers
     [Area("Admin")]
     public class Item_IssueController : Controller
     {
-    
+
+        private IHostingEnvironment Environment;
+
+        public Item_IssueController(IHostingEnvironment _environment)
+        {
+            Environment = _environment;
+        }
+
         public ActionResult Item_Issue_Details(string PO_Id)
         {
 
@@ -24,7 +32,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             if (PO_Id != string.Empty)
             {
-                model.Item_Issues = item.Get_Item_By_Sl(PO_Id, "PONo_Wise");
+                model.Item_Issues = item.Get_Item_By_Sl(PO_Id, "POID_Wise");
             }
             else
             {
@@ -54,8 +62,46 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 Get_Data.Create_usr_id = HttpContext.User.Identity.Name;
                 if (ModelState.IsValid)
                 {
+                    int File_Exist = 0;
+                    if (Get_Data.Issue_File != null)
+                    {
+                        File_Exist = 1;
+                        if (Path.GetExtension(Get_Data.Issue_File.FileName) != ".pdf")
+                        {
+                            TempData["Message"] = String.Format("Only PDF files are accepted");
+                            return RedirectToAction("Item_Issue_Create_Item");
+                        }
+                    }
+
                     BL_Item_Issue save_data = new BL_Item_Issue();
-                    int status = save_data.Save_Item_Issue_data(Get_Data, "Add_new", "");
+                    string File_Id= string.Empty;
+                    
+
+                    int status = save_data.Save_Item_Issue_data(Get_Data, "Add_new", "", File_Exist,  out File_Id);
+
+                    if (status >= 0)
+                    {
+
+                        if (File_Exist>0)
+                        {
+                            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/HQ/ItemIssue/");
+
+                            //create folder if not exist
+                            if (!Directory.Exists(path))
+                                Directory.CreateDirectory(path);
+
+                            //get file extension
+                            FileInfo fileInfo = new FileInfo(Get_Data.Issue_File.FileName);
+                            string fileName = File_Id;
+
+                            string fileNameWithPath = Path.Combine(path, fileName);
+
+                            using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                            {
+                                Get_Data.Issue_File.CopyTo(stream);
+                            }
+                        }                       
+                    }
 
                     if (status < 1)
                     {
@@ -74,7 +120,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             catch (Exception ex)
             {
 
-                TempData["Message"] = string.Format("ShowFailure();");
+                TempData["Message"] = string.Format("Data is not saved");
 
             }
 
@@ -98,7 +144,8 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 {
                     BL_Item_Issue Md_Asset = new BL_Item_Issue();
 
-                    status = Md_Asset.Save_Item_Issue_data(Get_Data, "Update", Asset_ID);
+                    string fileId = string.Empty;
+                    status = Md_Asset.Save_Item_Issue_data(Get_Data, "Update", Asset_ID,0, out fileId);
 
                     if (status > 0)
                     {
@@ -117,7 +164,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             catch (Exception ex)
             {
 
-                TempData["Message"] = string.Format("ShowFailure();");
+                TempData["Message"] = string.Format("Data is not saved");
 
             }
 
@@ -136,7 +183,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
                     BL_Item_Issue Md_Asset = new BL_Item_Issue();
 
-                    status = Md_Asset.Save_Item_Issue_data(Get_Data, "Delete", id);
+                    //status = Md_Asset.Save_Item_Issue_data(Get_Data, "Delete", id);
 
                     if (status == 1)
                     {
@@ -151,7 +198,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             catch (Exception ex)
             {
 
-                TempData["Message"] = string.Format("ShowFailure();");
+                TempData["Message"] = string.Format("Data is not saved");
 
             }
 
@@ -207,8 +254,24 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
         }
 
+        public ContentResult Download(string fileName)
+        {
 
-       
+            string wwwPath = this.Environment.WebRootPath;
+            string contentPath = this.Environment.ContentRootPath;
+
+            string path = Path.Combine(this.Environment.WebRootPath, "Files\\HQ\\ItemIssue\\");
+
+            byte[] bytes = System.IO.File.ReadAllBytes(path + fileName);
+
+            //Convert File to Base64 string and send to Client.
+            string base64 = Convert.ToBase64String(bytes, 0, bytes.Length);
+
+            return Content(base64);
+
+        }
+
+
 
     }
 }

@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\Files\HQ\ItemIssue\" />
     <Folder Include="wwwroot\Files\HQ\PO\" />
     <Folder Include="wwwroot\Files\PO\" />
   </ItemGroup>

@@ -70,7 +70,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             catch (Exception ex)
             {
 
-                TempData["Message"] = string.Format("ShowFailure();");
+                TempData["Message"] = string.Format("Data is not saved");
 
             }
 
@@ -128,7 +128,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             catch (Exception ex)
             {
 
-                TempData["Message"] = string.Format("ShowFailure();");
+                TempData["Message"] = string.Format("Data is not saved");
 
             }
 
@@ -162,7 +162,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             catch (Exception ex)
             {
 
-                TempData["Message"] = string.Format("ShowFailure();");
+                TempData["Message"] = string.Format("Data is not saved");
 
             }
 

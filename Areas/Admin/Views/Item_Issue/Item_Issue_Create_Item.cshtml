@@ -23,7 +23,7 @@
 <div style=" align-content:center; width:100%" class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
 
 
-    @using (Html.BeginForm("Item_Issue_Create_Post", "Item_Issue", FormMethod.Post, new { @id = "submitForm" }))
+    @using (Html.BeginForm("Item_Issue_Create_Post", "Item_Issue", FormMethod.Post, new { @id = "submitForm", enctype = "multipart/form-data" }))
     {
 
         <table class=" table-hover table-striped shadow " style="width:100%">
@@ -138,7 +138,15 @@
                     @Html.TextBoxFor(x => x.Transfered_Emp_Location, new { @class = " form-rounded", @readonly = "true", @style = " width :90%; background-color: #e4f0f0;" })
                 </td>
             </tr>
-
+            <tr>
+                <td style="width: 25%; height: 50px;">
+                    Upload Hand Over File
+                </td>
+                <td style="width:75%;" colspan="3">
+                    <input id="Issue_File" type="file"
+                           name="Issue_File" />  Only PDF file is accepted.
+                </td>
+            </tr>
             <tr>
                 <td style="width:25%;">
                     Remarks

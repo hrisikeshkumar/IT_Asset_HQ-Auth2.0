@@ -112,7 +112,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Message"] = string.Format("ShowFailure();");
+                TempData["Message"] = string.Format("Data is not saved");
             }
 
             return RedirectToAction("Get_List_AMC", "IT_Hardware_AMC", new { AssetTypes= Types });
@@ -144,7 +144,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Message"] = string.Format("ShowFailure();");
+                TempData["Message"] = string.Format("Data is not saved");
             }
 
             return RedirectToAction("Amc_DashBoard", "IT_Hardware_AMC", new { AssetTypes = data.Asset_Type });
@@ -198,7 +198,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Message"] = string.Format("ShowFailure();");
+                TempData["Message"] = string.Format("Data is not saved");
             }
 
             return RedirectToAction("Get_List_AMC", "IT_Hardware_AMC", new { AssetTypes = "" });

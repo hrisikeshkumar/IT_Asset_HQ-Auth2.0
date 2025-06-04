@@ -28,6 +28,8 @@ namespace IT_Hardware.Areas.Admin.Models
         public string? Transfered_Emp_Type { get; set; }
         public string? Transfered_Emp_Dept { get; set; }
         public string? Transfered_Emp_Location { get; set; }
+        public string? Issue_File_Id { get; set; }
+
 
     }
 
@@ -58,5 +60,7 @@ namespace IT_Hardware.Areas.Admin.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? Verfd_date { get; set; }
+
+        public IFormFile? Issue_File { get; set; }
     }
 }

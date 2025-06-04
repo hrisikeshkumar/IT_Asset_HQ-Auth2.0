@@ -60,6 +60,8 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     BL_data.Item_Type = Convert.ToString(dr["Asset_Type"]);
 
+                    BL_data.Issue_File_Id = Convert.ToString(dr["FileId"]);
+
                     current_data.Add(BL_data);
                 }
 
@@ -125,6 +127,8 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     BL_data.Item_Type = Convert.ToString(dr["Asset_Type"]);
 
+                    BL_data.Issue_File_Id = Convert.ToString(dr["FileId"]);
+
                     current_data.Add(BL_data);
                 }
 
@@ -135,8 +139,9 @@ namespace IT_Hardware.Areas.Admin.Data
         }
 
 
-        public int Save_Item_Issue_data(Mod_Item_Issue Data, string type, string Issued_Id)
+        public int Save_Item_Issue_data(Mod_Item_Issue Data, string type, string Issued_Id, int File_Exist, out string File_Id)
         {
+            File_Id=string.Empty;
             int status = 1;
             
             SqlConnection con = new DBConnection().con;
@@ -174,15 +179,34 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter Remarks = new SqlParameter("@Remarks", Data.Remarks);
                 cmd.Parameters.Add(Remarks);
 
+                SqlParameter Sql_FileExist = new SqlParameter("@File_Exist", File_Exist);
+                cmd.Parameters.Add(Sql_FileExist);
+
 
                 SqlParameter User_Id = new SqlParameter("@Create_Usr_Id", Data.Create_usr_id);
                 cmd.Parameters.Add(User_Id);
 
                 con.Open();
 
-                status = cmd.ExecuteNonQuery();
 
-                
+
+                using (SqlDataAdapter sda = new SqlDataAdapter())
+                {
+
+                    sda.SelectCommand = cmd;
+                    using (DataTable dt = new DataTable())
+                    {
+                        sda.Fill(dt);
+
+                        if (dt.Rows.Count > 0)
+                        {
+                            File_Id = Convert.ToString(dt.Rows[0]["File_Id"]);
+                            status = Convert.ToInt32(dt.Rows[0]["Row_Effect"]);
+                        }
+                    }
+                }
+
+
 
             }
             catch (Exception ex) { status = -1; }
@@ -190,6 +214,7 @@ namespace IT_Hardware.Areas.Admin.Data
 
             return status;
         }
+
 
         public Mod_Item_Issue Get_Data_By_ID(string Shift_Unique_Id)
         {
@@ -233,7 +258,7 @@ namespace IT_Hardware.Areas.Admin.Data
                     Data.Transfered_Custady_Id = Convert.ToString(dt_Comuter.Rows[0]["Item_MakeId"]);
                     Data.Issued_date = Convert.ToDateTime(dt_Comuter.Rows[0]["Proc_Date"]).Date;
                     Data.Remarks = Convert.ToString(dt_Comuter.Rows[0]["Remarks"]);
-
+                    Data.Issue_File_Id = Convert.ToString(dt_Comuter.Rows[0]["FileId"]);
                 }
 
             }
@@ -331,7 +356,8 @@ namespace IT_Hardware.Areas.Admin.Data
                                     Emp_Details.Previous_Emp_Dept = Convert.ToString(dt_Comuter.Rows[0]["Dept_name"]);
                                     Emp_Details.Previous_Emp_Location = Convert.ToString(dt_Comuter.Rows[0]["Emp_Location"]);
                                     //Emp_Details.Transfered_Emp_Type = Convert.ToString(dt_Comuter.Rows[0]["Item_Id"]);
-                               
+                                    Emp_Details.Issue_File_Id = Convert.ToString(dt_Comuter.Rows[0]["FileId"]);
+
                             }
 
                         }
@@ -400,12 +426,7 @@ namespace IT_Hardware.Areas.Admin.Data
             return List_Item;
         }
 
-
-
-
-
     }
-
 
 
     public class Item_SL_Wise
