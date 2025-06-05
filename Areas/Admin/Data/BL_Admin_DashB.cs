@@ -3,6 +3,7 @@ using IT_Hardware.Areas.Admin.Models;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 
 namespace IT_Hardware.Areas.Admin.Data
@@ -122,7 +123,7 @@ namespace IT_Hardware.Areas.Admin.Data
         }
 
 
-        public void Get_Proposal_By_Id(Mod_Admin_dashB BL_data, string Proposal_Id)
+        public async Task Get_Proposal_By_Id(Mod_Admin_dashB BL_data, string Proposal_Id)
         {
 
             try
@@ -147,7 +148,10 @@ namespace IT_Hardware.Areas.Admin.Data
                     using (SqlDataAdapter sda = new SqlDataAdapter())
                     {
                         sda.SelectCommand = cmd;
-                        sda.Fill(DB_Proposal);
+                        //sda.Fill(DB_Proposal);
+                        await Task.Run(() => sda.Fill(DB_Proposal));
+                        
+
 
                     }
                 }

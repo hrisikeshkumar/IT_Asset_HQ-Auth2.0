@@ -61,7 +61,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
 
-        public JsonResult Get_Proposal_Detail_for_Modal( string Proposal_Id)
+        public async Task<JsonResult> Get_Proposal_Detail_for_Modal( string Proposal_Id)
         {
             BL_Admin_DashB B_Layer = new BL_Admin_DashB();
 
@@ -73,7 +73,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             mod_Data.Prop_detail = detail_Data;
 
-            B_Layer.Get_Proposal_By_Id( mod_Data, Proposal_Id);
+            await  B_Layer.Get_Proposal_By_Id( mod_Data, Proposal_Id);
 
             return Json(mod_Data);
         }

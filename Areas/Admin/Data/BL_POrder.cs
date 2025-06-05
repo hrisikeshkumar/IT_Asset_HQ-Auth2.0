@@ -321,6 +321,5 @@ namespace IT_Hardware.Areas.Admin.Data
         }
 
 
-
     }
 }
