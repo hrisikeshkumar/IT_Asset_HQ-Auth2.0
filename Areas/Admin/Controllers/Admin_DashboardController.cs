@@ -53,6 +53,15 @@ namespace IT_Hardware.Areas.Admin.Controllers
             string PO_No = string.Empty;
             mod_Data.List_Bill_Process = B_Layer.Get_List_Bills(PO_Id, sqlTpye, out PO_No);
 
+            mod_Data.proposal_WorkFlow = new Proposal_WorkFlow()
+            {
+                WorkFlowList = new List<WorkFlow>() {
+                    new WorkFlow(){ File_Id="1", FromDte="IT",ToDte="F&A"},
+                    new WorkFlow(){ File_Id="2", FromDte="F&A",ToDte="IA"},
+                }
+            };
+
+
             ViewBag.PO_No = PO_No;
             return View(mod_Data);
         }

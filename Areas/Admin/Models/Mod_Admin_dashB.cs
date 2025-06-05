@@ -7,6 +7,7 @@ namespace IT_Hardware.Areas.Admin.Models
     public class Mod_Admin_dashB
     {
         public Proposal_details Prop_detail { get; set; }
+        public Proposal_WorkFlow proposal_WorkFlow { get; set; }
         public DateTime IT_Initiate_Date { get; set; }
         public List<mod_Admin_Propsal_List> List_Proposal { get; set; }
         public List<mod_Admin_Bill_Process_List> List_Bill_Process { get; set; }
@@ -92,5 +93,42 @@ namespace IT_Hardware.Areas.Admin.Models
         public string StartDate { get; set; }
         public string Status { get; set; }
     }
+
+    public class WorkFlow
+    {
+        public int WorkFlow_Id { get; set; }
+        public string FromDte { get; set; }
+        public string ToDte { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
+        public DateTime SendDate { get; set; }
+        public string Remarks { get; set; }
+        public string File_Id { get; set; }
+        public IFormFile WorkFlow_File { get; set; }
+        public int LastItem { get; set; }
+    }
+
+    public class Proposal_WorkFlow
+    {
+        public string? PO_File_Id { get; set; }
+        public string? Utilization_Details { get; set; }
+        public string? PO_File_Name { get; set; }
+        public string? Invoice_Info { get; set; }
+        public string? Assets_Info { get; set; }
+        public string? Status { get; set; }
+        public List<SelectListItem>? Department_List { get; set; }
+        public string? Approval_File_Id { get; set; }
+        public string? Approval_File_Name { get; set; }
+        public IFormFile Approval_File { get; set; }
+        public string? Update_UserId { get; set; }
+
+        public List<File_List>? Prop_Files { get; set; }
+
+        public WorkFlow Work_Flow { get; set; }
+        public List<WorkFlow> WorkFlowList { get; set; }
+    }
+
+
 
 }

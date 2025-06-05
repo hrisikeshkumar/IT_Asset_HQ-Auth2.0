@@ -3,7 +3,7 @@
     ViewBag.Title = "Index";
     //Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@model IT_Hardware.Areas.Admin.Models.Proposal_details
+@model IT_Hardware.Areas.Admin.Models.Proposal_WorkFlow
 
 
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -25,53 +25,67 @@
     {
 
         <table class=" table-hover table-striped shadow " style="width:100%">
-            <tr>
-                <td style="width:20%; ">
-                    Utilization Details
-                    @Html.HiddenFor(X => X.Proposal_Id)
-                </td>
-                <td style="width:80%;" colspan="3">
-                    @Html.TextAreaFor(x => x.Utilization_Details, new { @style = " width :100%; " })
-                </td>
-            </tr>
-            <tr>
-                <td style="width:20%;">
-                    Dte. Of IT Remarks
-                </td>
-                <td style="width:80%;" colspan="3">
-                    @Html.TextAreaFor(x => x.Dte_IT_Remarks, new { @style = " width :100%; " })
-                </td>
-            </tr>
-            <tr>
-                <td style="width: 20%; ">
-                    Dte. of F&A Remarks
-                </td>
-                <td style="width: 80%;" colspan="3">
-                    @Html.TextAreaFor(x => x.FA_Remarks, new { @style = " width :100%; " })
-                </td>
-            </tr>
-            <tr>
-                <td style="width:20%;">
-                    Dte. of Purchase Remarks
-                </td>
-                <td style="width:80%; " colspan="3">
-                    @Html.TextAreaFor(x => x.Purchase_Remarks, new { @style = " width :100%; " })
-                </td>
-            </tr>
-            <tr>
-                <td style="width:20%;">
-                    Remarks of Secretary Office
-                </td>
-                <td style="width:80%; " colspan="3">
-                    @Html.TextAreaFor(x => x.Sec_Office_Remarks, new { @style = " width :100%; " })
-                </td>
-            </tr>
-            <tr>
-                <td style="width:20%;">
-                    Remarks of Other Directorate
-                </td>
-                <td style="width:80%; " colspan="3">
-                    @Html.TextAreaFor(x => x.Other_Dept_Remarks, new { @style = " width :100%; " })
+            <tr>               
+                <td style="width:100%;" colspan="2">
+                    <table style="width:100%;" class=" table-hover table-striped shadow ">
+                        <thead>
+                            <tr>
+                                <td style="font-weight:bold;"> Forwarding Date </td>
+                                <td style="font-weight:bold;"> Sender </td>
+                                <td style="font-weight:bold;"> Receiver </td>
+                                <td style="font-weight:bold;"> File </td>
+                                <td style="font-weight:bold;"> Remarks </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.WorkFlowList)
+                            {
+
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.SendDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FromDte)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ToDte)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.WorkFlow_File)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Remarks)
+                                    </td>
+                                    <td>
+                                        <input type='submit' value='Delete' class='btn_delete' id='@item.WorkFlow_Id'>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td style="">
+                                    @Html.TextBoxFor(x => x.Work_Flow.SendDate, "{0:dd/MM/yyyy}", new { @class = "dateclass form-rounded date-format", @style = " width :80%; " })
+                                </td>
+                                <td style="">
+                                    @Html.DropDownListFor(x => x.Work_Flow.FromDte, Model.Department_List, new { @class = " form-rounded", @style = " width :90%; " })
+                                </td>
+                                <td style="">
+                                    @Html.DropDownListFor(x => x.Work_Flow.FromDte, Model.Department_List, new { @class = " form-rounded", @style = " width :90%; " })
+                                 </td>
+                                <td style="">
+                                    <input type="file" id="WorkFlow_File" name="WorkFlow_File" /> *PDF only
+                                </td>
+                                <td style="">
+                                    @Html.TextAreaFor(x => x.Work_Flow.Remarks, new { @class = " form-rounded", @style = " width :80%; " })
+                                </td>
+                                <td style="">   
+                                    <input type='submit' value='Submit' class='btn-success' id='btn_SaveFlow'>                             
+                                </td>
+                            </tr>
+                        </tfoot>
+                  </table>
                 </td>
             </tr>
 
@@ -113,7 +127,6 @@
                                             </td>
                                         </tr>
                                     }
-
                                 </table>
                             </td>
                         </tr>
@@ -131,12 +144,13 @@
                     <table style="width:100%;">
                         <tr>
                             <td>
-                                Completed
+                                Status
                             </td>
                             <td align="center" style="text-align:center; align-items:center">
-                                @Html.CheckBoxFor(x => x.Status, new { @style = " width :100%; " })
+                                @Html.DropDownListFor(x => x.Work_Flow.FromDte, Model.Department_List, new { @class = " form-rounded", @style = " width :90%; " })
                             </td>
                             <td style="width:20%">
+                                <input type='submit' value='Save Status' class='button_cls' id='btn_SaveFlow'>
                             </td>
                         </tr>
                     </table>
@@ -148,7 +162,7 @@
                             <td align="left" style="width:25%; "></td>
 
                             <td style="width: 25%; padding-top: 10px; padding-bottom: 5px" align="center">
-                                <button class="button_cls form-rounded">Submit</button>
+                            
 
                             </td>
 
