@@ -230,7 +230,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public JsonResult FiliUpload()
+        public JsonResult Upload_FinalApprovalFile()
         {
             string Proposal_Id = Request.Form["Proposal_Id"].ToString();
             IFormFile postedFile = Request.Form.Files[0];
@@ -307,7 +307,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-        public JsonResult DeleteFile(string FileId, string RefId)
+        public JsonResult DeleteFile_FinalApproval(string FileId, string RefId)
         {
             try
             {
@@ -339,7 +339,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-        public ContentResult Download(string fileName)
+        public ContentResult Download_FinalApprovalFile(string fileName)
         {
 
             string wwwPath = this.Environment.WebRootPath;
@@ -359,6 +359,26 @@ namespace IT_Hardware.Areas.Admin.Controllers
           
         }
 
+
+        public ContentResult Download_WorkFlowFile(string fileName)
+        {
+
+            string wwwPath = this.Environment.WebRootPath;
+            string contentPath = this.Environment.ContentRootPath;
+
+            string path = Path.Combine(this.Environment.WebRootPath, "Files\\FinalApproval\\");
+
+            string file_name = fileName + ".pdf";
+            //Read the File as Byte Array.
+            byte[] bytes = System.IO.File.ReadAllBytes(path + file_name);
+
+            //Convert File to Base64 string and send to Client.
+            string base64 = Convert.ToBase64String(bytes, 0, bytes.Length);
+
+            return Content(base64);
+
+
+        }
 
         public JsonResult GridData( string Input, string Type, int Page_No)
         {
