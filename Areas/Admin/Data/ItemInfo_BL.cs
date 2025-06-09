@@ -1,4 +1,5 @@
 ﻿using IT_Hardware.Areas.Admin.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Graph.Models;
 using System.Data;
 using System.Data.SqlClient;
@@ -71,6 +72,53 @@ namespace IT_Hardware.Areas.Admin.Data
             catch (Exception ex) { }
 
             return item;
+        }
+
+
+        public List<SelectListItem> DepartmentList()
+        {
+
+            List<SelectListItem> Value = new List<SelectListItem>();
+
+            SelectListItem No = new SelectListItem("Please Select a Department", "-1");
+            Value.Add(No);
+            SelectListItem ReD = new SelectListItem("Requested Department", "0");
+            Value.Add(ReD);
+            SelectListItem IT = new SelectListItem("IT", "1");
+            Value.Add(IT);
+            SelectListItem FA = new SelectListItem("F&A", "2");
+            Value.Add(FA);
+            SelectListItem IA = new SelectListItem("IA", "3");
+            Value.Add(IA);
+            SelectListItem Secretary = new SelectListItem("Secretary Office", "4");
+            Value.Add(Secretary);
+            SelectListItem Purchase = new SelectListItem("Purchase", "5");
+            Value.Add(Purchase);
+
+            return Value;
+        }
+
+
+        public List<SelectListItem> StatusList()
+        {
+
+            List<SelectListItem> Value = new List<SelectListItem>();
+
+            SelectListItem Initiated = new SelectListItem("Initiated", "-1");
+            Value.Add(Initiated);
+            SelectListItem Note = new SelectListItem("Note Forwarded", "1");
+            Value.Add(Note);
+            SelectListItem Approved = new SelectListItem("Approved", "2");
+            Value.Add(Approved);
+            SelectListItem PurchaseOrder = new SelectListItem("Purchase Order Issued", "3");
+            Value.Add(PurchaseOrder);
+            SelectListItem Item = new SelectListItem("Item Received", "4");
+            Value.Add(Item);
+            SelectListItem Completed = new SelectListItem("Completed", "99");
+            Value.Add(Completed);
+
+
+            return Value;
         }
 
     }

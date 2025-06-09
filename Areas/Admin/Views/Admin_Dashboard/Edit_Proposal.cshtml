@@ -1,40 +1,88 @@
 ﻿@using IT_Hardware.Controllers
 @{
     ViewBag.Title = "Index";
-    //Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@model IT_Hardware.Areas.Admin.Models.Proposal_WorkFlow
+@model IT_Hardware.Areas.Admin.Models.Proposal_details
 
 
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-@*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>*@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
- 
+
+<script src="~/js/commonjs.js"></script>
 <link href="~/css/commoncssclass.css" rel="stylesheet" />
-<script src="~/customjs/commonjs.js"></script>
 
 
-<div style="   text-align: center; height: 50px; align-content: center; width: 100% " class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
-    <p style="font-size:large; font-weight:bold;">Update Status of Proposal</p>
+<style type="text/css">
+
+    .hidetable {
+        display: none;
+    }
+
+
+    .btn_download {
+        display: inline-block;
+        outline: 0;
+        cursor: pointer;
+        padding: 5px 10px;
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 10px;
+        vertical-align: middle;
+        border: 1px solid;
+        border-radius: 6px;
+        color: #ffffff;
+        background-color: #2ea44f;
+        border-color: #1b1f2326;
+        box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px 0px inset;
+        transition: 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+        transition-property: color, background-color, border-color;
+    }
+
+        .btn_download:hover {
+            background-color: rgb(155 221 30 / 0.73);
+            border-color: #1b1f2326;
+            transition-duration: 0.1s;
+        }
+
+    .row {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .block {
+        width: 100px;
+    }
+
+</style>
+
+
+
+<div style="text-align: center; height: 50px; align-content: center; width: 100% " class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
+
+    <p style="font-size:large; font-weight:bold;">Update Proposal Status</p>
+
 </div>
 
 <div style=" align-content:center; width:100%" class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
-
 
     @using (Html.BeginForm("Update_proposal", "Admin_Dashboard", FormMethod.Post))
     {
 
         <table class=" table-hover table-striped shadow " style="width:100%">
+
             <tr>               
-                <td style="width:100%;" colspan="2">
+                <td style="width:100%;" colspan="4">
                     <table style="width:100%;" class=" table-hover table-striped shadow ">
                         <thead>
-                            <tr>
-                                <td style="font-weight:bold;"> Forwarding Date </td>
-                                <td style="font-weight:bold;"> Sender </td>
-                                <td style="font-weight:bold;"> Receiver </td>
-                                <td style="font-weight:bold;"> File </td>
-                                <td style="font-weight:bold;"> Remarks </td>
+                            <tr class="table-active">
+                                <td style="font-weight:bold; width: 15%; text-align:left; " class=""> Sender </td>
+                                <td style="font-weight:bold; width: 8%; text-align:left; "> Forwarding Date </td>
+                                <td style="font-weight:bold; width: 15%; text-align:left; "> Receiver </td>
+                                <td style="font-weight:bold; width: 15%; text-align:center; "> File </td>
+                                <td style="font-weight:bold; width: 40%; text-align:center;"> Remarks </td>
+                                <td style="font-weight:bold; width: 7%;  text-align:center;"> Action </td>
                             </tr>
                         </thead>
                         <tbody>
@@ -42,57 +90,62 @@
                             {
 
                                 <tr>
-                                    <td>
+                                    <td style="width: 8%; text-align:left; ">
                                         @Html.DisplayFor(modelItem => item.SendDate)
                                     </td>
-                                    <td>
+                                    <td style="width: 15%; text-align:left; ">
                                         @Html.DisplayFor(modelItem => item.FromDte)
                                     </td>
-                                    <td>
+                                    <td style="width: 15%; text-align:left; ">
                                         @Html.DisplayFor(modelItem => item.ToDte)
                                     </td>
-                                    <td>
+                                    <td style="width: 15%; text-align:left; ">
                                         @Html.DisplayFor(modelItem => item.WorkFlow_File)
                                     </td>
-                                    <td>
+                                    <td style="width: 40%; text-align:left; ">
                                         @Html.DisplayFor(modelItem => item.Remarks)
                                     </td>
-                                    <td>
-                                        <input type='submit' value='Delete' class='btn_delete' id='@item.WorkFlow_Id'>
+                                    <td style="width: 7%; text-align:center; ">
+                                        @if(item.LastRow==1)
+                                        {
+                                            <input type='submit' value='Delete' class='btn_delete' id='@item.WorkFlow_Id'>
+                                        }
+
                                     </td>
                                 </tr>
                             }
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td style="">
-                                    @Html.TextBoxFor(x => x.Work_Flow.SendDate, "{0:dd/MM/yyyy}", new { @class = "dateclass form-rounded date-format", @style = " width :80%; " })
+                                <td style="width: 8%; text-align:left; ">
+                                    @Html.TextBoxFor(x => x.Work_Flow.SendDate, "{0:dd/MM/yyyy}", new { @class = "dateclass form-rounded date-format", @style = " width :95%; " })
                                 </td>
-                                <td style="">
-                                    @Html.DropDownListFor(x => x.Work_Flow.FromDte, Model.Department_List, new { @class = " form-rounded", @style = " width :90%; " })
+                                <td style="width: 15%; text-align:left; ">
+                                    @Html.DropDownListFor(x => x.Work_Flow.FromDte, Model.Department_List, new { @class = " form-rounded", @style = " width :95%; " })
                                 </td>
-                                <td style="">
-                                    @Html.DropDownListFor(x => x.Work_Flow.FromDte, Model.Department_List, new { @class = " form-rounded", @style = " width :90%; " })
+                                <td style="width: 15%; text-align:left; ">
+                                    @Html.DropDownListFor(x => x.Work_Flow.ToDte, Model.Department_List, new { @class = " form-rounded", @style = " width :95%; " })
                                  </td>
-                                <td style="">
-                                    <input type="file" id="WorkFlow_File" name="WorkFlow_File" /> *PDF only
+                                <td style="width: 15%; text-align:left; ">
+                                    <input type="file" id="WorkFlow_File" name="WorkFlow_File"  /> 
                                 </td>
-                                <td style="">
-                                    @Html.TextAreaFor(x => x.Work_Flow.Remarks, new { @class = " form-rounded", @style = " width :80%; " })
+                                <td style="width: 40%; text-align:left; ">
+                                    @Html.TextAreaFor(x => x.Work_Flow.Remarks, new { @class = " ", @style = " width :95%; " })
                                 </td>
-                                <td style="">   
-                                    <input type='submit' value='Submit' class='btn-success' id='btn_SaveFlow'>                             
+                                <td style="width: 7%; text-align:center; ">
+                                    <input type='submit' value='Submit' class='button_cls form-rounded' id='btn_SaveFlow'>
                                 </td>
                             </tr>
                         </tfoot>
                   </table>
                 </td>
             </tr>
-
+            <tr>
+                <td style="width:100%; height:20px;" colspan="4">
+                </td>
+            </tr>
             <tr style=" height: 50px; ">
-
-                <td align="left" style="width:25%; "> Upload File</td>
-
+                <td align="left" style="width:25%; ">Final Approval File</td>
                 <td style="width: 75%;" colspan="3">
                     <table style="width: 100%;">
                         <tr>
@@ -131,53 +184,28 @@
                             </td>
                         </tr>
                     </table>
-                </td>
+                </td>            
             </tr>
 
-
             <tr>
-                <td style="width:100%; height:10px;" colspan="4">
+                <td style="width:100%; height:20px;" colspan="4">
                 </td>
             </tr>
             <tr style=" height: 50px; ">
-                <td>
-                    <table style="width:100%;">
-                        <tr>
-                            <td>
-                                Status
-                            </td>
-                            <td align="center" style="text-align:center; align-items:center">
-                                @Html.DropDownListFor(x => x.Work_Flow.FromDte, Model.Department_List, new { @class = " form-rounded", @style = " width :90%; " })
-                            </td>
-                            <td style="width:20%">
-                                <input type='submit' value='Save Status' class='button_cls' id='btn_SaveFlow'>
-                            </td>
-                        </tr>
-                    </table>
-
+                <td style="width:25%" >
+                    Status
                 </td>
-                <td colspan="3" style="align-self:center" align="center">
-                    <table class="table-striped shadow" style="width:100%;">
-                        <tr>
-                            <td align="left" style="width:25%; "></td>
-
-                            <td style="width: 25%; padding-top: 10px; padding-bottom: 5px" align="center">
-                            
-
-                            </td>
-
-                            <td style="width: 25%; padding-top: 10px; padding-bottom: 5px" align="center">
-                                @Html.ActionLink("Back", "Admin_Dashboard", "Admin_Dashboard", null, new { @class = "button_cls form-rounded", })
-                            </td>
-
-                            <td align="left" style="width:25%;"></td>
-                        </tr>
-                    </table>
+                <td align="center" style="text-align:center; align-items:center;width:25%">
+                    @Html.DropDownListFor(x => x.Work_Flow.FromDte, Model.Status_List, new { @class = " form-rounded", @style = " width :90%; " })
                 </td>
-
+                <td style="width:25%; text-align:center;">
+                    <input type='submit' value='Save Status' class='button_cls form-rounded' id='btn_SaveFlow'>
+                </td>
+                <td style="align-self:right" align="right">
+                    @Html.ActionLink("Back", "Admin_Dashboard", "Admin_Dashboard", null, new { @class = "button_cls form-rounded", })
+                </td>
             </tr>
         </table>
-
     }
 </div>
 
@@ -221,9 +249,6 @@
 
 
 @*------------------------------------ File Function--------------------------------------------------------------*@
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
 
 <script type="text/javascript">
     $(function () {

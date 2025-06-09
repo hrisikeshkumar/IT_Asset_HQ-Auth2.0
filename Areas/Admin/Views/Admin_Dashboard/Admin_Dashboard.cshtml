@@ -246,100 +246,99 @@
                 <div class="modal-body" style="align-content:center; text-align:center; align-items:center">
                     <table style="width:100%; border-width:1px;">
                         <tr>
-                            <td style="text-align:left; width:15%; ">
-                                Utilization Details
+                            <td style="text-align:left; width:15%; font-weight:bold ;  " class='table-active'>
+                                Proposal
                             </td>
                             <td style="text-align:center; width:85%; ">
-                                @Html.TextAreaFor(x => x.proposal_WorkFlow.Utilization_Details, new { @readonly = "true", @class = " ", @style = " width :100%; " })
+                                @Html.TextAreaFor(x => x.Prop_detail.Utilization_Details, new { @readonly = "true", @class = " ", @style = " width :100%;  border-width:0px; text-align:center;" })
                             </td>                       
                         </tr>
                         <tr>
-                            <td colspan="2" style="height:10px;"></td>
+                            <td colspan="2" style="height:20px;"></td>
                         </tr>
                         <tr>
                             <td colspan="2" style="width:100%;">
                         
                                 <table style="width:100%;" class=" table-hover table-striped shadow ">
                                     <thead>
-                                        <tr>
-                                            <td style="font-weight:bold;"> Forwarding Date </td>
-                                            <td style="font-weight:bold;"> Sender </td>
-                                            <td style="font-weight:bold;"> Receiver </td>
-                                            <td style="font-weight:bold;"> File </td>
-                                            <td style="font-weight:bold;"> Remarks </td>
+                                        <tr class="table-active">
+                                            <td style="font-weight:bold; width: 15%; text-align:left; " class=""> Sender </td>
+                                            <td style="font-weight:bold; width: 8%; text-align:left; "> Forwarding Date </td>
+                                            <td style="font-weight:bold; width: 15%; text-align:left; "> Receiver </td>
+                                            <td style="font-weight:bold; width: 15%; text-align:center; "> File </td>
+                                            <td style="font-weight:bold; width: 47%; text-align:center;"> Remarks </td>
+                                           
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var item in Model.proposal_WorkFlow.WorkFlowList)
+                                        @foreach (var item in Model.Prop_detail.WorkFlowList)
                                             {
 
                                             <tr>
-                                                <td>
+                                                <td style="width: 15%; text-align:left; ">
+                                                    @Html.DisplayFor(modelItem => item.FromDte)
+                                                </td>
+                                                <td style="width: 8%; text-align:left; ">
                                                         @Html.DisplayFor(modelItem => item.SendDate)
                                                 </td>
-                                                <td>
-                                                        @Html.DisplayFor(modelItem => item.FromDte)
-                                                </td>
-                                                <td>
-                                                        @Html.DisplayFor(modelItem => item.ToDte)
-                                                </td>
-                                                <td>
+                                                <td style="width: 15%; text-align:left; ">
+                                                    @Html.DisplayFor(modelItem => item.ToDte)
+                                                </td>                                                
+                                                <td style="width: 15%; text-align:left; ">
                                                         @Html.DisplayFor(modelItem => item.WorkFlow_File)
                                                 </td>
-                                                <td>
+                                                <td style="width: 47%; text-align:center; ">
                                                         @Html.DisplayFor(modelItem => item.Remarks)
                                                 </td>
-                                                <td>
-                                                    <input type='submit' value='Delete' class='btn_delete' id='@item.WorkFlow_Id'>
-                                                </td>
+                                                
                                             </tr>
                                             }
                                     </tbody>
                                 </table>
                             </td>
                         </tr>
-                        <tr style="min-height:40px; border: 1px solid black;">
-                            <td style="text-align: left; width: 15%; font-weight:bold;  border: 1px solid black;  "> Approval Files </td>
-                            <td>
-
-                                <table id="tbl_ApprovalFile" style="width: 100%;">
-                                    
+                        <tr>
+                            <td colspan="2" style="height:20px;"></td>
+                        </tr>
+                        <tr style="min-height:40px; " >
+                            <td colspan="2">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="text-align: left; width: 10%; font-weight:bold;   " class="table-active"> Approval Files </td>
+                                        <td style=" width: 40%;">
+                                            <table id="tbl_ApprovalFile" style="width: 100%; ">
+                                            </table>
+                                        </td>
+                                        <td style="text-align: left; width: 10%; font-weight:bold;  " class="table-active">Purchase Order </td>
+                                        <td style=" width: 40%;">
+                                            <table id="tbl_PurchaseOrder" style="width: 100%;">
+                                            </table>
+                                        </td>
+                                    </tr>
                                 </table>
-
-                            </td>
+                           
                         </tr>
-                        <tr id="tr_PurchaseOrder" style="height:40px; border-width:1px; border: 1px solid black; ">
-
-                            <td style="text-align: left; width: 15%; font-weight:bold;  border: 1px solid black; ">Purchase Order </td>
-                            <td>
-                               
-                                <table id="tbl_PurchaseOrder"  style="width: 100%; ">
-                                                             
+                      
+                        <tr id="tr_Invoice" style="height:40px;  ">
+                            <td colspan="2">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="text-align: left; width: 10%; font-weight:bold;    " class="table-active">Bill Processing Information </td>
+                                        <td style=" width: 40%;">
+                                            <table id="tbl_BillProcessDoc" style="width: 100%; ">
+                                            </table>
+                                        </td>
+                                        <td style="text-align: left; width: 10%;  font-weight:bold;   " class="table-active"> Assets Information </td>
+                                        <td id="td_Assets" style=" width: 40%;">
+                                            <table id="tbl_Assets" style="width: 100%;  ">
+                                            </table>
+                                        </td>
+                                    </tr>
                                 </table>
-                                
-                                
                             </td>
+                           
                         </tr>
-                        <tr id="tr_Invoice" style="height:40px; border: 1px solid black; ">
-
-                            <td style="text-align: left; width: 15%; font-weight:bold;  border: 1px solid black;  ">Bill Processing Information </td>
-                            <td>
-
-                                <table id="tbl_BillProcessDoc" style="width: 100%; ">
-                                   
-                                </table>
-
-                            </td>
-                        </tr>
-                        <tr id="tr_Assets" style="height:40px; border: 1px solid black; ">
-
-                            <td style="text-align: left; width: 15%;  font-weight:bold;  border: 1px solid black;  "> Assets Information </td>
-                            <td id="td_Assets">
-                                <table id="tbl_Assets" style="width: 100%; ">
-
-                                </table>                               
-                            </td>
-                        </tr>
+                       
                         <tr>
                             <td colspan="2" style="height:10px;"></td>
                         </tr>
@@ -461,13 +460,13 @@
 
                             if(ApprovalFiles.length > 0)
                             {
-                                markup = "  <tr> <th style='width: 70%; text-align: center; border: 1px solid black; height: 30px; background-color: #ffcc00 '> Approval File </th> " +
-                                "<th style='width: 30%; text-align: center; border: 1px solid black; background-color: #ffcc00 '> Download </th> </tr> ";
+                                markup = "  <tr> <th style='width: 80%; text-align: center;  height: 20px;  ' class='table-active'>  File Name </th> " +
+                                "<th style='width: 20%; text-align: center;  ' class='table-active' > Action </th> </tr> ";
                                  $("#tbl_ApprovalFile").append(markup);
 
                                  $.each(ApprovalFiles, function (key, val) {
-                                    markup =  "<tr><td  style='width: 70%; text-align: center; height: 30px;' class='filename' > <p>" + val.file_Name + "</p> </td> " +
-                                        "<td  style='width: 30%; text-align: center; '>  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.file_Id + "' >  </td> </tr > ";
+                                    markup =  "<tr><td  style='width: 80%; text-align: center; height: 30px; ' class='filename' > <p>" + val.file_Name + "</p> </td> " +
+                                        "<td  style='width: 80%; text-align: center; ' >  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.file_Id + "' >  </td> </tr > ";
 
                                     $("#tbl_ApprovalFile").append(markup);
                                  });
@@ -486,17 +485,17 @@
 
                                 if(response.prop_detail.pO_File_Id !='')
                                 {
-                                    markup = "  <tr> <th style='width: 70%; text-align: center; border: 1px solid black; height: 30px; background-color: #ffcc00 '> P.O. File details </th> " +
-                                    "<th style='width: 30%; text-align: center; border: 1px solid black; background-color: #ffcc00 '> Download </th> </tr> ";
+                                    markup = "  <tr> <th style='width: 80%; text-align: center;  height: 20px; ' class='table-active'> Purchase Order </th> " +
+                                    "<th style='width: 20%; text-align: center; ' class='table-active'> Action </th> </tr> ";
 
-                                    markup = markup + "<tr><td  style='width: 70%; text-align: center; height: 30px;' class='POfilename' > <p>" + response.prop_detail.pO_File_Name + "</p> </td> " +
-                                        "<td  style='width: 30%; text-align: center; '>  <input type='submit' value='Download' class=' POdownload btn_download' id='" + response.prop_detail.pO_File_Id + "' >  </td> </tr > ";
+                                    markup = markup + "<tr><td  style='width: 80%; text-align: center; height: 20px; ' class='POfilename' > <p>" + response.prop_detail.pO_File_Name + "</p> </td> " +
+                                        "<td  style='width: 20%; text-align: center;  '>  <input type='submit' value='Download' class=' POdownload btn_download' id='" + response.prop_detail.pO_File_Id + "' >  </td> </tr > ";
 
                                     $("#tbl_PurchaseOrder").append(markup);
                                 }
                                 else
                                 {
-                                    markup = "<tr><td  style='width: 100%; text-align: center; height: 30px;' > Purchase Order has not been issued as on date </td> </tr > ";
+                                    markup = "<tr><td  style='width: 100%; text-align: center; height: 30px; ' > Purchase Order has not been issued as on date </td> </tr > ";
                                     $("#tbl_PurchaseOrder").append(markup);
                                 }
 
@@ -507,13 +506,13 @@
                                     
                                     var url = '@Url.Action("Admin_Dashboard", "Admin_Dashboard")' + '?PO_Id=' + Invoice_Info;
 
-                                    markup =  "<tr> <td  style='width: 100%; text-align: center; height: 30px;' >  <a href='"+url+"' > View the Invoice processing documents against this Proposal</a>   </td>  </tr > ";
+                                    markup =  "<tr> <td  style='width: 100%; text-align: center; height: 25px; '  >  <a href='"+url+"' > View the Invoice processing documents against this Proposal</a>   </td>  </tr > ";
 
                                     $("#tbl_BillProcessDoc").append(markup);
                                 }
                                 else
                                 {
-                                    markup = "<tr><td  style='width: 100%; text-align: center; height: 30px;' > Invoice has not been processed as on date </td> </tr > ";
+                                    markup = "<tr><td  style='width: 100%; text-align: center; height: 25px; ' > Invoice has not been processed as on date </td> </tr > ";
                                     $("#tbl_BillProcessDoc").append(markup);
                                 }
                                 //--------------------------------------------------
@@ -526,13 +525,13 @@
                                     {
                                             var url = '@Url.Action("Item_Issue_Details", "Item_Issue")' + '?PO_Id=' + Assets_Info;
 
-                                            markup =  "<tr><td  style='width: 70%; text-align: center; height: 30px;'>  <a href='"+url+"'> Find Location of the Assets procured against this Proposal</a>   </td> </tr > "
+                                            markup =  "<tr><td  style='width: 70%; text-align: center; height: 25px; '>  <a href='"+url+"'> Find Location of the Assets procured against this Proposal</a>   </td> </tr > "
                                             $("#tbl_Assets").append(markup);
 
                                     }
                                     else 
                                     {
-                                        markup = "<tr><td  style='width: 100%; text-align: center; height: 30px;' > Item has not been received as on date </td> </tr > ";
+                                        markup = "<tr><td  style='width: 100%; text-align: center; height: 25px; ' > Item has not been received as on date </td> </tr > ";
                                         $("#tbl_Assets").append(markup);
                                     }
 

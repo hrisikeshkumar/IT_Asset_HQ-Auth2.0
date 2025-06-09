@@ -53,9 +53,10 @@ namespace IT_Hardware.Areas.Admin.Controllers
             string PO_No = string.Empty;
             mod_Data.List_Bill_Process = B_Layer.Get_List_Bills(PO_Id, sqlTpye, out PO_No);
 
-            mod_Data.proposal_WorkFlow = new Proposal_WorkFlow()
+            mod_Data.Prop_detail = new Proposal_details()
             {
-                WorkFlowList = new List<WorkFlow>() {
+                WorkFlowList = new List<WorkFlow>() 
+                {
                     new WorkFlow(){ File_Id="1", FromDte="IT",ToDte="F&A"},
                     new WorkFlow(){ File_Id="2", FromDte="F&A",ToDte="IA"},
                 }
@@ -103,6 +104,18 @@ namespace IT_Hardware.Areas.Admin.Controllers
             mod_Data.Prop_detail = detail_Data;
             B_Layer.Get_Proposal_By_Id(mod_Data, Proposal.Prop_detail.Proposal_Id);
 
+            mod_Data.Prop_detail.WorkFlowList =  new List<WorkFlow>()
+            {
+                    new WorkFlow(){ File_Id="1", FromDte="IT",ToDte="F&A"},
+                    new WorkFlow(){ File_Id="2", FromDte="F&A",ToDte="IA"},               
+            };
+
+
+            mod_Data.Prop_detail.Department_List = new ItemInfo_BL().DepartmentList();
+
+
+            mod_Data.Prop_detail.Status_List = new ItemInfo_BL().StatusList();
+
             return View(mod_Data.Prop_detail);
 
         }
@@ -142,6 +155,43 @@ namespace IT_Hardware.Areas.Admin.Controllers
             }
 
             return RedirectToAction("Admin_Dashboard", "Admin_Dashboard");
+        }
+
+
+        public JsonResult AddWorkFlow(string ProposalId, WorkFlow data)
+        {
+            BL_Admin_DashB mod = new BL_Admin_DashB();
+            string ext = System.IO.Path.GetExtension(data.WorkFlow_File.FileName);
+            if (ext != ".pdf")
+            {
+                return Json(new SelectListItem("Duplicate", "Accept Pdf Files only"));
+            }
+
+            try
+            {
+                mod.Add_Delete_WorkFlow(ProposalId, HttpContext.User.Identity.Name, "Add_WorkFlowList",  data);
+
+            }
+            catch (Exception ex) { }
+
+            return Json(mod.GetWorkFlowList(ProposalId));
+        }
+
+        public JsonResult DeleteWorkFlow(int WorkFlow_Id, string ProposalId)
+        {
+            BL_Admin_DashB mod = new BL_Admin_DashB();
+
+            WorkFlow data = new WorkFlow();
+            data.WorkFlow_Id = WorkFlow_Id;
+
+            try
+            {
+                mod.Add_Delete_WorkFlow("", HttpContext.User.Identity.Name, "Delete_WorkFlowList", data);
+
+            }
+            catch (Exception ex) { }
+
+            return Json(mod.GetWorkFlowList(ProposalId));
         }
 
 
@@ -253,28 +303,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             }
             catch (Exception ex) { }
 
-            /* Save File to DateBase 
-            using (MemoryStream ms = new MemoryStream())
-            {
-                postedFile.CopyTo(ms);
-
-                using (SqlConnection con = new DBConnection().con)
-                {
-                    string query = "INSERT INTO   VALUES (@Name, @ContentType, @Data)";
-                    using (SqlCommand cmd = new SqlCommand(query))
-                    {
-                        cmd.Connection = con;
-                        cmd.Parameters.AddWithValue("@Name", Path.GetFileName(postedFile.FileName));
-                        cmd.Parameters.AddWithValue("@ContentType", postedFile.ContentType);
-                        cmd.Parameters.AddWithValue("@Data", ms.ToArray());
-                        cmd.Parameters.AddWithValue("@Ref_Id", SLA_Id);
-                        con.Open();
-                        cmd.ExecuteNonQuery();
-                        con.Close();
-                    }
-                }
-            }*/
-
             return Json(GetFiles_By_Id(Proposal_Id));
         }
 
@@ -283,7 +311,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         {
             try
             {
-                /*   Delete File from Database       */
+                
                 using (SqlConnection con = new DBConnection().con)
                 {
                     string query = "delete from Proposal_Files where LTRIM(RTRIM(Proposal_File_ID)) =LTRIM(RTRIM(@File_Id))";
@@ -298,7 +326,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 }
 
                 string file_name = FileId + ".pdf" ;
-                string path = Path.Combine(this.Environment.WebRootPath, "Files\\FileMovement\\", file_name);
+                string path = Path.Combine(this.Environment.WebRootPath, "Files\\FinalApproval\\", file_name);
                 FileInfo file = new FileInfo(path);
                 if (file.Exists)//check file exsit or not  
                 {
@@ -317,7 +345,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             string wwwPath = this.Environment.WebRootPath;
             string contentPath = this.Environment.ContentRootPath;
 
-            string path = Path.Combine(this.Environment.WebRootPath, "Files\\FileMovement\\");
+            string path = Path.Combine(this.Environment.WebRootPath, "Files\\FinalApproval\\");
 
             string file_name = fileName + ".pdf";
             //Read the File as Byte Array.
@@ -328,30 +356,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             return Content(base64);
 
-            /* Download File from Database
-            //byte[] bytes;
-            //string fileName, contentType;
-
-            //using (SqlConnection con = new DBConnection().con)
-            //{
-            //    using (SqlCommand cmd = new SqlCommand())
-            //    {
-            //        cmd.CommandText = "select File_Id, File_table, File_Name, ContentType, File_Data from File_table WHERE LTRIM(RTRIM(File_Id))= LTRIM(RTRIM(@Id))";
-            //        cmd.Parameters.AddWithValue("@Id", fileId);
-            //        cmd.Connection = con;
-            //        con.Open();
-            //        using (SqlDataReader sdr = cmd.ExecuteReader())
-            //        {
-            //            sdr.Read();
-            //            bytes = (byte[])sdr["File_Data"];
-            //            contentType = sdr["ContentType"].ToString();
-            //            fileName = sdr["File_Name"].ToString();
-            //        }
-            //        con.Close();
-            //    }
-            //}
-
-            return File(bytes, contentType, fileName);*/
+          
         }
 
 

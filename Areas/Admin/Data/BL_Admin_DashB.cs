@@ -164,43 +164,19 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     BL_data.Prop_detail.Utilization_Details = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Utilization_Details"]);
 
-                    BL_data.Prop_detail.Dte_IT_Remarks = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Dte_IT_Copy"]);
-
-                    BL_data.Prop_detail.FA_Remarks = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["FA_Remarks"]);
-
-                    BL_data.Prop_detail.Sec_Office_Remarks = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Sec_Office_Remarks"]);
-
-                    BL_data.Prop_detail.Purchase_Remarks = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Purchase_Remarks"]);
-
-                    BL_data.Prop_detail.Other_Dept_Remarks = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Other_Dept_Remarks"]);
-
-                   
+                 
                     BL_data.Prop_detail.Proposal_Type = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Proposal_Type"]);
                     BL_data.Prop_detail.Budget_Head_Type = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Budget_Head_Type"]);
                     BL_data.Prop_detail.PO_File_Id = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["PO_File_Id"]);
                     BL_data.Prop_detail.PO_File_Name = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["PO_File_Name"]);
                     BL_data.Prop_detail.Assets_Info = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Assets_Info"]);
                     BL_data.Prop_detail.Invoice_Info = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Invoice_Info"]);
-                    BL_data.Prop_detail.Completed_Status = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Completed_Status"]);
+                    BL_data.Prop_detail.Status = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Completed_Status"]);
 
                 }
 
 
-                //List<File_List> ApprovalFileList = new List<File_List>();
-                //if (BL_data.Prop_detail.Proposal_Type == "Budget")
-                //{
-                //    foreach (DataRow dr in DB_Proposal.Tables[1].Rows)
-                //    {
-                //        File_List file = new File_List();
-                //        file.File_Id = Convert.ToString(dr["Proposal_File_ID"]);
-                //        file.File_Name = Convert.ToString(dr["FileName"]);
-
-                //        ApprovalFileList.Add(file);
-
-                //    }
-                //}
-
-                //BL_data.Prop_detail.Prop_Files = ApprovalFileList;
+               
 
             }
             catch (Exception ex) { }
@@ -229,22 +205,7 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter Proposal_Id = new SqlParameter("@Proposal_Id", Proposal.Proposal_Id);
                 cmd.Parameters.Add(Proposal_Id);
 
-                SqlParameter Dte_IT_Remarks = new SqlParameter("@Dte_IT_Remarks", Proposal.Dte_IT_Remarks);
-                cmd.Parameters.Add(Dte_IT_Remarks);
-
-                SqlParameter FA_Remarks = new SqlParameter("@FA_Remarks", Proposal.FA_Remarks);
-                cmd.Parameters.Add(FA_Remarks);
-
-                SqlParameter Sec_Office_Remarks = new SqlParameter("@Sec_Office_Remarks", Proposal.Sec_Office_Remarks);
-                cmd.Parameters.Add(Sec_Office_Remarks);
-
-                SqlParameter Purchase_Remarks = new SqlParameter("@Purchase_Remarks", Proposal.Purchase_Remarks);
-                cmd.Parameters.Add(Purchase_Remarks);
-
-                SqlParameter Other_Dept_Remarks = new SqlParameter("@Other_Dept_Remarks", Proposal.Other_Dept_Remarks);
-                cmd.Parameters.Add(Other_Dept_Remarks);
-
-                SqlParameter Status = new SqlParameter("@Status",   Proposal.Status ==true? 1:0 );
+                SqlParameter Status = new SqlParameter("@Status",   Proposal.Status );
                 cmd.Parameters.Add(Status);
 
                 SqlParameter UserId = new SqlParameter("@UserId", Proposal.Update_UserId);
@@ -319,5 +280,94 @@ namespace IT_Hardware.Areas.Admin.Data
         }
 
 
+        public List<WorkFlow> GetWorkFlowList(string ProposalId)
+        {
+            List<WorkFlow> data = new List<WorkFlow>();
+
+
+            DataTable DB_Proposal = new DataTable();
+
+            using (SqlConnection con = new DBConnection().con)
+            {
+                SqlCommand cmd = new SqlCommand("sp_IT_Proposal");
+                cmd.Connection = con;
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter sqlP_type = new SqlParameter("@Type", "Get_WorkFlowList");
+                cmd.Parameters.Add(sqlP_type);
+
+                SqlParameter sql_Proposal_Id = new SqlParameter("@Proposal_Id", ProposalId);
+                cmd.Parameters.Add(sql_Proposal_Id);
+
+                using (SqlDataAdapter sda = new SqlDataAdapter())
+                {
+                    sda.SelectCommand = cmd;
+                    sda.Fill(DB_Proposal);
+                }
+
+                foreach (DataRow dr in DB_Proposal.Rows)
+                {
+                    WorkFlow flow = new WorkFlow();
+
+                    flow.WorkFlow_Id = Convert.ToInt32(dr["WorkFlow_ID"]);
+                    flow.SendDate = Convert.ToDateTime(dr["SendDate"]);
+                    flow.FromDte = Convert.ToString(dr["From_Directorate"]);
+                    flow.ToDte = Convert.ToString(dr["To_Directorate"]);
+                    flow.File_Id = Convert.ToString(dr["FileID"]);
+                    flow.Remarks = Convert.ToString(dr["Remarks"]);
+
+                    data.Add(flow);
+                }
+
+                return data;
+            }
+        }
+
+
+        public int Add_Delete_WorkFlow(string PropodalId, string UserId, string Type, WorkFlow data)
+        {
+            int status = 0;
+
+            SqlConnection con = new DBConnection().con;
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "sp_IT_Proposal";
+
+                cmd.Connection = con;
+
+                SqlParameter sqlP_type = new SqlParameter("@Type", Type);
+                cmd.Parameters.Add(sqlP_type);
+
+                SqlParameter Proposal_Id = new SqlParameter("@Proposal_Id", PropodalId);
+                cmd.Parameters.Add(Proposal_Id);
+                SqlParameter WorkFlow_Id = new SqlParameter("@WorkFlowId", data.WorkFlow_Id);
+                cmd.Parameters.Add(WorkFlow_Id);
+                SqlParameter SendDate = new SqlParameter("@SendDate", data.SendDate);
+                cmd.Parameters.Add(SendDate);
+                SqlParameter FromDte = new SqlParameter("@From_Directorate", data.FromDte);
+                cmd.Parameters.Add(FromDte);
+                SqlParameter ToDte = new SqlParameter("@To_Directorate", data.ToDte);
+                cmd.Parameters.Add(ToDte);
+                SqlParameter Remarks = new SqlParameter("@Remarks", data.Remarks);
+                cmd.Parameters.Add(Remarks);
+                SqlParameter Sq1UserId = new SqlParameter("@UserId", UserId);
+                cmd.Parameters.Add(Sq1UserId);
+
+
+                con.Open();
+
+                status = cmd.ExecuteNonQuery();
+
+
+            }
+            catch (Exception ex) { status = -1; }
+            finally { con.Close(); }
+
+            return status;
+        }
     }
 }

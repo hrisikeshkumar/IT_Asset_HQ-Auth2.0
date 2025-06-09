@@ -30,7 +30,8 @@
   <ItemGroup>
     <Folder Include="wwwroot\Files\HQ\ItemIssue\" />
     <Folder Include="wwwroot\Files\HQ\PO\" />
-    <Folder Include="wwwroot\Files\PO\" />
+    <Folder Include="wwwroot\Files\FinalApproval\" />
+    <Folder Include="wwwroot\Files\WorkFlowFiles\" />
   </ItemGroup>
 
 </Project>

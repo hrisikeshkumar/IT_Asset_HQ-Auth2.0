@@ -7,7 +7,7 @@ namespace IT_Hardware.Areas.Admin.Models
     public class Mod_Admin_dashB
     {
         public Proposal_details Prop_detail { get; set; }
-        public Proposal_WorkFlow proposal_WorkFlow { get; set; }
+        //public Proposal_WorkFlow proposal_WorkFlow { get; set; }
         public DateTime IT_Initiate_Date { get; set; }
         public List<mod_Admin_Propsal_List> List_Proposal { get; set; }
         public List<mod_Admin_Bill_Process_List> List_Bill_Process { get; set; }
@@ -15,7 +15,7 @@ namespace IT_Hardware.Areas.Admin.Models
     }
      
 
-    public class Proposal_details
+    public class Proposal_details1
     {
         public string? Proposal_Id { get; set; }
         public string? Budget_Name { get; set; }
@@ -96,6 +96,7 @@ namespace IT_Hardware.Areas.Admin.Models
 
     public class WorkFlow
     {
+       
         public int WorkFlow_Id { get; set; }
         public string FromDte { get; set; }
         public string ToDte { get; set; }
@@ -106,18 +107,22 @@ namespace IT_Hardware.Areas.Admin.Models
         public string Remarks { get; set; }
         public string File_Id { get; set; }
         public IFormFile WorkFlow_File { get; set; }
-        public int LastItem { get; set; }
+        public int LastRow { get; set; }
     }
 
-    public class Proposal_WorkFlow
+    public class Proposal_details
     {
-        public string? PO_File_Id { get; set; }
-        public string? Utilization_Details { get; set; }
+        public string? Proposal_Id { get; set; }
+        public string? Utilization_Details { get; set; }      
+        public string? Proposal_Type { get; set; }
+        public string? Budget_Head_Type { get; set; }
         public string? PO_File_Name { get; set; }
+        public string? PO_File_Id { get; set; }
         public string? Invoice_Info { get; set; }
         public string? Assets_Info { get; set; }
         public string? Status { get; set; }
         public List<SelectListItem>? Department_List { get; set; }
+        public List<SelectListItem>? Status_List { get; set; }
         public string? Approval_File_Id { get; set; }
         public string? Approval_File_Name { get; set; }
         public IFormFile Approval_File { get; set; }
