@@ -111,9 +111,11 @@ namespace IT_Hardware.Areas.Admin.Data
             SelectListItem Approved = new SelectListItem("Approved", "2");
             Value.Add(Approved);
             SelectListItem PurchaseOrder = new SelectListItem("Purchase Order Issued", "3");
-            Value.Add(PurchaseOrder);
+            Value.Add(PurchaseOrder);          
             SelectListItem Item = new SelectListItem("Item Received", "4");
             Value.Add(Item);
+            SelectListItem Withdrawn = new SelectListItem("Withdrawn", "98");
+            Value.Add(Withdrawn);
             SelectListItem Completed = new SelectListItem("Completed", "99");
             Value.Add(Completed);
 

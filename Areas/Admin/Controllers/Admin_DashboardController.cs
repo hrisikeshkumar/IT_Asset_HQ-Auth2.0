@@ -68,9 +68,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-
-
-
         public async Task<JsonResult> Get_Proposal_Detail_for_Modal( string Proposal_Id)
         {
             BL_Admin_DashB B_Layer = new BL_Admin_DashB();

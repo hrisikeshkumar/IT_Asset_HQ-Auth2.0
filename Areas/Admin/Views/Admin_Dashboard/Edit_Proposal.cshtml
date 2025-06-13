@@ -69,16 +69,15 @@
 
     @using (Html.BeginForm("Update_proposal", "Admin_Dashboard", FormMethod.Post))
     {
-
         <table class=" table-hover table-striped shadow " style="width:100%">
-
             <tr>               
                 <td style="width:100%;" colspan="4">
-                    <table style="width:100%;" class=" table-hover table-striped shadow ">
+                    <table style="width:100%;" class=" table-hover table-striped shadow " id="tbl_statusGrid">
                         <thead>
                             <tr class="table-active">
-                                <td style="font-weight:bold; width: 15%; text-align:left; " class=""> Sender </td>
-                                <td style="font-weight:bold; width: 8%; text-align:left; "> Forwarding Date </td>
+                                <td style="font-weight:bold; width: 8%; text-align:left; " class=""> 
+                                    @Html.HiddenFor(x => x.Proposal_Id)   Forwarding Date</td>
+                                <td style="font-weight:bold; width: 15%; text-align:left; "> Sender </td>
                                 <td style="font-weight:bold; width: 15%; text-align:left; "> Receiver </td>
                                 <td style="font-weight:bold; width: 15%; text-align:center; "> File </td>
                                 <td style="font-weight:bold; width: 40%; text-align:center;"> Remarks </td>
@@ -108,7 +107,7 @@
                                     <td style="width: 7%; text-align:center; ">
                                         @if(item.LastRow==1)
                                         {
-                                            <input type='submit' value='Delete' class='btn_delete' id='@item.WorkFlow_Id'>
+                                            <input type='submit' value='Delete' class='btn_delete deleteGridRow' id='@item.WorkFlow_Id'>
                                         }
 
                                     </td>
@@ -209,49 +208,80 @@
     }
 </div>
 
-
-@if (TempData["Message"] != null && TempData["Message"] != "" && TempData["Message"] != string.Empty)
-{
-    <script type="text/javascript">
-
-    window.onload = function () {
-        /**/
-        alert("@TempData["Message"]");
-    /**/
-    };
-    </script>
-
-}
-
-
+@* ---------------------------------------Grid Save Delete--------------------------------------------------------------- *@
 
 <script type="text/javascript">
+    
+
     $(function () {
 
-        $('#Item_Make_id').change(function () {
-            $('#Item_Model_id').empty();
+        $('#btn_SaveFlow').click(function (event) {
+
+            
+            var SendDate= $('#SendDate').val();
+            var FromDte= $('#FromDte').val();
+            var ToDte= $('#ToDte').val();
+            var Remarks= $('#Remarks').val();
+            var WorkFlow_File= $('#WorkFlow_File').get(0).files;
+
+            
 
             $.ajax({
                 type: "POST",
-                url: "/Computer/Model_List",
+                url: "@Url.Action("AddWorkFlow", "Admin_Dashboard")",
                 datatype: "Json",
-                data: { Item_Make: $('#Item_Make_id').val() },
+                data: { ProposalId: $('#Proposal_Id').val(), "data.SendDate": SendDate, "data.FromDte":FromDte , "data.ToDte": ToDte , 
+                                            "data.Remarks": Remarks , "data.WorkFlow_File": WorkFlow_File },
                 success: function (data) {
-                    $.each(data, function (index, value) {
-                        $('#Item_Model_id').append('<option value="' + value.value + '">' + value.text + '</option>');
-                    });
+                   Bind_WorkFlow ( data );
                 }
             });
         });
     });
-</script>
 
 
+
+@* --------------------------------------------Delete GridRow------------------------------------------- *@
+
+    $(function () {
+
+        $('.deleteGridRow').click(function (event) {
+
+             var workflow_Id = $(this).attr('id');
+             //var proposal = $('#Proposal_Id').val();
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("DeleteWorkFlow", "Admin_Dashboard")",
+                datatype: "Json",
+                data: { WorkFlow_Id: workflow_Id, ProposalId: $('#Proposal_Id').val() },
+                success: function (data) {
+                     Bind_WorkFlow ( data );
+                }
+            });
+        });
+    });
+
+
+
+    function Bind_WorkFlow ( data )
+    {
+        $("#tbl_statusGrid tbody tr").remove();
+        $.each(data, function (index, value) {
+
+                        
+
+
+        });
+    });
+
+ </script>
 
 @*------------------------------------ File Function--------------------------------------------------------------*@
 
 <script type="text/javascript">
-    $(function () {
+    
+$(function () {
 
         $('#btnFileUpload').click(function (event) {
 
@@ -310,6 +340,7 @@
             event.preventDefault();
         });
     });
+
 </script>
 
 
