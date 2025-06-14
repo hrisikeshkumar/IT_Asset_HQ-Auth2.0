@@ -112,6 +112,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
             mod_Data.Prop_detail.Status_List = new ItemInfo_BL().StatusList();
+            mod_Data.Prop_detail.Proposal_Id = Proposal.Prop_detail.Proposal_Id;
 
             return View(mod_Data.Prop_detail);
 
@@ -158,12 +159,15 @@ namespace IT_Hardware.Areas.Admin.Controllers
         public JsonResult AddWorkFlow(string ProposalId, WorkFlow data)
         {
             BL_Admin_DashB mod = new BL_Admin_DashB();
-            string ext = System.IO.Path.GetExtension(data.WorkFlow_File.FileName);
-            if (ext != ".pdf")
-            {
-                return Json(new SelectListItem("Duplicate", "Accept Pdf Files only"));
-            }
 
+            if (data.WorkFlow_File != null)
+            {
+                string ext = System.IO.Path.GetExtension(data.WorkFlow_File.FileName);
+                if (ext != ".pdf")
+                {
+                    return Json(new SelectListItem("Duplicate", "Accept Pdf Files only"));
+                }
+            }
             try
             {
                 mod.Add_Delete_WorkFlow(ProposalId, HttpContext.User.Identity.Name, "Add_WorkFlowList",  data);

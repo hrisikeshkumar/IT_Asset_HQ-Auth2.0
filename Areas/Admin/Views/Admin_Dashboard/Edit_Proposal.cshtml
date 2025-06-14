@@ -126,10 +126,10 @@
                                     <input type="file" id="WorkFlow_File" name="WorkFlow_File"  /> 
                                 </td>
                                 <td style="width: 40%; text-align:left; ">
-                                    @Html.TextAreaFor(x => x.Work_Flow.Remarks, new { @class = " ", @style = " width :95%; " })
+                                    @Html.TextAreaFor(x => x.Work_Flow.Remarks, new { @rows = "1", @style = " width :98%; " })
                                 </td>
                                 <td style="width: 5%; text-align:center; ">
-                                    <input type='submit' value='Submit' class='button_cls form-rounded' id='btn_SaveFlow'>
+                                    <input type='submit' value='Save' class='button_cls form-rounded' id='btn_SaveFlow'>
                                 </td>
                             </tr>
                         </tfoot>
@@ -192,7 +192,7 @@
                     Status
                 </td>
                 <td align="center" style="text-align:center; align-items:center;width:25%">
-                    @Html.DropDownListFor(x => x.Work_Flow.FromDte, Model.Status_List, new { @class = " form-rounded", @style = " width :90%; " })
+                    @Html.DropDownListFor(x => x.Work_Flow.FromDte, Model.Status_List, new { @class = " form-rounded",  @style = " width :90%; " })
                 </td>
                 <td style="width:25%; text-align:center;">
                     <input type='submit' value='Save Status' class='button_cls form-rounded' id='btn_SaveFlow'>
@@ -214,31 +214,36 @@
 
         $('#btn_SaveFlow').click(function (event) {
 
+            event.preventDefault();
 
-            var SendDate= $('#Work_Flow_SendDate').val();
-            var FromDte= $('#Work_Flow_FromDte').val();
-            var ToDte= $('#Work_Flow_ToDte').val();
-            var Remarks= $('#Work_Flow_Remarks').val();
-            var WorkFlow_File= $('#WorkFlow_File').get(0).files;
+            var formData = new FormData();
+            formData.append("ProposalId", $('#Proposal_Id').val());
+            formData.append("data.SendDate", $('#Work_Flow_SendDate').val());
+            formData.append("data.FromDte", $('#Work_Flow_FromDte').val());
+            formData.append("data.ToDte", $('#Work_Flow_ToDte').val());
+            formData.append("data.Remarks", $('#Work_Flow_Remarks').val());
 
-         
+            // Append file(s)
+            var files = $('#WorkFlow_File').get(0).files;
+            if (files.length > 0) {
+                formData.append("data.WorkFlow_File", files[0]); // assuming single file
+            }
 
             $.ajax({
                 type: "POST",
-                url: "@Url.Action("AddWorkFlow", "Admin_Dashboard")",
-                datatype: "Json",
-                data: { ProposalId: $('#Proposal_Id').val(), "data.SendDate": SendDate, "data.FromDte":FromDte , "data.ToDte": ToDte , 
-                                            "data.Remarks": Remarks , "data.WorkFlow_File": WorkFlow_File },
+                url: '@Url.Action("AddWorkFlow", "Admin_Dashboard")',
+                data: formData,
                 contentType: false,
                 processData: false,
                 cache: false,
                 success: function (data) {
-                    alert('test');
-                   // Bind_WorkFlow ( data );
+                    alert('Workflow saved successfully!');
+                    // Bind_WorkFlow(data);
+                },
+                error: function (xhr) {
+                    alert('Error occurred: ' + xhr.responseText);
                 }
             });
-
-            event.preventDefault();
         });
     });
 
