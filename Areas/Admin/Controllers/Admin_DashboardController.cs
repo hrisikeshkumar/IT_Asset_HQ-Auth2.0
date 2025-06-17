@@ -162,7 +162,26 @@ namespace IT_Hardware.Areas.Admin.Controllers
             }
             try
             {
-                mod.Add_Delete_WorkFlow(ProposalId, HttpContext.User.Identity.Name, "Add_WorkFlowList",  data);
+                string FileName = string.Empty;
+                mod.Add_Delete_WorkFlow(ProposalId, HttpContext.User.Identity.Name, "Add_WorkFlowList",  data, out FileName);
+
+                if (data.WorkFlow_File != null)
+                {
+                    string wwwPath = this.Environment.WebRootPath;
+                    string contentPath = this.Environment.ContentRootPath;
+
+                    string path = Path.Combine(this.Environment.WebRootPath, "Files\\WorkFlowFiles\\");
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+
+                    using (FileStream stream = new FileStream(Path.Combine(path, FileName), FileMode.Create))
+                    {
+                        data.WorkFlow_File.CopyTo(stream);
+                    }
+
+                }
 
             }
             catch (Exception ex) { }
@@ -179,7 +198,8 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             try
             {
-                mod.Add_Delete_WorkFlow("", HttpContext.User.Identity.Name, "Delete_WorkFlowList", data);
+                string FileName = string.Empty;
+                mod.Add_Delete_WorkFlow("", HttpContext.User.Identity.Name, "Delete_WorkFlowList", data, out FileName);
 
             }
             catch (Exception ex) { }

@@ -324,9 +324,10 @@ namespace IT_Hardware.Areas.Admin.Data
         }
 
 
-        public int Add_Delete_WorkFlow(string PropodalId, string UserId, string Type, WorkFlow data)
+        public int Add_Delete_WorkFlow(string PropodalId, string UserId, string Type, WorkFlow data, out string FileName)
         {
             int status = 0;
+            FileName = "";
 
             SqlConnection con = new DBConnection().con;
             try
@@ -357,11 +358,27 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter Sq1UserId = new SqlParameter("@UserId", UserId);
                 cmd.Parameters.Add(Sq1UserId);
 
+                if (data.WorkFlow_File != null)
+                {
+                    SqlParameter FileExist = new SqlParameter("@FileExist", 1);
+                    cmd.Parameters.Add(FileExist);
+                }
 
-                con.Open();
 
-                status = cmd.ExecuteNonQuery();
+                DataTable DB_WorkFlow = new DataTable();
 
+                using (SqlDataAdapter sda = new SqlDataAdapter())
+                {
+                    sda.SelectCommand = cmd;
+                    sda.Fill(DB_WorkFlow);
+                }
+
+                foreach (DataRow dr in DB_WorkFlow.Rows)
+                {
+                    FileName = Convert.ToString(dr["FileName"]);
+                }
+
+                status = 1;
 
             }
             catch (Exception ex) { status = -1; }

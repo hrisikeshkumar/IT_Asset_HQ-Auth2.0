@@ -96,7 +96,7 @@
                                         @Html.DisplayFor(modelItem => item.ToDte)
                                     </td>
                                     <td style="width: 15%; text-align:left; border:solid; border-width:1px; ">
-                                        @Html.DisplayFor(modelItem => item.WorkFlow_File)
+                                        @Html.DisplayFor(modelItem => item.File_Id)
                                     </td>
                                     <td style="width: 40%; text-align:left; border:solid; border-width:1px;">
                                         @Html.DisplayFor(modelItem => item.Remarks)
@@ -309,7 +309,11 @@
                             if(val !=0)
                             {
                                 markup = markup + "<td style=' width: 7%; text-align:center; border:solid; border-width:1px; '>  <input type='submit' class='deleteFlow btn_delete' id='" + val + "' value='Delete' > </input> </td></tr>";                                               
-                            }                                             
+                            }
+                            else
+                            {
+                                markup = markup + "<td style=' width: 7%; text-align:center; border:solid; border-width:1px; '>  </td></tr>";
+                            }
                         }                                          
                 });
                 markup = markup + "</tr>" 
