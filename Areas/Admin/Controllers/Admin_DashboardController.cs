@@ -34,33 +34,26 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             mod_Data.Prop_detail = new Proposal_details();
 
+            //Proposal
             mod_Data.List_Proposal = B_Layer.Get_List_Proposal();
 
+            /* ---------------------Invoices  ------------------------------*/
+            
             string sqlTpye = string.Empty;
             if (PO_Id != string.Empty )
             {
                 sqlTpye = "Get_Bill_by_PO";
-                ViewBag.FilterBy_PO = "Yes";
-               
+                ViewBag.FilterBy_PO = "Yes";     
             }
             else
             {
                 sqlTpye = "Get_Bill_List";
                 ViewBag.FilterBy_PO = "No";
             }
-
-
             string PO_No = string.Empty;
             mod_Data.List_Bill_Process = B_Layer.Get_List_Bills(PO_Id, sqlTpye, out PO_No);
 
-            mod_Data.Prop_detail = new Proposal_details()
-            {
-                WorkFlowList = new List<WorkFlow>() 
-                {
-                    new WorkFlow(){ File_Id="1", FromDte="IT",ToDte="F&A"},
-                    new WorkFlow(){ File_Id="2", FromDte="F&A",ToDte="IA"},
-                }
-            };
+            /* ---------------------- Invoices ------------------------------*/
 
 
             ViewBag.PO_No = PO_No;
@@ -71,16 +64,18 @@ namespace IT_Hardware.Areas.Admin.Controllers
         public async Task<JsonResult> Get_Proposal_Detail_for_Modal( string Proposal_Id)
         {
             BL_Admin_DashB B_Layer = new BL_Admin_DashB();
-
-            Proposal_details detail_Data = new Proposal_details();
-
-            detail_Data.Prop_Files = GetFiles_By_Id(Proposal_Id);
-
             Mod_Admin_dashB mod_Data = new Mod_Admin_dashB();
+            mod_Data.Prop_detail = new Proposal_details();
 
-            mod_Data.Prop_detail = detail_Data;
 
-            await  B_Layer.Get_Proposal_By_Id( mod_Data, Proposal_Id);
+            // WorkFlow Details
+            mod_Data.Prop_detail.WorkFlowList = B_Layer.GetWorkFlowList(Proposal_Id);
+
+            // Other Information
+            await B_Layer.Get_Proposal_By_Id( mod_Data, Proposal_Id);
+
+            //Final Approval Files
+            mod_Data.Prop_detail.Prop_Files = GetFiles_By_Id(Proposal_Id);
 
             return Json(mod_Data);
         }
@@ -90,32 +85,28 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
         public ActionResult Edit_proposal(Mod_Admin_dashB Proposal)
         {
-
-            BL_Admin_DashB B_Layer = new BL_Admin_DashB();
-
-            Proposal_details detail_Data = new Proposal_details();
-
-            detail_Data.Prop_Files = GetFiles_By_Id(Proposal.Prop_detail.Proposal_Id);
-
             Mod_Admin_dashB mod_Data = new Mod_Admin_dashB();
-            mod_Data.Prop_detail = detail_Data;
-            B_Layer.Get_Proposal_By_Id(mod_Data, Proposal.Prop_detail.Proposal_Id);
+            BL_Admin_DashB B_Layer = new BL_Admin_DashB();
+            mod_Data.Prop_detail = new Proposal_details();
 
-            mod_Data.Prop_detail.WorkFlowList =  new List<WorkFlow>()
-            {
-                    new WorkFlow(){ File_Id="1", FromDte="IT",ToDte="F&A"},
-                    new WorkFlow(){ File_Id="2", FromDte="F&A",ToDte="IA"},               
-            };
+            //ID
+            mod_Data.Prop_detail.Proposal_Id = Proposal.Prop_detail.Proposal_Id;
+
+            // WorkFlow Details
+            mod_Data.Prop_detail.WorkFlowList = B_Layer.GetWorkFlowList(Proposal.Prop_detail.Proposal_Id);
+
+            //Final Approval Files
+            mod_Data.Prop_detail.Prop_Files = GetFiles_By_Id(Proposal.Prop_detail.Proposal_Id);
+
+            //Other Information
+            B_Layer.Get_Proposal_By_Id(mod_Data, Proposal.Prop_detail.Proposal_Id);
 
 
             mod_Data.Prop_detail.Department_List = new ItemInfo_BL().DepartmentList();
-
-
             mod_Data.Prop_detail.Status_List = new ItemInfo_BL().StatusList();
-            mod_Data.Prop_detail.Proposal_Id = Proposal.Prop_detail.Proposal_Id;
+           
 
             return View(mod_Data.Prop_detail);
-
         }
 
         

@@ -256,40 +256,19 @@
                         <tr>
                             <td colspan="2" style="width:100%; text-align:center; align-items:center; align-content:center; align">
                         
-                                <table style="width:100%; align-self:center;" class=" table-hover table-striped shadow ">
+                                <table style="width:100%; align-self:center;" class=" table-hover table-striped shadow " id="tbl_WorkFlow">
                                     <thead>
                                         <tr class="table-active">
-                                            <td style="font-weight:bold; border:solid; border-width:1px; width: 8%; text-align:center; ">  Date </td>
-                                            <td style="font-weight:bold; border:solid; border-width:1px; width: 15%; text-align:center; " class=""> Sender </td>
-                                            <td style="font-weight:bold; border:solid; border-width:1px; width: 15%; text-align:center; "> Receiver </td>
+                                            <td style="font-weight:bold; border:solid; border-width:1px; width: 10%; text-align:center; ">  Date </td>
+                                            <td style="font-weight:bold; border:solid; border-width:1px; width: 14%; text-align:center; " class=""> Sender </td>
+                                            <td style="font-weight:bold; border:solid; border-width:1px; width: 14%; text-align:center; "> Receiver </td>
                                             <td style="font-weight:bold; border:solid; border-width:1px; width: 15%; text-align:center; "> File </td>
                                             <td style="font-weight:bold; border:solid; border-width:1px; width: 47%; text-align:center;"> Remarks </td>
                                            
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var item in Model.Prop_detail.WorkFlowList)
-                                            {
-
-                                            <tr>
-                                                <td style="width: 8%; text-align:left; border:solid; border-width:1px; ">
-                                                    @Html.DisplayFor(modelItem => item.SendDate)
-                                                </td>
-                                                <td style="width: 15%; text-align:left; border:solid; border-width:1px; ">
-                                                    @Html.DisplayFor(modelItem => item.FromDte)
-                                                </td>
-                                                <td style="width: 15%; text-align:left; border:solid; border-width:1px; ">
-                                                    @Html.DisplayFor(modelItem => item.ToDte)
-                                                </td>
-                                                <td style="width: 15%; text-align:left; border:solid; border-width:1px;">
-                                                        @Html.DisplayFor(modelItem => item.WorkFlow_File)
-                                                </td>
-                                                <td style="width: 47%; text-align:center; border:solid; border-width:1px; ">
-                                                        @Html.DisplayFor(modelItem => item.Remarks)
-                                                </td>
-                                                
-                                            </tr>
-                                            }
+                                       
                                     </tbody>
                                 </table>
                             </td>
@@ -430,28 +409,72 @@
 
                             $('#Prop_detail_Utilization_Details').val(response.prop_detail.utilization_Details);
                             $('#Prop_detail_Proposal_Id').val(response.prop_detail.proposal_Id);  
-                            $('#Prop_detail_Dte_IT_Remarks').val(response.prop_detail.dte_IT_Remarks);
+                            
+                                                        
+                           @*  $('#Prop_detail_Dte_IT_Remarks').val(response.prop_detail.dte_IT_Remarks);
                             $('#Prop_detail_FA_Remarks').val(response.prop_detail.fA_Remarks);
                             $('#Prop_detail_Sec_Office_Remarks').val(response.prop_detail.sec_Office_Remarks);
                             $('#Prop_detail_Purchase_Remarks').val(response.prop_detail.purchase_Remarks);
-                            $('#Prop_detail_Other_Dept_Remarks').val(response.prop_detail.other_Dept_Remarks);
+                            $('#Prop_detail_Other_Dept_Remarks').val(response.prop_detail.other_Dept_Remarks); *@
 
 
-                            //------------------- Table Variable ---------------------
-
+                            @* //------------------- Table Variable --------------------- *@
+                            var workflow = response.prop_detail.workFlowList;
                             var ApprovalFiles = response.prop_detail.prop_Files;
                             var Invoice_Info = response.prop_detail.invoice_Info;
                             var Assets_Info = response.prop_detail.assets_Info;
 
-                            //-------------------  Table Binding ---------------------
-
+                            @* //-------------------  Table Binding --------------------- *@
+                            var markup = "" ;
+                             $("#tbl_WorkFlow TBODY TR").remove();
+                            if(workflow.length > 0)
+                            {
+                                 $.each(workflow, function (key, val) {
+                                     markup = markup+ "<tr>" ;
+                                     $.each(val, function (key, val) {
+                                     
+                                         
+                                         if(key=='sendDate')
+                                         {
+                                             if(val.length > 0)
+                                             {
+                                                 val = convertDateFormat(val.substring(0, 10));
+                                             }
+                                             markup = markup + "<td  style='width: 10%; text-align:left; border:solid; border-width:1px;' >" + val + "</td>";
+                                         }
+                                         if(key=='fromDte')
+                                         {
+                                             markup = markup + "<td  style='width: 14%; text-align:left; border:solid; border-width:1px; ' > " + val + "</td>";
+                                         }
+                                         if(key=='toDte')
+                                         {
+                                             markup = markup + "<td  style='width: 14%; text-align:left; border:solid; border-width:1px;  '  > " + val + "</td>";
+                                         }                     
+                                         if(key=='file_Id')
+                                         {
+                                             markup = markup + "<td  style='width: 15%; text-align:left; border:solid; border-width:1px;  ' > " + val + " </td>";
+                                         }
+                                         if(key=='remarks')
+                                         {
+                                              markup = markup + "<td  style='width: 47%; text-align:center; border:solid; border-width:1px; '  > " + val + " </td>";
+                                         }
+                                         @* if(val=='lastRow')
+                                         {
+                                             if(val=1)
+                                             {
+                                                 markup = markup + "<td style=' text-align: center'>  <input type='submit' class='deleteFlow btn_delete' id='" + val.workFlow_Id + "' value='Delete' > </input> </td></tr>";                                               
+                                             }                                             
+                                         }   *@                                       
+                                    });
+                                    markup = markup + "</tr>" 
+                                });
+                                
+                                $("#tbl_WorkFlow").append(markup);
+                            }
                           
+                            @* $("#tr_PurchaseOrder").removeClass("hidetable");
+                            $("#tr_Invoice").removeClass("hidetable");*@
                           
-                           $("#tr_PurchaseOrder").removeClass("hidetable");
-                           $("#tr_Invoice").removeClass("hidetable");
-                           $("#tr_Assets").removeClass("hidetable");
-
-
 
                             //------------------- Approval Files ---------------------------------------------
 
@@ -518,6 +541,8 @@
                                 {
                                     //-------------------  Assets Info ---------------------
                             
+                                    $("#tr_Assets").removeClass("hidetable");
+
                                     if(Assets_Info !='')
                                     {
                                             var url = '@Url.Action("Item_Issue_Details", "Item_Issue")' + '?PO_Id=' + Assets_Info;
@@ -680,7 +705,17 @@
 
 </script>
 
+<script  type="text/javascript">
+    
+    function convertDateFormat(dateString) {
+          // Split the date string into year, month, and day
+          const [year, month, day] = dateString.split('-');
 
+          // Reconstruct the date string in dd-mm-yyyy format
+          return `${day}-${month}-${year}`;
+    }
+
+</script>
 @* ----------------------------------------------------------------------------------------------------- *@
 
 
