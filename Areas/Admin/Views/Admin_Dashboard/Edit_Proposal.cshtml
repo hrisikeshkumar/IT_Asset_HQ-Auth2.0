@@ -72,13 +72,13 @@
                     <table style="width:100%;" class=" table-hover table-striped shadow " id="tbl_statusGrid">
                         <thead>
                             <tr class="table-active">
-                                <td style="font-weight:bold; width: 10%; text-align:left; " class=""> 
+                                <td style="font-weight:bold; width: 10%; text-align:left; border:solid; border-width:1px;" class=""> 
                                     @Html.HiddenFor(x => x.Proposal_Id)    Date</td>
-                                <td style="font-weight:bold; width: 15%; text-align:left; "> Sender </td>
-                                <td style="font-weight:bold; width: 15%; text-align:left; "> Receiver </td>
-                                <td style="font-weight:bold; width: 15%; text-align:center; "> File </td>
-                                <td style="font-weight:bold; width: 40%; text-align:center;"> Remarks </td>
-                                <td style="font-weight:bold; width: 5%;  text-align:center;"> Action </td>
+                                <td style="font-weight:bold; width: 15%; text-align:left; border:solid; border-width:1px; "> Sender </td>
+                                <td style="font-weight:bold; width: 15%; text-align:left; border:solid; border-width:1px;"> Receiver </td>
+                                <td style="font-weight:bold; width: 15%; text-align:center; border:solid; border-width:1px; "> File </td>
+                                <td style="font-weight:bold; width: 40%; text-align:center; border:solid; border-width:1px;"> Remarks </td>
+                                <td style="font-weight:bold; width: 5%;  text-align:center; border:solid; border-width:1px;"> Action </td>
                             </tr>
                         </thead>
                         <tbody>
@@ -86,27 +86,26 @@
                             {
 
                                 <tr>
-                                    <td style="width: 10%; text-align:left; ">
+                                    <td style="width: 10%; text-align:left; border:solid; border-width:1px; ">
                                         @Html.DisplayFor(modelItem => item.SendDate)
                                     </td>
-                                    <td style="width: 15%; text-align:left; ">
+                                    <td style="width: 15%; text-align:left; border:solid; border-width:1px; ">
                                         @Html.DisplayFor(modelItem => item.FromDte)
                                     </td>
-                                    <td style="width: 15%; text-align:left; ">
+                                    <td style="width: 15%; text-align:left; border:solid; border-width:1px;">
                                         @Html.DisplayFor(modelItem => item.ToDte)
                                     </td>
-                                    <td style="width: 15%; text-align:left; ">
+                                    <td style="width: 15%; text-align:left; border:solid; border-width:1px; ">
                                         @Html.DisplayFor(modelItem => item.WorkFlow_File)
                                     </td>
-                                    <td style="width: 40%; text-align:left; ">
+                                    <td style="width: 40%; text-align:left; border:solid; border-width:1px;">
                                         @Html.DisplayFor(modelItem => item.Remarks)
                                     </td>
-                                    <td style="width: 5%; text-align:center; ">
+                                    <td style="width: 5%; text-align:center;  border:solid; border-width:1px;">
                                         @if(item.LastRow==1)
                                         {
                                             <input type='submit' value='Delete' class='btn_delete deleteGridRow' id='@item.WorkFlow_Id'>
                                         }
-
                                     </td>
                                 </tr>
                             }
@@ -237,8 +236,7 @@
                 processData: false,
                 cache: false,
                 success: function (data) {
-                    alert('Workflow saved successfully!');
-                    // Bind_WorkFlow(data);
+                     Bind_WorkFlow(data);
                 },
                 error: function (xhr) {
                     alert('Error occurred: ' + xhr.responseText);
@@ -249,40 +247,82 @@
 
 
 
-@* --------------------------------------------Delete GridRow------------------------------------------- *@
+// @*// --------------------------------------------Delete GridRow------------------------------------------- *@
 
     $(function () {
 
         $('.deleteGridRow').click(function (event) {
 
-             var workflow_Id = $(this).attr('id');
-             //var proposal = $('#Proposal_Id').val();
-
+            var workflow_Id = $(this).attr('id');
+             
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("DeleteWorkFlow", "Admin_Dashboard")",
                 datatype: "Json",
                 data: { WorkFlow_Id: workflow_Id, ProposalId: $('#Proposal_Id').val() },
                 success: function (data) {
-                     Bind_WorkFlow ( data );
+                     Bind_WorkFlow (data);
                 }
             });
         });
     });
 
 
-
+    // @* //-------------------  Table Binding --------------------- *@
     function Bind_WorkFlow ( data )
     {
-        $("#tbl_statusGrid tbody tr").remove();
-        // $.each(data, function (index, value) {
+        var markup = "" ;
+        $("#tbl_statusGrid TBODY TR").remove();
+        if(data.length > 0)
+        {
+                $.each(data, function (key, val) {
+                    markup = markup+ "<tr>" ;
+                    $.each(val, function (key, val) {
+                                     
+                                         
+                        if(key=='sendDate')
+                        {
+                            if(val.length > 0)
+                            {
+                                val = convertDateFormat(val.substring(0, 10));
+                            }
+                            markup = markup + "<td  style='width: 10%; text-align:left; border:solid; border-width:1px;' >" + val + "</td>";
+                        }
+                        if(key=='fromDte')
+                        {
+                            markup = markup + "<td  style='width: 14%; text-align:left; border:solid; border-width:1px; ' > " + val + "</td>";
+                        }
+                        if(key=='toDte')
+                        {
+                            markup = markup + "<td  style='width: 14%; text-align:left; border:solid; border-width:1px;  '  > " + val + "</td>";
+                        }                     
+                        if(key=='file_Id')
+                        {
+                            markup = markup + "<td  style='width: 15%; text-align:left; border:solid; border-width:1px;  ' > " + val + " </td>";
+                        }
+                        if(key=='remarks')
+                        {
+                            markup = markup + "<td  style='width: 40%; text-align:center; border:solid; border-width:1px; '  > " + val + " </td>";
+                        }
+                        if(val=='lastRow')
+                        {
+                            if(val !=0)
+                            {
+                                markup = markup + "<td style=' width: 7%; text-align:center; border:solid; border-width:1px; '>  <input type='submit' class='deleteFlow btn_delete' id='" + val + "' value='Delete' > </input> </td></tr>";                                               
+                            }                                             
+                        }                                          
+                });
+                markup = markup + "</tr>" 
+            });
+                                
+            $("#tbl_statusGrid").append(markup);
+        }
 
-        // });
     };
 
  </script>
 
-@*------------------------------------ File Function--------------------------------------------------------------*@
+@*------------------------------------ Upload Approval File --------------------------------------------------------------*@
 
 <script type="text/javascript">
     
@@ -348,7 +388,7 @@ $(function () {
 
 </script>
 
-@* Delete Approval File *@
+@* --------------------------------------------     Delete Approval File    ----------------------------------------- *@
 <script type="text/javascript">  
     $(function () {
 
@@ -403,7 +443,7 @@ $(function () {
     });
 </script>
 
-
+@* ------------------------------------------------------         Download File         ------------------------------ *@
 <script type="text/javascript">
     $(document).on("click", ".cssdownload", function () {
         
@@ -455,6 +495,19 @@ $(function () {
     };
 
 </script>
+
+<script  type="text/javascript">
+    
+    function convertDateFormat(dateString) {
+          // Split the date string into year, month, and day
+          const [year, month, day] = dateString.split('-');
+
+          // Reconstruct the date string in dd-mm-yyyy format
+          return `${day}-${month}-${year}`;
+    }
+
+</script>
+
 
 @*---------------------------------------------------------------------------------------------------------------*@
 

@@ -156,7 +156,8 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 string ext = System.IO.Path.GetExtension(data.WorkFlow_File.FileName);
                 if (ext != ".pdf")
                 {
-                    return Json(new SelectListItem("Duplicate", "Accept Pdf Files only"));
+
+                    return Json(mod.GetWorkFlowList(ProposalId));
                 }
             }
             try
