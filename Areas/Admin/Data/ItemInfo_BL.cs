@@ -15,7 +15,6 @@ namespace IT_Hardware.Areas.Admin.Data
 
             itemdtlInfo.Serial_No = itemInfo.Serial_No;
 
-
             return getdetails(itemdtlInfo);
         }
 

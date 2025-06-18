@@ -280,7 +280,7 @@ namespace IT_Hardware.Areas.Admin.Data
         }
 
 
-        public List<WorkFlow> GetWorkFlowList(string ProposalId)
+        public List<WorkFlow> GetWorkFlowList(string ProposalId, string UserName)
         {
             List<WorkFlow> data = new List<WorkFlow>();
 
@@ -305,16 +305,30 @@ namespace IT_Hardware.Areas.Admin.Data
                     sda.Fill(DB_Proposal);
                 }
 
+                int RowCount = DB_Proposal.Rows.Count;
+                int RowNumber = 0;
+                string User = string.Empty;
                 foreach (DataRow dr in DB_Proposal.Rows)
                 {
                     WorkFlow flow = new WorkFlow();
-
+                    RowNumber++;
                     flow.WorkFlow_Id = Convert.ToInt32(dr["WorkFlow_ID"]);
                     flow.SendDate = Convert.ToDateTime(dr["SendDate"]);
                     flow.FromDte = Convert.ToString(dr["From_Directorate"]);
                     flow.ToDte = Convert.ToString(dr["To_Directorate"]);
                     flow.File_Id = Convert.ToString(dr["FileID"]);
                     flow.Remarks = Convert.ToString(dr["Remarks"]);
+
+                    User= Convert.ToString(dr["UpdateUser"]);
+
+                    if (RowNumber == RowCount && User== UserName)
+                    {
+                        flow.LastRow = Convert.ToInt32(dr["WorkFlow_ID"]);
+                    }
+                    else
+                    {
+                        flow.LastRow = 0;
+                    }
 
                     data.Add(flow);
                 }

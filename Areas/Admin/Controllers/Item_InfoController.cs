@@ -54,7 +54,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             }
             else if (FileType == "Approval")
             {
-                path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/FileMovement/");
+                path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/FinalApproval/");
                 FileName = data.Approval_Info_FileId +".pdf";
             }
             

@@ -69,13 +69,13 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
             // WorkFlow Details
-            mod_Data.Prop_detail.WorkFlowList = B_Layer.GetWorkFlowList(Proposal_Id);
+            mod_Data.Prop_detail.WorkFlowList = B_Layer.GetWorkFlowList(Proposal_Id, HttpContext.User.Identity.Name.ToString().Trim());
 
             // Other Information
             await B_Layer.Get_Proposal_By_Id( mod_Data, Proposal_Id);
 
             //Final Approval Files
-            mod_Data.Prop_detail.Prop_Files = GetFiles_By_Id(Proposal_Id);
+            mod_Data.Prop_detail.Prop_Files = GetFinalApprovalFiles_By_Id(Proposal_Id);
 
             return Json(mod_Data);
         }
@@ -93,10 +93,10 @@ namespace IT_Hardware.Areas.Admin.Controllers
             mod_Data.Prop_detail.Proposal_Id = Proposal.Prop_detail.Proposal_Id;
 
             // WorkFlow Details
-            mod_Data.Prop_detail.WorkFlowList = B_Layer.GetWorkFlowList(Proposal.Prop_detail.Proposal_Id);
+            mod_Data.Prop_detail.WorkFlowList = B_Layer.GetWorkFlowList(Proposal.Prop_detail.Proposal_Id, HttpContext.User.Identity.Name.ToString().Trim());
 
             //Final Approval Files
-            mod_Data.Prop_detail.Prop_Files = GetFiles_By_Id(Proposal.Prop_detail.Proposal_Id);
+            mod_Data.Prop_detail.Prop_Files = GetFinalApprovalFiles_By_Id(Proposal.Prop_detail.Proposal_Id);
 
             //Other Information
             B_Layer.Get_Proposal_By_Id(mod_Data, Proposal.Prop_detail.Proposal_Id);
@@ -104,7 +104,8 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             mod_Data.Prop_detail.Department_List = new ItemInfo_BL().DepartmentList();
             mod_Data.Prop_detail.Status_List = new ItemInfo_BL().StatusList();
-           
+            mod_Data.Prop_detail.Work_Flow = new WorkFlow();
+            mod_Data.Prop_detail.Work_Flow.SendDate = DateTime.Today;
 
             return View(mod_Data.Prop_detail);
         }
@@ -151,13 +152,14 @@ namespace IT_Hardware.Areas.Admin.Controllers
         {
             BL_Admin_DashB mod = new BL_Admin_DashB();
 
+
             if (data.WorkFlow_File != null)
             {
                 string ext = System.IO.Path.GetExtension(data.WorkFlow_File.FileName);
                 if (ext != ".pdf")
                 {
 
-                    return Json(mod.GetWorkFlowList(ProposalId));
+                    return Json(mod.GetWorkFlowList(ProposalId, HttpContext.User.Identity.Name.ToString().Trim()));
                 }
             }
             try
@@ -186,7 +188,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             }
             catch (Exception ex) { }
 
-            return Json(mod.GetWorkFlowList(ProposalId));
+            return Json(mod.GetWorkFlowList(ProposalId, HttpContext.User.Identity.Name.ToString().Trim()));
         }
 
         public JsonResult DeleteWorkFlow(int WorkFlow_Id, string ProposalId)
@@ -204,11 +206,11 @@ namespace IT_Hardware.Areas.Admin.Controllers
             }
             catch (Exception ex) { }
 
-            return Json(mod.GetWorkFlowList(ProposalId));
+            return Json(mod.GetWorkFlowList(ProposalId, HttpContext.User.Identity.Name.ToString().Trim()));
         }
 
 
-        private static List<File_List> GetFiles_By_Id(string Proposal_Id)
+        private static List<File_List> GetFinalApprovalFiles_By_Id(string Proposal_Id)
         {
             List<File_List> files = new List<File_List>();
 
@@ -226,7 +228,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                             {
                                 files.Add(new File_List
                                 {
-                                    File_Id = Convert.ToString(sdr["Proposal_File_ID"]),
+                                    File_Id = Convert.ToString(sdr["FileName"]),
                                     File_Name = Convert.ToString(sdr["FileName"])
                                 });
                             }
@@ -258,22 +260,25 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 if (postedFile != null)
                 {
                     int FileId=0;
-                   
+                    string FileName = string.Empty;
                     using (SqlConnection con = new DBConnection().con)
                     {
-                        string query = " Select Proposal_File_ID, Proposal_Id, FileName from Proposal_Files where LTRIM(RTRIM(FileName))= LTRIM(RTRIM(@FileName))";
+                        //string query = " Select Proposal_File_ID, Proposal_Id, FileName from Proposal_Files where LTRIM(RTRIM(FileName))= LTRIM(RTRIM(@FileName))";
+
+                        string query = " select NEWID() Filename";
                         using (SqlCommand cmd = new SqlCommand(query))
                         {
                             cmd.Connection = con;
-                            cmd.Parameters.AddWithValue("@FileName", Path.GetFileName(postedFile.FileName));
+                            //cmd.Parameters.AddWithValue("@FileName", Path.GetFileName(postedFile.FileName));
                             con.Open();
 
                             SqlDataReader sdr = cmd.ExecuteReader();
 
+                            
                             //Looping through each record
                             while (sdr.Read())
                             {
-                                return Json(new SelectListItem("Duplicate", "Please Rename the File and Upload"));
+                                FileName = sdr["Filename"].ToString().Trim() +".pdf";
                             }
 
                             sdr.Close();
@@ -284,7 +289,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                             cmd.Parameters.Clear();
                             cmd.CommandText = query;
                             cmd.Parameters.AddWithValue("@ProposalID", Proposal_Id);
-                            cmd.Parameters.AddWithValue("@FileName", Path.GetFileName(postedFile.FileName));
+                            cmd.Parameters.AddWithValue("@FileName", FileName);
                             cmd.Parameters.AddWithValue("@UserId", HttpContext.User.Identity.Name.ToString());
                             cmd.Parameters.AddWithValue("@Datetime", DateTime.Now);
 
@@ -298,14 +303,14 @@ namespace IT_Hardware.Areas.Admin.Controllers
                     string wwwPath = this.Environment.WebRootPath;
                     string contentPath = this.Environment.ContentRootPath;
 
-                    string path = Path.Combine(this.Environment.WebRootPath, "Files\\FileMovement\\");
+                    string path = Path.Combine(this.Environment.WebRootPath, "Files\\FinalApproval\\");
                     if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);
                     }
 
 
-                    using (FileStream stream = new FileStream(Path.Combine(path,  FileId.ToString()+ ext), FileMode.Create))
+                    using (FileStream stream = new FileStream(Path.Combine(path, FileName.ToString()), FileMode.Create))
                     {
                         postedFile.CopyTo(stream);
                     }
@@ -316,7 +321,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             }
             catch (Exception ex) { }
 
-            return Json(GetFiles_By_Id(Proposal_Id));
+            return Json(GetFinalApprovalFiles_By_Id(Proposal_Id));
         }
 
 
@@ -348,7 +353,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
               
             }catch (Exception ex) { }   
 
-            return Json(GetFiles_By_Id(RefId));
+            return Json(GetFinalApprovalFiles_By_Id(RefId));
         }
 
 
@@ -360,16 +365,14 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             string path = Path.Combine(this.Environment.WebRootPath, "Files\\FinalApproval\\");
 
-            string file_name = fileName + ".pdf";
+            string file_name = fileName ;
             //Read the File as Byte Array.
             byte[] bytes = System.IO.File.ReadAllBytes(path + file_name);
 
             //Convert File to Base64 string and send to Client.
             string base64 = Convert.ToBase64String(bytes, 0, bytes.Length);
 
-            return Content(base64);
-
-          
+            return Content(base64);         
         }
 
 
@@ -379,17 +382,16 @@ namespace IT_Hardware.Areas.Admin.Controllers
             string wwwPath = this.Environment.WebRootPath;
             string contentPath = this.Environment.ContentRootPath;
 
-            string path = Path.Combine(this.Environment.WebRootPath, "Files\\FinalApproval\\");
+            string path = Path.Combine(this.Environment.WebRootPath, "Files\\WorkFlowFiles\\");
 
-            string file_name = fileName + ".pdf";
+
             //Read the File as Byte Array.
-            byte[] bytes = System.IO.File.ReadAllBytes(path + file_name);
+            byte[] bytes = System.IO.File.ReadAllBytes(path + fileName);
 
             //Convert File to Base64 string and send to Client.
             string base64 = Convert.ToBase64String(bytes, 0, bytes.Length);
 
             return Content(base64);
-
 
         }
 
@@ -411,7 +413,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return Json(B_Layer.Get_Dashboard_Grid(Input, dataType, Page_No));
         }
 
-
+     
 
         /* Own Authentication
         //protected override void OnAuthenticationChallenge(AuthenticationChallengeContext filterContext)

@@ -247,10 +247,10 @@
                     <table style="width:100%; border-width:1px;" class=" table-hover table-striped shadow ">
                         <tr>
                             <td style="text-align:left; width:15%; font-weight:bold ;  " class='table-active'>
-                                Proposal @Html.HiddenFor(x=>x.Prop_detail.Proposal_Id);
+                                Proposal Information @Html.HiddenFor(x=>x.Prop_detail.Proposal_Id)
                             </td>
-                            <td style="text-align:center; width:85%; ">
-                                @Html.TextAreaFor(x => x.Prop_detail.Utilization_Details, new { @readonly = "true", @rows="1", @style = " width :100%;  border-width:0px; text-align:center;" })
+                            <td style="text-align:center; width:85%;  " class='table-active'>
+                                @Html.TextAreaFor(x => x.Prop_detail.Utilization_Details, new {  @readonly = "true", @rows="2", @style = " width :100%;  border-width:0px; text-align:center; background-color:#e6e6e6;" })
                             </td>                       
                         </tr>
                         <tr>
@@ -280,32 +280,32 @@
                             <td colspan="2">
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="text-align: left; width: 10%; font-weight:bold;   " class="table-active"> Approval Files </td>
-                                        <td style=" width: 40%;">
+                                        <td style="text-align: left; width: 20%; font-weight:bold;   " class="table-active"> Approval Files </td>
+                                        <td style=" width: 30%;">
                                             <table id="tbl_ApprovalFile" style="width: 100%; ">
                                             </table>
                                         </td>
-                                        <td style="text-align: left; width: 10%; font-weight:bold;  " class="table-active">Purchase Order </td>
-                                        <td style=" width: 40%;">
+                                        <td style="text-align: left; width: 20%; font-weight:bold;  " class="table-active">Purchase Order </td>
+                                        <td style=" width: 30%;">
                                             <table id="tbl_PurchaseOrder" style="width: 100%;">
                                             </table>
                                         </td>
                                     </tr>
                                 </table>
-                           
+                             </td>
                         </tr>
                       
                         <tr id="tr_Invoice" style="height:40px;  ">
                             <td colspan="2">
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="text-align: left; width: 10%; font-weight:bold;    " class="table-active">Bill Processing Information </td>
-                                        <td style=" width: 40%;">
+                                        <td style="text-align: left; width: 20%; font-weight:bold;    " class="table-active">Bill Processing Information </td>
+                                        <td style=" width: 30%;">
                                             <table id="tbl_BillProcessDoc" style="width: 100%; ">
                                             </table>
                                         </td>
-                                        <td style="text-align: left; width: 10%;  font-weight:bold;   " class="table-active"> Assets Information </td>
-                                        <td id="td_Assets" style=" width: 40%;">
+                                        <td style="text-align: left; width: 20%;  font-weight:bold;   " class="table-active"> Assets Information </td>
+                                        <td id="td_Assets" style=" width: 30%;">
                                             <table id="tbl_Assets" style="width: 100%;  ">
                                             </table>
                                         </td>
@@ -410,14 +410,7 @@
                             $('#Prop_detail_Utilization_Details').val(response.prop_detail.utilization_Details);
                             $('#Prop_detail_Proposal_Id').val(response.prop_detail.proposal_Id);  
                             
-                                                        
-                           @*  $('#Prop_detail_Dte_IT_Remarks').val(response.prop_detail.dte_IT_Remarks);
-                            $('#Prop_detail_FA_Remarks').val(response.prop_detail.fA_Remarks);
-                            $('#Prop_detail_Sec_Office_Remarks').val(response.prop_detail.sec_Office_Remarks);
-                            $('#Prop_detail_Purchase_Remarks').val(response.prop_detail.purchase_Remarks);
-                            $('#Prop_detail_Other_Dept_Remarks').val(response.prop_detail.other_Dept_Remarks); *@
-
-
+                                                                               
                             @* //------------------- Table Variable --------------------- *@
                             var workflow = response.prop_detail.workFlowList;
                             var ApprovalFiles = response.prop_detail.prop_Files;
@@ -452,7 +445,16 @@
                                          }                     
                                          if(key=='file_Id')
                                          {
-                                             markup = markup + "<td  style='width: 15%; text-align:left; border:solid; border-width:1px;  ' > " + val + " </td>";
+                                             if (val!='')
+                                             {
+                                                  markup = markup + "<td  style='width: 15%; text-align:center;  height: 30px; border:solid; border-width:1px;  ' >" +
+                                                  "<input type='submit' value='Download' class='btn_download WorkFlowFile' id='"+ val +"' /> </td>";
+                                             }
+                                             else
+                                             {
+                                                  markup = markup + "<td  style='width: 15%; text-align:center; border:solid; border-width:1px;  ' >  Not Uploaded  </td>";
+                                             }
+                                            
                                          }
                                          if(key=='remarks')
                                          {
@@ -476,46 +478,54 @@
                             $("#tr_Invoice").removeClass("hidetable");*@
                           
 
-                            //------------------- Approval Files ---------------------------------------------
+                            //------------------- FInal Approval Files ---------------------------------------------
 
                             if(ApprovalFiles.length > 0)
                             {
-                                markup = "  <tr> <th style='width: 80%; text-align: center;  height: 20px;  ' class='table-active'>  File Name </th> " +
-                                "<th style='width: 20%; text-align: center;  ' class='table-active' > Action </th> </tr> ";
-                                 $("#tbl_ApprovalFile").append(markup);
+                                // @* markup = "  <tr> <th style='width: 80%; text-align: center;  height: 20px;  ' class='table-active'>  File Name </th> " +
+                                // "<th style='width: 20%; text-align: center;  ' class='table-active' > Action </th> </tr> ";
+                                 // $("#tbl_ApprovalFile").append(markup); *@
+
+
 
                                  $.each(ApprovalFiles, function (key, val) {
-                                    markup =  "<tr><td  style='width: 80%; text-align: center; height: 30px; ' class='filename' > <p>" + val.file_Name + "</p> </td> " +
-                                        "<td  style='width: 80%; text-align: center; ' >  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.file_Id + "' >  </td> </tr > ";
+                                    // @* markup =  "<tr><td  style='width: 80%; text-align: center; height: 30px; ' class='filename' > <p>" + val.file_Name + "</p> </td> " +
+                                    // "<td  style='width: 80%; text-align: center; ' >  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.file_Id + "' >  </td> </tr > ";*@
+                                    
+                                        markup =  "<tr> <td  style='width: 100%; height:40px; text-align: center; ' >  <input type='submit' value='Download' class='cssdownload btn_download' id='" + val.file_Id + "' >  </td> </tr > ";
 
-                                    $("#tbl_ApprovalFile").append(markup);
+
+                                        $("#tbl_ApprovalFile").append(markup);
                                  });
                             }
                             else 
                             {
-                                markup = "<tr><td  style='width: 100%; text-align: center; height: 30px;' > Please upload Approval File </td> </tr > ";
+                                markup = "<tr><td  style='width: 100%; text-align: center; height: 40px;' > Please upload Approval File </td> </tr > ";
                                 $("#tbl_ApprovalFile").append(markup);
                             }
 
 
                             if(response.prop_detail.proposal_Type=='Budget')
                             {
-
                                 //-------------------Purchase Order ---------------------------------------------
 
                                 if(response.prop_detail.pO_File_Id !='')
                                 {
-                                    markup = "  <tr> <th style='width: 80%; text-align: center;  height: 20px; ' class='table-active'> File Name </th> " +
-                                    "<th style='width: 20%; text-align: center; ' class='table-active'> Action </th> </tr> ";
+                                    // markup = "  <tr> <th style='width: 80%; text-align: center;  height: 20px; ' class='table-active'> File Name </th> " +
+                                    // "<th style='width: 20%; text-align: center; ' class='table-active'> Action </th> </tr> ";
 
-                                    markup = markup + "<tr><td  style='width: 80%; text-align: center; height: 20px; ' class='POfilename' > <p>" + response.prop_detail.pO_File_Name + "</p> </td> " +
-                                        "<td  style='width: 20%; text-align: center;  '>  <input type='submit' value='Download' class=' POdownload btn_download' id='" + response.prop_detail.pO_File_Id + "' >  </td> </tr > ";
+                                    // markup = markup + "<tr><td  style='width: 80%; text-align: center; height: 20px; ' class='POfilename' > <p>" + response.prop_detail.pO_File_Name + "</p> </td> " +
+                                    //     "<td  style='width: 20%; text-align: center;  '>  <input type='submit' value='Download' class=' POdownload btn_download' id='" + response.prop_detail.pO_File_Id + "' >  </td> </tr > "; 
+
+                                    markup ="<tr><td  style='width: 100%; text-align: center; height: 40px; '>  <input type='submit' value='Download' class=' POdownload btn_download' id='" + response.prop_detail.pO_File_Id + "' >  </td> </tr > ";
+
+
 
                                     $("#tbl_PurchaseOrder").append(markup);
                                 }
                                 else
                                 {
-                                    markup = "<tr><td  style='width: 100%; text-align: center; height: 30px; ' > Purchase Order has not been issued as on date </td> </tr > ";
+                                    markup = "<tr><td  style='width: 100%; text-align: center; height: 40px; ' > Purchase Order has not been issued as on date </td> </tr > ";
                                     $("#tbl_PurchaseOrder").append(markup);
                                 }
 
@@ -535,6 +545,8 @@
                                     markup = "<tr><td  style='width: 100%; text-align: center; height: 25px; ' > Invoice has not been processed as on date </td> </tr > ";
                                     $("#tbl_BillProcessDoc").append(markup);
                                 }
+
+
                                 //--------------------------------------------------
 
                                 if(response.prop_detail.budget_Head_Type==1)
@@ -596,7 +608,7 @@
 </script>
 
 
-@* ----------------------------------- Files download ------------------------------------ *@
+@* ----------------------------------- PO Files download ------------------------------------ *@
 
 <script type="text/javascript">
 
@@ -622,13 +634,13 @@
                 //Check the Browser type and download the File.
                 var isIE = false || !!document.documentMode;
                 if (isIE) {
-                    window.navigator.msSaveBlob(blob, FileName);
+                    window.navigator.msSaveBlob(blob, fileID);
                 }
                 else {
                     var url = window.URL || window.webkitURL;
                     link = url.createObjectURL(blob);
                     var a = $("<a />");
-                    a.attr("download", FileName);
+                    a.attr("download", fileID);
                     a.attr("href", link);
                     $("body").append(a);
                     a[0].click();
@@ -651,7 +663,7 @@
 
 </script>
 
-
+@* ---------------------------------  Final Approval File Download ------------------------------------------ *@
 <script type="text/javascript">
 
     $(document).on("click", ".cssdownload", function (event) {
@@ -664,7 +676,7 @@
 
         $.ajax({
             type: "POST",
-            url: "@Url.Action("Download", "Admin_Dashboard")",
+            url: "@Url.Action("Download_FinalApprovalFile", "Admin_Dashboard")",
             data: { fileName: fileID },
             success: function (r) {
                 //Convert Base64 string to Byte Array.
@@ -676,13 +688,13 @@
                 //Check the Browser type and download the File.
                 var isIE = false || !!document.documentMode;
                 if (isIE) {
-                    window.navigator.msSaveBlob(blob, FileName);
+                    window.navigator.msSaveBlob(blob, fileID);
                 }
                 else {
                     var url = window.URL || window.webkitURL;
                     link = url.createObjectURL(blob);
                     var a = $("<a />");
-                    a.attr("download", FileName);
+                    a.attr("download", fileID);
                     a.attr("href", link);
                     $("body").append(a);
                     a[0].click();
@@ -705,6 +717,60 @@
 
 </script>
 
+@* ----------------------------------------------- WorkFlow File Download -------------------------------- *@
+
+<script type="text/javascript">
+
+    $(document).on("click", ".WorkFlowFile", function (event) {
+
+        var fileID = $(this).attr('id');     
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Download_WorkFlowFile", "Admin_Dashboard")",
+            data: { fileName: fileID },
+            success: function (r) {
+                //Convert Base64 string to Byte Array.
+                var bytes = Base64ToBytes(r);
+
+                //Convert Byte Array to BLOB.
+                var blob = new Blob([bytes], { type: "application/octetstream" });
+
+                //Check the Browser type and download the File.
+                var isIE = false || !!document.documentMode;
+                if (isIE) {
+                    window.navigator.msSaveBlob(blob, fileID);
+                }
+                else {
+                    var url = window.URL || window.webkitURL;
+                    link = url.createObjectURL(blob);
+                    var a = $("<a />");
+                    a.attr("download", fileID);
+                    a.attr("href", link);
+                    $("body").append(a);
+                    a[0].click();
+                    $("body").remove(a);
+                }
+            }
+        });
+
+      event.preventDefault();
+    });
+
+    function Base64ToBytes(base64) {
+        var s = window.atob(base64);
+        var bytes = new Uint8Array(s.length);
+        for (var i = 0; i < s.length; i++) {
+            bytes[i] = s.charCodeAt(i);
+        }
+        return bytes;
+    };
+
+</script>
+
+
+
+@* -------------------------------------------- Change DateFormat ------------------------------------ *@
 <script  type="text/javascript">
     
     function convertDateFormat(dateString) {

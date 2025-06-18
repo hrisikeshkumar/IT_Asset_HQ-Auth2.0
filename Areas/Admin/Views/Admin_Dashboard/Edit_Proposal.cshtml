@@ -68,12 +68,19 @@
 
         <table class=" table-hover table-striped shadow " style="width:100%">
             <tr>
+                <td style="text-align:left; width:15%; font-weight:bold ;  " class='table-active'>
+                    Proposal Information @Html.HiddenFor(x => x.Proposal_Id)
+                </td>
+                <td style="text-align:center; width:85%; " colspan="3" class='table-active'>
+                    @Html.TextAreaFor(x => x.Utilization_Details, new { @readonly = "true", @rows="2", @style = " width :100%;  border-width:0px; text-align:center; background-color:#e6e6e6;" })
+                </td>                       
+            </tr>
+            <tr>
                 <td style="width:100%;  text-align:center;" colspan="4">
                     <table style="width:100%;" class=" table-hover table-striped shadow " id="tbl_statusGrid">
                         <thead>
                             <tr class="table-active">
-                                <td style="font-weight:bold; width: 10%; text-align:left; border:solid; border-width:1px;" class=""> 
-                                    @Html.HiddenFor(x => x.Proposal_Id)    Date</td>
+                                <td style="font-weight:bold; width: 10%; text-align:left; border:solid; border-width:1px;" class=""> Date</td>
                                 <td style="font-weight:bold; width: 15%; text-align:left; border:solid; border-width:1px; "> Sender </td>
                                 <td style="font-weight:bold; width: 15%; text-align:left; border:solid; border-width:1px;"> Receiver </td>
                                 <td style="font-weight:bold; width: 15%; text-align:center; border:solid; border-width:1px; "> File </td>
@@ -95,14 +102,23 @@
                                     <td style="width: 15%; text-align:left; border:solid; border-width:1px;">
                                         @Html.DisplayFor(modelItem => item.ToDte)
                                     </td>
-                                    <td style="width: 15%; text-align:left; border:solid; border-width:1px; ">
-                                        @Html.DisplayFor(modelItem => item.File_Id)
+                                    <td style="width: 15%; text-align:center;  height: 30px; border:solid; border-width:1px; ">
+                                        
+                                            @if(item.File_Id!="")
+                                            {
+                                                <input type='submit' value='Download' class='btn_download WorkFlowFile' id='@item.File_Id'>
+                                            }
+                                            else
+                                            {
+                                               <span>Not Uploaded</span>
+                                            }
+                                        
                                     </td>
                                     <td style="width: 40%; text-align:left; border:solid; border-width:1px;">
                                         @Html.DisplayFor(modelItem => item.Remarks)
                                     </td>
                                     <td style="width: 5%; text-align:center;  border:solid; border-width:1px;">
-                                        @if(item.LastRow==1)
+                                        @if(item.LastRow !=0)
                                         {
                                             <input type='submit' value='Delete' class='btn_delete deleteGridRow' id='@item.WorkFlow_Id'>
                                         }
@@ -113,6 +129,7 @@
                         <tfoot>
                             <tr>
                                 <td style="width: 10%; text-align:left; ">
+                                 
                                     @Html.TextBoxFor(x => x.Work_Flow.SendDate, "{0:dd/MM/yyyy}", new { @class = "dateclass form-rounded date-format", @style = " width :95%; " })
                                 </td>
                                 <td style="width: 15%; text-align:left; ">
@@ -298,7 +315,16 @@
                         }                     
                         if(key=='file_Id')
                         {
-                            markup = markup + "<td  style='width: 15%; text-align:left; border:solid; border-width:1px;  ' > " + val + " </td>";
+                            if (val!='')
+                            {
+                                markup = markup + "<td  style='width: 15%; text-align:center;  height: 20px; border:solid; border-width:1px;  ' >" +
+                                "<input type='submit' value='Download File' class='btn_download WorkFlowFile' id='"+ val +"' /> </td>";
+                            }
+                            else
+                            {
+                                markup = markup + "<td  style='width: 15%; text-align:center; border:solid; border-width:1px;  ' >  Not Uploaded  </td>";
+                            }
+                                            
                         }
                         if(key=='remarks')
                         {
@@ -354,11 +380,11 @@ $(function () {
 
                 $.ajax({
                     type: "POST",
-                    url: "@Url.Action("FiliUpload", "Admin_Dashboard")",
-                    datatype: "Json",
+                    url: "@Url.Action("Upload_FinalApprovalFile", "Admin_Dashboard")",                   
                     data: fileData,
                     contentType: false, // Not to set any content header
                     processData: false, // Not to process data
+                    cache: false,
                     success: function (response) {
                         if (response.key == '') {
                             alert('');
@@ -447,7 +473,7 @@ $(function () {
     });
 </script>
 
-@* ------------------------------------------------------         Download File         ------------------------------ *@
+@* ------------------------------------------------------  Final Approval File Download  ------------------------------ *@
 <script type="text/javascript">
     $(document).on("click", ".cssdownload", function () {
         
@@ -458,7 +484,7 @@ $(function () {
                        .text();
         $.ajax({
             type: "POST",
-            url: "@Url.Action("Download", "Admin_Dashboard")",
+            url: "@Url.Action("Download_FinalApprovalFile", "Admin_Dashboard")",
             data: { fileName: fileID },
             success: function (r) {
                 //Convert Base64 string to Byte Array.
@@ -500,6 +526,8 @@ $(function () {
 
 </script>
 
+
+@* -------------------------------------  Change Date Format  -------------------------------------------------- *@
 <script  type="text/javascript">
     
     function convertDateFormat(dateString) {
@@ -512,6 +540,56 @@ $(function () {
 
 </script>
 
+@* ----------------------------------------------- WorkFlow File Download -------------------------------- *@
+
+<script type="text/javascript">
+
+    $(document).on("click", ".WorkFlowFile", function (event) {
+
+        var fileID = $(this).attr('id');     
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Download_WorkFlowFile", "Admin_Dashboard")",
+            data: { fileName: fileID },
+            success: function (r) {
+                //Convert Base64 string to Byte Array.
+                var bytes = Base64ToBytes(r);
+
+                //Convert Byte Array to BLOB.
+                var blob = new Blob([bytes], { type: "application/octetstream" });
+
+                //Check the Browser type and download the File.
+                var isIE = false || !!document.documentMode;
+                if (isIE) {
+                    window.navigator.msSaveBlob(blob, fileID);
+                }
+                else {
+                    var url = window.URL || window.webkitURL;
+                    link = url.createObjectURL(blob);
+                    var a = $("<a />");
+                    a.attr("download", fileID);
+                    a.attr("href", link);
+                    $("body").append(a);
+                    a[0].click();
+                    $("body").remove(a);
+                }
+            }
+        });
+
+      event.preventDefault();
+    });
+
+    function Base64ToBytes(base64) {
+        var s = window.atob(base64);
+        var bytes = new Uint8Array(s.length);
+        for (var i = 0; i < s.length; i++) {
+            bytes[i] = s.charCodeAt(i);
+        }
+        return bytes;
+    };
+
+</script>
 
 @*---------------------------------------------------------------------------------------------------------------*@
 
