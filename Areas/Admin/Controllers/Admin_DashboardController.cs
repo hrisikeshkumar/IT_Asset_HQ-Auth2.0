@@ -201,7 +201,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             try
             {
                 string FileName = string.Empty;
-                mod.Add_Delete_WorkFlow("", HttpContext.User.Identity.Name, "Delete_WorkFlowList", data, out FileName);
+                mod.Add_Delete_WorkFlow(ProposalId, HttpContext.User.Identity.Name, "Delete_WorkFlowList", data, out FileName);
 
             }
             catch (Exception ex) { }

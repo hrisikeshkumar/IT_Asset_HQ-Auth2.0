@@ -361,22 +361,25 @@ namespace IT_Hardware.Areas.Admin.Data
                 cmd.Parameters.Add(Proposal_Id);
                 SqlParameter WorkFlow_Id = new SqlParameter("@WorkFlowId", data.WorkFlow_Id);
                 cmd.Parameters.Add(WorkFlow_Id);
-                SqlParameter SendDate = new SqlParameter("@SendDate", data.SendDate);
-                cmd.Parameters.Add(SendDate);
-                SqlParameter FromDte = new SqlParameter("@From_Directorate", data.FromDte);
-                cmd.Parameters.Add(FromDte);
-                SqlParameter ToDte = new SqlParameter("@To_Directorate", data.ToDte);
-                cmd.Parameters.Add(ToDte);
-                SqlParameter Remarks = new SqlParameter("@Remarks", data.Remarks);
-                cmd.Parameters.Add(Remarks);
+                if(Type!= "Delete_WorkFlowList")
+                {
+                    SqlParameter SendDate = new SqlParameter("@SendDate", data.SendDate);
+                    cmd.Parameters.Add(SendDate);
+                    SqlParameter FromDte = new SqlParameter("@From_Directorate", data.FromDte);
+                    cmd.Parameters.Add(FromDte);
+                    SqlParameter ToDte = new SqlParameter("@To_Directorate", data.ToDte);
+                    cmd.Parameters.Add(ToDte);
+                    SqlParameter Remarks = new SqlParameter("@Remarks", data.Remarks);
+                    cmd.Parameters.Add(Remarks);
+                    if (data.WorkFlow_File != null)
+                    {
+                        SqlParameter FileExist = new SqlParameter("@FileExist", 1);
+                        cmd.Parameters.Add(FileExist);
+                    }
+                }
+                
                 SqlParameter Sq1UserId = new SqlParameter("@UserId", UserId);
                 cmd.Parameters.Add(Sq1UserId);
-
-                if (data.WorkFlow_File != null)
-                {
-                    SqlParameter FileExist = new SqlParameter("@FileExist", 1);
-                    cmd.Parameters.Add(FileExist);
-                }
 
 
                 DataTable DB_WorkFlow = new DataTable();

@@ -271,16 +271,17 @@
         $('.deleteGridRow').click(function (event) {
 
             var workflow_Id = $(this).attr('id');
-             
-            $.ajax({
-                type: "POST",
-                url: "@Url.Action("DeleteWorkFlow", "Admin_Dashboard")",
-                datatype: "Json",
-                data: { WorkFlow_Id: workflow_Id, ProposalId: $('#Proposal_Id').val() },
-                success: function (data) {
-                     Bind_WorkFlow (data);
-                }
-            });
+            if (confirm('Are you sure to delete this?')) {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("DeleteWorkFlow", "Admin_Dashboard")",
+                    datatype: "Json",
+                    data: { WorkFlow_Id: workflow_Id, ProposalId: $('#Proposal_Id').val() },
+                    success: function (data) {
+                            Bind_WorkFlow (data);
+                    }
+                });
+            }
         });
     });
 
