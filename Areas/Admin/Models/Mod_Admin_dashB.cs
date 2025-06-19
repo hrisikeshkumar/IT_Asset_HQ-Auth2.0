@@ -58,7 +58,7 @@ namespace IT_Hardware.Areas.Admin.Models
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime IT_Initiate_Date { get; set; }
         public string Status { get; set; }
-              
+        public string NoteLocation { get; set; }
     }
 
     public class mod_Admin_Bill_Process_List
@@ -71,6 +71,7 @@ namespace IT_Hardware.Areas.Admin.Models
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime IT_Initiate_Date { get; set; }
         public string Status { get; set; }
+        public string NoteLocation { get; set; }
 
     }
 
@@ -92,6 +93,7 @@ namespace IT_Hardware.Areas.Admin.Models
         public string Proposal_Id { get; set; }
         public string StartDate { get; set; }
         public string Status { get; set; }
+        public string NoteLocation { get; set; }
     }
 
     public class WorkFlow
@@ -120,6 +122,7 @@ namespace IT_Hardware.Areas.Admin.Models
         public string? Invoice_Info { get; set; }
         public string? Assets_Info { get; set; }
         public string? Status { get; set; }
+        public string? NoteLocation { get; set; }
         public List<SelectListItem>? Department_List { get; set; }
         public List<SelectListItem>? Status_List { get; set; }
         public string? Approval_File_Id { get; set; }

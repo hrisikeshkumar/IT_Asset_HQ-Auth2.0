@@ -76,7 +76,6 @@ namespace IT_Hardware.Areas.Admin.Data
 
         public List<SelectListItem> DepartmentList()
         {
-
             List<SelectListItem> Value = new List<SelectListItem>();
 
             SelectListItem No = new SelectListItem("Please Select a Department", "-1");

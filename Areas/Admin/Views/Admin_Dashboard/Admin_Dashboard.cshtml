@@ -63,7 +63,7 @@
     <table class="   " style="width: 100%;">
         <tr>
             <td style="text-align:center; width:60%; ">
-                <h5 style="font-weight:bold"> Proposals / Invoices Dashboard </h5>
+                <h4 style="font-weight:bold"> Dashboard  </h4>
             </td>
             <td style="text-align:center; width:20%; ">
                 <h5 style="font-weight:bold">  Proposal : @Html.RadioButton("dashboard", "1", new { @id = "1", @checked = true }) </h5>
@@ -115,9 +115,10 @@
         <table style="text-align: center; height: 40px; align-content: center; width: 100% " class="h-10 w-100 shadow p-1 mb-1 bg-white rounded" >
             <thead>
                 <tr style=" font-weight: bold; ">
-                    <td style="width: 70%; font-weight: bold; font-size: large; text-align: center"> <h5 style="font-weight:bold"> Proposal Initiated </h5></td>
-                    <td style="width: 15%; font-weight: bold; font-size: large; text-align: center"><h5 style="font-weight:bold">Initiate Date </h5></td>
-                    <td style="width: 15%; font-weight: bold; font-size: large; text-align: center"> <h5 style="font-weight:bold">Status </h5></td>
+                    <td style="width: 65%; font-weight: bold; font-size: large; text-align: center"> <h5 style="font-weight:bold"> Proposal Initiated </h5></td>
+                    <td style="width: 7%; font-weight: bold; font-size: large; text-align: center"><h5 style="font-weight:bold">Initiate Date </h5></td>
+                    <td style="width: 8%; font-weight: bold; font-size: large; text-align: center"> <h5 style="font-weight:bold">Status </h5></td>
+                    <td style="width: 10%; font-weight: bold; font-size: large; text-align: center"> <h5 style="font-weight:bold">Location </h5></td>
                 </tr>
             </thead>
         </table>
@@ -127,18 +128,21 @@
             {
                 <tbody>
                     <tr>
-                        <td style="width:70%; padding-left:1%;  text-align:left;">
+                        <td style="width:65%; padding-left:1%;  text-align:left;">
                             <a href=""
                                class=" "   style="font-size:medium; text-align:left;"  data-toggle="modal" data-target="#myModal2" data-status="@Item.Proposal_Id" id="@Item.Proposal_Id">
                                 @Item.Utilization_Details
                             </a>
                         </td>
-                        <td style="width:15%;  text-align: center ">
+                        <td style="width:7%;  text-align: center ">
                             @Html.DisplayFor(modelitem => Item.IT_Initiate_Date, "{0:dd/MM/yyyy}",
                                      new { @disabled = "disabled", @class = "form-rounded", @style = " width :80%; font-size:medium " })
                         </td>
-                        <td style="width: 15%; text-align: center">
+                        <td style="width: 8%; text-align: center">
                             @Html.DisplayFor(modelitem => Item.Status, new { @class = "form-rounded", @style = " width :80%; font-size:medium" })
+                        </td>
+                         <td style="width: 10%; text-align: center">
+                            @Html.DisplayFor(modelitem => Item.NoteLocation, new { @class = "form-rounded", @style = " width :80%; font-size:medium" })
                         </td>
                     </tr>
                 </tbody>
@@ -186,9 +190,10 @@
         <table style="text-align: center; height: 40px; align-content: center; width: 100% " class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
             <thead>
                 <tr style="  font-weight: bold;">
-                    <td style="width: 70%; font-weight: bold; font-size: large; text-align: center"> <h5 style="font-weight:bold"> Invoice Processed </h5> </td>
-                    <td style="width: 15%; font-weight: bold; font-size: large; text-align: center"><h5 style="font-weight:bold"> Initiate Date </h5></td>
-                    <td style="width: 15%; font-weight: bold; text-align: center; font-size: large"> <h5 style="font-weight:bold"> Status</h5></td>
+                    <td style="width: 65%; font-weight: bold; font-size: large; text-align: center"> <h5 style="font-weight:bold"> Invoice Processed </h5> </td>
+                    <td style="width: 7%; font-weight: bold; font-size: large; text-align: center"><h5 style="font-weight:bold"> Initiate Date </h5></td>
+                    <td style="width: 8%; font-weight: bold; text-align: center; font-size: large"> <h5 style="font-weight:bold"> Status</h5></td>
+                    <td style="width: 10%; font-weight: bold; text-align: center; font-size: large"> <h5 style="font-weight:bold"> Status</h5></td>
                 </tr>
             </thead>
         </table>
@@ -197,18 +202,21 @@
             {
                 <tbody>
                     <tr>
-                        <td style="width:70%; padding-left:1%;  text-align:left;">
+                        <td style="width:65%; padding-left:1%;  text-align:left;">
                             <a href=""
                                class=" " style="font-size:medium;  text-align:left;" data-toggle="modal" data-target="#myModal2" data-status="@Item.Proposal_Id" id="@Item.Proposal_Id">
                                 @Item.Utilization_Details
                             </a>
                         </td>
-                        <td style="width:15%; text-align: center" >
+                        <td style="width:7%; text-align: center" >
                             @Html.DisplayFor(modelitem => Item.IT_Initiate_Date, "{0:dd/MM/yyyy}",
                                      new { @disabled = "disabled", @class = "form-rounded", @style = " width :80%; font-size:medium " })
                         </td>
-                        <td style="width: 15%; text-align: center">
+                        <td style="width: 8%; text-align: center">
                             @Html.DisplayFor(modelitem => Item.Status, new { @class = "form-rounded", @style = " width :80%; font-size:medium " })
+                        </td>
+                         <td style="width: 10%; text-align: center">
+                            @Html.DisplayFor(modelitem => Item.NoteLocation, new { @class = "form-rounded", @style = " width :80%; font-size:medium " })
                         </td>
                     </tr>
                 </tbody>
@@ -808,55 +816,54 @@
     function AsynchronousGridBinding ( Type, Input , Page_No, tabletype )
     {
        
+        if(tabletype=='Proposal')
+        {
+            $("#tbl_Budget TBODY TR").remove();
+        }
+        else 
+        { 
+            $("#tbl_Invoice TBODY TR").remove();
+        }
 
         $.ajax({
             type: "POST",
             url: "@Url.Action("GridData", "Admin_Dashboard")",
             datatype: "Json",
             data: { Input: Input, Type: Type, Page_No: Page_No  },
-            success: function (response) {
-
-                markup = "  <tr><th style='background-color: #b2f3b2; width: 70%; font-weight: bold; ; font-size: large; text-align: center'> <h4> Invoice Processed </h4> </th>"
-                            + "<th style='background-color: #b2f3b2; width: 15%; font-weight: bold; font-size: large; text-align: center'> <h4> Processing Date </h4> </th>"
-                            +" <th style='background-color: #b2f3b2; width: 15%; font-weight: bold; font-size: large; text-align: center'> <h4> Status </h4> </th>  </tr>";
-
-                var tableBody;
-                if(tabletype=='Proposal')
+            success: function (response) 
+            {
+                markup="<TBODY>";
+                
+                if (response != null) 
                 {
-                    $("#tbl_Budget tr").remove();
-                    $("#tbl_Budget thead").append(markup);
-                }
+                    
+                    $.each(response, function (key, val) 
+                    {
+
+                        
+                            markup =markup+ "<tr> <td style='width:65%; padding-left:1%; text-align: left;'> <a href=''  class=''  style='font-size:medium'  "
+                                         + " data-toggle='modal' data-target='#myModal2' data-status='" + val.proposal_Id + "' " 
+                                         + " id='" + val.proposal_Id + "' >"+ val.particular +"  </a> </td> " 
+                                         + "<td style='width:7%; text-align: center'> " + val.startDate + " </td> "
+                                         + "<td style='width:8%; text-align: center'> " + val.status + " </td>   "
+                                         + "<td style='width:10%; text-align: center'> " + val.noteLocation + " </td> </tr>  "
+                      
+                     });
+
+                    markup =markup+ "</TBODY>";
+                    if(tabletype=='Proposal')
+                    {
+                        $("#tbl_Budget").append(markup);  
+                    }
+                    else
+                    {
+                        $("#tbl_Invoice").append(markup);
+                    }
+
+                      
+                }   
                 else 
                 {
-                     $("#tbl_Invoice tr").remove();
-                     $("#tbl_Invoice thead").append(markup);
-
-                }
-                
-                
-
-                if (response != null) {
-                    
-                    $.each(response, function (key, val) {
-
-                        markup="";
-                        markup ="<tr> <td style='width:70%; padding-left:1%;'> <a href=''  class=''  style='font-size:medium'  "
-                                     + " data-toggle='modal' data-target='#myModal2' data-status='" + val.proposal_Id + "' " 
-                                     + " id='" + val.proposal_Id + "' >"+ val.particular +"  </a> </td> " 
-                                     + "<td style='width:15%; text-align: center'> " + val.startDate + " </td> "
-                                     + "<td style='width:15%; text-align: center'> " + val.status + " </td> </tr>  "
-
-                        if(tabletype=='Proposal')
-                        {
-                             $("#tbl_Budget thead").append(markup);                         
-                        }
-                        else
-                        {
-                            $("#tbl_Invoice TBODY").append(markup);
-                        }
-
-                      });
-                }   else {
                     alert("Something went wrong");
                 }
             },

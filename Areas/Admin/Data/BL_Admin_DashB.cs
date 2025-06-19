@@ -53,6 +53,13 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     BL_data.Status = Convert.ToString(dr["Completed_Status"]);
 
+                    BL_data.NoteLocation = Convert.ToString(dr["NoteLocation"]);
+
+                    if (BL_data.Status == "Completed")
+                    {
+                        BL_data.NoteLocation = "";
+                    }
+
                     current_data.Add(BL_data);
                 }
 
@@ -111,7 +118,14 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     BL_data.Status = Convert.ToString(dr["Completed_Status"]);
 
+                    BL_data.NoteLocation = Convert.ToString(dr["NoteLocation"]);
+
                     PO_No =  Convert.ToString(dr["PO_No"]);
+
+                    if (BL_data.Status == "Completed")
+                    {
+                        BL_data.NoteLocation = "";
+                    }
 
                     current_data.Add(BL_data);
                 }
@@ -172,6 +186,12 @@ namespace IT_Hardware.Areas.Admin.Data
                     BL_data.Prop_detail.Assets_Info = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Assets_Info"]);
                     BL_data.Prop_detail.Invoice_Info = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Invoice_Info"]);
                     BL_data.Prop_detail.Status = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Completed_Status"]);
+                    BL_data.Prop_detail.NoteLocation = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["NoteLocation"]);
+
+                    if (BL_data.Prop_detail.Status == "Completed")
+                    {
+                        BL_data.Prop_detail.NoteLocation = "";
+                    }
 
                 }
 
@@ -269,6 +289,12 @@ namespace IT_Hardware.Areas.Admin.Data
                     BL_data.StartDate = Convert.ToDateTime(dr["IT_Initiate_Date"]).ToString().Substring(0,10);
 
                     BL_data.Status = Convert.ToString(dr["Completed_Status"]);
+
+                    BL_data.NoteLocation = Convert.ToString(dr["NoteLocation"]);
+                    if (BL_data.Status == "Completed")
+                    {
+                        BL_data.NoteLocation = "";
+                    }
 
                     data.Add(BL_data);
                 }
