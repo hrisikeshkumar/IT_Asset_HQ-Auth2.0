@@ -30,6 +30,8 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Item_MakeModel Make_List = new Item_MakeModel();
             Mod_data.Item_Make_List = Make_List.Item_MakeModel_List("DataCard", "MAKE", "");
             Mod_data.PO_List = Make_List.Vendor_and_PO_List("PO");
+            Mod_data.Proc_date = DateTime.Now;
+            Mod_data.WrntEnd_Date = DateTime.Now;
 
             return View( Mod_data);
 

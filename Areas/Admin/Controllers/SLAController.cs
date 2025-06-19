@@ -40,6 +40,8 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Invoice_BL Inv_Data = new Invoice_BL();
             Mod_SLA Mod_data = new Mod_SLA();
             Mod_data.PO_List = Inv_Data.PO_List(HttpContext.User.Identity.Name.ToString());
+            Mod_data.Expiry_DT = DateTime.Now;
+            Mod_data.Service_ST_DT = DateTime.Now;
 
             return View( Mod_data);
         }

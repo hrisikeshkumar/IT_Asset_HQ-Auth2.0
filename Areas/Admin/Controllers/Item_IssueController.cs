@@ -38,6 +38,9 @@ namespace IT_Hardware.Areas.Admin.Controllers
             {
                 model.Item_Issues = item.Get_Item_IssueData();
             }
+
+
+
                 
 
             return View(model);
@@ -48,7 +51,11 @@ namespace IT_Hardware.Areas.Admin.Controllers
         {
             ViewBag.Message = Message;
 
-            return View();
+            Mod_Item_Issue Mod_data= new Mod_Item_Issue();
+            Mod_data.Issued_date = DateTime.Now;
+
+
+            return View(Mod_data);
         }
 
         [HttpPost]

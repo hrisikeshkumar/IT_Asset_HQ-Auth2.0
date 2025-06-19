@@ -36,6 +36,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             BL_Budget_Year bud_year = new BL_Budget_Year();
 
             Mod_data.Budget_Year_List = bud_year.budget_year_dropdown();
+            Mod_data.Processing_Date = DateTime.Now;
 
             return View( Mod_data);
         }

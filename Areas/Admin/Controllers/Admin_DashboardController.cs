@@ -378,12 +378,10 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
         public ContentResult Download_WorkFlowFile(string fileName)
         {
-
             string wwwPath = this.Environment.WebRootPath;
             string contentPath = this.Environment.ContentRootPath;
 
             string path = Path.Combine(this.Environment.WebRootPath, "Files\\WorkFlowFiles\\");
-
 
             //Read the File as Byte Array.
             byte[] bytes = System.IO.File.ReadAllBytes(path + fileName);
@@ -392,7 +390,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             string base64 = Convert.ToBase64String(bytes, 0, bytes.Length);
 
             return Content(base64);
-
         }
 
         public JsonResult GridData( string Input, string Type, int Page_No)

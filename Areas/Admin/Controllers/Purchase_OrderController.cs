@@ -38,6 +38,10 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Mod_POrder mod_PO = new Mod_POrder();
             BL_Porder com = new BL_Porder();
             mod_PO.Vendor_List = com.Vendor_List();
+            mod_PO.PO_Date=DateTime.Now;
+            mod_PO.PO_End_Date = DateTime.Now;
+            mod_PO.PO_ST_Date = DateTime.Now;
+
 
             return View( mod_PO);
         }
