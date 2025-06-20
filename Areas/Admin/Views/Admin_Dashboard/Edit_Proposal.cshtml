@@ -364,11 +364,11 @@
         $('#btn_SaveStatus').click(function (event) {
 
             event.preventDefault();
-          
+            var status= $('#StatusId').val();
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("SaveStatus", "Admin_Dashboard")',
-                data: {Proposal_Id: $('#Proposal_Id').val(), Status: $('#Status').val()},
+                data: {Proposal_Id: $('#Proposal_Id').val(), Status: status},
                 datatype: "Json",
                 success: function (data) {
                     if(data > 0)
