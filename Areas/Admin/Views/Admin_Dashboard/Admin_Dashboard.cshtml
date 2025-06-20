@@ -165,10 +165,10 @@
                                         Search by Purchase Order
                                     </div>
                                     <div style="width: 60%; text-align:left" class="block">
-                                        <input id="Find_Proposal" style="width:90%" class="form-rounded" type="text" />
+                                        <input id="Find_Invoice_detail" style="width:90%" class="form-rounded" type="text" />
                                     </div>
                                     <div style="width: 15%; text-align:left" class="block">
-                                        <button type="submit" id="btn_Find_By_Proposal" class="btn_download"> Search</button>
+                                        <button type="submit" id="btn_Find_Invoice" class="btn_download"> Search</button>
                                     </div>
                                 </div>
                             </td>
@@ -798,10 +798,10 @@
 
 <script type="text/javascript">
 
-     $(document).on("click", "#btn_Find_Invoice_By_PO", function (event) {
+     $(document).on("click", "#btn_Find_Invoice", function (event) {
      
-        var pO_No =  $("#Find_PO_id").val();
-        AsynchronousGridBinding ( 'PODetail', pO_No , '' , 0, 'Invoice' );
+        var pO_No =  $("#Find_Invoice_detail").val();
+        AsynchronousGridBinding ( 'Get_Invoice', pO_No , '' , 0, 'Invoice' );
      
      });
 

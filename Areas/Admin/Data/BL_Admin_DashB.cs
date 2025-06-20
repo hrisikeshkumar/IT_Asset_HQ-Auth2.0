@@ -55,6 +55,8 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     BL_data.NoteLocation = Convert.ToString(dr["NoteLocation"]);
 
+
+
                     if (BL_data.Status == "Completed")
                     {
                         BL_data.NoteLocation = "";
@@ -137,7 +139,7 @@ namespace IT_Hardware.Areas.Admin.Data
         }
 
 
-        public async Task Get_Proposal_By_Id(Mod_Admin_dashB BL_data, string Proposal_Id)
+        public async Task<Proposal_details> Get_Proposal_By_Id(Mod_Admin_dashB BL_data, string Proposal_Id)
         {
 
             try
@@ -164,9 +166,6 @@ namespace IT_Hardware.Areas.Admin.Data
                         sda.SelectCommand = cmd;
                         //sda.Fill(DB_Proposal);
                         await Task.Run(() => sda.Fill(DB_Proposal));
-                        
-
-
                     }
                 }
 
@@ -186,6 +185,7 @@ namespace IT_Hardware.Areas.Admin.Data
                     BL_data.Prop_detail.Assets_Info = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Assets_Info"]);
                     BL_data.Prop_detail.Invoice_Info = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Invoice_Info"]);
                     BL_data.Prop_detail.Status = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Completed_Status"]);
+                    BL_data.Prop_detail.StatusId = Convert.ToInt32(DB_Proposal.Tables[0].Rows[0]["StatusId"]);
                     BL_data.Prop_detail.NoteLocation = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["NoteLocation"]);
 
                     if (BL_data.Prop_detail.Status == "Completed")
@@ -195,18 +195,14 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 }
 
-
-               
-
             }
             catch (Exception ex) { }
 
-
+            return BL_data.Prop_detail;
         }
 
-        public int Update_proposal(Proposal_details Proposal)
+        public int Update_proposal_Status(string Proposal_Id, int status, string UserId)
         {
-            int status = 0;
             
             SqlConnection con = new DBConnection().con;
             try
@@ -222,14 +218,14 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter sqlP_type = new SqlParameter("@Type", "Update_Status");
                 cmd.Parameters.Add(sqlP_type);
  
-                SqlParameter Proposal_Id = new SqlParameter("@Proposal_Id", Proposal.Proposal_Id);
-                cmd.Parameters.Add(Proposal_Id);
+                SqlParameter SqlProposal_Id = new SqlParameter("@Proposal_Id", Proposal_Id);
+                cmd.Parameters.Add(SqlProposal_Id);
 
-                SqlParameter Status = new SqlParameter("@Status",   Proposal.Status );
-                cmd.Parameters.Add(Status);
+                SqlParameter SqlStatus = new SqlParameter("@Status", status);
+                cmd.Parameters.Add(SqlStatus);
 
-                SqlParameter UserId = new SqlParameter("@UserId", Proposal.Update_UserId);
-                cmd.Parameters.Add(UserId);
+                SqlParameter SqlUserId = new SqlParameter("@UserId", UserId);
+                cmd.Parameters.Add(SqlUserId);
 
 
                 con.Open();

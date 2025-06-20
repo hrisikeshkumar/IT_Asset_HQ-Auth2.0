@@ -68,12 +68,13 @@ namespace IT_Hardware.Areas.Admin.Controllers
             mod_Data.Prop_detail = new Proposal_details();
 
 
+            // Other Information
+            mod_Data.Prop_detail = await B_Layer.Get_Proposal_By_Id(mod_Data, Proposal_Id);
+
             // WorkFlow Details
             mod_Data.Prop_detail.WorkFlowList = B_Layer.GetWorkFlowList(Proposal_Id, HttpContext.User.Identity.Name.ToString().Trim());
 
-            // Other Information
-            await B_Layer.Get_Proposal_By_Id( mod_Data, Proposal_Id);
-
+         
             //Final Approval Files
             mod_Data.Prop_detail.Prop_Files = GetFinalApprovalFiles_By_Id(Proposal_Id);
 
@@ -83,7 +84,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         
         //-----------------------------------         Proposal Details       --------------------------------------------------
 
-        public ActionResult Edit_proposal(Mod_Admin_dashB Proposal)
+        public async Task<ActionResult> Edit_proposal(Mod_Admin_dashB Proposal)
         {
             Mod_Admin_dashB mod_Data = new Mod_Admin_dashB();
             BL_Admin_DashB B_Layer = new BL_Admin_DashB();
@@ -92,16 +93,16 @@ namespace IT_Hardware.Areas.Admin.Controllers
             //ID
             mod_Data.Prop_detail.Proposal_Id = Proposal.Prop_detail.Proposal_Id;
 
+            //Other Information
+            mod_Data.Prop_detail = await B_Layer.Get_Proposal_By_Id(mod_Data, Proposal.Prop_detail.Proposal_Id);
+
             // WorkFlow Details
             mod_Data.Prop_detail.WorkFlowList = B_Layer.GetWorkFlowList(Proposal.Prop_detail.Proposal_Id, HttpContext.User.Identity.Name.ToString().Trim());
 
             //Final Approval Files
             mod_Data.Prop_detail.Prop_Files = GetFinalApprovalFiles_By_Id(Proposal.Prop_detail.Proposal_Id);
 
-            //Other Information
-            B_Layer.Get_Proposal_By_Id(mod_Data, Proposal.Prop_detail.Proposal_Id);
-
-
+           
             mod_Data.Prop_detail.Department_List = new ItemInfo_BL().DepartmentList();
             mod_Data.Prop_detail.Status_List = new ItemInfo_BL().StatusList();
             mod_Data.Prop_detail.Work_Flow = new WorkFlow();
@@ -125,7 +126,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
                     Proposal_data.Update_UserId = HttpContext.User.Identity.Name;
 
-                    status = B_Layer.Update_proposal(Proposal_data);
+                    //status = B_Layer.Update_proposal(Proposal_data);
 
                     if (status > 0)
                     {
@@ -375,7 +376,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return Content(base64);         
         }
 
-
         public ContentResult Download_WorkFlowFile(string fileName)
         {
             string wwwPath = this.Environment.WebRootPath;
@@ -404,6 +404,8 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 dataType = "Get_Invoice_By_ProposalId";
             else if (Type == "Get_Proposal")
                 dataType = "Get_Proposal_By_Subject";
+            else if (Type == "Get_Invoice")
+                dataType = "Get_Invoice_By_Subject";
             else if (Type == "Budget")
                 dataType = "Paging_Budget";
             else
@@ -412,7 +414,17 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return Json(B_Layer.Get_Dashboard_Grid(Input, dataType, Page_No));
         }
 
-     
+
+        public JsonResult SaveStatus(string Proposal_Id, int Status )
+        {
+            BL_Admin_DashB B_Layer = new BL_Admin_DashB();
+
+            string dataType = string.Empty;
+          
+            return Json(B_Layer.Update_proposal_Status(Proposal_Id, Status, HttpContext.User.Identity.Name.ToString()));
+        }
+
+
 
         /* Own Authentication
         //protected override void OnAuthenticationChallenge(AuthenticationChallengeContext filterContext)

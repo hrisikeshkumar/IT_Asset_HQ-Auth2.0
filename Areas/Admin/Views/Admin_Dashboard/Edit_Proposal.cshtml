@@ -208,10 +208,10 @@
                     Status
                 </td>
                 <td align="center" style="text-align:center; align-items:center;width:25%">
-                    @Html.DropDownListFor(x => x.Work_Flow.FromDte, Model.Status_List, new { @class = " form-rounded",  @style = " width :90%; " })
+                    @Html.DropDownListFor(x => x.StatusId, Model.Status_List, new { @class = " form-rounded",  @style = " width :90%; " })
                 </td>
                 <td style="width:25%; text-align:center;">
-                    <input type='submit' value='Save Status' class='button_cls form-rounded' id='btn_SaveFlow'>
+                    <input type='submit' value='Save Status' class='button_cls form-rounded' id='btn_SaveStatus'>
                 </td>
                 <td style="align-self:right" align="right">
                     @Html.ActionLink("Back", "Admin_Dashboard", "Admin_Dashboard", null, new { @class = "button_cls form-rounded", })
@@ -221,7 +221,7 @@
 
 </div>
 
-@* ---------------------------------------Grid Save Delete--------------------------------------------------------------- *@
+@* --------------------------------------- Save WorkFlow Grid--------------------------------------------------------------- *@
 
 <script type="text/javascript">
     
@@ -264,7 +264,7 @@
 
 
 
-// @*// --------------------------------------------Delete GridRow------------------------------------------- *@
+// @*// --------------------------------------------Delete WorkFlow GridRow------------------------------------------- *@
 
     $(function () {
 
@@ -286,7 +286,7 @@
     });
 
 
-    // @* //-------------------  Table Binding --------------------- *@
+    // @* //------------------- WorkFlow  Table Binding --------------------- *@
     function Bind_WorkFlow ( data )
     {
         var markup = "" ;
@@ -352,6 +352,43 @@
     };
 
  </script>
+
+@* ----------------------------------------   Save Status-------------------------------------------------------------- *@
+
+
+<script type="text/javascript">
+    
+
+    $(function () {
+
+        $('#btn_SaveStatus').click(function (event) {
+
+            event.preventDefault();
+          
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SaveStatus", "Admin_Dashboard")',
+                data: {Proposal_Id: $('#Proposal_Id').val(), Status: $('#Status').val()},
+                datatype: "Json",
+                success: function (data) {
+                    if(data > 0)
+                    {
+                        alert('Status Save Successfully');
+                    }
+                    else
+                    {
+                        alert('Status is not Saved');
+                    }
+                },
+                error: function (xhr) {
+                    alert('Error occurred: ' + xhr.responseText);
+                }
+            });
+        });
+    });
+
+ </script>
+
 
 @*------------------------------------ Upload Approval File --------------------------------------------------------------*@
 

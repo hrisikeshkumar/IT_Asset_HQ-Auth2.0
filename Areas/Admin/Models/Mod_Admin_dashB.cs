@@ -15,34 +15,6 @@ namespace IT_Hardware.Areas.Admin.Models
     }
      
 
-    //public class Proposal_details1
-    //{
-    //    public string? Proposal_Id { get; set; }
-    //    public string? Budget_Name { get; set; }
-    //    public string? Budget_Year { get; set; }
-    //    public string? Utilization_Details { get; set; }      
-    //    public string? Dte_IT_Copy { get; set; }
-    //    public string? Dte_IT_Remarks { get; set; }
-    //    public string? FA_Remarks { get; set; }
-    //    public string? Secretary_Approval_Required { get; set; }
-    //    public string? Sec_Office_Remarks { get; set; }
-    //    public string? Purchase_Remarks { get; set; }
-    //    public string? Other_Dept_Remarks { get; set; }      
-    //    public string? Proposal_Type { get; set; }
-    //    public string? Budget_Head_Type { get; set; }
-    //    public string? PO_File_Id { get; set; }
-    //    public string? PO_File_Name { get; set; }
-    //    public string? Invoice_Info { get; set; }
-    //    public string? Assets_Info { get; set; }
-    //    public string? Completed_Status { get; set; }
-    //    public bool Status { get; set; }
-
-    //    public string? Update_UserId { get; set; }
-
-    //    public List<File_List>? Prop_Files { get; set; }
-
-    //}
-
     public class File_List
     {
         public string File_Id { get; set; }
@@ -122,6 +94,7 @@ namespace IT_Hardware.Areas.Admin.Models
         public string? Invoice_Info { get; set; }
         public string? Assets_Info { get; set; }
         public string? Status { get; set; }
+        public int? StatusId { get; set; }
         public string? NoteLocation { get; set; }
         public List<SelectListItem>? Department_List { get; set; }
         public List<SelectListItem>? Status_List { get; set; }

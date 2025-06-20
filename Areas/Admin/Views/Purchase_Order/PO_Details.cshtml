@@ -47,34 +47,38 @@
             <td colspan="2">
                 <table style="width:100%">
                     <tr>
-                        <th>
+                        <th style="width: 10%; text-align: left; ">
                             PO No.
                         </th>
-                        <th>
+                        <th style="width: 70%; text-align: center; ">
                             PO Details
                         </th>
-                        <th>
+                        <th style="width: 8%; text-align: center; ">
                             PO Exp Date
                         </th>
-                        <th> Action </th>
+                        <th style="width: 6%; text-align: center; ">
+                            Invoice
+                        </th>
+                        <th style="width: 6%; text-align: center; "> Action </th>
                     </tr>
 
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>
+                            <td style="width: 10%; text-align: left; ">
                                 @Html.DisplayFor(modelItem => item.PO_No)
                             </td>
-                            <td>
+                            <td style="width: 70%; text-align: center; ">
                                 @Html.DisplayFor(modelItem => item.PO_Subject)
                             </td>
-                            <td>
+                            <td style="width: 8%; text-align: center; ">
                                 @Html.DisplayFor(modelItem => item.PO_End_Date)
                             </td>
-                            <td>
-
-                                @Html.ActionLink("Edit", "Edit_PO", new { id = item.PO_id }) |
-                                @Html.ActionLink("Delete", "Delete_Item", new { id = item.PO_id })
+                             <td  style="width: 6%; text-align: center; ">
+                                 @Html.ActionLink("Click", "Admin_Dashboard", "Admin_Dashboard", new { PO_Id = item.PO_id })
+                            </td>
+                            <td  style="width: 6%; text-align: center; ">
+                                @Html.ActionLink("Edit", "Edit_PO", new { id = item.PO_id })
                             </td>
                         </tr>
                     }
