@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using IT_Hardware.Areas.Admin.Data;
 using IT_Hardware.Areas.Admin.Models;
 using IT_Hardware.Infra;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
@@ -24,8 +25,10 @@ namespace IT_Hardware.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Com_Create_Item(string Message)
         {
-            ViewBag.Message = Message;
-
+            if (Message != string.Empty)
+            {
+                ViewBag.Message = Message;
+            }
             Mod_Computer Mod_data = new Mod_Computer();
             Item_MakeModel Make_List = new Item_MakeModel();
             Mod_data.Item_Make_List = Make_List.Item_MakeModel_List("Desktop", "MAKE","");
@@ -190,6 +193,18 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return Json(Find_Sl.Find_Sl(Item_SlNo));
 
         }
+
+
+        public JsonResult AutoComplete_FindPO(string input)
+        {
+
+            BL_Porder data = new BL_Porder();
+            List<SelectListItem> list = data.Find_PO_Info(input,"Get_Matching_PO");
+
+            return Json(list);
+        }
+
+
 
     }
 

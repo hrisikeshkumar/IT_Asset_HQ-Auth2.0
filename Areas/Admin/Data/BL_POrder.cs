@@ -322,5 +322,51 @@ namespace IT_Hardware.Areas.Admin.Data
         }
 
 
+        public List<SelectListItem> Find_PO_Info(string input, string type)
+        {
+
+            List<SelectListItem> List_Item = new List<SelectListItem>();
+
+            try
+            {
+                DataTable dt_Comuter;
+
+                SqlConnection con = new DBConnection().con;
+
+
+                using (SqlCommand cmd = new SqlCommand("sp_Find_PO_List"))
+                {
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = con;
+                    cmd.Parameters.AddWithValue("@Type", type);
+                    cmd.Parameters.AddWithValue("@input", input);
+
+                    SqlDataAdapter sda = new SqlDataAdapter();  
+                    sda.SelectCommand = cmd;
+                    using (DataTable dt = new DataTable())
+                    {
+                        sda.Fill(dt);
+                        dt_Comuter = dt;
+                    }
+   
+                }
+
+                foreach (DataRow dr in dt_Comuter.Rows)
+                {
+                    SelectListItem Listdata = new SelectListItem();
+                    Listdata.Value = Convert.ToString(dr["PO_ID"]);
+                    Listdata.Text = Convert.ToString(dr["PO_Name"]);
+
+                    List_Item.Add(Listdata);
+                }
+
+            }
+            catch (Exception ex) { }
+
+            return List_Item;
+        }
+
+
     }
 }

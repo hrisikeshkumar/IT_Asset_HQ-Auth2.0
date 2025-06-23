@@ -1,7 +1,4 @@
 ﻿@using IT_Hardware.Controllers
-@{
-    ViewBag.Title = "Index";   
-}
 @model IT_Hardware.Areas.Admin.Models.Mod_Computer
 
 
@@ -49,7 +46,8 @@
                 </td>
                 <td style="width:75%;" colspan="3">
 
-                    @Html.DropDownListFor(x => x.PO_Id, Model.PO_List, new { @class = " form-rounded", @style = " width :90%; " })
+                    @Html.HiddenFor(x => x.PO_Id)
+                    @Html.TextBoxFor(x => x.PO_No, new { @class = " form-rounded",  @style = " width :95%; " })
 
                 </td>
             </tr>
@@ -193,6 +191,42 @@
 
 
 
+@* //---------------------------------------  Auto Complete  --------------------------------------------------------------------------- *@
+<link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css" rel="Stylesheet" type="text/css" />
+
+<script type="text/javascript">
+    $('#PO_No').autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: "@Url.Action("AutoComplete_FindPO", "Computer")",
+                data: {input: request.term},
+                dataType: "json",
+                type: "POST",
+                // contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return   item.value + '***' + item.text ;
+
+                    }))
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (xmlHttpRequest, textStatus, errorThrown) {
+                    console.log('some error occured', textStatus, errorThrown);
+                }
+            });
+        },
+        minLength: 1,
+        select: function (event, ui) {
+            
+            $('#PO_Id').val(ui.item.label.split('***')[0]);
+            $('#PO_No').val(ui.item.value.split('***')[1]);
+
+            return false;
+        }
+    });
+</script>
 
 
 

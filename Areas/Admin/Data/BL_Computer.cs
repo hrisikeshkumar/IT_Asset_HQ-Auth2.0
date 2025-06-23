@@ -68,7 +68,9 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     BL_data.PO_No = Convert.ToString(dr["PO_No"]);
 
-                    if(dr["PO_Date"] !=DBNull.Value)
+                    BL_data.PO_Id = Convert.ToString(dr["PO_No"]);
+
+                    if (dr["PO_Date"] !=DBNull.Value)
                         BL_data.PO_Date = Convert.ToDateTime(dr["PO_Date"]);
 
 
