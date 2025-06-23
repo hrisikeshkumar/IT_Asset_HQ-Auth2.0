@@ -133,7 +133,18 @@
            
             <li><a href="@Url.Action("Admin_Dashboard", null, new { area = "Admin", controller = "Admin_Dashboard" })"> <span class="icon"> <i class="zmdi zmdi-collection-item"></i> </span> Dash Board</a> </li>
 
-            <li><a href="@Url.Action("Employee_Details", null, new { area = "Admin", controller = "Employee" })"> <span class="icon"> <i class="zmdi zmdi-collection-item"></i> </span> Employees Data</a> </li>
+
+             <li class="has-child">
+                <span class="its-parent">
+                    <span class="icon">
+                        <i class="zmdi zmdi-device-hub"></i>
+                    </span> Employees Information  </span>
+                <ul class="its-children">
+                    <li> <a href="@Url.Action("Employee_Details", null, new { area = "Admin", controller = "Employee" }  )">Employees Master</a> </li>
+                    <li> <a href="@Url.Action("Department_Details", null, new { area = "Admin", controller = "Employee" }  )">Department Master</a> </li>
+                    <li> <a href="@Url.Action("Designation_Details", null, new { area = "Admin", controller = "Employee" }  )">Designation Master</a> </li>
+                </ul>
+            </li>
 
 
             <li class="has-child">
@@ -148,7 +159,6 @@
                     <li> <a href="@Url.Action("Vendor_Details", null, new { area = "Admin", controller = "Vendor" }  )">Vendor Information</a> </li>
                     <li> <a href="@Url.Action("PO_Details", null, new { area = "Admin", controller = "Purchase_Order" }  )">Purchase Order</a> </li>
                     <li> <a href="@Url.Action("SLA_Details", null, new { area = "Admin", controller = "SLA" }  )">Service Level Agreement</a> </li>
-                    @* <li> <a href="@Url.Action("List_Invoice", null, new { area = "Admin", controller = "Invoice" }  )">Invoices Details</a> </li> *@
                 </ul>
             </li>
 

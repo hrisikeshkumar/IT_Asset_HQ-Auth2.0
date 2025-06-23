@@ -191,6 +191,7 @@ namespace IT_Hardware.Areas.Admin.Data
             return Data;
         }
 
+
         public List<SelectListItem> Bind_EmpType()
         {
             List<SelectListItem> Emp_Type = new List<SelectListItem>();
@@ -209,6 +210,297 @@ namespace IT_Hardware.Areas.Admin.Data
 
             return Emp_Type;
         }
+
+
+        //----------------------------------------------------  Department -------------------------------------------------------
+        public List<Mod_Department> Get_Department()
+        {
+
+            Mod_Department mod_data;
+            List<Mod_Department> data = new List<Mod_Department>();
+
+            try
+            {
+                DataTable dt_Comuter;
+
+                SqlConnection con = new DBConnection().con;
+
+
+                using (SqlCommand cmd = new SqlCommand("sp_Employee"))
+                {
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = con;
+                    SqlParameter sqlP_type = new SqlParameter("@Type", "Get_List_Dept");
+                    cmd.Parameters.Add(sqlP_type);
+
+
+
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        sda.SelectCommand = cmd;
+                        using (DataTable dt = new DataTable())
+                        {
+                            sda.Fill(dt);
+                            dt_Comuter = dt;
+                        }
+                    }
+                }
+
+
+                foreach (DataRow dr in dt_Comuter.Rows)
+                {
+                    mod_data = new Mod_Department();
+
+                    mod_data.Department_Id = Convert.ToString(dr["ID"]);
+
+                    mod_data.Department_Name = Convert.ToString(dr["Name"]);
+
+                    mod_data.Department_MicrosoftID = Convert.ToString(dr["MicrosoftID"]);
+
+                    data.Add(mod_data);
+                }
+
+            }
+            catch (Exception ex) { }
+
+            return data;
+        }
+
+        public int Save_Department(Mod_Department Data, string type)
+        {
+            int status = 0;
+
+            SqlConnection con = new DBConnection().con;
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "sp_Employee";
+
+                cmd.Connection = con;
+
+                SqlParameter sqlP_type = new SqlParameter("@Type", type);
+                cmd.Parameters.Add(sqlP_type);
+
+                if (type == "Update_Dept" || type == "Delete_Dept")
+                {
+                    SqlParameter Department_Id = new SqlParameter("@Emp_Unique_Id", Data.Department_Id);
+                    cmd.Parameters.Add(Department_Id);
+                }
+
+                SqlParameter Department_Name = new SqlParameter("@Emp_Name", Data.Department_Name);
+                cmd.Parameters.Add(Department_Name);
+
+                SqlParameter Department_MicrosoftID = new SqlParameter("@Emp_Designation", Data.Department_MicrosoftID);
+                cmd.Parameters.Add(Department_MicrosoftID);
+
+
+                SqlParameter User_Id = new SqlParameter("@Create_Usr_Id", Data.UserId);
+                cmd.Parameters.Add(User_Id);
+
+                con.Open();
+
+                status = cmd.ExecuteNonQuery();
+
+
+
+            }
+            catch (Exception ex) { status = -1; }
+            finally { con.Close(); }
+
+            return status;
+        }
+
+        public Mod_Department Get_Department_By_ID(string Unique_Id, Mod_Department Data)
+        {
+
+            try
+            {
+                DataTable dt= new DataTable();
+
+                SqlConnection con = new DBConnection().con;
+
+
+                using (SqlCommand cmd = new SqlCommand("sp_Employee"))
+                {
+                    SqlParameter sqlP_type = new SqlParameter("@Type", "Get_Department_By_ID");
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = con;
+                    cmd.Parameters.Add(sqlP_type);
+
+                    SqlParameter Emp_Unique_Id = new SqlParameter("@Emp_Unique_Id", Unique_Id);
+                    cmd.Parameters.Add(Emp_Unique_Id);
+
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        sda.SelectCommand = cmd;
+                        sda.Fill(dt);
+                    }
+                }
+
+                if (dt.Rows.Count > 0)
+                {
+                    Data.Department_Id = Convert.ToString(dt.Rows[0]["Unique_Id"]);
+                    Data.Department_Name = Convert.ToString(dt.Rows[0]["Emp_Code"]);
+                    Data.Department_MicrosoftID = Convert.ToString(dt.Rows[0]["Emp_Name"]);
+                }
+
+            }
+            catch (Exception ex) { }
+
+            return Data;
+        }
+
+
+        //----------------------------------------------------  Designation -------------------------------------------------------
+
+        public List<Mod_Designation> Get_Designation()
+        {
+
+            Mod_Designation mod_data;
+            List<Mod_Designation> data = new List<Mod_Designation>();
+
+            try
+            {
+                DataTable dt_Comuter;
+
+                SqlConnection con = new DBConnection().con;
+
+
+                using (SqlCommand cmd = new SqlCommand("sp_Employee"))
+                {
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = con;
+                    SqlParameter sqlP_type = new SqlParameter("@Type", "Get_List_Designation");
+                    cmd.Parameters.Add(sqlP_type);
+
+
+
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        sda.SelectCommand = cmd;
+                        using (DataTable dt = new DataTable())
+                        {
+                            sda.Fill(dt);
+                            dt_Comuter = dt;
+                        }
+                    }
+                }
+
+
+                foreach (DataRow dr in dt_Comuter.Rows)
+                {
+                    mod_data = new Mod_Designation();
+
+                    mod_data.Designation_Id = Convert.ToString(dr["ID"]);
+
+                    mod_data.Designation_Name = Convert.ToString(dr["Name"]);
+
+                    mod_data.Designation_MicrosoftID = Convert.ToString(dr["MicrosoftID"]);
+
+                    data.Add(mod_data);
+                }
+
+            }
+            catch (Exception ex) { }
+
+            return data;
+        }
+
+        public int Save_Designation(Mod_Designation Data, string type)
+        {
+            int status = 0;
+
+            SqlConnection con = new DBConnection().con;
+            try
+            {
+
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "sp_Employee";
+
+                cmd.Connection = con;
+
+                SqlParameter sqlP_type = new SqlParameter("@Type", type);
+                cmd.Parameters.Add(sqlP_type);
+
+                if (type == "Update_Designation" || type == "Delete_Designation")
+                {
+                    SqlParameter Department_Id = new SqlParameter("@Emp_Unique_Id", Data.Designation_Id);
+                    cmd.Parameters.Add(Department_Id);
+                }
+
+                SqlParameter Department_Name = new SqlParameter("@Emp_Name", Data.Designation_Name);
+                cmd.Parameters.Add(Department_Name);
+
+                SqlParameter Department_MicrosoftID = new SqlParameter("@Emp_Designation", Data.Designation_MicrosoftID);
+                cmd.Parameters.Add(Department_MicrosoftID);
+
+
+                SqlParameter User_Id = new SqlParameter("@Create_Usr_Id", Data.UserId);
+                cmd.Parameters.Add(User_Id);
+
+                con.Open();
+
+                status = cmd.ExecuteNonQuery();
+
+
+
+            }
+            catch (Exception ex) { status = -1; }
+            finally { con.Close(); }
+
+            return status;
+        }
+
+        public Mod_Designation Get_Designation_By_ID(string Unique_Id, Mod_Designation Data)
+        {
+
+            try
+            {
+                DataTable dt = new DataTable();
+
+                SqlConnection con = new DBConnection().con;
+
+
+                using (SqlCommand cmd = new SqlCommand("sp_Employee"))
+                {
+                    SqlParameter sqlP_type = new SqlParameter("@Type", "Get_Designation_By_ID");
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = con;
+                    cmd.Parameters.Add(sqlP_type);
+
+                    SqlParameter Emp_Unique_Id = new SqlParameter("@Emp_Unique_Id", Unique_Id);
+                    cmd.Parameters.Add(Emp_Unique_Id);
+
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        sda.SelectCommand = cmd;
+                        sda.Fill(dt);
+                    }
+                }
+
+                if (dt.Rows.Count > 0)
+                {
+                    Data.Designation_Id = Convert.ToString(dt.Rows[0]["Unique_Id"]);
+                    Data.Designation_Name = Convert.ToString(dt.Rows[0]["Emp_Code"]);
+                    Data.Designation_MicrosoftID = Convert.ToString(dt.Rows[0]["Emp_Name"]);
+                }
+
+            }
+            catch (Exception ex) { }
+
+            return Data;
+        }
+
+
+
+        //----------------------------------------------------  Bind Data -------------------------------------------------------
 
         public List<SelectListItem> Bind_Designation(string Emp_Type)
         {

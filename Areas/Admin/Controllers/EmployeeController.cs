@@ -162,7 +162,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
 
-        
         public JsonResult Get_Designation(string Emp_Type)
         {
             BL_Employee data = new BL_Employee();
@@ -171,6 +170,126 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return Json(Mod_emp.Designation_List);
           
         }
+
+
+        //----------------------------------------------------  Department -------------------------------------------------------
+
+        public ActionResult Department_Details()
+        {
+            BL_Employee data = new BL_Employee();
+
+            List<Mod_Department> Dept_List = data.Get_Department();
+
+            return View(Dept_List);
+        }
+
+        [HttpGet]
+        public ActionResult Create_Department(string Message)
+        {
+            ViewBag.Message = Message;
+            BL_Employee data = new BL_Employee();
+
+            Mod_Department Mod_Dept = new Mod_Department();
+
+            return View(Mod_Dept);
+        }
+
+        [HttpPost]
+        public ActionResult Create_Department_Post(Mod_Department Data)
+        {
+            string Message = "";
+            try
+            {
+                Data.UserId = HttpContext.User.Identity.Name;
+                if (ModelState.IsValid)
+                {
+                    BL_Employee save_data = new BL_Employee();
+                    int status = save_data.Save_Department(Data, "Add_New_Department");
+
+                    if (status < 1)
+                    {
+                        TempData["Message"] = String.Format("Data is not saved");
+                    }
+                    else
+                    {
+
+                        TempData["Message"] = String.Format("Data save successfully");
+                    }
+                }
+                else
+                {
+                    TempData["Message"] = String.Format("Data not Entered Properly");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                TempData["Message"] = string.Format("Data is not saved");
+
+            }
+
+            return RedirectToAction("Create_Department", "Employee");
+        }
+
+
+        //----------------------------------------------------  Designation -------------------------------------------------------
+        public ActionResult Designation_Details()
+        {
+            BL_Employee data = new BL_Employee();
+
+            List<Mod_Designation> Designation_List = data.Get_Designation();
+
+            return View(Designation_List);
+        }
+
+        [HttpGet]
+        public ActionResult Create_Designation(string Message)
+        {
+            ViewBag.Message = Message;
+            BL_Employee data = new BL_Employee();
+
+            Mod_Designation Mod_Designation = new Mod_Designation();
+
+            return View(Mod_Designation);
+        }
+
+        [HttpPost]
+        public ActionResult Create_Designation_Post(Mod_Designation data)
+        {
+            string Message = "";
+            try
+            {
+                data.UserId = HttpContext.User.Identity.Name;
+                if (ModelState.IsValid)
+                {
+                    BL_Employee save_data = new BL_Employee();
+                    int status = save_data.Save_Designation(data, "Add_New_Designation");
+
+                    if (status < 1)
+                    {
+                        TempData["Message"] = String.Format("Data is not saved");
+                    }
+                    else
+                    {
+
+                        TempData["Message"] = String.Format("Data save successfully");
+                    }
+                }
+                else
+                {
+                    TempData["Message"] = String.Format("Data not Entered Properly");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                TempData["Message"] = string.Format("Data is not saved");
+
+            }
+
+            return RedirectToAction("Create_Designation", "Employee");
+        }
+
 
     }
 }
