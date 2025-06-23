@@ -10,6 +10,9 @@ namespace IT_Hardware.Areas.Admin.Models
         public string? Budget_Head_Id { get; set; }
         [Required]
         public string? Budget_Year { get; set; }
+
+        public int? Budget_HeadType { get; set; }
+
         [Required]
         public string? Budget_Name { get; set; }
         [Required]

@@ -50,11 +50,14 @@
                         <th style="width: 10%; text-align: left; ">
                             PO No.
                         </th>
-                        <th style="width: 70%; text-align: center; ">
+                        <th style="width: 60%; text-align: center; ">
                             PO Details
                         </th>
                         <th style="width: 8%; text-align: center; ">
                             PO Exp Date
+                        </th>
+                        <th style="width: 10%; text-align: center; ">
+                            Amount Left
                         </th>
                         <th style="width: 6%; text-align: center; ">
                             Invoice
@@ -68,11 +71,14 @@
                             <td style="width: 10%; text-align: left; ">
                                 @Html.DisplayFor(modelItem => item.PO_No)
                             </td>
-                            <td style="width: 70%; text-align: center; ">
+                            <td style="width: 60%; text-align: left; ">
                                 @Html.DisplayFor(modelItem => item.PO_Subject)
                             </td>
                             <td style="width: 8%; text-align: center; ">
                                 @Html.DisplayFor(modelItem => item.PO_End_Date)
+                            </td>
+                            <td style="width: 10%; text-align: right; ">
+                                @Html.DisplayFor(modelItem => item.PO_Amount_Left)
                             </td>
                              <td  style="width: 6%; text-align: center; ">
                                  @Html.ActionLink("Click", "Admin_Dashboard", "Admin_Dashboard", new { PO_Id = item.PO_id })

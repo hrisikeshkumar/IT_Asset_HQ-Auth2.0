@@ -30,6 +30,7 @@ namespace IT_Hardware.Areas.Admin.Models
         [Required]
         public string? PO_Subject { get; set; }
         public string? PO_File_Name { get; set; }
+        public int? PO_Amount_Left { get; set; }
         public string? PO_File_Id { get; set; }
         public string? Budget_Head_Id { get; set; }
         public string? Vendor_id { get; set; }

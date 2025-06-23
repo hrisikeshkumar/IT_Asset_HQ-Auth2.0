@@ -12,7 +12,7 @@ namespace IT_Hardware.Areas.Admin.Data
 
         public List<Mod_Budget> Get_BudgetData()
         {
-
+            
             Mod_Budget BL_data;
             List<Mod_Budget> current_data = new List<Mod_Budget>();
 
@@ -89,6 +89,9 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter Budget_Year = new SqlParameter("@Budget_Year", Data.Budget_Year);
                 cmd.Parameters.Add(Budget_Year);
 
+                SqlParameter Budget_HeadType = new SqlParameter("@Budget_HeadType", Data.Budget_HeadType);
+                cmd.Parameters.Add(Budget_HeadType);
+
                 SqlParameter Budget_Name = new SqlParameter("@Budget_Name", Data.Budget_Name);
                 cmd.Parameters.Add(Budget_Name);
 
@@ -150,6 +153,7 @@ namespace IT_Hardware.Areas.Admin.Data
                     Data.Budget_Head_Id = Convert.ToString(dt_Comuter.Rows[0]["Budget_Head_Id"]);
                     Data.Budget_Year = Convert.ToString(dt_Comuter.Rows[0]["Budget_Year"]);
                     Data.Budget_Name = Convert.ToString(dt_Comuter.Rows[0]["Budget_Name"]);
+                    Data.Budget_HeadType = Convert.ToInt32(dt_Comuter.Rows[0]["Budget_HeadType"]);
                     Data.Total_Budget_Amount = Convert.ToString(dt_Comuter.Rows[0]["Total_Budget_Amount"]);
                     Data.Remarks = Convert.ToString(dt_Comuter.Rows[0]["Remarks"]);
                 }

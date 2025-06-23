@@ -42,6 +42,7 @@
                 </td>
 
             </tr>
+
             <tr>
                 <td style="width:25%;">
                     Total Budget Amount
@@ -59,7 +60,22 @@
 
                 </td>
             </tr>
+            <tr>
+                <td style="width:25%; height:50px;">
+                    Budget Head Type
+                    @Html.HiddenFor(x => x.Budget_Head_Id, new { @class = " form-rounded", @style = " width :90%; " })
+                </td>
+                <td style="width:75%;" colspan="3">
 
+                    @Html.DropDownListFor(x => x.Budget_HeadType , new List<SelectListItem>{
+                    
+                        new SelectListItem("Please Select Budget Type", "-1"),
+                        new SelectListItem("Revenue", "0"),
+                        new SelectListItem("Capital", "1")
+                    
+                    }  ,  new { @class = " form-rounded", @style = " width :90%; " })
+
+            </tr>
             <tr>
                 <td style="width:25%;">
                     Remarks
