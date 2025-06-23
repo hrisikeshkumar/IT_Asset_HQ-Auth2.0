@@ -57,7 +57,7 @@
                         <th>
                             Total Budget Amount
                         </th>
-                        <th> Action </th>
+                        <th style="text-align: center;"> Action </th>
                     </tr>
 
                     @foreach (var item in Model)
@@ -66,10 +66,10 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Budget_Name)
                             </td>
-                            <td>
+                            <td style="text-align: right;">
                                 @Html.DisplayFor(modelItem => item.Total_Budget_Amount)
                             </td>
-                            <td>
+                            <td style="text-align: center;">
 
                                 @Html.ActionLink("Edit", "Edit_Budget_Head", new { id = item.Budget_Head_Id }) |
                                 @Html.ActionLink("Details", "Get_Budget_Head", new { id = item.Budget_Head_Id }) |

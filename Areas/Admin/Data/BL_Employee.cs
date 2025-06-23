@@ -64,10 +64,6 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     BL_data.Location = Convert.ToString(dr["Emp_Location"]);
 
-                    BL_data.Emp_Dept_Name = Convert.ToString(dr["Dept_name"]);
-
-                    BL_data.Emp_Designation_Name = Convert.ToString(dr["Designation_name"]);
-
                     current_data.Add(BL_data);
                 }
 
