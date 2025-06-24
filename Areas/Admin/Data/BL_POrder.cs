@@ -368,5 +368,58 @@ namespace IT_Hardware.Areas.Admin.Data
         }
 
 
+        public List<Approval_PO> GET_PO_Approval(string input)
+        {
+
+            List<Approval_PO> List_Item = new List<Approval_PO>();
+
+            try
+            {
+                DataTable dt_Comuter;
+
+                SqlConnection con = new DBConnection().con;
+
+                string query = "select  PO_Approval.PO_Id, PO_Approval.Proposal_ID, Utilization_Details  from PO_Approval ";
+                query = query + " inner join Proposal_Status on LTRIM(RTRIM( PO_Approval.Proposal_ID ))=LTRIM(RTRIM( Proposal_Status.Proposal_Id))";
+                query = query + " inner join Budget_Uses on LTRIM(RTRIM( Proposal_Status.Bud_Uses_Id ))=LTRIM(RTRIM( Budget_Uses.Budget_Uses_Id))";
+                query = query + "where LTRIM(RTRIM( PO_Approval.PO_Id ))=LTRIM(RTRIM(@input))";
+
+                using (SqlCommand cmd = new SqlCommand(query))
+                {
+
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection = con;
+
+                    SqlParameter sqlP_Input = new SqlParameter("@input", input);
+                    cmd.Parameters.Add(sqlP_Input);
+
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        sda.SelectCommand = cmd;
+                        using (DataTable dt = new DataTable())
+                        {
+                            sda.Fill(dt);
+                            dt_Comuter = dt;
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in dt_Comuter.Rows)
+                {
+                    Approval_PO item = new Approval_PO();
+                    item.Proposal_ID = Convert.ToString(dr["Proposal_ID"]);
+                    item.Proposal_Details = Convert.ToString(dr["Utilization_Details"]);
+
+                    List_Item.Add(item);
+                }
+
+            }
+            catch (Exception ex) { }
+
+            return List_Item;
+        }
+
+
+
     }
 }

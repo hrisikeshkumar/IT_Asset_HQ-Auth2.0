@@ -91,10 +91,7 @@
                             </td>
                             <td style="text-align: center;">
 
-                                @Html.ActionLink("Edit", "Edit_Budget_Uses", new { id = item.Budget_Uses_Id }) 
-                                @* | @Html.ActionLink("Details", "Get_Detail", new { id = item.Budget_Uses_Id }) | *@
-                                @* @Html.ActionLink("Delete", "Delete_Budget_Uses", new { id = item.Budget_Uses_Id }) *@
-
+                                @Html.ActionLink("Edit", "Edit_Budget_Uses", new { id = item.Budget_Uses_Id })                             
                               
                             </td>
                         </tr>
@@ -197,14 +194,15 @@
                         //$.each(response.Bud_Uses_List[i], function (Budget_Uses_Id, Budget_Name, Budget_Amount, Budget_Type ) {
                         $.each(response, function (key, val) {
                           
+                            var url = "<%: Url.Action("Edit_Budget_Uses", "Budget_Uses", new { id = " + val.budget_Uses_Id + " }) %>"
                             markup = "<tr><td> " + val.utilization_Details + " </td> " +
                                 "<td> " + val.budget_Amount + " </td> " +
                                 "<td> " + val.budget_Type + " </td> " +
-                                "<td style=' text-align: center'>   <a href='/Admin/Budget_Uses/Edit_Budget_Uses/" + val.budget_Uses_Id + "'> Edit </a > </td></tr> "
+                                "<td style=' text-align: center'>   <a href="+ url +"> Edit </a > </td></tr> "
                             tableBody = $("#Bud_Uses_Grid tbody");
                             tableBody.append(markup);
                           
-                          
+                         
                     });
                     } else {
                         alert("Something went wrong");

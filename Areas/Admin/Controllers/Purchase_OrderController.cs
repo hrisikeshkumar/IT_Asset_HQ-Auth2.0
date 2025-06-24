@@ -132,6 +132,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             BL_Porder data = new BL_Porder();
             Mod_POrder mod_PO = data.Get_Data_By_ID( id);
             mod_PO.Vendor_List = data.Vendor_List();
+            mod_PO.ApprovalList = data.GET_PO_Approval(id);
 
             return View( mod_PO);
         }
@@ -187,7 +188,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                     else
                     {
                         PO_Data.PO_File_Name = "N";
-                        status = save_data.Save_PO_data(PO_Data, "Add_new", "", out string PO_Id, out string PO_File_Name);
+                        status = save_data.Save_PO_data(PO_Data, "Update", "", out string PO_Id, out string PO_File_Name);
                     }
 
                     if (status > 0)

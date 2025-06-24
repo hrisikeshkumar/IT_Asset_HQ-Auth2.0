@@ -79,13 +79,68 @@
 
             <tr>
                 <td style="width:25%; height:50px;">
-                    Approval Details @Html.HiddenFor(x => x.Proposal_Id)
+                    Approval Details
                 </td>
                 <td style="width:75%;" colspan="3">
-                    @Html.TextAreaFor(x => x.Approval_Details, new { @rows = "2", @style = " width :96%; " })
-                </td>
-            </tr>
 
+                    <table style="width:100%">
+                        <tr>
+                            <td>
+                                <table id="tbl_ApprovalList" name="tbl_ApprovalList" style="width:100%; border: 1px solid black;">
+                                    <thead>
+                                        <tr>
+                                            <td style="width:0%; display:none;">
+                                                Proposal Id
+                                            </td>
+                                            <td style="width:90%">
+                                                Proposal Details
+                                            </td>
+                                            <td style="width:10%">
+                                                Action
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach(var item in Model.ApprovalList)
+                                        {
+                                            <tr>
+                                                <td style="width:0%; display:none;">
+                                                     @Html.HiddenFor(modelItem => item.Proposal_ID)
+                                                </td>
+                                                <td style="width:90%;">
+                                                    @Html.TextBoxFor(modelItem => item.Proposal_Details, new { @style = " width :95%; ",  @readonly = "readonly" })                                                 
+                                                </td>
+                                                <td style="width:10%">
+                                                    <button type="button" class="btn_delete btn_deleterow">Delete</button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table style="width:100%;">
+                                    <tr>
+                                        <td style="width:0%; display:none;">
+                                            @Html.HiddenFor(x => x.Proposal_Id)
+                                        </td>
+                                        <td style="width:90%">
+                                            @Html.TextAreaFor(x => x.Approval_Details, new { @rows = "2", @style = " width :95%; " })
+                                        </td>
+                                        <td style="width:10%">
+                                            <input type='submit' value='Add' class='cssdownload btn_delete' id='btn_Approval_Add'>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>                           
+                        </tr>
+                    </table>
+                    
+                </td>
+            </tr>         
+            
             <tr style=" height: 50px; ">
 
                 <td align="left" style="width:25%; "> Upload File</td>
@@ -104,7 +159,7 @@
                         <tr>
                             <td>
                                 @{
-                                    if (Model.PO_File_Id != string.Empty)
+                                    if (Model.PO_File_Id != "")
                                     {
                                       <table id="Files_Grid" style="width:100%;">
                                         <tr>
@@ -119,7 +174,7 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                    <input type='submit' value='Download' class='cssdownload btn_download' id='@Model.PO_File_Id' />
+                                                    <input type='submit' value='Download' class='cssFiledownload btn_download' id='@Model.PO_File_Id' />
                                             </td>
                                         </tr>
 
@@ -136,7 +191,6 @@
 
                 </td>
             </tr>
-
 
             <tr>
                 <td style="width:25%;">
@@ -163,7 +217,7 @@
                     Remarks
                 </td>
                 <td style="width:75%; " colspan="3">
-                    @Html.TextAreaFor(x => x.Remarks, new { @rows = "4", @style = " width :96%; " })
+                    @Html.TextAreaFor(x => x.Remarks, new { @rows = "2", @style = " width :96%; " })
                 </td>
             </tr>
             <tr>
@@ -263,7 +317,7 @@
 
 <script type="text/javascript">
 
-    $(document).on("click", ".cssdownload", function (event) {
+    $(document).on("click", ".cssFiledownload", function (event) {
 
         var fileID = $(this).attr('id');
       
@@ -311,7 +365,7 @@
 </script>
 
 
-
+@* //---------------------------------------  Auto Complete  --------------------------------------------------------------------------- *@
 <link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css" rel="Stylesheet" type="text/css" />
 
 <script type="text/javascript">
@@ -339,7 +393,7 @@
         },
         minLength: 1,
         select: function (event, ui) {
-
+            
             $('#Proposal_Id').val(ui.item.label.split('--')[0]);
             $('#Approval_Details').val(ui.item.value.split('--')[1]);
 
@@ -349,6 +403,63 @@
 </script>
 
 
+@* //----------------------------------------------------- Approval Details ----------------------------------------------------------------- *@
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        let rowIndex = 0;
+
+        $("#btn_Approval_Add").click(function (event) {
+            event.preventDefault();
+
+            const proposalId = $('#Proposal_Id').val();
+            const proposalDetails = $('#Approval_Details').val();
+
+            const newRow = `
+                <tr>
+                    <td style="width:0%; display:none;">
+                        <input type="hidden"   name="ApprovalList[${rowIndex}].Proposal_ID" value="${proposalId}" />
+                        ${proposalId}
+                    </td>
+                    <td style="width:90%;">
+                        <input type="text" readonly style="width:95%;" name="ApprovalList[${rowIndex}].Proposal_Details" value="${proposalDetails}" />
+                    </td>
+                    <td>
+                        <button type="button" class="btn_delete btn_deleterow">Delete</button>
+                    </td>
+                </tr>
+            `;
+
+            $('#tbl_ApprovalList tbody').append(newRow);
+            rowIndex++;
+
+            // Clear input fields
+            $('#Proposal_Id').val('');
+            $('#Approval_Details').val('');
+        });
+    });
+
+
+    $(document).on('click', '.btn_deleterow', function () {
+        $(this).closest('tr').remove();
+        reindexApprovalRows(); // Recalculate indices after deletion
+    });
+
+
+
+    function reindexApprovalRows() {
+        $('#tbl_ApprovalList tbody tr').each(function (index) {
+            $(this).find('input[name^="ApprovalList"]').each(function () {
+                const name = $(this).attr('name');
+                const newName = name.replace(/\[\d+\]/, `[${index}]`);
+                $(this).attr('name', newName);
+            });
+        });
+    }
+
+
+</script>
 
 
 
