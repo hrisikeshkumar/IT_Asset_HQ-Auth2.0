@@ -47,6 +47,17 @@
 
                 </td>
             </tr>
+             <tr>
+                <td style="width:25%; height:50px;">
+                    Purchase Order 
+                </td>
+                <td style="width:75%;" colspan="3">
+
+                    @Html.HiddenFor(x => x.PO_Id)
+                    @Html.TextBoxFor(x => x.PO_No, new { @class = " form-rounded",  @style = " width :95%; " })
+
+                </td>
+            </tr>
             <tr>
                 <td style="width:25%;">
                     Asset Serial No.
@@ -151,6 +162,16 @@
         });
     });
 </script>
+
+
+
+
+
+@* ------------------------------------------------------ AutoComplete PO -------------------------------------------------------------- *@
+
+<link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css" rel="Stylesheet" type="text/css" />
+
+<script src="~/js/AutoComplete_PO.js"></script>
 
 
 

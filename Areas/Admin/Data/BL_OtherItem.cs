@@ -66,6 +66,8 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     BL_data.PO_No = Convert.ToString(dr["PO_No"]);
 
+                    BL_data.PO_Id = Convert.ToString(dr["PO_Id"]);
+
                     if (dr["PO_Date"] != DBNull.Value)
                         BL_data.PO_Date = Convert.ToDateTime(dr["PO_Date"]);
 
@@ -109,10 +111,10 @@ namespace IT_Hardware.Areas.Admin.Data
                     SqlParameter Asset_Make_Id = new SqlParameter("@Item_Model_id", Data.Item_Model_id);
                     cmd.Parameters.Add(Asset_Make_Id);
 
-                SqlParameter sql_PO_Id = new SqlParameter("@PO_Id", Data.PO_Id);
-                cmd.Parameters.Add(sql_PO_Id);
+                    SqlParameter sql_PO_Id = new SqlParameter("@PO_Id", Data.PO_Id);
+                    cmd.Parameters.Add(sql_PO_Id);
 
-                SqlParameter Asset_SL_No = new SqlParameter("@Item_serial_No", Data.Item_serial_No);
+                    SqlParameter Asset_SL_No = new SqlParameter("@Item_serial_No", Data.Item_serial_No);
                     cmd.Parameters.Add(Asset_SL_No);
 
                     SqlParameter Proc_Date = new SqlParameter("@Proc_Date", Data.Proc_date);
@@ -184,8 +186,9 @@ namespace IT_Hardware.Areas.Admin.Data
                         Data.Item_id = Convert.ToString(dt_Comuter.Rows[0]["Item_Id"]);
                         Data.Item_Make_id = Convert.ToString(dt_Comuter.Rows[0]["Make"]);
                         Data.Item_Model_id = Convert.ToString(dt_Comuter.Rows[0]["Item_MakeId"]);
-                    Data.PO_Id = Convert.ToString(dt_Comuter.Rows[0]["PO_Id"]);
-                    Data.Item_serial_No = Convert.ToString(dt_Comuter.Rows[0]["Item_SlNo"]);
+                        Data.PO_Id = Convert.ToString(dt_Comuter.Rows[0]["PO_Id"]);
+                        Data.PO_No = Convert.ToString(dt_Comuter.Rows[0]["PO_No"]);
+                        Data.Item_serial_No = Convert.ToString(dt_Comuter.Rows[0]["Item_SlNo"]);
                         Data.Proc_date = Convert.ToDateTime(dt_Comuter.Rows[0]["Proc_Date"]).Date;
                         Data.Warnt_end_dt = Convert.ToDateTime(dt_Comuter.Rows[0]["Warnt_end_DT"]).Date;
                         Data.price = Convert.ToInt32(dt_Comuter.Rows[0]["Asset_Price"]);

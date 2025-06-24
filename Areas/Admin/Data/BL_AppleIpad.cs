@@ -67,6 +67,8 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     BL_data.PO_No = Convert.ToString(dr["PO_No"]);
 
+                    BL_data.PO_Id = Convert.ToString(dr["PO_Id"]);
+
                     if (dr["PO_Date"] != DBNull.Value)
                         BL_data.PO_Date = Convert.ToDateTime(dr["PO_Date"]);
 
@@ -180,6 +182,7 @@ namespace IT_Hardware.Areas.Admin.Data
                     {
                         Data.Item_id = Convert.ToString(dt_Comuter.Rows[0]["Item_Id"]);
                         Data.PO_Id = Convert.ToString(dt_Comuter.Rows[0]["PO_Id"]);
+                        Data.PO_No = Convert.ToString(dt_Comuter.Rows[0]["PO_No"]);
                         Data.Item_Make_id = Convert.ToString(dt_Comuter.Rows[0]["Make"]);
                         Data.Item_Model_id = Convert.ToString(dt_Comuter.Rows[0]["Item_MakeId"]);
                         Data.Item_serial_No = Convert.ToString(dt_Comuter.Rows[0]["Item_SlNo"]);
