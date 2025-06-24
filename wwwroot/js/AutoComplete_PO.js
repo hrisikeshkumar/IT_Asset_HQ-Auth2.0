@@ -1,9 +1,13 @@
 ﻿$(function(){
-
+    
     $('#PO_No').autocomplete({
+
+        //var URL = $(this).attr('url');
         source: function (request, response) {
+            //var URL = '@Url.Action("AutoComplete_FindPO", "Computer")';
             $.ajax({
                 url: "@Url.Action("AutoComplete_FindPO", "Computer")",
+                url: URL,
                 data: { input: request.term },
                 dataType: "json",
                 type: "POST",
