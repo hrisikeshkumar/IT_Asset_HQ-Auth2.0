@@ -7,6 +7,7 @@ using IT_Hardware.Infra;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Data.SqlClient;
+using DocumentFormat.OpenXml.Office2013.PowerPoint.Roaming;
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
@@ -86,7 +87,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
                         //get file extension
                         FileInfo fileInfo = new FileInfo(PO_Data.File_PO.FileName);
-                        string fileName = PO_File_Name + fileInfo.Extension;
+                        string fileName = PO_File_Name;
 
                         string fileNameWithPath = Path.Combine(path, fileName);
 
@@ -217,6 +218,87 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
+        [HttpPost]
+        public JsonResult Upload_POFile()
+        {
+            string PO_Id = Request.Form["PO_Id"].ToString();
+            string PO_FileId = Request.Form["PO_File_Id"].ToString();
+            IFormFile postedFile = Request.Form.Files[0];
+            string ext = System.IO.Path.GetExtension(postedFile.FileName);
+            string PO_FileName = postedFile.FileName;
+            PO_FileId.Replace("/","-");
+            PO_FileId.Replace("\\", "-");
+            Dictionary<string, string> retval = new Dictionary<string, string>();
+            
+
+            if (ext != ".pdf")
+            {
+                retval.Add("status", "0");             
+                return Json(retval);
+            }
+
+            try
+            {
+                if (postedFile != null)
+                {
+                    int status = 0;
+                    using (SqlConnection con = new DBConnection().con)
+                    {
+                        string query = "update PO_Table set PO_File_Id=@PO_FileId , PO_File_Name=@PO_FileName , User_Id=@UserId, Create_Date=getdate() where LTRIM(RTRIM(PO_id))=@PO_Id";
+                        SqlCommand cmd = new SqlCommand(query);
+
+                        cmd.Connection = con;
+                           
+                        con.Open();
+
+
+                        cmd.Parameters.Clear();
+                        cmd.CommandText = query;
+
+                        cmd.Parameters.AddWithValue("@PO_FileId", PO_FileId);
+                        cmd.Parameters.AddWithValue("@PO_FileName", PO_FileName);
+                        cmd.Parameters.AddWithValue("@PO_Id", PO_Id.Trim());
+                        cmd.Parameters.AddWithValue("@UserId", HttpContext.User.Identity.Name.ToString());
+
+                        status = Convert.ToInt32(cmd.ExecuteNonQuery());
+
+
+                        con.Close();
+                    }
+
+                    string wwwPath = this.Environment.WebRootPath;
+                    string contentPath = this.Environment.ContentRootPath;
+
+                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/HQ/PO/");
+                   
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+
+                    using (FileStream stream = new FileStream(Path.Combine(path, PO_FileId.ToString()), FileMode.Create))
+                    {
+                        postedFile.CopyTo(stream);
+                    }
+
+
+                    if (status < 1)
+                    {
+                        retval.Add("status", "0");
+                    }
+                    else { retval.Add("status", "1"); }
+
+                  
+                }
+
+            }
+            catch (Exception ex) {
+                retval.Add("status", "-1");
+            }
+
+            return Json(retval);
+        }
+
 
         public ActionResult Delete_PO(Mod_Vendor Get_Data, string id)
         {
@@ -282,7 +364,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             return Json(list);
         }
-
 
     }
 }
