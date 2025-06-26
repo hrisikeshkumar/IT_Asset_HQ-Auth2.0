@@ -160,15 +160,16 @@
                                 @{
                                     if (Model.PO_File_Id != "")
                                     {
-                                      <table id="Files_Grid" style="width:100%;">
+                                      <table id="tbl_File_PO" style="width:100%;">
                                         <tr>
-                                            <td style="width:50%; font-weight:bold">File Name</td>
+                                            <td style="width:75%; font-weight:bold">File Name</td>
                                             <td style="width: 25%; font-weight: bold"> Download</td>
                                         </tr>
                                         <tr>                                           
                                             <td>                                               
-                                                    @Html.TextBoxFor(x => x.PO_File_Name, new { @style = " width :95%; ",  @readonly = "readonly" })
-                                                    @Html.HiddenFor(x => x.PO_File_Id)
+                                                 
+                                                    <p>@Model.PO_File_Name </p>
+                                                   <input type="hidden" id="PO_File_Id" name="PO_File_Id" value="@Model.PO_File_Id">
                                             </td>
                                             <td>
                                                    <input type='submit' value='Download' class='cssFiledownload btn_download' id='@Model.PO_File_Id' />
@@ -315,7 +316,7 @@ $(function () {
 
                 var fileUpload = $("#FileUpload_Id").get(0);
                 var files = fileUpload.files;
-                var filename = fileUpload.name;
+                var filename = files[0].name;
                 var fileId = $("#PO_No").val() +"-"+ $("#PO_Date").val()+ ".pdf";
 
                 // Create FormData object
@@ -338,14 +339,22 @@ $(function () {
                     processData: false, // Not to process data
                     cache: false,
                     success: function (response) {
-                        if (response.key == '') 
+                        if (response != null) 
                         {
-                            if(response>0)
+                            if(response.status >0)
                             {
-                                // $('#PO_id').val();
-                                // $('#PO_id').val()
-                                alert("File Uploaded Successfully"); 
+                                $("#tbl_File_PO TBODY TR").remove();
+                                var markup ="<tr> <td style='width:75%; font-weight:bold'>File Name</td> <td style='width: 25%; font-weight: bold'> Download</td></tr>";
+                                markup= markup+" <tr>  <td>  <p> "+ filename +" </p> <input type='hidden' id='PO_File_Id' name='PO_File_Id' value="+ fileId +"> </td> ";
+                                markup= markup+"<td> <input type='submit' value='Download' class='cssFiledownload btn_download' id='"+ fileId +"' /> </td></tr> ";
+                                
+                                $("#tbl_File_PO").append(markup);
 
+                                alert("File Uploaded Successfully"); 
+                            }
+                            else
+                            {
+                                alert("File not Uploaded"); 
                             }
                         }
                     },

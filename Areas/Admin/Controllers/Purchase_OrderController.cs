@@ -226,8 +226,8 @@ namespace IT_Hardware.Areas.Admin.Controllers
             IFormFile postedFile = Request.Form.Files[0];
             string ext = System.IO.Path.GetExtension(postedFile.FileName);
             string PO_FileName = postedFile.FileName;
-            PO_FileId.Replace("/","-");
-            PO_FileId.Replace("\\", "-");
+            PO_FileId=PO_FileId.Replace("/","-");
+            PO_FileId=PO_FileId.Replace("\\", "-");
             Dictionary<string, string> retval = new Dictionary<string, string>();
             
 
