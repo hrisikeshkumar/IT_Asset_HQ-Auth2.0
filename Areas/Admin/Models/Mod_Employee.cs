@@ -50,8 +50,10 @@ namespace IT_Hardware.Areas.Admin.Models
     {
         public string? Designation_Id { get; set; }
         [Required(ErrorMessage = "Name is Required")]
+        public string? Designation_Type { get; set; }
         public string? Designation_Name { get; set; }
         public string? Designation_MicrosoftID { get; set; }
+        public List<SelectListItem>? Designation_Type_List { get; set; }
         public string? UserId { get; set; }
     }
 

@@ -104,8 +104,6 @@ namespace IT_Hardware.Areas.Admin.Data
 
             SelectListItem Initiated = new SelectListItem("Initiated", "-1");
             Value.Add(Initiated);
-            SelectListItem Pending = new SelectListItem("Pending", "0");
-            Value.Add(Pending);
             SelectListItem Note = new SelectListItem("Note Forwarded", "1");
             Value.Add(Note);
             SelectListItem Approved = new SelectListItem("Approved", "2");
@@ -113,8 +111,10 @@ namespace IT_Hardware.Areas.Admin.Data
             SelectListItem PurchaseOrder = new SelectListItem("Purchase Order Issued", "3");
             Value.Add(PurchaseOrder);          
             SelectListItem Item = new SelectListItem("Item Received", "4");
-            Value.Add(Item);
-            SelectListItem Bill = new SelectListItem("Bill Processed", "5");
+            Value.Add(Item);           
+            SelectListItem SancOrder = new SelectListItem("Sanction Order Issued", "5");
+            Value.Add(SancOrder);
+            SelectListItem Bill = new SelectListItem("Bill Processed", "6");
             Value.Add(Bill);
             SelectListItem Hold = new SelectListItem("Hold", "98");
             Value.Add(Hold);

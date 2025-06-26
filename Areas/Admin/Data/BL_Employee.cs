@@ -393,9 +393,8 @@ namespace IT_Hardware.Areas.Admin.Data
                     mod_data = new Mod_Designation();
 
                     mod_data.Designation_Id = Convert.ToString(dr["ID"]);
-
+                    mod_data.Designation_Type = Convert.ToString(dr["Type"]);
                     mod_data.Designation_Name = Convert.ToString(dr["Name"]);
-
                     mod_data.Designation_MicrosoftID = Convert.ToString(dr["MicrosoftID"]);
 
                     data.Add(mod_data);
@@ -427,15 +426,18 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 if (type == "Update_Designation" || type == "Delete_Designation")
                 {
-                    SqlParameter Department_Id = new SqlParameter("@Emp_Unique_Id", Data.Designation_Id);
-                    cmd.Parameters.Add(Department_Id);
+                    SqlParameter Designation_Id = new SqlParameter("@Emp_Unique_Id", Data.Designation_Id);
+                    cmd.Parameters.Add(Designation_Id);
                 }
 
-                SqlParameter Department_Name = new SqlParameter("@Emp_Name", Data.Designation_Name);
-                cmd.Parameters.Add(Department_Name);
+                SqlParameter Designation_Name = new SqlParameter("@Emp_Name", Data.Designation_Name);
+                cmd.Parameters.Add(Designation_Name);
 
-                SqlParameter Department_MicrosoftID = new SqlParameter("@Emp_Designation", Data.Designation_MicrosoftID);
-                cmd.Parameters.Add(Department_MicrosoftID);
+                SqlParameter Designation_Type = new SqlParameter("@Emp_Type", Data.Designation_Type);
+                cmd.Parameters.Add(Designation_Type);
+
+                SqlParameter Designation_MicrosoftID = new SqlParameter("@Emp_Designation", Data.Designation_MicrosoftID);
+                cmd.Parameters.Add(Designation_MicrosoftID);
 
 
                 SqlParameter User_Id = new SqlParameter("@Create_Usr_Id", Data.UserId);
@@ -444,8 +446,6 @@ namespace IT_Hardware.Areas.Admin.Data
                 con.Open();
 
                 status = cmd.ExecuteNonQuery();
-
-
 
             }
             catch (Exception ex) { status = -1; }
@@ -498,218 +498,101 @@ namespace IT_Hardware.Areas.Admin.Data
 
         //----------------------------------------------------  Bind Data -------------------------------------------------------
 
-        public List<SelectListItem> Bind_Designation(string Emp_Type)
+        public List<SelectListItem> Bind_Designation(string Type)
         {
-            List<SelectListItem> Emp_Desig = new List<SelectListItem>();
+            List<SelectListItem> Designation_List = new List<SelectListItem>();
 
-            SelectListItem ListItem;
-
-            if (Emp_Type =="2")
+            try
             {
-                ListItem = new SelectListItem();
-                ListItem.Value = "201";
-                ListItem.Text = "Casual";
-                Emp_Desig.Add(ListItem);
+                DataTable dt_Comuter;
 
-                ListItem = new SelectListItem();
-                ListItem.Value = "202";
-                ListItem.Text = "Contractual";
-                Emp_Desig.Add(ListItem);
+                SqlConnection con = new DBConnection().con;
+
+
+                using (SqlCommand cmd = new SqlCommand("sp_Employee"))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = con;
+                    SqlParameter sqlP_type = new SqlParameter("@Type", "Get_Designation_DropDown");
+                    cmd.Parameters.Add(sqlP_type);
+                    SqlParameter sqlP_Desigtype = new SqlParameter("@Emp_Type", Type);
+                    cmd.Parameters.Add(sqlP_Desigtype);
+
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        sda.SelectCommand = cmd;
+                        using (DataTable dt = new DataTable())
+                        {
+                            sda.Fill(dt);
+                            dt_Comuter = dt;
+                        }
+                    }
+                }
+
+
+                foreach (DataRow dr in dt_Comuter.Rows)
+                {
+                    SelectListItem val = new SelectListItem();
+
+                    val.Value = Convert.ToString(dr["Val"]);
+                    val.Text = Convert.ToString(dr["Text"]);
+
+                    Designation_List.Add(val);
+                }
 
             }
-            else if (Emp_Type == "1")
-            {
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "1";
-                ListItem.Text = "President";
-                Emp_Desig.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "2";
-                ListItem.Text = "Secretary";
-                Emp_Desig.Add(ListItem);
+            catch (Exception ex) { }
 
 
-                ListItem = new SelectListItem();
-                ListItem.Value = "3";
-                ListItem.Text = "Joint Secretary(SG)";
-                Emp_Desig.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "4";
-                ListItem.Text = "Joint Secretary";
-                Emp_Desig.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "5";
-                ListItem.Text = "Director";
-                Emp_Desig.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "6";
-                ListItem.Text = "Joint Director";
-                Emp_Desig.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "7";
-                ListItem.Text = "Deputy Director";
-                Emp_Desig.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "8";
-                ListItem.Text = "Assistant Director";
-                Emp_Desig.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "9";
-                ListItem.Text = "Executive All";
-                Emp_Desig.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "10";
-                ListItem.Text = "Senior Executive Assistant";
-                Emp_Desig.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "11";
-                ListItem.Text = "Executive Assistant";
-                Emp_Desig.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "12";
-                ListItem.Text = "Junior Executive Assistant";
-                Emp_Desig.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "13";
-                ListItem.Text = "Senior Office Assistant";
-                Emp_Desig.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "14";
-                ListItem.Text = "Office Assistant";
-                Emp_Desig.Add(ListItem);
-
-            }
-            else
-            {
-                ListItem = new SelectListItem();
-                ListItem.Value = null;
-                ListItem.Text = "Please Select a Type";
-                Emp_Desig.Add(ListItem);
-
-            }
-
-
-            return Emp_Desig;
+            return Designation_List;
         }
 
         public List<SelectListItem> Bind_Dept()
         {
-            List<SelectListItem> Emp_Dept = new List<SelectListItem>();
+            List<SelectListItem> Dept_List = new List<SelectListItem>();
 
-            SelectListItem ListItem;
+            try
+            {
+                DataTable dt_Comuter;
 
-                ListItem = new SelectListItem();
-                ListItem.Value = "101";
-                ListItem.Text = "President Office";
-            Emp_Dept.Add(ListItem);
+                SqlConnection con = new DBConnection().con;
 
-                ListItem = new SelectListItem();
-                ListItem.Value = "102";
-                ListItem.Text = "Secretary Office";
-            Emp_Dept.Add(ListItem);
+                using (SqlCommand cmd = new SqlCommand("sp_Employee"))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = con;
+                    SqlParameter sqlP_type = new SqlParameter("@Type", "Get_Dept_DropDown");
+                    cmd.Parameters.Add(sqlP_type);
 
-            
-                ListItem = new SelectListItem();
-                ListItem.Value = "103";
-                ListItem.Text = "HR";
-            Emp_Dept.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "104";
-                ListItem.Text = "PFP";
-            Emp_Dept.Add(ListItem);
-
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "105";
-                ListItem.Text = "PMQ";
-            Emp_Dept.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "106";
-                ListItem.Text = "LAW";
-            Emp_Dept.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "107";
-                ListItem.Text = "PRCC";
-            Emp_Dept.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "108";
-                ListItem.Text = "Admin";
-            Emp_Dept.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "108";
-                ListItem.Text = "Infra";
-            Emp_Dept.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "109";
-                ListItem.Text = "Student Service";
-            Emp_Dept.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "110";
-                ListItem.Text = "Training";
-            Emp_Dept.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "111";
-                ListItem.Text = "Membership";
-            Emp_Dept.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "112";
-                ListItem.Text = "IIP";
-            Emp_Dept.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "113";
-                ListItem.Text = "IT";
-            Emp_Dept.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "114";
-                ListItem.Text = "Purchase";
-            Emp_Dept.Add(ListItem);
-
-                ListItem = new SelectListItem();
-                ListItem.Value = "115";
-                ListItem.Text = "F&A";
-            Emp_Dept.Add(ListItem);
-
-            ListItem = new SelectListItem();
-            ListItem.Value = "116";
-            ListItem.Text = "Academics";
-            Emp_Dept.Add(ListItem);
-
-            ListItem = new SelectListItem();
-            ListItem.Value = "117";
-            ListItem.Text = "Exam";
-            Emp_Dept.Add(ListItem);
-
-            ListItem = new SelectListItem();
-            ListItem.Value = "118";
-            ListItem.Text = "Discipline";
-            Emp_Dept.Add(ListItem);
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        sda.SelectCommand = cmd;
+                        using (DataTable dt = new DataTable())
+                        {
+                            sda.Fill(dt);
+                            dt_Comuter = dt;
+                        }
+                    }
+                }
 
 
-            return Emp_Dept;
+                foreach (DataRow dr in dt_Comuter.Rows)
+                {
+
+                    SelectListItem val = new SelectListItem();
+
+                    val.Value = Convert.ToString(dr["Val"]);
+                    val.Text = Convert.ToString(dr["Text"]);
+
+                    Dept_List.Add(val);
+                }
+
+            }
+            catch (Exception ex) { }
+
+
+
+            return Dept_List;
         }
 
     }

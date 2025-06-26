@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using IT_Hardware.Areas.Admin.Data;
 using IT_Hardware.Areas.Admin.Models;
 using IT_Hardware.Infra;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IT_Hardware.Areas.Admin.Controllers
 {
@@ -249,6 +250,14 @@ namespace IT_Hardware.Areas.Admin.Controllers
             BL_Employee data = new BL_Employee();
 
             Mod_Designation Mod_Designation = new Mod_Designation();
+
+            Mod_Designation.Designation_Type_List = new List<SelectListItem> { 
+            
+                new SelectListItem { Value="-1" , Text="Please Select"},
+                new SelectListItem { Value="1" , Text="Permanent"},
+                new SelectListItem { Value="2" , Text="Contractual"}
+
+            };
 
             return View(Mod_Designation);
         }

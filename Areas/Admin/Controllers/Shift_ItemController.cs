@@ -26,7 +26,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             ViewBag.Message = Message;
 
             return View();
-
         }
 
 
@@ -49,7 +48,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
                     }
                     else
                     {
-
                         TempData["Message"] = String.Format("Data save successfully");
                     }
                 }
