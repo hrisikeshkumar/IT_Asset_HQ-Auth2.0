@@ -51,29 +51,38 @@
             <td colspan="2">
                 <table style="width:100%">
                     <tr>
-                        <th>
-                            Budget Name
+                        <th style="text-align: center; width: 60%;">
+                            Budget Head Name
                         </th>
-                        <th>
-                            Total Budget Amount
+                        <th style="text-align: right; width: 12%;">
+                            Total Budget Approved
                         </th>
-                        <th style="text-align: center;"> Action </th>
+                        <th style="text-align: right; width: 11%;">
+                            Uses for  <br> Budget
+                        </th>
+                        <th style="text-align: right; width: 11%;">
+                            Payment <br> Processed
+                        </th>
+                        <th style="text-align: center; width: 6%; vertical-align: text-top;"> Action  </th>
                     </tr>
 
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>
+                            <td style="text-align: left;">
                                 @Html.DisplayFor(modelItem => item.Budget_Name)
                             </td>
                             <td style="text-align: right;">
                                 @Html.DisplayFor(modelItem => item.Total_Budget_Amount)
                             </td>
+                             <td style="text-align: right;">
+                                @Html.DisplayFor(modelItem => item.Utilized_for_Budget)
+                            </td>
+                             <td style="text-align: right;">
+                                @Html.DisplayFor(modelItem => item.Utilized_for_Payment)
+                            </td>
                             <td style="text-align: center;">
-
-                                @Html.ActionLink("Edit", "Edit_Budget_Head", new { id = item.Budget_Head_Id }) |
-                                @Html.ActionLink("Details", "Get_Budget_Head", new { id = item.Budget_Head_Id }) |
-                                @Html.ActionLink("Delete", "Delete_Budget_Head", new { id = item.Budget_Head_Id })
+                                @Html.ActionLink("Edit", "Edit_Budget_Head", new { id = item.Budget_Head_Id }) 
                             </td>
                         </tr>
                     }

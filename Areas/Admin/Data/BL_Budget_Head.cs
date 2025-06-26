@@ -53,6 +53,10 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     BL_data.Total_Budget_Amount = Convert.ToString(dr["Total_Budget_Amount"]);
 
+                    BL_data.Utilized_for_Budget = Convert.ToString(dr["Budget"]);
+
+                    BL_data.Utilized_for_Payment = Convert.ToString(dr["Payment"]);
+
                     current_data.Add(BL_data);
                 }
 
