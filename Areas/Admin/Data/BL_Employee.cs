@@ -56,11 +56,11 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     BL_data.Emp_Name = Convert.ToString(dr["Emp_Name"]);
 
-                    BL_data.Emp_Designation = Convert.ToString(dr["Emp_Designation"]);
+                    BL_data.Emp_Designation_Name = Convert.ToString(dr["Emp_Designation"]);
 
                     BL_data.Emp_Type = Convert.ToString(dr["Emp_Type"]);
 
-                    BL_data.Emp_Dept = Convert.ToString(dr["Emp_Dept"]);
+                    BL_data.Emp_Dept_Name = Convert.ToString(dr["Emp_Dept"]);
 
                     BL_data.Location = Convert.ToString(dr["Emp_Location"]);
 

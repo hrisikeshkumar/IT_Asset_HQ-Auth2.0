@@ -22,11 +22,14 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Environment = _environment;
         }
 
-        public ActionResult Admin_Dashboard(string PO_Id)
+        public ActionResult Admin_Dashboard(string Id, string type)
         {
 
-            if (PO_Id is null)
-                PO_Id = string.Empty;
+            if (Id is null)
+                Id = string.Empty;
+
+            if (type is null)
+                type = string.Empty;
 
             BL_Admin_DashB B_Layer = new BL_Admin_DashB();
 
@@ -40,23 +43,37 @@ namespace IT_Hardware.Areas.Admin.Controllers
             /* ---------------------Invoices  ------------------------------*/
             
             string sqlTpye = string.Empty;
-            if (PO_Id != string.Empty )
+            if (Id != string.Empty && type != string.Empty)
             {
-                sqlTpye = "Get_Bill_by_PO";
-                ViewBag.FilterBy_PO = "Yes";     
+                if (type=="PO")
+                {
+                    sqlTpye = "Get_Bill_by_PO";
+                    ViewBag.Filter = "Yes";
+                }
+                else
+                {
+                    sqlTpye = "Get_Bill_by_Vender";
+                    ViewBag.Filter = "Yes";
+                } 
             }
             else
             {
                 sqlTpye = "Get_Bill_List";
-                ViewBag.FilterBy_PO = "No";
+                ViewBag.Filter = "No";
             }
+
+
             string PO_No = string.Empty;
-            mod_Data.List_Bill_Process = B_Layer.Get_List_Bills(PO_Id, sqlTpye, out PO_No);
+            mod_Data.List_Bill_Process = B_Layer.Get_List_Bills(Id, sqlTpye, out PO_No);
 
             /* ---------------------- Invoices ------------------------------*/
 
-
-            ViewBag.PO_No = PO_No;
+            if (type == "PO")
+            {
+                ViewBag.PO_No = PO_No;
+            }
+           
+                
             return View(mod_Data);
         }
 
@@ -83,7 +100,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
         
         //-----------------------------------         Proposal Details       --------------------------------------------------
-
         public async Task<ActionResult> Edit_proposal(Mod_Admin_dashB Proposal)
         {
             Mod_Admin_dashB mod_Data = new Mod_Admin_dashB();
@@ -149,6 +165,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
+        [RequestSizeLimit(100 * 1024 * 1024)]
         public JsonResult AddWorkFlow(string ProposalId, WorkFlow data)
         {
             BL_Admin_DashB mod = new BL_Admin_DashB();
@@ -246,6 +263,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
         [HttpPost]
+        [RequestSizeLimit(100 * 1024 * 1024)]
         public JsonResult Upload_FinalApprovalFile()
         {
             string Proposal_Id = Request.Form["Proposal_Id"].ToString();
@@ -413,7 +431,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return Json(B_Layer.Get_Dashboard_Grid(Input, dataType, Page_No));
         }
 
-
         public JsonResult SaveStatus(string Proposal_Id, int Status )
         {
             BL_Admin_DashB B_Layer = new BL_Admin_DashB();
@@ -422,7 +439,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
           
             return Json(B_Layer.Update_proposal_Status(Proposal_Id, Status, HttpContext.User.Identity.Name.ToString()));
         }
-
 
 
         /* Own Authentication

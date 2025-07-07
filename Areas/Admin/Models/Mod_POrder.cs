@@ -30,6 +30,7 @@ namespace IT_Hardware.Areas.Admin.Models
         [Required]
         public string? PO_Subject { get; set; }
         public string? PO_File_Name { get; set; }
+        public string? Invoice_Processed { get; set; }
         public int? PO_Amount_Left { get; set; }
         public string? PO_File_Id { get; set; }
         public string? Budget_Head_Id { get; set; }
@@ -44,15 +45,14 @@ namespace IT_Hardware.Areas.Admin.Models
         public string? Verfd_status { get; set; }
         public IFormFile? File_PO { get; set; }
 
-        public List<Approval_PO> ApprovalList { get; set; } 
-
+        public List<Approval_PO>? ApprovalList { get; set; } 
 
     }
 
     public class Approval_PO
     {
-        public string Proposal_ID { get; set; }
-        public string Proposal_Details { get; set; }
+        public string? Proposal_ID { get; set; }
+        public string? Proposal_Details { get; set; }
     }
 
 }

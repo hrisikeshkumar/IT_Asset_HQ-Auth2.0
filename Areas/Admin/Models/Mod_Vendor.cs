@@ -13,6 +13,10 @@ namespace IT_Hardware.Areas.Admin.Models
 
         [Required]
         public string Vendor_Addr { get; set; }
+
+        public string PO_Issued { get; set; }
+
+        public string Invoice_Processed { get; set; }
         public string? Remarks { get; set; }
         public string? Create_usr_id { get; set; }
         public DateTime? Create_date { get; set; }

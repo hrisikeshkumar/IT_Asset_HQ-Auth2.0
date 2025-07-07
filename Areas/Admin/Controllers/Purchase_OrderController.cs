@@ -25,10 +25,26 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult PO_Details(string Message)
+        public ActionResult PO_Details(string Message, string Vender_Id)
         {
+            if (Vender_Id is null)
+                Vender_Id = string.Empty;
+
             BL_Porder objPO = new BL_Porder();
-            List<Mod_POrder> pc_List = objPO.Get_All_PO_Data();
+
+            string sqlTpye = string.Empty;
+            if (Vender_Id != string.Empty)
+            {
+                sqlTpye = "Get_PO_by_Vender";
+                ViewBag.FilterBy_Vender = "Yes";
+            }
+            else
+            {
+                sqlTpye = "Get_All_PO";
+                ViewBag.FilterBy_Vender = "No";
+            }
+
+            List<Mod_POrder> pc_List = objPO.Get_All_PO_Data(sqlTpye, Vender_Id);
 
             return View( pc_List);
         }
@@ -47,8 +63,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return View( mod_PO);
         }
 
-
-        
+       
         public ActionResult PO_Create_Post(Mod_POrder PO_Data)
         {
             string Message = "";
@@ -145,60 +160,23 @@ namespace IT_Hardware.Areas.Admin.Controllers
             string Message = "";
             try
             {
-
-                if (PO_Data.File_PO != null)
-                {
-                    if (Path.GetExtension(PO_Data.File_PO.FileName) != ".pdf")
-                    {
-                        TempData["Message"] = String.Format("Only PDF files are accepted");
-                        return RedirectToAction("PO_Create_Item");
-                    }
-                }
-
                 PO_Data.Create_usr_id = HttpContext.User.Identity.Name;
                 string Vendor_Id = string.Empty;
                 if (ModelState.IsValid)
                 {
-
                     BL_Porder save_data = new BL_Porder();
 
                     int status = 0;
 
-                    if (PO_Data.File_PO != null)
-                    {
-                        PO_Data.PO_File_Name = "Y";
-                        status = save_data.Save_PO_data(PO_Data, "Update", "", out string PO_Id, out string PO_File_Name);
-
-                        string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/HQ/PO/");
-
-                        //create folder if not exist
-                        if (!Directory.Exists(path))
-                            Directory.CreateDirectory(path);
-
-                        //get file extension
-                        FileInfo fileInfo = new FileInfo(PO_Data.File_PO.FileName);
-                        string fileName = PO_File_Name + fileInfo.Extension;
-
-                        string fileNameWithPath = Path.Combine(path, fileName);
-
-                        using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
-                        {
-                            PO_Data.File_PO.CopyTo(stream);
-                        }
-                    }
-                    else
-                    {
-                        PO_Data.PO_File_Name = "N";
-                        status = save_data.Save_PO_data(PO_Data, "Update", "", out string PO_Id, out string PO_File_Name);
-                    }
-
+                    PO_Data.PO_File_Name = "N";
+                    status = save_data.Save_PO_data(PO_Data, "Update", "", out string PO_Id, out string PO_File_Name);
+                                         
                     if (status > 0)
                     {
                         TempData["Message"] = String.Format("Data save successfully");
                     }
                     else
                     {
-
                         TempData["Message"] = String.Format("Data is not saved");
                     }
                 }
@@ -214,7 +192,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             }
 
-            return RedirectToAction("PO_Create_Item", "Purchase_Order");
+            return RedirectToAction("Edit_PO", "Purchase_Order", new { id= PO_Data.PO_id });
         }
 
 
@@ -339,6 +317,9 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
         public ContentResult Download(string fileName)
         {
+
+            fileName = fileName.Replace("/", "-");
+            fileName = fileName.Replace("\\", "-");
 
             string wwwPath = this.Environment.WebRootPath;
             string contentPath = this.Environment.ContentRootPath;

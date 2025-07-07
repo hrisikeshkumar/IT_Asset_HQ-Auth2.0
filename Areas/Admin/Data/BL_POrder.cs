@@ -9,7 +9,7 @@ namespace IT_Hardware.Areas.Admin.Data
 {
     public class BL_Porder
     {
-        public List<Mod_POrder> Get_All_PO_Data()
+        public List<Mod_POrder> Get_All_PO_Data(string type , string Vender_Id)
         {
 
             Mod_POrder BL_data;
@@ -24,10 +24,17 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 using (SqlCommand cmd = new SqlCommand("sp_POrder"))
                 {
-                    SqlParameter sqlP_type = new SqlParameter("@Type", "Get_List");
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection = con;
+
+                    SqlParameter sqlP_type = new SqlParameter("@Type", type);                    
                     cmd.Parameters.Add(sqlP_type);
+
+                    if (type == "Get_PO_by_Vender")
+                    {
+                        SqlParameter SqlVender_Id = new SqlParameter("@Vendor_id", Vender_Id);
+                        cmd.Parameters.Add(SqlVender_Id);
+                    }                 
 
                     using (SqlDataAdapter sda = new SqlDataAdapter())
                     {
@@ -50,6 +57,7 @@ namespace IT_Hardware.Areas.Admin.Data
                     BL_data.PO_End_Date =  Convert.ToDateTime( dr["PO_End_Date"]) ;
                     BL_data.PO_Amount_Left = Convert.ToInt32(dr["PO_Amount_Left"]);
                     BL_data.PO_Value = Convert.ToInt32(dr["PO_Value"]);
+                    BL_data.Invoice_Processed = Convert.ToString(dr["Invoice_Processed"]);
 
                     current_data.Add(BL_data);
                 }
@@ -121,16 +129,19 @@ namespace IT_Hardware.Areas.Admin.Data
                 DataTable Approval_Dt = new DataTable();
                 Approval_Dt.Columns.Add( new DataColumn("Proposal_ID"));
 
-                foreach (Approval_PO app in Data.ApprovalList)
+                if (Data.ApprovalList != null)
                 {
-                    DataRow dr = Approval_Dt.NewRow();
-                    dr["Proposal_ID"] = app.Proposal_ID;
-                    Approval_Dt.Rows.Add(dr);                  
-                }
-                Approval_Dt.AcceptChanges();
+                    foreach (Approval_PO app in Data.ApprovalList)
+                    {
+                        DataRow dr = Approval_Dt.NewRow();
+                        dr["Proposal_ID"] = app.Proposal_ID;
+                        Approval_Dt.Rows.Add(dr);
+                    }
+                    Approval_Dt.AcceptChanges();
 
-                SqlParameter ApprovalList = new SqlParameter("@ApprovalList", Approval_Dt);
-                cmd.Parameters.Add(ApprovalList);
+                    SqlParameter ApprovalList = new SqlParameter("@ApprovalList", Approval_Dt);
+                    cmd.Parameters.Add(ApprovalList);
+                }
 
                 SqlParameter User_Id = new SqlParameter("@Create_Usr_Id", Data.Create_usr_id);
                 cmd.Parameters.Add(User_Id);

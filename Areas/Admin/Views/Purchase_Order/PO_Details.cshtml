@@ -50,19 +50,22 @@
                         <th style="width: 10%; text-align: left; ">
                             PO No.
                         </th>
-                        <th style="width: 60%; text-align: center; ">
+                        <th style="width: 50%; text-align: left; ">
                             PO Details
                         </th>
                         <th style="width: 8%; text-align: center; ">
                             PO Exp Date
                         </th>
-                        <th style="width: 10%; text-align: center; ">
+                        <th style="width: 8%; text-align: right; ">
+                            PO Value
+                        </th>                        
+                        <th style="width: 8%; text-align: right; ">
+                            Invoice Processed
+                        </th>
+                        <th style="width: 8%; text-align: right; ">
                             Amount Left
                         </th>
-                        <th style="width: 6%; text-align: center; ">
-                            Invoice
-                        </th>
-                        <th style="width: 6%; text-align: center; "> Action </th>
+                        <th style="width: 8%; text-align: center; "> Action </th>
                     </tr>
 
                     @foreach (var item in Model)
@@ -71,19 +74,22 @@
                             <td style="width: 10%; text-align: left; ">
                                 @Html.DisplayFor(modelItem => item.PO_No)
                             </td>
-                            <td style="width: 60%; text-align: left; ">
+                            <td style="width: 50%; text-align: left; ">
                                 @Html.DisplayFor(modelItem => item.PO_Subject)
                             </td>
                             <td style="width: 8%; text-align: center; ">
                                 @Html.DisplayFor(modelItem => item.PO_End_Date)
                             </td>
-                            <td style="width: 10%; text-align: right; ">
+                            <td style="width: 8%; text-align: right; ">
+                                @Html.DisplayFor(modelItem => item.PO_Value)
+                            </td>                           
+                             <td  style="width: 8%; text-align: right; ">
+                                 @Html.ActionLink(item.Invoice_Processed, "Admin_Dashboard", "Admin_Dashboard", new { Id = item.PO_id , type="PO" })
+                            </td>
+                            <td style="width: 8%; text-align: right; ">
                                 @Html.DisplayFor(modelItem => item.PO_Amount_Left)
                             </td>
-                             <td  style="width: 6%; text-align: center; ">
-                                 @Html.ActionLink("Click", "Admin_Dashboard", "Admin_Dashboard", new { PO_Id = item.PO_id })
-                            </td>
-                            <td  style="width: 6%; text-align: center; ">
+                            <td  style="width: 8%; text-align: center; ">
                                 @Html.ActionLink("Edit", "Edit_PO", new { id = item.PO_id })
                             </td>
                         </tr>

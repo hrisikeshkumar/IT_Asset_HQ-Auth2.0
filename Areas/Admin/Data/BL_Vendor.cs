@@ -51,7 +51,9 @@ namespace IT_Hardware.Areas.Admin.Data
 
                         BL_data.Vendor_name = Convert.ToString(dr["Vendor_name"]);
 
-                        BL_data.Vendor_Addr = Convert.ToString(dr["Vendor_Address"]);
+                        BL_data.PO_Issued = Convert.ToString(dr["Total_PO"]);
+
+                        BL_data.Invoice_Processed = Convert.ToString(dr["Invoice_Processed"]);
 
                         current_data.Add(BL_data);
                     }
