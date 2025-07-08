@@ -12,6 +12,11 @@
 @*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>*@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+<style type="text/css">
+    .hideElement {
+        display: none;
+    }
+</style>
 
 <script src="~/customjs/edit_sla.js"></script>
 
@@ -147,7 +152,7 @@
                 <td style="width: 75%;" colspan="3">
                     <table style="width: 100%;">
                         <tr>
-                            <td style="width:100%;" colspan="3">
+                            <td style="width:100%;" colspan="3" class="DelPropFile">
                                 <input type="file" name="postedFile" id="FileUpload_Id" />
                                 <input type="submit" id="btnFileUpload" class="btn_download" value="Upload" />
                                 <progress id="fileProgress" style="display: none"></progress>
@@ -453,7 +458,6 @@ $(function () {
     });
 
 
-
     function reindexApprovalRows() {
         $('#tbl_ApprovalList tbody tr').each(function (index) {
             $(this).find('input[name^="ApprovalList"]').each(function () {
@@ -464,9 +468,17 @@ $(function () {
         });
     }
 
-
 </script>
 
 
 
-
+ <script type="text/javascript">  
+    $(document).ready() 
+    {
+        var SameUser =  "@ViewBag.SameUser" ;
+        if (SameUser  !="Yes")
+        {
+              $(".DelPropFile").addClass("hideElement");
+        }        
+    };
+</script>

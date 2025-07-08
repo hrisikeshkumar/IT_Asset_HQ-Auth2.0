@@ -225,12 +225,14 @@ namespace IT_Hardware.Areas.Admin.Data
                     
 
                     Data.Vendor_id = Convert.ToString(dt_PObyID.Rows[0]["Vendor_Id"]);
-                    Data.Remarks = Convert.ToString(dt_PObyID.Rows[0]["Remarks"]); 
-
+                    Data.Remarks = Convert.ToString(dt_PObyID.Rows[0]["Remarks"]);
+                    Data.Create_usr_id = Convert.ToString(dt_PObyID.Rows[0]["User_Id"]);
                 }
 
             }
             catch (Exception ex) { }
+             
+
 
             return Data;
         }

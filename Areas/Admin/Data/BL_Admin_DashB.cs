@@ -188,6 +188,9 @@ namespace IT_Hardware.Areas.Admin.Data
                     BL_data.Prop_detail.StatusId = Convert.ToInt32(DB_Proposal.Tables[0].Rows[0]["StatusId"]);
                     BL_data.Prop_detail.NoteLocation = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["NoteLocation"]);
 
+                    BL_data.Prop_detail.Update_UserId = Convert.ToString(DB_Proposal.Tables[0].Rows[0]["Create_User"]);
+
+
                     if (BL_data.Prop_detail.Status == "Completed")
                     {
                         BL_data.Prop_detail.NoteLocation = "";

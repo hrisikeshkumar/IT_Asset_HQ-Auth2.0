@@ -14,7 +14,7 @@
 
 <style type="text/css">
 
-    .hidetable {
+    .hideElement {
         display: none;
     }
 
@@ -161,9 +161,9 @@
                 <td style="width: 75%;" colspan="3">
                     <table style="width: 100%;">
                         <tr>
-                            <td style="width:100%;" colspan="3">
+                            <td style="width:100%;" colspan="3" class="DelPropFile">
                                 <input type="file" name="postedFile" id="FileUpload_Id" />
-                                <input type="submit" id="btnFileUpload" class="btn_download" value="Upload" />
+                                <input type="submit" id="btnFileUpload" class="btn_download " value="Upload" />
                                 <progress id="fileProgress" style="display: none"></progress>
                                 <span id="lblMessage" style="color: Green"></span>
                             </td>
@@ -187,8 +187,8 @@
                                             <td>
                                                 <input type='submit' value='Download' class='cssdownload btn_download' id='@item.File_Id' />
                                             </td>
-                                            <td>
-                                                <input type='submit' class='appDetails btn_delete' id='@item.File_Id' value='Delete' />
+                                            <td >
+                                                <input type='submit' class='appDetails btn_delete DelPropFile' id='@item.File_Id' value='Delete' />
                                             </td>
                                         </tr>
                                     }
@@ -469,7 +469,7 @@ $(function () {
 
                 $.ajax({
                     type: "POST",
-                    url: "@Url.Action("DeleteFile", "Admin_Dashboard")",
+                    url: "@Url.Action("DeleteFile_FinalApproval", "Admin_Dashboard")",
                     datatype: "Json",
                     data: { FileId: clickedBtnID, RefId: fileRefId },
                     success: function (response) {
@@ -632,3 +632,15 @@ $(function () {
 @*---------------------------------------------------------------------------------------------------------------*@
 
 
+<script type="text/javascript">  
+    $(document).ready() 
+    {
+        
+        var SameUser =  "@ViewBag.SameUser" ;
+        if (SameUser  !="Yes")
+        {
+              $(".DelPropFile").addClass("hideElement");
+        }
+        
+    };
+</script>

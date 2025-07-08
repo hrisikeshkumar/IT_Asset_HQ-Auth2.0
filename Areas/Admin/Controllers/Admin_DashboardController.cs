@@ -112,8 +112,17 @@ namespace IT_Hardware.Areas.Admin.Controllers
             //Other Information
             mod_Data.Prop_detail = await B_Layer.Get_Proposal_By_Id(mod_Data, Proposal.Prop_detail.Proposal_Id);
 
-            // WorkFlow Details
-            mod_Data.Prop_detail.WorkFlowList = B_Layer.GetWorkFlowList(Proposal.Prop_detail.Proposal_Id, HttpContext.User.Identity.Name.ToString().Trim());
+            if (HttpContext.User.Identity.Name.ToUpper().Trim() == mod_Data.Prop_detail.Update_UserId.ToUpper().Trim())
+            {
+                ViewBag.SameUser = "Yes";
+            }
+            else
+            {
+                ViewBag.SameUser = "No";
+            }
+
+                // WorkFlow Details
+                mod_Data.Prop_detail.WorkFlowList = B_Layer.GetWorkFlowList(Proposal.Prop_detail.Proposal_Id, HttpContext.User.Identity.Name.ToString().Trim());
 
             //Final Approval Files
             mod_Data.Prop_detail.Prop_Files = GetFinalApprovalFiles_By_Id(Proposal.Prop_detail.Proposal_Id);
@@ -351,7 +360,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
                 
                 using (SqlConnection con = new DBConnection().con)
                 {
-                    string query = "delete from Proposal_Files where LTRIM(RTRIM(Proposal_File_ID)) =LTRIM(RTRIM(@File_Id))";
+                    string query = "delete from Proposal_Files where LTRIM(RTRIM(FileName)) =LTRIM(RTRIM(@File_Id))";
                     using (SqlCommand cmd = new SqlCommand(query))
                     {
                         cmd.Connection = con;

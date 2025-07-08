@@ -150,6 +150,17 @@ namespace IT_Hardware.Areas.Admin.Controllers
             mod_PO.Vendor_List = data.Vendor_List();
             mod_PO.ApprovalList = data.GET_PO_Approval(id);
 
+
+            if (HttpContext.User.Identity.Name.ToUpper().Trim() == mod_PO.Create_usr_id.ToUpper().Trim())
+            {
+                ViewBag.SameUser = "Yes";
+            }
+            else
+            {
+                ViewBag.SameUser = "No";
+            }
+
+
             return View( mod_PO);
         }
 
