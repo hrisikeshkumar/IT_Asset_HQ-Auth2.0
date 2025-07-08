@@ -39,7 +39,6 @@
                         </td>
                         <td style="width:30%;">
                             @Html.DropDownListFor(x => x.Budget_Head_Id, new SelectList(string.Empty, "Value", "Text"), "Please select a Type", new { @class = " form-rounded", @style = " width :90%; " })
-
                         </td>
                     </tr>
                 </table>
@@ -50,7 +49,6 @@
             <td align="right" width="15%">
                 <h4>
                     @Html.ActionLink("Add New", "Budget_Uses_Create_Item", "Budget_Uses")
-
                 </h4>
             </td>
         </tr>
@@ -194,7 +192,8 @@
                         //$.each(response.Bud_Uses_List[i], function (Budget_Uses_Id, Budget_Name, Budget_Amount, Budget_Type ) {
                         $.each(response, function (key, val) {
                           
-                            var url = "<%: Url.Action("Edit_Budget_Uses", "Budget_Uses", new { id = " + val.budget_Uses_Id + " }) %>"
+                            var url = '@Url.Action("Edit_Budget_Uses", "Budget_Uses")' + '?id=' + val.budget_Uses_Id;
+
                             markup = "<tr><td> " + val.utilization_Details + " </td> " +
                                 "<td> " + val.budget_Amount + " </td> " +
                                 "<td> " + val.budget_Type + " </td> " +
