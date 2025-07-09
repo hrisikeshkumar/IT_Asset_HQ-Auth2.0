@@ -542,7 +542,7 @@
                                 if(Invoice_Info !='')
                                 {                  
                                     
-                                    var url = '@Url.Action("Admin_Dashboard", "Admin_Dashboard")' + '?PO_Id=' + Invoice_Info;
+                                    var url = '@Url.Action("Admin_Dashboard", "Admin_Dashboard")' + '?Id=' + Invoice_Info + '&type=PO';
 
                                     markup =  "<tr> <td  style='width: 100%; text-align: center; height: 25px; '  >  <a href='"+url+"' > View the Invoice processing documents against this Proposal</a>   </td>  </tr > ";
 
