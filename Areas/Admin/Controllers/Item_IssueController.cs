@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
 using IT_Hardware.Areas.Admin.Data;
 using IT_Hardware.Areas.Admin.Models;
 using IT_Hardware.Infra;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace IT_Hardware.Areas.Admin.Controllers
@@ -20,28 +21,37 @@ namespace IT_Hardware.Areas.Admin.Controllers
             Environment = _environment;
         }
 
-        public ActionResult Item_Issue_Details(string PO_Id)
+        public ActionResult Item_Issue_Details(string Id, string type)
         {
 
-            if (PO_Id is null)
-                PO_Id = string.Empty;
+            if (Id is null)
+                Id = string.Empty;
+
+            if (type is null)
+                type = string.Empty;
 
             ItemIssue_Mod model = new ItemIssue_Mod();
 
             BL_Item_Issue item = new BL_Item_Issue();
 
-            if (PO_Id != string.Empty)
+
+            string sqlTpye = string.Empty;
+            if (Id != string.Empty && type != string.Empty)
             {
-                model.Item_Issues = item.Get_Item_By_Sl(PO_Id, "POID_Wise");
+                if (type == "PO")
+                {
+                    model.Item_Issues = item.Get_Item_By_Sl(Id, "POID_Wise");
+                }
+                else
+                {
+                    model.Item_Issues = item.Get_Item_By_Sl(Id, "Vender_Wise");
+                }
             }
             else
             {
                 model.Item_Issues = item.Get_Item_IssueData();
             }
 
-
-
-                
 
             return View(model);
         }
@@ -225,7 +235,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
 
-        
         [HttpPost]
         public JsonResult Find_Item_Issue(string Item_Id)
         {

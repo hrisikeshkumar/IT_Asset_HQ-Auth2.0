@@ -57,12 +57,12 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 if (dt_Comuter.Rows.Count > 0)
                 {
-                    data.Invoice_Info = Convert.ToString(dt_Comuter.Rows[0]["Invoice_File"]);
+                    data.Invoice_Info = Convert.ToString(dt_Comuter.Rows[0]["Invoice_File_Id"]);
                     data.PO_Info = Convert.ToString(dt_Comuter.Rows[0]["PO_File"]);
-                    data.Approval_Info = Convert.ToString(dt_Comuter.Rows[0]["Proposal_File"]);
+                    data.Approval_Info = Convert.ToString(dt_Comuter.Rows[0]["Approval_File"]);
                     data.Invoice_FileId = Convert.ToString(dt_Comuter.Rows[0]["Invoice_File_Id"]);
-                    data.PO_Info_FileId = Convert.ToString(dt_Comuter.Rows[0]["PO_File_Id"]);
-                    data.Approval_Info_FileId = Convert.ToString(dt_Comuter.Rows[0]["Proposal_File_Id"]);
+                    data.PO_Info_FileId = Convert.ToString(dt_Comuter.Rows[0]["PO_File"]);
+                    data.Approval_Info_FileId = Convert.ToString(dt_Comuter.Rows[0]["Approval_File"]);
                 }
 
                 item = data;

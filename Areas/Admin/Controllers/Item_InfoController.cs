@@ -49,13 +49,13 @@ namespace IT_Hardware.Areas.Admin.Controllers
             }
             else if(FileType == "Invoice")
             {
-                path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/HQ/Invoice/");
+                path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/FinalApproval/");
                 FileName = data.Invoice_FileId;
             }
             else if (FileType == "Approval")
             {
                 path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/FinalApproval/");
-                FileName = data.Approval_Info_FileId +".pdf";
+                FileName = data.Approval_Info_FileId ;
             }
             
 

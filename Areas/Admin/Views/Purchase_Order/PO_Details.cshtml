@@ -9,6 +9,17 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Nunito'>
 
+<style type="text/css">
+
+  .text {
+  display: block;
+  width: 600px;
+  overflow: hidden;
+  white-space: wrap;
+  text-overflow: ellipsis;
+}
+
+</style>
 
 <div style="   text-align: center; height: 50px; align-content: center; width: 100% " class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
     <p style="font-size:large; font-weight:bold;">List of Purchase Order</p>
@@ -44,25 +55,16 @@
             <td colspan="2">
                 <table style="width:100%">
                     <tr>
-                        <th style="width: 10%; text-align: left; ">
-                            PO No.
-                        </th>
-                        <th style="width: 50%; text-align: left; ">
-                            PO Details
-                        </th>
-                        <th style="width: 8%; text-align: center; ">
-                            PO Exp Date
-                        </th>
-                        <th style="width: 8%; text-align: right; ">
-                            PO Value
-                        </th>                        
-                        <th style="width: 8%; text-align: right; ">
-                            Invoice Processed
-                        </th>
-                        <th style="width: 8%; text-align: right; ">
-                            Amount Left
-                        </th>
-                        <th style="width: 8%; text-align: center; "> Action </th>
+                       
+                        <th style="width: 10%; font-weight: bold; text-align: left;">PO No.</th>
+                        <th style="width: 50%; font-weight: bold; text-align: left;">PO Details</th>
+                        <th style="width: 6%; font-weight: bold; text-align: center;">PO Exp Date</th>
+                        <th style="width: 6%; font-weight: bold; text-align: right;">PO Value</th>
+                        <th style="width: 9%; font-weight: bold; text-align: right;">Invoice Processed</th>
+                        <th style="width: 9%; font-weight: bold; text-align: right;">Amount Left</th>
+                        <th style="width: 5%; font-weight: bold; text-align: center;">Assets</th>
+                        <th style="width: 5%; font-weight: bold; text-align: center;">Action</th>
+
                     </tr>
 
                     @foreach (var item in Model)
@@ -71,22 +73,25 @@
                             <td style="width: 10%; text-align: left; ">
                                 @Html.DisplayFor(modelItem => item.PO_No)
                             </td>
-                            <td style="width: 50%; text-align: left; ">
-                                @Html.DisplayFor(modelItem => item.PO_Subject)
-                            </td>
-                            <td style="width: 8%; text-align: center; ">
+                            <td style="width: 50%;  text-align: left; ">
+                               <span class="text">  @Html.DisplayFor(modelItem => item.PO_Subject) </span>
+                            </td> 
+                            <td style="width: 6%; text-align: center; ">
                                 @Html.DisplayFor(modelItem => item.PO_End_Date)
                             </td>
-                            <td style="width: 8%; text-align: right; ">
+                            <td style="width: 6%; text-align: right; ">
                                 @Html.DisplayFor(modelItem => item.PO_Value)
                             </td>                           
-                             <td  style="width: 8%; text-align: right; ">
+                             <td  style="width: 9%; text-align: right; ">
                                  @Html.ActionLink(item.Invoice_Processed, "Admin_Dashboard", "Admin_Dashboard", new { Id = item.PO_id , type="PO" })
                             </td>
-                            <td style="width: 8%; text-align: right; ">
+                            <td style="width: 9%; text-align: right; ">
                                 @Html.DisplayFor(modelItem => item.PO_Amount_Left)
                             </td>
-                            <td  style="width: 8%; text-align: center; ">
+                             <td  style="width: 6%; text-align: center; ">
+                                 @Html.ActionLink("View", "Item_Issue_Details", "Item_Issue", new { Id = item.PO_id , type="PO" })
+                            </td>
+                            <td  style="width: 6%; text-align: center; ">
                                 @Html.ActionLink("Edit", "Edit_PO", new { id = item.PO_id })
                             </td>
                         </tr>

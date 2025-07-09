@@ -565,7 +565,7 @@
 
                                     if(Assets_Info !='')
                                     {
-                                            var url = '@Url.Action("Item_Issue_Details", "Item_Issue")' + '?PO_Id=' + Assets_Info;
+                                            var url = '@Url.Action("Item_Issue_Details", "Item_Issue")' + '?Id=' + Assets_Info +'&type=PO';
 
                                             markup =  "<tr><td  style='width: 70%; text-align: center; height: 25px; '>  <a href='"+url+"'> Find Location of the Assets procured against this Proposal</a>   </td> </tr > "
                                             $("#tbl_Assets").append(markup);
@@ -794,12 +794,21 @@
 
 <script type="text/javascript">
 
-     $(document).on("click", "#btn_Find_Invoice", function (event) {
-     
-        var pO_No =  $("#Find_Invoice_detail").val();
-        AsynchronousGridBinding ( 'Get_Invoice', pO_No , '' , 0, 'Invoice' );
-     
-     });
+    $('#Find_Proposal').keyup(function(event) {
+        if (event.keyCode == 13) {
+            var pO_No =  $("#Find_Proposal").val();
+            AsynchronousGridBinding ( 'Get_Proposal', pO_No , 0,'Proposal' );
+        }
+    });
+
+
+     $('#Find_Invoice_detail').keyup(function(event) {
+        if (event.keyCode == 13) {
+            var pO_No =  $("#Find_Invoice_detail").val();
+            AsynchronousGridBinding ( 'Get_Invoice', pO_No , '' , 0, 'Invoice' );
+        }
+    });
+
 
      $(document).on("click", "#btn_Find_By_Proposal", function (event) {
      
@@ -808,6 +817,15 @@
      
      });
 
+
+     $(document).on("click", "#btn_Find_Invoice", function (event) {
+     
+        var pO_No =  $("#Find_Invoice_detail").val();
+        AsynchronousGridBinding ( 'Get_Invoice', pO_No , '' , 0, 'Invoice' );
+     
+     });
+
+    
 
     function AsynchronousGridBinding ( Type, Input , Page_No, tabletype )
     {
