@@ -1,5 +1,71 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@model Dictionary<string, string>
+
+<button id="btnPrint">Generate PDF</button>
+@{int count = 0;}
+<table id="dvContents" style="width: 100%;">
+
+@if (Model != null && Model.Any())
+{
+
+        @foreach (var item in Model)
+        {
+            @if (count % 2 == 0)
+            {
+                if (count != 0)
+                {
+                    </tr> 
+                }
+                <tr>
+            }
+
+            <td style="width: 50%;">
+                <img src="@item.Value" alt="QR Code for @item.Key" class="img-fluid" />
+                <br />
+                <p><strong>@item.Key</strong></p>
+            </td>
+
+            count++;
+        }
+
 }
+    @if (count % 2 != 0)
+    {
+        </tr>
+    }
+ </table>
+
+@* <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+<script type="text/javascript">
+$(function () {
+    $("#btnPrint").click(function () { 
+
+       var divToPrint=document.getElementById("dvContents");
+       newWin= window.open("");
+       newWin.document.write(divToPrint.outerHTML);
+       newWin.print();
+       newWin.close();
+
+    });
+});
+</script>
+  *@
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/df.bundle.min.js
+
+<script type="text/javascript">
+    $(function () {
+        $("#btnPrint").click(function () {
+            var element = document.getElementById("dvContents");
+            var opt = {
+                margin:       0.5,
+                filename:     'QRCodeList.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        });
+    });
+</script>

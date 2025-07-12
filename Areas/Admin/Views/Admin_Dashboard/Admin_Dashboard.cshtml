@@ -115,7 +115,8 @@
         <table style="text-align: center; height: 40px; align-content: center; width: 100% " class="h-10 w-100 shadow p-1 mb-1 bg-white rounded" >
             <thead>
                 <tr style=" font-weight: bold; ">
-                    <td style="width: 65%; font-weight: bold; font-size: large; text-align: center"> <h5 style="font-weight:bold"> Proposal Initiated </h5></td>
+                     <td style="width: 2%; font-weight: bold; font-size: large; text-align: center"> <h5 style="font-weight:bold"> S/N </h5></td>
+                    <td style="width: 63%; font-weight: bold; font-size: large; text-align: center"> <h5 style="font-weight:bold"> Proposal Initiated </h5></td>
                     <td style="width: 7%; font-weight: bold; font-size: large; text-align: center"><h5 style="font-weight:bold">Initiate Date </h5></td>
                     <td style="width: 8%; font-weight: bold; font-size: large; text-align: center"> <h5 style="font-weight:bold">Status </h5></td>
                     <td style="width: 10%; font-weight: bold; font-size: large; text-align: center"> <h5 style="font-weight:bold">Location </h5></td>
@@ -124,11 +125,19 @@
         </table>
         <table class=" table-hover table-striped shadow " style="width:100%;" id="tbl_Budget">
 
+            
+            @{
+                int Proposalcount = 0;
+            }
+
+
             @foreach (var Item in Model.List_Proposal)
             {
+                Proposalcount++;
                 <tbody>
                     <tr>
-                        <td style="width:65%; padding-left:1%;  text-align:left;">
+                        <td style="width:2%; padding-left:1%;  text-align:left; vertical-align: text-top;"> @Proposalcount </td>
+                        <td style="width:63%; padding-left:1%;  text-align:left;">
                             <a href=""
                                class=" "   style="font-size:medium; text-align:left;"  data-toggle="modal" data-target="#myModal2" data-status="@Item.Proposal_Id" id="@Item.Proposal_Id">
                                 @Item.Utilization_Details
@@ -190,7 +199,8 @@
         <table style="text-align: center; height: 40px; align-content: center; width: 100% " class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
             <thead>
                 <tr style="  font-weight: bold;">
-                    <td style="width: 65%; font-weight: bold; font-size: large; text-align: center"> <h5 style="font-weight:bold"> Invoice Processed </h5> </td>
+                    <td style="width: 2%; font-weight: bold; font-size: large; text-align: center"> <h5 style="font-weight:bold"> S/N </h5> </td>
+                    <td style="width: 63%; font-weight: bold; font-size: large; text-align: center"> <h5 style="font-weight:bold"> Invoice Processed </h5> </td>
                     <td style="width: 7%; font-weight: bold; font-size: large; text-align: center"><h5 style="font-weight:bold"> Initiate Date </h5></td>
                     <td style="width: 8%; font-weight: bold; text-align: center; font-size: large"> <h5 style="font-weight:bold"> Status</h5></td>
                     <td style="width: 10%; font-weight: bold; text-align: center; font-size: large"> <h5 style="font-weight:bold"> Location</h5></td>
@@ -198,11 +208,18 @@
             </thead>
         </table>
         <table class=" table-hover table-striped shadow " style="width: 100%; " id="tbl_Invoice">
+
+            @{
+                Proposalcount = 0;
+            }
+
             @foreach (var Item in Model.List_Bill_Process)
             {
+                Proposalcount++;
                 <tbody>
                     <tr>
-                        <td style="width:65%; padding-left:1%;  text-align:left;">
+                        <td style="width:2%; padding-left:1%;  text-align:left; vertical-align: text-top;">@Proposalcount </td>
+                        <td style="width:63%; padding-left:1%;  text-align:left;">
                             <a href=""
                                class=" " style="font-size:medium;  text-align:left;" data-toggle="modal" data-target="#myModal2" data-status="@Item.Proposal_Id" id="@Item.Proposal_Id">
                                 @Item.Utilization_Details
@@ -293,8 +310,8 @@
                                             <table id="tbl_ApprovalFile" style="width: 100%; ">
                                             </table>
                                         </td>
-                                        <td style="text-align: left; width: 20%; font-weight:bold;  " class="table-active">Purchase Order </td>
-                                        <td style=" width: 30%;">
+                                        <td style="text-align: left; width: 20%; font-weight:bold;  " class="table-active tr_PurchaseOrderClass" >Purchase Order </td>
+                                        <td style=" width: 30%;" class="tr_PurchaseOrderClass">
                                             <table id="tbl_PurchaseOrder" style="width: 100%;">
                                             </table>
                                         </td>
@@ -312,7 +329,7 @@
                                             <table id="tbl_BillProcessDoc" style="width: 100%; ">
                                             </table>
                                         </td>
-                                        <td style="text-align: left; width: 20%;  font-weight:bold;   " class="table-active"> Assets Information </td>
+                                        <td style="text-align: left; width: 20%;  font-weight:bold;   " class="table-active tr_AssetsClass"> Assets Information </td>
                                         <td id="td_Assets" style=" width: 30%;">
                                             <table id="tbl_Assets" style="width: 100%;  ">
                                             </table>
@@ -403,8 +420,10 @@
              $("#tbl_PurchaseOrder tr").remove();
              $("#tbl_BillProcessDoc tr").remove();
              $("#tbl_Assets tr").remove();
+             $(".tr_AssetsClass").removeClass("hidetable");
+             $(".tr_PurchaseOrderClass").removeClass("hidetable");
 
-
+             
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("Get_Proposal_Detail_for_Modal", "Admin_Dashboard")",
@@ -581,14 +600,14 @@
                                 }
                                 else
                                 {
-                                     $("#tr_Assets").addClass("hidetable");
+                                     $(".tr_AssetsClass").addClass("hidetable");
                                 }
                             }
                             else
                             {
-                                $("#tr_PurchaseOrder").addClass("hidetable");
+                                $(".tr_PurchaseOrderClass").addClass("hidetable");
                                 $("#tr_Invoice").addClass("hidetable");
-                                $("#tr_Assets").addClass("hidetable");
+                                $(".tr_AssetsClass").addClass("hidetable");
                             }
                     } 
                     else 
