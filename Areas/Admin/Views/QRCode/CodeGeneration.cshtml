@@ -7,7 +7,7 @@
     int count = 0;
 }
 
-<table id="dvContents" style="width: 1000px;">
+<table id="dvContents" style="width: 100%;">
     @if (Model != null && Model.Any())
     {
         foreach (var item in Model)
@@ -21,10 +21,26 @@
                 @:<tr>
             }
 
-            <td style="width: 50%;">
-                <img src="@item.Value" alt="QR Code for @item.Key" class="img-fluid" />
-                <br />
-                <p><strong>@item.Key</strong></p>
+            <td style="width: 50%; height: 125px;">
+                <table style="width: 100%; height: 125px;">
+                    <tr>
+                        <td style="width: 100%; height: 110px; padding-left: 5px; padding-right: 5px; text-align: center;">
+                            <img src="@item.Value" alt="QR Code for @item.Key" height="110px" class="img-fluid" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 100%; height: 10px; text-align: center;">
+                            <p><strong>@item.Key</strong></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 100%; height: 5px; text-align: center;">
+                          
+                        </td>
+                    </tr>
+                </table>
+                
+                
             </td>
 
             count++;
@@ -32,7 +48,7 @@
 
         if (count % 2 != 0)
         {
-            @:</tr>
+            @:<td></td></tr>
         }
     }
 </table>
@@ -45,7 +61,7 @@ $(function () {
     $("#btnPrint").click(function () { 
 
        var divToPrint=document.getElementById("dvContents");
-       newWin= window.open("");
+       newWin= window.open('', '', 'height=700,width=700');
        newWin.document.write(divToPrint.outerHTML);
        newWin.print();
        newWin.close();
