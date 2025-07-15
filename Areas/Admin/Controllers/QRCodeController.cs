@@ -49,9 +49,13 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
         }
 
-        public IActionResult Asset_Detail_Information()
+        public IActionResult Asset_Info_Histroy(string Id)
         {
-            return View();
+
+            QRCode_BL DLayer = new QRCode_BL();
+            AssetInfo_Model model = DLayer.Asset_Detail_Info(Id);
+
+            return View(model);
         }
 
         public IActionResult RaiseIssue()

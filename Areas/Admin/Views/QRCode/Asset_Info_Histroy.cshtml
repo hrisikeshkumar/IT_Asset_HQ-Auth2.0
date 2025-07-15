@@ -1,0 +1,239 @@
+﻿@using IT_Hardware.Areas.Admin.Models
+@model AssetInfo_Model
+
+@{ ViewBag.Title = "Index";}
+
+
+<link href="~/CSS/SearchBox/searchbox.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Nunito'>
+
+
+<div style="text-align: center; height: 50px; align-content: center; width: 100% " class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
+    <p style="font-size:large; font-weight:bold;">List of Computer</p>
+</div>
+
+<div style=" align-content:center; width:100%" class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
+    <table class=" table-hover table-striped shadow " style="width:100%">
+      
+
+
+              
+
+
+        <tr>
+            <td colspan="2">
+                <table class=" table-hover table-striped shadow " style="width:100%" >
+                    <tr>
+                        <td style="width:20%">
+                            Asset Type
+                        </td>
+                         <td style="width:30%">
+                             @Html.DisplayFor(x => x.Asset_Type)
+                        </td>
+                        <td style="width:20%">
+                            Serial No
+                        </td>
+                         <td style="width:30%">
+                            @Html.DisplayFor(x => x.Asset_SerialNo)
+                        </td>
+                    </tr>
+                     <tr>
+                        <td style="width:20%">
+                            Make
+                        </td>
+                         <td style="width:30%">
+                            @Html.DisplayFor(x => x.Make)
+                        </td>
+                        <td style="width:20%">
+                            Model
+                        </td>
+                         <td style="width:30%">
+                            @Html.DisplayFor(x => x.Model)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:20%">
+                            Procuremt Date
+                        </td>
+                         <td style="width:30%">
+                            @Html.DisplayFor(x => x.Procuremt_Date)
+                        </td>
+                        <td style="width:20%">
+                            Warranty End Date
+                        </td>
+                         <td style="width:30%">
+                            @Html.DisplayFor(x => x.Warranty_End_Date)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:20%">
+                            Asset Value
+                        </td>
+                         <td style="width:30%">
+                            @Html.DisplayFor(x => x.Asset_Value)
+                        </td>
+                        <td style="width:20%">
+                            Vender Name 
+                        </td>
+                         <td style="width:30%">
+                            @Html.DisplayFor(x => x.VenderName)
+                        </td>
+                    </tr>
+                     <tr>
+                        <td style="width:20%">
+                            PO No
+                        </td>
+                         <td style="width:30%">
+                            @Html.DisplayFor(x => x.PO_No)
+                        </td>
+                        <td style="width:20%">
+                            PO Date 
+                        </td>
+                         <td style="width:30%">
+                            @Html.DisplayFor(x => x.PO_Date)
+                        </td>
+                    </tr>
+                     <tr>
+                        <td style="width:20%">
+                            PO Value
+                        </td>
+                         <td style="width:30%">
+                            @Html.DisplayFor(x => x.PO_Value)
+                        </td>
+                        <td style="width:20%">
+                             
+                        </td>
+                         <td style="width:30%">
+                            
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+
+                <table  class=" table-hover table-striped shadow " style="width:100%">
+                      <tr>
+                        <td Colspan="4">
+                            Asset Isssue History
+                        </td>                                
+                    </tr>
+                    <tr>
+                        <th>
+                            Issue Date
+                        </th>
+                        <th>
+                            Employee Name
+                        </th>
+                        <th>
+                            Designation
+                        </th>
+                        <th>
+                            Department
+                        </th>                   
+                    </tr>
+
+                    @foreach (var item1 in Model.ShiftingHistory)
+                    {
+
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item1.Issued_date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item1.EmployeeName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item1.Designation)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item1.Department)
+                            </td>                           
+                        </tr>
+                    }
+
+                </table>
+
+            </td>
+
+        </tr>
+
+         <tr>
+            <td colspan="2">
+
+                <table  class=" table-hover table-striped shadow " style="width:100%">
+                      <tr>
+                        <td Colspan="4">
+                            Asset Servicing History
+                        </td>                                
+                    </tr>
+                    <tr>
+                        <th>
+                            Issue Date
+                        </th>
+                        <th>
+                            Employee Name
+                        </th>
+                        <th>
+                            Designation
+                        </th>
+                        <th>
+                            Department
+                        </th>       
+                         <th>
+                            Issue Detail
+                        </th>
+                        <th>
+                            Vender
+                        </th>
+                        <th>
+                            Resolve Date
+                        </th>
+                        <th>
+                            Resolution_Detail
+                        </th>       
+                    </tr>
+
+
+
+                    @foreach (var item1 in Model.ServiceHistory)
+                    {
+
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item1.Issue_Create_Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item1.EmployeeName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item1.Designation)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item1.Department)
+                            </td>      
+                             <td>
+                                @Html.DisplayFor(modelItem => item1.IssueInfo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item1.VenderName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item1.Issue_Resolve_Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item1.Resolution_Detail)
+                            </td>      
+                        </tr>
+                    }
+
+                </table>
+
+            </td>
+
+        </tr>
+
+    </table>
+</div>

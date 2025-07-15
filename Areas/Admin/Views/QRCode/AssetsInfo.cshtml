@@ -98,15 +98,18 @@
                             <th style="width:10%; text-align: left; height:25px;">
                                 Department
                             </th>
-                            <th style="width:15%; text-align: left;">
+                            <th style="width:10%; text-align: center;">
                                 Raise Issue
-                            </th>                     
+                            </th>     
+                             <th style="width:15%; text-align: center;">
+                                Info
+                            </th>    
                         </tr>
 
                         @foreach (var item in Model)
                         {
                             <tr>
-                                 <td style="text-align:left;">
+                                <td style="text-align:left;">
                                     <input type="checkbox" name="SelectAsset" id value="music">
                                 </td>
                                 <td style="text-align:left;">
@@ -128,9 +131,12 @@
                                     @Html.DisplayFor(modelItem => item.Department)
                                 </td>
                                 <td style="text-align:left;">
-                                     @Html.ActionLink("Raise Issue", "Com_Details", "Computer", null, new { @class = " form-rounded", })
+                                     @Html.ActionLink("Raise Issue", "RaiseIssue", "QRCode", null, new { @class = " form-rounded", })
                                 </td>
-                                          
+                                <td style="text-align:left;">
+                                     @Html.ActionLink("View", "Asset_Info_Histroy", "QRCode", null, new { id = item.Item_Issue_Id , @class = " form-rounded", })
+                                </td>
+                                
                             </tr>
                         }
                     </table>
