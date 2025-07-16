@@ -1,10 +1,12 @@
-﻿using IT_Hardware.Areas.Admin.Data;
+﻿using Humanizer;
+using IT_Hardware.Areas.Admin.Data;
 using IT_Hardware.Areas.Admin.Models;
-using Microsoft.AspNetCore.Mvc;
 using IT_Hardware.Infra;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using QRCoder;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 
@@ -23,18 +25,24 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return View(model);
         }
 
-        public IActionResult CodeGeneration()
+        public IActionResult CodeGeneration(List<string> SelectAsset)
         {
 
             var qrCodes = new Dictionary<string, string>();
             var qrGenerator = new QRCodeGenerator();
 
-            List<string> qrCodeInputs = new List<string>
+            var configuation = new ConfigurationDoc().GetConfiguration();
+            string URL= configuation.GetSection("QRCodeURL").Value;
+
+
+
+            List<string> qrCodeInputs = new List<string>();
+
+            foreach (string str in SelectAsset)
             {
-                "https://example.com/asset1",
-                "https://example.com/asset2",
-                "https://example.com/asset3"
-            };
+                qrCodeInputs.Add(URL + str);
+            }
+
 
             foreach (var input in qrCodeInputs)
             {
@@ -49,11 +57,11 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
         }
 
-        public IActionResult Asset_Info_Histroy(string Id)
+        public IActionResult Asset_Info_Histroy(string id)
         {
 
             QRCode_BL DLayer = new QRCode_BL();
-            AssetInfo_Model model = DLayer.Asset_Detail_Info(Id);
+            AssetInfo_Model model = DLayer.Asset_Detail_Info(id);
 
             return View(model);
         }

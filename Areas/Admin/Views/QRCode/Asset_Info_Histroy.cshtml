@@ -1,7 +1,6 @@
 ﻿@using IT_Hardware.Areas.Admin.Models
 @model AssetInfo_Model
 
-@{ ViewBag.Title = "Index";}
 
 
 <link href="~/CSS/SearchBox/searchbox.css" rel="stylesheet" />
@@ -10,28 +9,23 @@
 
 
 <div style="text-align: center; height: 50px; align-content: center; width: 100% " class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
-    <p style="font-size:large; font-weight:bold;">List of Computer</p>
+    <p style="font-size:large; font-weight:bold;">Detail Information of the Asset</p>
 </div>
 
 <div style=" align-content:center; width:100%" class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
     <table class=" table-hover table-striped shadow " style="width:100%">
       
-
-
-              
-
-
         <tr>
             <td colspan="2">
                 <table class=" table-hover table-striped shadow " style="width:100%" >
                     <tr>
-                        <td style="width:20%">
+                        <td style="width:20%; font-weight: bold;">
                             Asset Type
                         </td>
                          <td style="width:30%">
                              @Html.DisplayFor(x => x.Asset_Type)
                         </td>
-                        <td style="width:20%">
+                        <td style="width:20%; font-weight: bold;">
                             Serial No
                         </td>
                          <td style="width:30%">
@@ -39,13 +33,13 @@
                         </td>
                     </tr>
                      <tr>
-                        <td style="width:20%">
+                        <td style="width:20%; font-weight: bold;">
                             Make
                         </td>
                          <td style="width:30%">
                             @Html.DisplayFor(x => x.Make)
                         </td>
-                        <td style="width:20%">
+                        <td style="width:20%; font-weight: bold;">
                             Model
                         </td>
                          <td style="width:30%">
@@ -53,27 +47,27 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:20%">
+                        <td style="width:20%; font-weight: bold;">
                             Procuremt Date
                         </td>
                          <td style="width:30%">
-                            @Html.DisplayFor(x => x.Procuremt_Date)
+                            @Html.DisplayFor(x => x.Procuremt_Date, "{0:dd/MM/yyyy}")
                         </td>
-                        <td style="width:20%">
+                        <td style="width:20%; font-weight: bold;">
                             Warranty End Date
                         </td>
                          <td style="width:30%">
-                            @Html.DisplayFor(x => x.Warranty_End_Date)
+                            @Html.DisplayFor(x => x.Warranty_End_Date, "{0:dd/MM/yyyy}")
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:20%">
+                        <td style="width:20%; font-weight: bold;">
                             Asset Value
                         </td>
                          <td style="width:30%">
                             @Html.DisplayFor(x => x.Asset_Value)
                         </td>
-                        <td style="width:20%">
+                        <td style="width:20%; font-weight: bold;">
                             Vender Name 
                         </td>
                          <td style="width:30%">
@@ -81,21 +75,21 @@
                         </td>
                     </tr>
                      <tr>
-                        <td style="width:20%">
+                        <td style="width:20%; font-weight: bold;">
                             PO No
                         </td>
                          <td style="width:30%">
                             @Html.DisplayFor(x => x.PO_No)
                         </td>
-                        <td style="width:20%">
+                        <td style="width:20%; font-weight: bold;">
                             PO Date 
                         </td>
                          <td style="width:30%">
-                            @Html.DisplayFor(x => x.PO_Date)
+                            @Html.DisplayFor(x => x.PO_Date, "{0:dd/MM/yyyy}")
                         </td>
                     </tr>
                      <tr>
-                        <td style="width:20%">
+                        <td style="width:20%; font-weight: bold;">
                             PO Value
                         </td>
                          <td style="width:30%">
@@ -112,11 +106,14 @@
             </td>
         </tr>
         <tr>
+            <td colspan="2" height="50px"></td>
+        </tr>
+        <tr>
             <td colspan="2">
 
-                <table  class=" table-hover table-striped shadow " style="width:100%">
+                <table  class="table-hover table-striped shadow " style="width:100%">
                       <tr>
-                        <td Colspan="4">
+                        <td Colspan="4" style="text-align: center; font-weight: bold;" >
                             Asset Isssue History
                         </td>                                
                     </tr>
@@ -135,23 +132,34 @@
                         </th>                   
                     </tr>
 
+
+
                     @foreach (var item1 in Model.ShiftingHistory)
                     {
+                        if (item1.Issued_date > DateTime.Now)
+                        {
+                             <tr><td colspan="4" style="text-align: center; color: red;">
+                                Item has not been Issued as on date. </td></tr>
 
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item1.Issued_date)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item1.EmployeeName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item1.Designation)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item1.Department)
-                            </td>                           
-                        </tr>
+                                break;
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item1.Issued_date, "{0:dd/MM/yyyy}")
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item1.EmployeeName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item1.Designation)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item1.Department)
+                                </td>                           
+                            </tr>
+                        }
                     }
 
                 </table>
@@ -159,29 +167,22 @@
             </td>
 
         </tr>
-
-         <tr>
+        <tr>
+            <td colspan="2" height="50px"></td>
+        </tr>
+        <tr>
             <td colspan="2">
 
                 <table  class=" table-hover table-striped shadow " style="width:100%">
-                      <tr>
-                        <td Colspan="4">
-                            Asset Servicing History
+                    <tr>
+                        <td Colspan="5" style="text-align: center; font-weight: bold;">
+                            Asset Service History
                         </td>                                
                     </tr>
                     <tr>
                         <th>
                             Issue Date
-                        </th>
-                        <th>
-                            Employee Name
-                        </th>
-                        <th>
-                            Designation
-                        </th>
-                        <th>
-                            Department
-                        </th>       
+                        </th>                     
                          <th>
                             Issue Detail
                         </th>
@@ -197,38 +198,47 @@
                     </tr>
 
 
+                    
 
                     @foreach (var item1 in Model.ServiceHistory)
                     {
+                        if (item1.Issue_Create_Date > DateTime.Now)
+                        {
+                             <tr><td colspan="5" style="text-align: center; color: green; ">
+                                There is no issue mark against this Asset as on date. </td></tr>
 
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item1.Issue_Create_Date)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item1.EmployeeName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item1.Designation)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item1.Department)
-                            </td>      
-                             <td>
-                                @Html.DisplayFor(modelItem => item1.IssueInfo)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item1.VenderName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item1.Issue_Resolve_Date)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item1.Resolution_Detail)
-                            </td>      
-                        </tr>
+                                break;
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item1.Issue_Create_Date, "{0:dd/MM/yyyy}")
+                                </td>
+                               @*  <td>
+                                    @Html.DisplayFor(modelItem => item1.EmployeeName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item1.Designation)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item1.Department)
+                                </td>       *@
+                                <td>
+                                    @Html.DisplayFor(modelItem => item1.IssueInfo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item1.VenderName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item1.Issue_Resolve_Date, "{0:dd/MM/yyyy}")
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item1.Resolution_Detail)
+                                </td>      
+                            </tr>
+                        }                       
                     }
-
                 </table>
 
             </td>

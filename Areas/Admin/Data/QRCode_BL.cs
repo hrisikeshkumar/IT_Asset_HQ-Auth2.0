@@ -47,7 +47,7 @@ namespace IT_Hardware.Areas.Admin.Data
                     data = new QRCode_Model();
 
 
-                    data.Item_Issue_Id = Convert.ToString(dr["Issue_Id"]);
+                    data.Item_Id = Convert.ToString(dr["Item_Id"]);
 
                     data.Asset_SerialNo = Convert.ToString(dr["Item_SlNo"]);
 
@@ -80,16 +80,18 @@ namespace IT_Hardware.Areas.Admin.Data
             try
             {
                 DataSet data;
-                SqlConnection con ;
+                SqlConnection con;
 
                 using (con = new DBConnection().con)
                 {
                     SqlCommand cmd = new SqlCommand("sp_QRCode_Info");
                     SqlParameter sqlP_type = new SqlParameter("@Type", "Get_Asset_Detail_Info");
+                    cmd.Parameters.Add(sqlP_type);
                     SqlParameter sqlP_Id = new SqlParameter("@Item_Issue_Id", Id);
+                    cmd.Parameters.Add(sqlP_Id);
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection = con;
-                    cmd.Parameters.Add(sqlP_type);
+                    
 
                     using (SqlDataAdapter sda = new SqlDataAdapter())
                     {
@@ -101,35 +103,38 @@ namespace IT_Hardware.Areas.Admin.Data
                         }
                     } 
                 }
-   
 
-                model.Item_Issue_Id = Convert.ToString(data.Tables[0].Rows[0]["Issue_Id"]);
+                if (data.Tables[0].Rows.Count > 0)
+                {
 
-                model.Asset_Id = Convert.ToString(data.Tables[0].Rows[0]["Item_Id"]);
+                    model.Asset_Id = Convert.ToString(data.Tables[0].Rows[0]["Item_Id"]);
 
-                model.Asset_Type = Convert.ToString(data.Tables[0].Rows[0]["Asset_Type"]);
+                    model.Asset_Type = Convert.ToString(data.Tables[0].Rows[0]["Asset_Type"]);
 
-                model.Asset_SerialNo = Convert.ToString(data.Tables[0].Rows[0]["Item_SlNo"]);
+                    model.Asset_SerialNo = Convert.ToString(data.Tables[0].Rows[0]["Item_SlNo"]);
 
-                model.Procuremt_Date = Convert.ToDateTime(data.Tables[0].Rows[0]["Proc_Date"]);
+                    model.Procuremt_Date = Convert.ToDateTime(data.Tables[0].Rows[0]["Proc_Date"]);
 
-                model.Warranty_End_Date = Convert.ToDateTime(data.Tables[0].Rows[0]["Warnt_end_DT"]);
+                    model.Warranty_End_Date = Convert.ToDateTime(data.Tables[0].Rows[0]["Warnt_end_DT"]);
 
-                model.Make = Convert.ToString(data.Tables[0].Rows[0]["Make"]);
+                    model.Make = Convert.ToString(data.Tables[0].Rows[0]["Make"]);
 
-                model.Model = Convert.ToString(data.Tables[0].Rows[0]["model"]);
+                    model.Model = Convert.ToString(data.Tables[0].Rows[0]["model"]);
 
-                model.Asset_Value = Convert.ToInt32(data.Tables[0].Rows[0]["Asset_Price"]);
+                    model.Asset_Value = Convert.ToInt32(data.Tables[0].Rows[0]["Asset_Price"]);
 
-                model.VenderName = Convert.ToString(data.Tables[0].Rows[0]["Vendor_name"]);
+                    model.VenderName = Convert.ToString(data.Tables[0].Rows[0]["Vendor_name"]);
 
-                model.PO_No = Convert.ToString(data.Tables[0].Rows[0]["PO_No"]);
+                    model.PO_No = Convert.ToString(data.Tables[0].Rows[0]["PO_No"]);
 
-                model.PO_Date = Convert.ToDateTime(data.Tables[0].Rows[0]["PO_Date"]);
+                    model.PO_Date = Convert.ToDateTime(data.Tables[0].Rows[0]["PO_Date"]);
 
-                model.PO_Value = Convert.ToInt32(data.Tables[0].Rows[0]["PO_Value"]);
+                    model.PO_Value = Convert.ToInt32(data.Tables[0].Rows[0]["PO_Value"]);
 
+                }
 
+                List<ShiftAsset> ShiftHistory = new List<ShiftAsset>();
+                
 
                 foreach (DataRow dr in data.Tables[1].Rows)
                 {
@@ -143,35 +148,48 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     shift.Department = Convert.ToString(dr["Dept"]);
 
-                    model.ShiftingHistory.Add(shift);
+                    ShiftHistory.Add(shift);
 
                 }
+                model.ShiftingHistory = ShiftHistory;
 
 
-                foreach (DataRow dr in data.Tables[1].Rows)
+                List<AssetService> ServiceHistory = new List<AssetService>();
+                if (data.Tables[2].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in data.Tables[2].Rows)
+                    { 
+                        AssetService service = new AssetService();
+
+                        service.EmployeeName = Convert.ToString(dr["Emp_Name"]);
+
+                        service.Designation = Convert.ToString(dr["Designation"]);
+
+                        service.Department = Convert.ToString(dr["Department"]);
+
+                        service.Issue_Create_Date = Convert.ToDateTime(dr["Issue_Create_Date"]);
+
+                        service.IssueInfo = Convert.ToString(dr["IssueInfo"]);
+
+                        service.VenderName = Convert.ToString(dr["Vendor_name"]);
+
+                        service.Issue_Resolve_Date = Convert.ToDateTime(dr["Issue_Resolve_Date"]);
+
+                        service.Resolution_Detail = Convert.ToString(dr["Resolution_Detail"]);
+
+
+                        ServiceHistory.Add(service);
+                    }
+                }
+                else
                 {
                     AssetService service = new AssetService();
-
-                    service.EmployeeName = Convert.ToString(dr["Emp_Name"]);
-
-                    service.Designation = Convert.ToString(dr["Designation"]);
-
-                    service.Department = Convert.ToString(dr["Department"]);
-
-                    service.Issue_Create_Date = Convert.ToDateTime(dr["Issue_Create_Date"]);
-
-                    service.IssueInfo = Convert.ToString(dr["IssueInfo"]);
-
-                    service.VenderName = Convert.ToString(dr["Vendor_name"]);
-
-                    service.Issue_Resolve_Date = Convert.ToDateTime(dr["Issue_Resolve_Date"]);
-
-                    service.Resolution_Detail = Convert.ToString(dr["Resolution_Detail"]);
-
-                    model.ServiceHistory.Add(service);
+                    service.Issue_Create_Date = DateTime.Now.AddDays(1) ;
+                    ServiceHistory.Add(service);
                 }
 
 
+                model.ServiceHistory = ServiceHistory;
             }
             catch (Exception ex) { }
 

@@ -5,6 +5,7 @@ namespace IT_Hardware.Areas.Admin.Models
     public class QRCode_Model
     {
         public string? Item_Issue_Id { get; set; }
+        public string? Item_Id { get; set; }
         public int? SelectAsset { get; set; }
         public string? Asset_Id { get; set; }
         public string? Asset_Type { get; set; }
