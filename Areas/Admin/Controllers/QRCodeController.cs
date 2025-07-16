@@ -36,21 +36,24 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
 
 
-            List<string> qrCodeInputs = new List<string>();
+            List<CodeInfo> qrCodeInputs = new List<CodeInfo>();
 
             foreach (string str in SelectAsset)
             {
-                qrCodeInputs.Add(URL + str);
+                CodeInfo data = new CodeInfo();
+                data.URL = URL + str;
+                data.Serial_No = new QRCode_BL().Get_SerialNo(str);
+                qrCodeInputs.Add(data);
             }
 
 
             foreach (var input in qrCodeInputs)
             {
-                QRCodeData qrCodeData = qrGenerator.CreateQrCode(input, QRCodeGenerator.ECCLevel.Q);
+                QRCodeData qrCodeData = qrGenerator.CreateQrCode(input.URL, QRCodeGenerator.ECCLevel.Q);
                 var pngQrCode = new PngByteQRCode(qrCodeData);
                 byte[] qrCodeBytes = pngQrCode.GetGraphic(20);
                 var base64 = Convert.ToBase64String(qrCodeBytes);
-                qrCodes.Add(input, $"data:image/png;base64,{base64}");
+                qrCodes.Add(input.Serial_No, $"data:image/png;base64,{base64}");
             }
 
             return View(qrCodes);
@@ -70,6 +73,9 @@ namespace IT_Hardware.Areas.Admin.Controllers
         {
             return View();
         }
+
+
+
 
     }
 }

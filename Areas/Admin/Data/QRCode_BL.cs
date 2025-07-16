@@ -196,5 +196,33 @@ namespace IT_Hardware.Areas.Admin.Data
             return model;
         }
 
+
+        public string Get_SerialNo(string Id)
+        {
+            String SLNO= string.Empty;
+            using (SqlConnection con = new DBConnection().con)
+            {
+                using (SqlCommand cmd = new SqlCommand("select Item_SlNo from Assets_details where LTRIM(RTRIM(Item_Id)) = LTRIM(RTRIM(@ItemId))"))
+                {
+                    cmd.Parameters.AddWithValue("@ItemId", Id);
+                    cmd.Connection = con;
+                    con.Open();
+                    using (SqlDataReader sdr = cmd.ExecuteReader())
+                    {
+                        while (sdr.Read())
+                        {
+                            SLNO = Convert.ToString(sdr["Item_SlNo"]);
+                               
+                        }
+                    }
+                    con.Close();
+                }
+            }
+
+            return SLNO;
+
+        }
+
+
     }
 }

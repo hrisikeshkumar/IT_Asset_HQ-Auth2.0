@@ -70,4 +70,10 @@ namespace IT_Hardware.Areas.Admin.Models
         public string? Resolution_Detail { get; set; }
     }
 
+    public class CodeInfo
+    {
+        public string? URL { get; set; }
+        public string? Serial_No { get; set; }
+    }
+
 }
