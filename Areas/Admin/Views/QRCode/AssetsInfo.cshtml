@@ -131,10 +131,10 @@
                                     @Html.DisplayFor(modelItem => item.Department)
                                 </td>
                                 <td style="text-align:left;">
-                                     @Html.ActionLink("Raise Issue", "RaiseIssue", "QRCode", null, new { @class = " form-rounded", })
+                                     @Html.ActionLink("Raise Issue", "RaiseIssue", "QRCode", null, new { assetid = item.Item_Id, type="New", @class = " form-rounded", })
                                 </td>
                                 <td style="text-align:left;">
-                                     @Html.ActionLink("View", "Asset_Info_Histroy", "QRCode",  new { id = item.Item_Id })
+                                     @Html.ActionLink("View", "Asset_Info_Histroy", "QRCode",  new { assetid = item.Item_Id })
                                 </td>
                                 
                             </tr>

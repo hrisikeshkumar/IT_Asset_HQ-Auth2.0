@@ -71,7 +71,7 @@ namespace IT_Hardware.Areas.Admin.Data
             return List_data;
         }
 
-
+        //-------------------------------   Asset Detail Information  -------------------------------------
         public AssetInfo_Model Asset_Detail_Info(string Id)
         {
 
@@ -223,6 +223,182 @@ namespace IT_Hardware.Areas.Admin.Data
 
         }
 
+        //-------------------------------Asset Service---------------------------------------------
+        public RaiseIssue_Mod Get_Asset_Service_Info(string AssetId, string type)
+        {
+            RaiseIssue_Mod data = new RaiseIssue_Mod() ;
 
+            try
+            {
+                DataTable dt;
+
+                SqlConnection con = new DBConnection().con;
+
+                using (SqlCommand cmd = new SqlCommand("sp_AssetService"))
+                {
+                    
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = con;
+
+                    if (type == "New")
+                    {
+                        SqlParameter sqlP_type = new SqlParameter("@Type", "Get_Asset_Info");
+                        cmd.Parameters.Add(sqlP_type);
+                        SqlParameter Asset_Id = new SqlParameter("@Asset_Id", AssetId);
+                        cmd.Parameters.Add(Asset_Id);
+                    }
+                    else
+                    {
+                        SqlParameter sqlP_type = new SqlParameter("@Type", "Get_ServiceIssue");
+                        cmd.Parameters.Add(sqlP_type);
+                        SqlParameter Issue_Id = new SqlParameter("@Item_Issue_Id", AssetId);
+                        cmd.Parameters.Add(Issue_Id);
+                    }
+                        
+
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        dt = new DataTable();
+                        sda.SelectCommand = cmd;
+                        sda.Fill(dt);                      
+                    }
+                }
+
+                data.AssetId = Convert.ToString(dt.Rows[0]["Item_SlNo"]);
+                data.AssetType_SerialNo = Convert.ToString(dt.Rows[0]["Asset_Type"]);
+                data.Make_Model = Convert.ToString(dt.Rows[0]["Model"]);
+                data.Employee_Name_Desig_Dept = Convert.ToString(dt.Rows[0]["Emp_Name"]);
+                data.Item_Issue_Id = Convert.ToString(dt.Rows[0]["Issue_Id"]);
+
+                if(type == "New")
+                {
+                    data.Issue_Create_Date = DateTime.Now;
+                }
+                else
+                {
+                    data.Id = Convert.ToString(dt.Rows[0]["ID"]);
+                    data.Issue_Create_Date = Convert.ToDateTime(dt.Rows[0]["Issue_Create_Date"]);
+                    data.IssueInfo = Convert.ToString(dt.Rows[0]["IssueInfo"]);
+                    data.Resolved = Convert.ToInt32(dt.Rows[0]["Resolved"]);
+                    data.VenderName = Convert.ToString(dt.Rows[0]["VenderName"]);
+                    data.Issue_Resolve_Date = Convert.ToDateTime(dt.Rows[0]["Issue_Resolve_Date"]);
+                    data.Resolution_Detail = Convert.ToString(dt.Rows[0]["Resolution_Detail"]);
+                    data.Remarks = Convert.ToString(dt.Rows[0]["Remarks"]);
+                }               
+            }
+            catch (Exception ex) { }
+
+            return data;
+        }
+
+        public int InsUpd_AssetService(RaiseIssue_Mod Inputdata, string type)
+        {
+
+            int status = 1;
+
+            SqlConnection con = new DBConnection().con;
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "sp_AssetService";
+
+                cmd.Connection = con;
+
+                SqlParameter sqlP_type = new SqlParameter("@Type", type);
+                cmd.Parameters.Add(sqlP_type);
+
+                SqlParameter AssetId = new SqlParameter("@Asset_Id", Inputdata.AssetId);
+                cmd.Parameters.Add(AssetId);
+
+                SqlParameter Issue_Create_Date = new SqlParameter("@Issue_Create_Date", Inputdata.Issue_Create_Date);
+                cmd.Parameters.Add(Issue_Create_Date);
+
+                SqlParameter IssueInfo = new SqlParameter("@IssueDetails", Inputdata.IssueInfo);
+                cmd.Parameters.Add(IssueInfo);
+
+                SqlParameter VenderName = new SqlParameter("@VenderId", Inputdata.VenderName);
+                cmd.Parameters.Add(VenderName);
+
+                SqlParameter Resolved = new SqlParameter("@Resolved", Inputdata.Resolved);
+                cmd.Parameters.Add(Resolved);
+
+                SqlParameter Issue_Resolve_Date = new SqlParameter("@Issue_Resolve_Date", Inputdata.Issue_Resolve_Date);
+                cmd.Parameters.Add(Issue_Resolve_Date);
+
+                SqlParameter Resolution_Detail = new SqlParameter("@Resolution_Detail", Inputdata.Resolution_Detail);
+                cmd.Parameters.Add(Resolution_Detail);
+
+                SqlParameter Remarks = new SqlParameter("@Remarks", Inputdata.Remarks);
+                cmd.Parameters.Add(Remarks);
+
+                SqlParameter User_Id = new SqlParameter("@UserId", Inputdata.UserId);
+                cmd.Parameters.Add(User_Id);
+
+
+                con.Open();
+
+                status = cmd.ExecuteNonQuery();
+
+            }
+            catch (Exception ex) { status = -1; }
+            finally { con.Close(); }
+
+            return status;
+
+        }
+
+        public List<RaiseIssue_Mod> Get_All_Serivce_Info( string type)
+        {
+            List<RaiseIssue_Mod> Listdata = new List<RaiseIssue_Mod>() ;
+
+            try
+            {
+                DataTable dt= new DataTable();
+
+                SqlConnection con = new DBConnection().con;
+
+                using (SqlCommand cmd = new SqlCommand("sp_QRCode_Info"))
+                {
+                    SqlParameter sqlP_type = new SqlParameter("@Type", type);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Connection = con;
+                    cmd.Parameters.Add(sqlP_type);
+
+                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    {
+                        sda.SelectCommand = cmd;
+                        sda.Fill(dt);                     
+                    }
+                }
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    RaiseIssue_Mod data = new RaiseIssue_Mod();
+
+                    data.AssetId = Convert.ToString(dt.Rows[0]["Item_SlNo"]);
+                    data.AssetType_SerialNo = Convert.ToString(dt.Rows[0]["Asset_Type"]);
+                    data.Make_Model = Convert.ToString(dt.Rows[0]["Model"]);
+                    data.Employee_Name_Desig_Dept = Convert.ToString(dt.Rows[0]["Emp_Name"]);
+                    data.Item_Issue_Id = Convert.ToString(dt.Rows[0]["Issue_Id"]);
+                    data.Id = Convert.ToString(dt.Rows[0]["ID"]);
+                    data.Issue_Create_Date = Convert.ToDateTime(dt.Rows[0]["Issue_Create_Date"]);
+                    data.IssueInfo = Convert.ToString(dt.Rows[0]["IssueInfo"]);
+                    data.Resolved = Convert.ToInt32(dt.Rows[0]["Resolved"]);
+                    data.VenderName = Convert.ToString(dt.Rows[0]["VenderName"]);
+                    data.Issue_Resolve_Date = Convert.ToDateTime(dt.Rows[0]["Issue_Resolve_Date"]);
+                    data.Resolution_Detail = Convert.ToString(dt.Rows[0]["Resolution_Detail"]);
+                    data.Remarks = Convert.ToString(dt.Rows[0]["Remarks"]);
+
+                    Listdata.Add(data);
+                }
+
+            }
+            catch (Exception ex) { }
+
+            return Listdata;
+        }
+       
     }
 }

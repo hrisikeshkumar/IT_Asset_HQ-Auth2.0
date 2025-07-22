@@ -4,6 +4,7 @@ using IT_Hardware.Areas.Admin.Models;
 using IT_Hardware.Infra;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.ContentModel;
 using QRCoder;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -69,13 +70,56 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return View(model);
         }
 
-        public IActionResult RaiseIssue()
+        public IActionResult RaiseIssue(string assetid, string type)
         {
-            return View();
+            QRCode_BL DLayer = new QRCode_BL();
+            RaiseIssue_Mod mod = DLayer.Get_Asset_Service_Info(assetid, type);
+            if (type == "New")
+            {
+                ViewBag.ActionName = "RaiseIssue_Insert";
+            }         
+            else
+            {
+                ViewBag.ActionName = "RaiseIssue_Update";
+            }
+
+            return View(mod);
         }
 
+        [HttpPost]
+        public IActionResult RaiseIssue_Insert(RaiseIssue_Mod data)
+        {
+            QRCode_BL DLayer = new QRCode_BL();
+            int status = DLayer.InsUpd_AssetService(data, "Insert_AssetService");
 
+            return RedirectToAction("Get_Asset_Detail_Info", new { id = data.Item_Issue_Id });
+        }
 
+        [HttpPost]
+        public IActionResult RaiseIssue_Update(RaiseIssue_Mod data)
+        {
+            QRCode_BL DLayer = new QRCode_BL();
+            int status= DLayer.InsUpd_AssetService(data, "Update_AssetService");
 
+            return RedirectToAction("Get_Asset_Detail_Info", new { id = data.Item_Issue_Id });
+        }
+
+        [HttpGet]
+        public IActionResult Asset_Issue_Histroy(String AssetId)
+        {
+            QRCode_BL DLayer = new QRCode_BL();
+            RaiseIssue_Mod mod = DLayer.Get_Asset_Service_Info(AssetId, "Get_Asset_ServiceIssue");
+
+            return View(mod);
+        }
+
+        [HttpGet]
+        public IActionResult All_Asset_Issue_Histroy(String Type)
+        {
+            QRCode_BL DLayer = new QRCode_BL();
+            //RaiseIssue_Mod mod = DLayer.Get_Asset_Service_Info(AssetId);
+
+            return View();
+        }
     }
 }
