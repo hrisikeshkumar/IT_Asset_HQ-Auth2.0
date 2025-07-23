@@ -73,10 +73,11 @@ namespace IT_Hardware.Areas.Admin.Controllers
         public IActionResult RaiseIssue(string assetid, string type)
         {
             QRCode_BL DLayer = new QRCode_BL();
-            RaiseIssue_Mod mod = DLayer.Get_Asset_Service_Info(assetid, type);
+            RaiseIssue_Mod mod ;
             if (type == "New")
             {
                 ViewBag.ActionName = "RaiseIssue_Insert";
+                mod = DLayer.Get_Asset_Service_Info(assetid, type);
             }         
             else
             {
@@ -90,18 +91,20 @@ namespace IT_Hardware.Areas.Admin.Controllers
         public IActionResult RaiseIssue_Insert(RaiseIssue_Mod data)
         {
             QRCode_BL DLayer = new QRCode_BL();
+            data.UserId = HttpContext.User.Identity.Name;
             int status = DLayer.InsUpd_AssetService(data, "Insert_AssetService");
 
-            return RedirectToAction("Get_Asset_Detail_Info", new { id = data.Item_Issue_Id });
+            return RedirectToAction("Asset_Info_Histroy", new { id = data.AssetId });
         }
 
         [HttpPost]
         public IActionResult RaiseIssue_Update(RaiseIssue_Mod data)
         {
             QRCode_BL DLayer = new QRCode_BL();
+            data.UserId = HttpContext.User.Identity.Name;
             int status= DLayer.InsUpd_AssetService(data, "Update_AssetService");
 
-            return RedirectToAction("Get_Asset_Detail_Info", new { id = data.Item_Issue_Id });
+            return RedirectToAction("Asset_Info_Histroy", new { id = data.Item_Issue_Id });
         }
 
         [HttpGet]

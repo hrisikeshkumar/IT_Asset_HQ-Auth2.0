@@ -52,6 +52,7 @@ namespace IT_Hardware.Areas.Admin.Models
     public class AssetService
     {
         public string? VenderId { get; set; }
+        public string? Issue_Id { get; set; }
         public string? VenderName { get; set; }
 
         public string? EmployeeName { get; set; }
@@ -95,7 +96,7 @@ namespace IT_Hardware.Areas.Admin.Models
         public string? VenderName { get; set; }
         public DateTime? Issue_Resolve_Date { get; set; }
         public string? Resolution_Detail { get; set; }
-        public int? Resolved { get; set; }
+        public bool? Resolved { get; set; }
         public string? Remarks { get; set; }
         public string? UserId { get; set; }
     }

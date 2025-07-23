@@ -113,9 +113,12 @@
 
                 <table  class="table-hover table-striped shadow " style="width:100%">
                       <tr>
-                        <td Colspan="4" style="text-align: center; font-weight: bold;" >
+                        <td Colspan="3" style="text-align: center; font-weight: bold;" >
                             Asset Isssue History
-                        </td>                                
+                        </td>
+                        <td>
+                             @Html.ActionLink("Change", "Item_Issue_Create_Item", "Item_Issue",  new { AssetId = Model.Asset_Id }, new {@class = " form-rounded"})
+                        </td>
                     </tr>
                     <tr>
                         <th>
@@ -175,36 +178,33 @@
 
                 <table  class=" table-hover table-striped shadow " style="width:100%">
                     <tr>
-                        <td Colspan="5" style="text-align: center; font-weight: bold;">
+                        <td Colspan="3" style="text-align: center; font-weight: bold;">
                             Asset Service History
-                        </td>                                
+                        </td>  
+                        <td  style="text-align: center; ">
+                            @Html.ActionLink("Raise Issue", "RaiseIssue", "QRCode",  new { assetid = Model.Asset_Id, type="New" }, new {@class = " form-rounded"})
+                        </td>     
                     </tr>
                     <tr>
-                        <th>
+                        <th style="width:15%">
                             Issue Date
                         </th>                     
-                         <th>
+                         <th style="width:60%">
                             Issue Detail
-                        </th>
-                        <th>
-                            Vender
-                        </th>
-                        <th>
+                        </th>                        
+                        <th style="width:15%">
                             Resolve Date
+                        </th>    
+                        <th style="width:10%">
+                            Action
                         </th>
-                        <th>
-                            Resolution_Detail
-                        </th>       
                     </tr>
-
-
-                    
 
                     @foreach (var item1 in Model.ServiceHistory)
                     {
                         if (item1.Issue_Create_Date > DateTime.Now)
                         {
-                             <tr><td colspan="5" style="text-align: center; color: green; ">
+                             <tr><td colspan="4" style="text-align: center; color: green; ">
                                 There is no issue mark against this Asset as on date. </td></tr>
 
                                 break;
@@ -214,28 +214,16 @@
                             <tr>
                                 <td>
                                     @Html.DisplayFor(modelItem => item1.Issue_Create_Date, "{0:dd/MM/yyyy}")
-                                </td>
-                               @*  <td>
-                                    @Html.DisplayFor(modelItem => item1.EmployeeName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item1.Designation)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item1.Department)
-                                </td>       *@
+                                </td>                              
                                 <td>
                                     @Html.DisplayFor(modelItem => item1.IssueInfo)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item1.VenderName)
-                                </td>
+                                </td>                               
                                 <td>
                                     @Html.DisplayFor(modelItem => item1.Issue_Resolve_Date, "{0:dd/MM/yyyy}")
-                                </td>
+                                </td>  
                                 <td>
-                                    @Html.DisplayFor(modelItem => item1.Resolution_Detail)
-                                </td>      
+                                     @Html.ActionLink("Update", "RaiseIssue", "QRCode",  new { assetid = item1., type="Update" }, new {@class = " form-rounded"})                      
+                                </td>
                             </tr>
                         }                       
                     }

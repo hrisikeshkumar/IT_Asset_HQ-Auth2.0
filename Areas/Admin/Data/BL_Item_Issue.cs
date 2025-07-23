@@ -216,26 +216,25 @@ namespace IT_Hardware.Areas.Admin.Data
         }
 
 
-        public Mod_Item_Issue Get_Data_By_ID(string Shift_Unique_Id)
+        public Mod_Item_Issue Get_Data_By_ID(string AssetId)
         {
             Mod_Item_Issue Data = new Mod_Item_Issue();
 
             try
             {
-                DataTable dt_Comuter;
-                
+                DataTable dt_Comuter;               
                 SqlConnection con = new DBConnection().con;
 
 
-                using (SqlCommand cmd = new SqlCommand("sp_Computer"))
+                using (SqlCommand cmd = new SqlCommand("sp_Item_Issue_HQ"))
                 {
-                    SqlParameter sqlP_type = new SqlParameter("@Type", "Get_Data_By_ID");
+                    SqlParameter sqlP_type = new SqlParameter("@Type", "Get_Asset_Issue_Info");
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection = con;
                     cmd.Parameters.Add(sqlP_type);
 
-                    SqlParameter sqlP_Shift_Id = new SqlParameter("@Item_ID", Shift_Unique_Id);
-                    cmd.Parameters.Add(sqlP_Shift_Id);
+                    SqlParameter sqlP_Asset_Id = new SqlParameter("@Item_ID", AssetId);
+                    cmd.Parameters.Add(sqlP_Asset_Id);
 
                     using (SqlDataAdapter sda = new SqlDataAdapter())
                     {
@@ -250,15 +249,14 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 if (dt_Comuter.Rows.Count > 0)
                 {
-                    Data.Item_Issue_Id = Convert.ToString(dt_Comuter.Rows[0]["Item_Id"]);
-                    Data.Item_SerialNo = Convert.ToString(dt_Comuter.Rows[0]["Item_MakeId"]);
-                    Data.Item_Name = Convert.ToString(dt_Comuter.Rows[0]["Item_SlNo"]);
-                    Data.Transfered_Emp_Location = Convert.ToString(dt_Comuter.Rows[0]["Item_MakeId"]);
-                    Data.Transfered_Custady_Id = Convert.ToString(dt_Comuter.Rows[0]["Item_MakeId"]);
-                    Data.Transfered_Custady_Id = Convert.ToString(dt_Comuter.Rows[0]["Item_MakeId"]);
-                    Data.Issued_date = Convert.ToDateTime(dt_Comuter.Rows[0]["Proc_Date"]).Date;
+                    Data.Item_Id = Convert.ToString(dt_Comuter.Rows[0]["Item_Id"]);
+                    Data.Item_SerialNo = Convert.ToString(dt_Comuter.Rows[0]["Item_SlNo"]);
+                    Data.Item_Name = Convert.ToString(dt_Comuter.Rows[0]["Asset_Type"]);
+                    Data.Previous_Emp_Name = Convert.ToString(dt_Comuter.Rows[0]["Emp_Name"]);
+                    Data.Previous_Emp_Designation = Convert.ToString(dt_Comuter.Rows[0]["Designation"]);
+                    Data.Previous_Emp_Dept = Convert.ToString(dt_Comuter.Rows[0]["Dept"]);
+                    Data.Previous_Emp_Location = Convert.ToString(dt_Comuter.Rows[0]["Emp_Location"]);
                     Data.Remarks = Convert.ToString(dt_Comuter.Rows[0]["Remarks"]);
-                    Data.Issue_File_Id = Convert.ToString(dt_Comuter.Rows[0]["FileId"]);
                 }
 
             }

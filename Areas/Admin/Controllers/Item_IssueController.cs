@@ -57,13 +57,28 @@ namespace IT_Hardware.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult Item_Issue_Create_Item(string Message)
+        public ActionResult Item_Issue_Create_Item(string Message, string AssetId )
         {
             ViewBag.Message = Message;
 
-            Mod_Item_Issue Mod_data= new Mod_Item_Issue();
-            Mod_data.Issued_date = DateTime.Now;
+            if (AssetId is null)
+            {
+                AssetId = string.Empty;
+            }
 
+            Mod_Item_Issue Mod_data;
+            
+
+            if (AssetId == string.Empty)
+            {
+                Mod_data = new Mod_Item_Issue();
+            }
+            else 
+            {
+                 Mod_data = new BL_Item_Issue().Get_Data_By_ID(AssetId);
+            }
+
+            Mod_data.Issued_date = DateTime.Now;
 
             return View(Mod_data);
         }
@@ -144,13 +159,13 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return RedirectToAction("Item_Issue_Create_Item", "Item_Issue");
         }
      
-        public ActionResult Edit_Item_Issue(string id)
-        {
-            BL_Item_Issue Md_Com = new BL_Item_Issue();
-            Mod_Item_Issue data = Md_Com.Get_Data_By_ID(id);
+        //public ActionResult Edit_Item_Issue(string id)
+        //{
+        //    BL_Item_Issue Md_Com = new BL_Item_Issue();
+        //    Mod_Item_Issue data = Md_Com.Get_Data_By_ID(id);
 
-            return View( data);
-        }
+        //    return View( data);
+        //}
        
         public ActionResult Update_Item_Issue(Mod_Item_Issue Get_Data, string Asset_ID)
         {

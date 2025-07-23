@@ -234,7 +234,7 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 SqlConnection con = new DBConnection().con;
 
-                using (SqlCommand cmd = new SqlCommand("sp_AssetService"))
+                using (SqlCommand cmd = new SqlCommand("sp_QRCode_Info"))
                 {
                     
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -255,7 +255,6 @@ namespace IT_Hardware.Areas.Admin.Data
                         cmd.Parameters.Add(Issue_Id);
                     }
                         
-
                     using (SqlDataAdapter sda = new SqlDataAdapter())
                     {
                         dt = new DataTable();
@@ -264,7 +263,7 @@ namespace IT_Hardware.Areas.Admin.Data
                     }
                 }
 
-                data.AssetId = Convert.ToString(dt.Rows[0]["Item_SlNo"]);
+                data.AssetId = Convert.ToString(dt.Rows[0]["Item_Id"]); ;
                 data.AssetType_SerialNo = Convert.ToString(dt.Rows[0]["Asset_Type"]);
                 data.Make_Model = Convert.ToString(dt.Rows[0]["Model"]);
                 data.Employee_Name_Desig_Dept = Convert.ToString(dt.Rows[0]["Emp_Name"]);
@@ -279,7 +278,7 @@ namespace IT_Hardware.Areas.Admin.Data
                     data.Id = Convert.ToString(dt.Rows[0]["ID"]);
                     data.Issue_Create_Date = Convert.ToDateTime(dt.Rows[0]["Issue_Create_Date"]);
                     data.IssueInfo = Convert.ToString(dt.Rows[0]["IssueInfo"]);
-                    data.Resolved = Convert.ToInt32(dt.Rows[0]["Resolved"]);
+                    data.Resolved = Convert.ToInt32(dt.Rows[0]["Resolved"]) == 1 ? true : false;
                     data.VenderName = Convert.ToString(dt.Rows[0]["VenderName"]);
                     data.Issue_Resolve_Date = Convert.ToDateTime(dt.Rows[0]["Issue_Resolve_Date"]);
                     data.Resolution_Detail = Convert.ToString(dt.Rows[0]["Resolution_Detail"]);
@@ -302,7 +301,7 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "sp_AssetService";
+                cmd.CommandText = "sp_QRCode_Info";
 
                 cmd.Connection = con;
 
@@ -385,7 +384,7 @@ namespace IT_Hardware.Areas.Admin.Data
                     data.Id = Convert.ToString(dt.Rows[0]["ID"]);
                     data.Issue_Create_Date = Convert.ToDateTime(dt.Rows[0]["Issue_Create_Date"]);
                     data.IssueInfo = Convert.ToString(dt.Rows[0]["IssueInfo"]);
-                    data.Resolved = Convert.ToInt32(dt.Rows[0]["Resolved"]);
+                    data.Resolved = Convert.ToInt32(dt.Rows[0]["Resolved"]) == 1 ? true : false;
                     data.VenderName = Convert.ToString(dt.Rows[0]["VenderName"]);
                     data.Issue_Resolve_Date = Convert.ToDateTime(dt.Rows[0]["Issue_Resolve_Date"]);
                     data.Resolution_Detail = Convert.ToString(dt.Rows[0]["Resolution_Detail"]);
