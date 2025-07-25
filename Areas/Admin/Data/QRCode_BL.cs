@@ -161,20 +161,18 @@ namespace IT_Hardware.Areas.Admin.Data
                     { 
                         AssetService service = new AssetService();
 
-                        service.EmployeeName = Convert.ToString(dr["Emp_Name"]);
+                        //service.EmployeeName = Convert.ToString(dr["Emp_Name"]);
 
-                        service.Designation = Convert.ToString(dr["Designation"]);
+                        //service.Designation = Convert.ToString(dr["Designation"]);
 
-                        service.Department = Convert.ToString(dr["Department"]);
+                        //service.Department = Convert.ToString(dr["Department"]);
 
+                        service.Issue_Id = Convert.ToString(dr["Id"]);
                         service.Issue_Create_Date = Convert.ToDateTime(dr["Issue_Create_Date"]);
-
                         service.IssueInfo = Convert.ToString(dr["IssueInfo"]);
-
                         service.VenderName = Convert.ToString(dr["Vendor_name"]);
-
+                        service.Resolved = Convert.ToInt32(dr["Resolved"]) == 1 ? true : false;
                         service.Issue_Resolve_Date = Convert.ToDateTime(dr["Issue_Resolve_Date"]);
-
                         service.Resolution_Detail = Convert.ToString(dr["Resolution_Detail"]);
 
 
@@ -267,7 +265,7 @@ namespace IT_Hardware.Areas.Admin.Data
                 data.AssetType_SerialNo = Convert.ToString(dt.Rows[0]["Asset_Type"]);
                 data.Make_Model = Convert.ToString(dt.Rows[0]["Model"]);
                 data.Employee_Name_Desig_Dept = Convert.ToString(dt.Rows[0]["Emp_Name"]);
-                data.Item_Issue_Id = Convert.ToString(dt.Rows[0]["Issue_Id"]);
+                //data.Item_Issue_Id = Convert.ToString(dt.Rows[0]["Issue_Id"]);
 
                 if(type == "New")
                 {

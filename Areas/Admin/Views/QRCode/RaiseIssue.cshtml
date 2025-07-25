@@ -76,8 +76,8 @@
                     <td style="width:25%;">                           
                            @Html.TextBoxFor(x => x.Issue_Resolve_Date, "{0:dd/MM/yyyy}", new { @class = "dateclass form-rounded date-format", @style = " width :100%; " })
                     </td> 
-                    <td colspan="2" style="width:50%; align:center; ">
-                        Resolved :  <input type="checkbox" asp-for="Resolved" />
+                    <td colspan="2" style="width:50%; text-align: center; ">  
+                        Resolved :  <input type="checkbox" name="Resolved" value="@Model.Resolved" />
 
                         @* <input id="@fruit.Value" type="checkbox" name="Fruit" value="@fruit.Value" checked="@Model.Resolved.Selected"/> *@
                     </td>                 

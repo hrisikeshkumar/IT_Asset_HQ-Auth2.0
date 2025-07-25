@@ -82,6 +82,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             else
             {
                 ViewBag.ActionName = "RaiseIssue_Update";
+                mod = DLayer.Get_Asset_Service_Info(assetid, type);
             }
 
             return View(mod);
@@ -104,7 +105,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             data.UserId = HttpContext.User.Identity.Name;
             int status= DLayer.InsUpd_AssetService(data, "Update_AssetService");
 
-            return RedirectToAction("Asset_Info_Histroy", new { id = data.Item_Issue_Id });
+            return RedirectToAction("Asset_Info_Histroy", new { id = data.AssetId });
         }
 
         [HttpGet]

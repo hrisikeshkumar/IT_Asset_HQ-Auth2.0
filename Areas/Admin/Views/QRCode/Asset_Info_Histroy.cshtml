@@ -222,8 +222,11 @@
                                     @Html.DisplayFor(modelItem => item1.Issue_Resolve_Date, "{0:dd/MM/yyyy}")
                                 </td>  
                                 <td>
-                                     @Html.ActionLink("Update", "RaiseIssue", "QRCode",  new { assetid = item1., type="Update" }, new {@class = " form-rounded"})                      
-                                </td>
+                                    @if((item1.Resolved ?? false) != true )
+                                    {
+                                        @Html.ActionLink("Update", "RaiseIssue", "QRCode",  new { assetid = item1.Issue_Id, type="Update" }, new {@class = " form-rounded"})                      
+                                    }
+                                 </td>
                             </tr>
                         }                       
                     }
