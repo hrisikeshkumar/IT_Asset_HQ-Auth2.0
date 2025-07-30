@@ -70,19 +70,19 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return View(model);
         }
 
-        public IActionResult RaiseIssue(string assetid, string type)
+        public IActionResult RaiseIssue(string Id, string type)
         {
             QRCode_BL DLayer = new QRCode_BL();
             RaiseIssue_Mod mod ;
             if (type == "New")
             {
                 ViewBag.ActionName = "RaiseIssue_Insert";
-                mod = DLayer.Get_Asset_Service_Info(assetid, type);
+                mod = DLayer.Get_Asset_Service_Info(Id, type);
             }         
             else
             {
                 ViewBag.ActionName = "RaiseIssue_Update";
-                mod = DLayer.Get_Asset_Service_Info(assetid, type);
+                mod = DLayer.Get_Asset_Service_Info(Id, type);
             }
 
             return View(mod);

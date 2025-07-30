@@ -162,9 +162,7 @@ namespace IT_Hardware.Areas.Admin.Data
                         AssetService service = new AssetService();
 
                         //service.EmployeeName = Convert.ToString(dr["Emp_Name"]);
-
                         //service.Designation = Convert.ToString(dr["Designation"]);
-
                         //service.Department = Convert.ToString(dr["Department"]);
 
                         service.Issue_Id = Convert.ToString(dr["Id"]);
@@ -174,7 +172,6 @@ namespace IT_Hardware.Areas.Admin.Data
                         service.Resolved = Convert.ToInt32(dr["Resolved"]) == 1 ? true : false;
                         service.Issue_Resolve_Date = Convert.ToDateTime(dr["Issue_Resolve_Date"]);
                         service.Resolution_Detail = Convert.ToString(dr["Resolution_Detail"]);
-
 
                         ServiceHistory.Add(service);
                     }
@@ -261,6 +258,7 @@ namespace IT_Hardware.Areas.Admin.Data
                     }
                 }
 
+                data.Item_Issue_Id = AssetId;
                 data.AssetId = Convert.ToString(dt.Rows[0]["Item_Id"]); ;
                 data.AssetType_SerialNo = Convert.ToString(dt.Rows[0]["Asset_Type"]);
                 data.Make_Model = Convert.ToString(dt.Rows[0]["Model"]);
@@ -309,6 +307,9 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter AssetId = new SqlParameter("@Asset_Id", Inputdata.AssetId);
                 cmd.Parameters.Add(AssetId);
 
+                SqlParameter Item_Issue_Id = new SqlParameter("@Item_Issue_Id", Inputdata.Item_Issue_Id);
+                cmd.Parameters.Add(Item_Issue_Id);
+
                 SqlParameter Issue_Create_Date = new SqlParameter("@Issue_Create_Date", Inputdata.Issue_Create_Date);
                 cmd.Parameters.Add(Issue_Create_Date);
 
@@ -318,9 +319,11 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter VenderName = new SqlParameter("@VenderId", Inputdata.VenderName);
                 cmd.Parameters.Add(VenderName);
 
-                SqlParameter Resolved = new SqlParameter("@Resolved", Inputdata.Resolved);
-                cmd.Parameters.Add(Resolved);
-
+                if (Inputdata.Resolved != null)
+                {
+                    SqlParameter Resolved = new SqlParameter("@Resolved", Inputdata.Resolved == true ? 1 : 0);
+                    cmd.Parameters.Add(Resolved);
+                }
                 SqlParameter Issue_Resolve_Date = new SqlParameter("@Issue_Resolve_Date", Inputdata.Issue_Resolve_Date);
                 cmd.Parameters.Add(Issue_Resolve_Date);
 

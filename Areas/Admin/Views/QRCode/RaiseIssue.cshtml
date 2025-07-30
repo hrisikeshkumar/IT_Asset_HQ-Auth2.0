@@ -9,12 +9,10 @@
 
 
 <script src="~/js/commonjs.js"></script>
-<link href="~/css/commoncssclass.css" rel="stylesheet" />
+<link href="~/css/commoncssclass.css" rel="stylesheet"/>
 
 <div style="text-align: center; height: 50px; align-content: center; width: 100% " class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
-
     <p style="font-size:large; font-weight:bold;">Asset Service </p>
-
 </div>
 
 <div style=" align-content:center; width:100%" class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
@@ -24,7 +22,7 @@
         <table id="tblForm" class=" table-hover table-striped shadow " style="width:100%">
             <tr>
                 <td style="width:25%; height:50px;">
-                    Asset Type -- Serial No @Html.HiddenFor(x => x.AssetId)
+                    Asset Type -- Serial No @Html.HiddenFor(x => x.AssetId)  @Html.HiddenFor(x => x.Item_Issue_Id)
                 </td>
                 <td style="width:75%;" colspan="3">
                       @Html.DisplayFor(x => x.AssetType_SerialNo)
@@ -77,7 +75,7 @@
                            @Html.TextBoxFor(x => x.Issue_Resolve_Date, "{0:dd/MM/yyyy}", new { @class = "dateclass form-rounded date-format", @style = " width :100%; " })
                     </td> 
                     <td colspan="2" style="width:50%; text-align: center; ">  
-                        Resolved :  <input type="checkbox" name="Resolved" value="@Model.Resolved" />
+                        Resolved :  <input type="checkbox" name="Resolved" value=true />
 
                         @* <input id="@fruit.Value" type="checkbox" name="Fruit" value="@fruit.Value" checked="@Model.Resolved.Selected"/> *@
                     </td>                 

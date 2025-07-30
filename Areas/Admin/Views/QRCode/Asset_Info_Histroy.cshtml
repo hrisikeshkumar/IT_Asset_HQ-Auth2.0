@@ -13,8 +13,7 @@
 </div>
 
 <div style=" align-content:center; width:100%" class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
-    <table class=" table-hover table-striped shadow " style="width:100%">
-      
+    <table class=" table-hover table-striped shadow " style="width:100%">      
         <tr>
             <td colspan="2">
                 <table class=" table-hover table-striped shadow " style="width:100%" >
@@ -116,8 +115,8 @@
                         <td Colspan="3" style="text-align: center; font-weight: bold;" >
                             Asset Isssue History
                         </td>
-                        <td>
-                             @Html.ActionLink("Change", "Item_Issue_Create_Item", "Item_Issue",  new { AssetId = Model.Asset_Id }, new {@class = " form-rounded"})
+                        <td style="font-weight-bold">
+                             @Html.ActionLink("Transfer", "Item_Issue_Create_Item", "Item_Issue",  new { AssetId = Model.Asset_Id }, new { @style="font-weight-bold;" })
                         </td>
                     </tr>
                     <tr>
@@ -134,8 +133,6 @@
                             Department
                         </th>                   
                     </tr>
-
-
 
                     @foreach (var item1 in Model.ShiftingHistory)
                     {
@@ -181,8 +178,9 @@
                         <td Colspan="3" style="text-align: center; font-weight: bold;">
                             Asset Service History
                         </td>  
-                        <td  style="text-align: center; ">
-                            @Html.ActionLink("Raise Issue", "RaiseIssue", "QRCode",  new { assetid = Model.Asset_Id, type="New" }, new {@class = " form-rounded"})
+                        <td  style="text-align: center; font-weight-bold; ">
+                            @Html.ActionLink("Raise Issue", "RaiseIssue", "QRCode",  new { Id = Model.Asset_Id, type="New" }, new {@class = "form-rounded", @style="font-weight-bold;" })
+                        
                         </td>     
                     </tr>
                     <tr>
@@ -219,12 +217,21 @@
                                     @Html.DisplayFor(modelItem => item1.IssueInfo)
                                 </td>                               
                                 <td>
-                                    @Html.DisplayFor(modelItem => item1.Issue_Resolve_Date, "{0:dd/MM/yyyy}")
+                                    
+                                    @if(item1.Issue_Resolve_Date?.ToString("dd/MM/yyyy") != "01/01/2000" )
+                                    {
+                                        @Html.DisplayFor(modelItem => item1.Issue_Resolve_Date, "{0:dd/MM/yyyy}")
+                                    }
+                                    
                                 </td>  
                                 <td>
                                     @if((item1.Resolved ?? false) != true )
                                     {
-                                        @Html.ActionLink("Update", "RaiseIssue", "QRCode",  new { assetid = item1.Issue_Id, type="Update" }, new {@class = " form-rounded"})                      
+                                        @Html.ActionLink("Update", "RaiseIssue", "QRCode",  new { Id = item1.Issue_Id, type="Update" }, new {@class = " form-rounded"})                      
+                                    }
+                                    else
+                                    {
+                                        <span class="text-success ">Resolved</span> 
                                     }
                                  </td>
                             </tr>
