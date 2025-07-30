@@ -51,12 +51,9 @@ namespace IT_Hardware.Areas.Admin.Models
 
     public class AssetService
     {
-        //public string? VenderId { get; set; }
+        
         public string? Issue_Id { get; set; }
         public string? VenderName { get; set; }
-        //public string? EmployeeName { get; set; }
-        //public string? Designation { get; set; }
-        //public string? Department { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? Issue_Create_Date { get; set; }
@@ -83,7 +80,6 @@ namespace IT_Hardware.Areas.Admin.Models
         public string? AssetType_SerialNo { get; set; } 
         public string? Employee_Name_Desig_Dept { get; set; }
         public string? Make_Model { get; set; }
-  
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? Issue_Create_Date { get; set; }
@@ -97,6 +93,5 @@ namespace IT_Hardware.Areas.Admin.Models
         public string? Remarks { get; set; }
         public string? UserId { get; set; }
     }
-
 
 }
