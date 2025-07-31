@@ -84,9 +84,10 @@ namespace IT_Hardware.Areas.Admin.Models
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? Issue_Create_Date { get; set; }
         public string? IssueInfo { get; set; }
+       
+        public string? VenderName { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
-        public string? VenderName { get; set; }
         public DateTime? Issue_Resolve_Date { get; set; }
         public string? Resolution_Detail { get; set; }
         public bool? Resolved { get; set; }

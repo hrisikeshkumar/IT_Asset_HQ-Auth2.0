@@ -349,7 +349,7 @@ namespace IT_Hardware.Areas.Admin.Data
 
         }
 
-        public List<RaiseIssue_Mod> Get_All_Serivce_Info( string type)
+        public List<RaiseIssue_Mod> Get_All_Serivce_Info(string user, string IssueType)
         {
             List<RaiseIssue_Mod> Listdata = new List<RaiseIssue_Mod>() ;
 
@@ -360,11 +360,15 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlConnection con = new DBConnection().con;
 
                 using (SqlCommand cmd = new SqlCommand("sp_QRCode_Info"))
-                {
-                    SqlParameter sqlP_type = new SqlParameter("@Type", type);
+                {                   
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection = con;
+                    SqlParameter sqlP_type = new SqlParameter("@Type", "Get_All_Issue");
                     cmd.Parameters.Add(sqlP_type);
+                    SqlParameter sqlP_IssueType = new SqlParameter("@InnerType1", IssueType);
+                    cmd.Parameters.Add(sqlP_IssueType);
+                    SqlParameter sqlP_user = new SqlParameter("@InnerType2", user);
+                    cmd.Parameters.Add(sqlP_user);
 
                     using (SqlDataAdapter sda = new SqlDataAdapter())
                     {
@@ -377,19 +381,24 @@ namespace IT_Hardware.Areas.Admin.Data
                 {
                     RaiseIssue_Mod data = new RaiseIssue_Mod();
 
-                    data.AssetId = Convert.ToString(dt.Rows[0]["Item_SlNo"]);
-                    data.AssetType_SerialNo = Convert.ToString(dt.Rows[0]["Asset_Type"]);
-                    data.Make_Model = Convert.ToString(dt.Rows[0]["Model"]);
-                    data.Employee_Name_Desig_Dept = Convert.ToString(dt.Rows[0]["Emp_Name"]);
-                    data.Item_Issue_Id = Convert.ToString(dt.Rows[0]["Issue_Id"]);
-                    data.Id = Convert.ToString(dt.Rows[0]["ID"]);
-                    data.Issue_Create_Date = Convert.ToDateTime(dt.Rows[0]["Issue_Create_Date"]);
-                    data.IssueInfo = Convert.ToString(dt.Rows[0]["IssueInfo"]);
-                    data.Resolved = Convert.ToInt32(dt.Rows[0]["Resolved"]) == 1 ? true : false;
+                    data.AssetId = Convert.ToString(dr["Asset_Id"]);
+                    data.AssetType_SerialNo = Convert.ToString(dr["Asset_Type"]);
+                    data.Make_Model = Convert.ToString(dr["model"]);
+                    data.Employee_Name_Desig_Dept = Convert.ToString(dr["Emp_Name"]);                   
+                    data.Id = Convert.ToString(dr["ID"]);
+                    data.Issue_Create_Date = Convert.ToDateTime(dr["Issue_Create_Date"]);
+                    data.IssueInfo = Convert.ToString(dr["IssueInfo"]);
+                    if(dr["Resolved"] != DBNull.Value)
+                    {
+                        data.Resolved = Convert.ToInt32(dr["Resolved"]) == 1 ? true : false;
+                    }
                     data.VenderName = Convert.ToString(dt.Rows[0]["VenderName"]);
-                    data.Issue_Resolve_Date = Convert.ToDateTime(dt.Rows[0]["Issue_Resolve_Date"]);
-                    data.Resolution_Detail = Convert.ToString(dt.Rows[0]["Resolution_Detail"]);
-                    data.Remarks = Convert.ToString(dt.Rows[0]["Remarks"]);
+                    if (dr["Issue_Resolve_Date"] != DBNull.Value)
+                    {
+                        data.Issue_Resolve_Date = Convert.ToDateTime(dr["Issue_Resolve_Date"]);
+                    }
+                    data.Resolution_Detail = Convert.ToString(dr["Resolution_Detail"]);
+                    data.Remarks = Convert.ToString(dr["Remarks"]);
 
                     Listdata.Add(data);
                 }
