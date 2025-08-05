@@ -119,6 +119,20 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
         public IActionResult All_Asset_Issue_Histroy(string UserId, string IssueType )
         {
+            if (ViewBag.IssueType != "All")
+            {
+                ViewBag.IssueType = IssueType;
+            }
+           
+            if (ViewBag.User != "AllUser")
+            {
+                ViewBag.User = UserId;
+            }
+            else
+            {
+                ViewBag.User = string.Empty;
+            }
+
             QRCode_BL DLayer = new QRCode_BL();
             List<RaiseIssue_Mod> mod = DLayer.Get_All_Serivce_Info(UserId, IssueType);
 

@@ -268,8 +268,8 @@
     .custom-select select {
         appearance: none;
         width: 100%;
-        font-size: 1.15rem;
-        padding: 0.675em 6em 0.675em 1em;
+        font-size: 1rem;
+        padding: 0.675em 2.5em 0.675em 1em; /* adjusted padding for arrow space */
         background-color: #fff;
         border: 1px solid #caced1;
         border-radius: 0.25rem;
@@ -277,6 +277,7 @@
         cursor: pointer;
     }
 
+    /* Arrow styling */
     .custom-select::before,
     .custom-select::after {
         --size: 0.3rem;
@@ -289,14 +290,13 @@
     .custom-select::before {
         border-left: var(--size) solid transparent;
         border-right: var(--size) solid transparent;
-        border-bottom: var(--size) solid black;
+        border-bottom: var(--size) solid black; /* Down arrow */
         top: 40%;
     }
 
     .custom-select::after {
         border-left: var(--size) solid transparent;
         border-right: var(--size) solid transparent;
-        border-top: var(--size) solid black;
+        border-top: var(--size) solid black; /* Up arrow */
         top: 55%;
     }
-

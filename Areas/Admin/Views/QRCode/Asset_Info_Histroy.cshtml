@@ -84,7 +84,10 @@
                             PO Date 
                         </td>
                          <td style="width:30%">
-                            @Html.DisplayFor(x => x.PO_Date, "{0:dd/MM/yyyy}")
+                            @if(Model.PO_Date?.ToString("dd/MM/yyyy") != "01/01/2000" )
+                            {             
+                                @Html.DisplayFor(x => x.PO_Date, "{0:dd/MM/yyyy}")
+                            }
                         </td>
                     </tr>
                      <tr>

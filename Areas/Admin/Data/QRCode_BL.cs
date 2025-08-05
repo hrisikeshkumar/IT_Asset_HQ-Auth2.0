@@ -9,7 +9,6 @@ namespace IT_Hardware.Areas.Admin.Data
 {
     public class QRCode_BL
     {
-
         public List<QRCode_Model> AssetsList()
         {
 

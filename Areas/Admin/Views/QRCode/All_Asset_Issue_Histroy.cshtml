@@ -9,7 +9,7 @@
 <link href="~/css/commoncssclass.css" rel="stylesheet" />
 
 <div style="text-align: center; height: 50px; align-content: center; width: 100% " class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
-    <p style="font-size:large; font-weight:bold;"> All Issues </p>
+    <p style="font-size:large; font-weight:bold;">  @ViewBag.IssueType Issues </p>
 </div>
 
 <div style=" align-content:center; width:100%" class="h-10 w-100 shadow p-1 mb-1 bg-white rounded">
@@ -124,6 +124,19 @@
 </div>
 
 
+<script>
+    $(document).ready(function () {
+        var issueType = '@(ViewBag.IssueType ?? "")'; // fallback to empty string if null
+        if (issueType !== '') {
+            $('#IssueType').val(issueType);
+        }
 
+        var User = '@(ViewBag.User ?? "")'; // fallback to empty string if null
+        if (User !== '') {
+            $('#UserId').val(User);
+        }
+
+    });
+</script>
 
 

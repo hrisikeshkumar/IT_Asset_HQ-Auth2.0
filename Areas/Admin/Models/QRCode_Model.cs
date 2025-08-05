@@ -25,10 +25,19 @@ namespace IT_Hardware.Areas.Admin.Models
     public class AssetInfo_Model : QRCode_Model
     {
         public string? PO_No { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? PO_Date { get; set; }
         public int? PO_Value { get; set; }
         public int? Asset_Value { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? Procuremt_Date { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? Warranty_End_Date { get; set; }
         public string? VenderName { get; set; }
 
