@@ -4,6 +4,7 @@ using IT_Hardware.Areas.Admin.Models;
 using IT_Hardware.Infra;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using NuGet.ContentModel;
 using QRCoder;
 using System.Collections.Generic;
@@ -17,25 +18,49 @@ namespace IT_Hardware.Areas.Admin.Controllers
     [Area("Admin")]
     public class QRCodeController : Controller
     {
-        public IActionResult AssetsInfo()
+        public IActionResult AssetsInfo(string Department, string AssetType)
         {
-            QRCode_BL DLayer = new QRCode_BL();
 
-            List<QRCode_Model> model = DLayer.AssetsList();
+            List <SelectListItem> Typelist = new List<SelectListItem>
+            {
+                new SelectListItem("All Assets", "All"),
+                new SelectListItem("Desktop", "Desktop"),
+                new SelectListItem("Laptop", "Laptop"),
+                new SelectListItem("Printer", "Printer"),
+                new SelectListItem("Scanner", "Scanner"),
+                new SelectListItem("UPS", "UPS"),
+                new SelectListItem( "Ipad", "AppleIpad"),
+                new SelectListItem("Data Card", "DataCard"),
+                new SelectListItem( "Other Item", "OtherItem"),
+                new SelectListItem("Server", "Server"),
+                new SelectListItem("Switch", "Switch"),
+                new SelectListItem("Server", "Server"),
+                new SelectListItem("Switch", "Switch")
+            };
+
+            List<SelectListItem> dept = new BL_Employee().Bind_Dept();
+            dept.Add(new SelectListItem("No Department", "NoDept"));
+
+            View_MOdel_QRCode model = new View_MOdel_QRCode
+            {
+                QRCode = new QRCode_BL().AssetsList(Department != null ? Department : string.Empty,
+                                           AssetType != null ? AssetType : string.Empty),
+                Department = Department,
+                AssetType = AssetType,
+                AssetTypeList = Typelist,               
+                DepartmentList = dept
+            };
 
             return View(model);
         }
 
         public IActionResult CodeGeneration(List<string> SelectAsset)
         {
-
             var qrCodes = new Dictionary<string, string>();
             var qrGenerator = new QRCodeGenerator();
 
             var configuation = new ConfigurationDoc().GetConfiguration();
             string URL= configuation.GetSection("QRCodeURL").Value;
-
-
 
             List<CodeInfo> qrCodeInputs = new List<CodeInfo>();
 

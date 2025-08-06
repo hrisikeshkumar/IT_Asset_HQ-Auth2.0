@@ -31,7 +31,6 @@
                 </div>
             </td>
 
-
             <td align="right" width="40%">
 
                 <table style="width:100%;">
@@ -77,19 +76,22 @@
                         <th style="width:10%; text-align: left;">
                             Item Serial No.
                         </th >
-                        <th style="width:20%; text-align: left;">
+                        <th style="width:15%; text-align: left;">
                             Presently Issued
                         </th>
-                        <th style="width:20%; text-align: left; height:25px;">
-                            Emp Designation
+                        <th style="width:15%; text-align: left; height:25px;">
+                            Designation
+                        </th>
+                        <th style="width:15%; text-align: left; height:25px;">
+                            Department
                         </th>
                         <th style="width:20%; text-align: left;">
                             Previously Issued
                         </th>
-                        <th style="width:10%; text-align: left;">
+                        <th style="width:8%; text-align: left;">
                             Issue Date
                         </th>
-                        <th style="width:10%; text-align: center;">
+                        <th style="width:7%; text-align: center;">
                             Document
                         </th>
                     </tr>
@@ -116,6 +118,9 @@
                                 @Html.DisplayFor(modelItem => item.Transfered_Emp_Designation)
                             </td>
                             <td style="text-align:left;">
+                                @Html.DisplayFor(modelItem => item.Transfered_Emp_Dept)
+                            </td>
+                            <td style="text-align:left;">
                                 @Html.DisplayFor(modelItem => item.Previous_Emp_Name)
                             </td>
                             <td style="text-align:left; ">
@@ -124,7 +129,6 @@
                             <td style="text-align:center; height:25px;">
                                 @if (item.Issue_File_Id != "0")
                                 {
-
                                     <input type='submit' style=" height:20px;" value='Download' class='btn_download IssueFile' id='@item.Issue_File_Id'>
                                 }
                             </td>
@@ -206,14 +210,13 @@
                 data: { SearchVal: val, SearchType: type },
                 success: function (response) {
 
-                    markup = "<tr><th style='width: 10%; text-align:left; height:50px;'> Item Type </th> <th style='width: 10%; text-align:left;'>  Serial Number </th> <th style='width: 20%; text-align:left;'> Issued Employee </th> <th style='width: 20%; text-align:left;'> Designation </th>  <th style='width: 20%;'> Previous Employee </th>  <th style='width: 10%; text-align:left;'> Issued Date </th> <th style='width: 10%; '> Document </th>   </tr>";
+                    markup = "<tr><th style='width: 10%; text-align:left; height:50px;'> Item Type </th> <th style='width: 10%; text-align:left;'>  Serial Number </th> <th style='width: 15%; text-align:left;'> Issued Employee </th> <th style='width: 15%; text-align:left;'> Designation </th> <th style='width: 15%; text-align:left;'> Department </th> <th style='width: 20%;'> Previous Employee </th>  <th style='width: 8%; text-align:left;'> Issued Date </th> <th style='width: 7%; '> Document </th>   </tr>";
                     tableBody = $("#Bud_Uses_Grid tbody");
                     tableBody.append(markup);
 
                     if (response != null) {
-                        //$.each(response.Bud_Uses_List[i], function (Budget_Uses_Id, Budget_Name, Budget_Amount, Budget_Type ) {
+                        
                         $.each(response, function (key, val) {
-
 
                             const date = new Date(val.issued_date.substring(0, 10));
                             const year = date.getFullYear();
@@ -225,6 +228,7 @@
                                 "<td style='text-align: left;'>  <a href='' class='' style='font-size:medium' data-toggle='modal' data-target='#myModal2' data-status='"+ val.item_SerialNo + "' id='"+ val.item_SerialNo +"'  > " + val.item_SerialNo + " </a> </td> " +
                                 "<td style='text-align: left;'> " + val.transfered_Emp_Name + " </td> " +
                                 "<td style='text-align: left;'> " + val.transfered_Emp_Designation + " </td> " +
+                                "<td style='text-align: left;'> " + val.transfered_Emp_Dept + " </td> " +
                                 "<td style='text-align: left;'> " + val.previous_Emp_Name + " </td> " +
                                 "<td style='text-align: left; '> " + formattedDate + " </td> ";
                                  if(val.issue_File_Id !=0)

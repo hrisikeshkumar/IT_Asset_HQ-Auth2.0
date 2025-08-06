@@ -1,7 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace IT_Hardware.Areas.Admin.Models
 {
+
+    public class View_MOdel_QRCode
+    {
+        public string? Department { get; set; }
+        public string? AssetType { get; set; }
+
+        public List<SelectListItem>? DepartmentList { get; set; }
+        public List<SelectListItem>? AssetTypeList { get; set; }
+        public List<QRCode_Model>? QRCode { get; set; }
+    }
+
+
     public class QRCode_Model
     {
         public string? Item_Issue_Id { get; set; }

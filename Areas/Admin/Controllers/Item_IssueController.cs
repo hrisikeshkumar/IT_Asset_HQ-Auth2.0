@@ -237,7 +237,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return RedirectToAction("Item_Issue_Details", "Item_Issue");
         }
 
-
         [HttpPost]
         public JsonResult AutoComplete(string SL_No)
         {
@@ -248,7 +247,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             return Json(list);
         }
-
 
         [HttpPost]
         public JsonResult Find_Item_Issue(string Item_Id)
@@ -263,8 +261,7 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return Json(Emp_Details);
 
         }
-
-        
+       
         [HttpPost]
         public JsonResult AutoComplete_TransferEmployee(string EmpID)
         {
@@ -274,7 +271,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             return Json(list);
         }
-
 
         public JsonResult Search_Item(string SearchVal, string SearchType)
         {

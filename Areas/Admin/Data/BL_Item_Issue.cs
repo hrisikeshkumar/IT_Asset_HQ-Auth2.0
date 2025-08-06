@@ -54,6 +54,8 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     BL_data.Transfered_Emp_Designation = Convert.ToString(dr["Designation_name"]);
 
+                    BL_data.Transfered_Emp_Dept = Convert.ToString(dr["Dept"]);
+
                     BL_data.Previous_Emp_Name = Convert.ToString(dr["Prev_Emp_Name"]);
 
                     BL_data.Issued_date = Convert.ToDateTime(dr["Item_Issue_date"]);
@@ -120,6 +122,8 @@ namespace IT_Hardware.Areas.Admin.Data
                     BL_data.Transfered_Emp_Name = Convert.ToString(dr["Emp_Name"]);
 
                     BL_data.Transfered_Emp_Designation = Convert.ToString(dr["Designation_name"]);
+
+                    BL_data.Transfered_Emp_Dept = Convert.ToString(dr["Dept"]);
 
                     BL_data.Previous_Emp_Name = Convert.ToString(dr["Prev_Emp_Name"]);
 

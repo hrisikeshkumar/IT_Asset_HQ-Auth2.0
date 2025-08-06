@@ -9,7 +9,7 @@ namespace IT_Hardware.Areas.Admin.Data
 {
     public class QRCode_BL
     {
-        public List<QRCode_Model> AssetsList()
+        public List<QRCode_Model> AssetsList(string Dept, string type)
         {
 
             QRCode_Model data;
@@ -24,10 +24,24 @@ namespace IT_Hardware.Areas.Admin.Data
 
                 using (SqlCommand cmd = new SqlCommand("sp_QRCode_Info"))
                 {
-                    SqlParameter sqlP_type = new SqlParameter("@Type", "Get_All_Assets");
+                    
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection = con;
+
+                    SqlParameter sqlP_type = new SqlParameter("@Type", "Get_All_Assets");
                     cmd.Parameters.Add(sqlP_type);
+
+                    if(Dept !="" && Dept != "-1")
+                    { 
+                        SqlParameter sqlP_DeptType = new SqlParameter("@InnerType1", Dept);
+                        cmd.Parameters.Add(sqlP_DeptType);
+                    }
+
+                    if (type != "" && type != "All")
+                    {
+                        SqlParameter sqlP_Assettype = new SqlParameter("@InnerType2", type);
+                        cmd.Parameters.Add(sqlP_Assettype);
+                    }
 
                     using (SqlDataAdapter sda = new SqlDataAdapter())
                     {

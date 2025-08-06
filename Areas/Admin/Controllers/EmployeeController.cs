@@ -12,8 +12,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
     [Area("Admin")]
     public class EmployeeController : Controller
     {
-
-        
         public ActionResult Employee_Details()
         {
             BL_Employee data = new BL_Employee(); 
@@ -22,7 +20,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             return View( Emp_List);
         }
-
 
         [HttpGet]
         public ActionResult Create_Employee(string Message)
@@ -40,7 +37,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return View( Mod_emp);
 
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -80,7 +76,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return RedirectToAction("Create_Employee", "Employee");
         }
 
-
         public ActionResult Edit_Employee(string id)
         {
             BL_Employee Emp_Data = new BL_Employee();
@@ -95,7 +90,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             return View(  Mod_emp);
         }
-
 
         [HttpPost]
         public ActionResult Update_Employee(Mod_Employee Get_Data)
@@ -130,8 +124,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return RedirectToAction("Employee_Details", "Employee");
         }
 
-
-
         public ActionResult Delete_Employee(Mod_Employee Get_Data)
         {
             int status = 0;
@@ -160,8 +152,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             return RedirectToAction("Employee_Details", "Employee");
         }
-
-
 
         public JsonResult Get_Designation(string Emp_Type)
         {
@@ -298,7 +288,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
 
             return RedirectToAction("Create_Designation", "Employee");
         }
-
 
     }
 }

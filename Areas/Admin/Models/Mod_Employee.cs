@@ -12,12 +12,10 @@ namespace IT_Hardware.Areas.Admin.Models
         [Required(ErrorMessage = "Name is Required")]
         public string? Emp_Name { get; set; }
 
-        [Required(ErrorMessage = "Required")]
         public string? Emp_Designation { get; set; }
 
         public string? Emp_Designation_Name { get; set; }
 
-        [Required(ErrorMessage = "Required")]
         public string? Emp_Dept { get; set; }
         public string? Emp_Dept_Name { get; set; }
 
