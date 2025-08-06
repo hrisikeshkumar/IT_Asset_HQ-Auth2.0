@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Reports\" />
     <Folder Include="wwwroot\Files\HQ\ItemIssue\" />
     <Folder Include="wwwroot\Files\HQ\PO\" />
     <Folder Include="wwwroot\Files\FinalApproval\" />

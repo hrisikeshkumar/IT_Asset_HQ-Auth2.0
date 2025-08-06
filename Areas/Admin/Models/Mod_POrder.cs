@@ -39,7 +39,7 @@ namespace IT_Hardware.Areas.Admin.Models
         public string? Remarks { get; set; }
         public string? Proposal_Id { get; set; }
         public string? Approval_Details { get; set; }
-        public Boolean SLA_Required { get; set; }
+        public bool InActive { get; set; }
         public string? Create_usr_id { get; set; }
         public DateTime? Create_date { get; set; }
         public string? Verfd_status { get; set; }

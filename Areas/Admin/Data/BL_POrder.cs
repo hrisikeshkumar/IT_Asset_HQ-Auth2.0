@@ -125,6 +125,8 @@ namespace IT_Hardware.Areas.Admin.Data
                 SqlParameter Remarks = new SqlParameter("@Remarks", Data.Remarks);
                 cmd.Parameters.Add(Remarks);
 
+                SqlParameter Inactive = new SqlParameter("@Inactive", Data.InActive==true ? 1:0);
+                cmd.Parameters.Add(Inactive);
 
                 DataTable Approval_Dt = new DataTable();
                 Approval_Dt.Columns.Add( new DataColumn("Proposal_ID"));
@@ -221,8 +223,7 @@ namespace IT_Hardware.Areas.Admin.Data
 
                     Data.PO_File_Name = Convert.ToString(dt_PObyID.Rows[0]["PO_File_Name"]) ;
                     Data.PO_File_Id = Convert.ToString(dt_PObyID.Rows[0]["PO_File_Id"]);
-
-                    
+                    Data.InActive = Convert.ToInt32(dt_PObyID.Rows[0]["active"])==1? true:false ;
 
                     Data.Vendor_id = Convert.ToString(dt_PObyID.Rows[0]["Vendor_Id"]);
                     Data.Remarks = Convert.ToString(dt_PObyID.Rows[0]["Remarks"]);
@@ -231,8 +232,6 @@ namespace IT_Hardware.Areas.Admin.Data
 
             }
             catch (Exception ex) { }
-             
-
 
             return Data;
         }
