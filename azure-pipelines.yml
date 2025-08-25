@@ -12,6 +12,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  feedName: Test
 
 steps:
 - task: NuGetToolInstaller@1
