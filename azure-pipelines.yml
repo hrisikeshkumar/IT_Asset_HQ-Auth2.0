@@ -33,8 +33,8 @@ stages:
       # SonarCloud Prepare
       - task: SonarCloudPrepare@1
         inputs:
-          SonarCloud: 'SonarCloudServiceConnection'   # Configure in Service Connections
-          organization: 'your-org-name'              # e.g., hriskumar
+          SonarCloud: 'SonarAzure'   # Configure in Service Connections
+          organization: 'https://dev.azure.com/hrisikesh-kumar/'              # e.g., hriskumar
           scannerMode: 'MSBuild'
           projectKey: 'IT_Asset_HQ-Auth2.0'
           projectName: 'IT_Asset_HQ-Auth2.0'
@@ -93,4 +93,20 @@ stages:
   dependsOn: Package
   jobs:
   - deployment: DeployWeb
-    environment: 'stag
+    environment: 'staging'   # 👈 FIXED (completed string)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - task: DownloadBuildArtifacts@0
+              inputs:
+                artifactName: 'drop'
+                downloadPath: '$(Pipeline.Workspace)'
+
+            - task: AzureWebApp@1
+              displayName: 'Deploy to Azure WebApp (Staging)'
+              inputs:
+                azureSubscription: 'Azure_RG'
+                appName: 'rajaicsi'
+                package: '$(Pipeline.Workspace)/drop'
+
