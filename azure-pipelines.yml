@@ -4,7 +4,7 @@ trigger:
       - main
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: Laptop
 
 variables:
   buildConfiguration: 'Release'
