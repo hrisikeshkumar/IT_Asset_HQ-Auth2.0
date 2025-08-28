@@ -1,0 +1,170 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+  branches:
+    include:
+      - main
+
+pr:
+  branches:
+    include:
+      - main
+
+pool: Laptop
+
+variables:
+  buildConfiguration: 'Release'
+  projectSolution: '**/IT_Hardware.sln'
+  publishDir: '$(Build.ArtifactStagingDirectory)/publish'
+
+stages:
+# ------------------------------
+# 1. Build & Test Stage
+# ------------------------------
+- stage: BuildAndTest
+  displayName: "Build and Test"
+  jobs:
+  - job: Build
+    displayName: "Checkout, Restore, Build, Test"
+    steps:
+      # Code Checkout
+      - checkout: self
+
+      # Dependency Installation (NuGet restore)
+      - task: NuGetToolInstaller@1
+
+      - task: NuGetCommand@2
+        inputs:
+          restoreSolution: '$(projectSolution)'
+
+      # Build Application
+      - task: DotNetCoreCLI@2
+        displayName: "Build Project"
+        inputs:
+          command: 'build'
+          projects: '$(projectSolution)'
+          arguments: '--configuration $(buildConfiguration)'
+
+      # Unit Testing
+      - task: DotNetCoreCLI@2
+        displayName: "Run Unit Tests"
+        inputs:
+          command: 'test'
+          projects: '**/*Tests.csproj'
+          arguments: '--configuration $(buildConfiguration) --no-build'
+
+      # Code Quality & Security (SonarQube)
+      - task: SonarQubePrepare@5
+        inputs:
+          SonarQube: 'SonarQubeServiceConnection'   # Configure in DevOps Project Settings → Service connections
+          scannerMode: 'MSBuild'
+          projectKey: 'IT_Asset_HQ-Auth2.0'
+          projectName: 'IT_Asset_HQ-Auth2.0'
+
+      - task: DotNetCoreCLI@2
+        displayName: "Run Build for Sonar"
+        inputs:
+          command: 'build'
+          projects: '$(projectSolution)'
+          arguments: '--configuration $(buildConfiguration)'
+
+      - task: SonarQubeAnalyze@5
+      - task: SonarQubePublish@5
+        inputs:
+          pollingTimeoutSec: '300'
+
+# ------------------------------
+# 2. Package & Publish Artifacts
+# ------------------------------
+- stage: Package
+  displayName: "Package & Publish"
+  dependsOn: BuildAndTest
+  jobs:
+  - job: PackageJob
+    steps:
+      # Package the Application
+      - task: DotNetCoreCLI@2
+        displayName: "Publish Project"
+        inputs:
+          command: 'publish'
+          projects: '$(projectSolution)'
+          arguments: '--configuration $(buildConfiguration) --output $(publishDir)'
+
+      # Publish Artifacts to Azure DevOps
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathToPublish: '$(publishDir)'
+          artifactName: 'drop'
+          publishLocation: 'Container'
+
+# ------------------------------
+# 3. Infrastructure Provisioning (Terraform / ARM)
+# ------------------------------
+- stage: Infrastructure
+  displayName: "Provision Infrastructure"
+  dependsOn: Package
+  jobs:
+  - job: InfraJob
+    steps:
+      - task: TerraformInstaller@1
+        displayName: "Install Terraform"
+
+      - script: |
+          terraform init
+          terraform apply -auto-approve
+        displayName: "Terraform Apply"
+
+# ------------------------------
+# 4. Deploy Stage
+# ------------------------------
+- stage: Deploy
+  displayName: "Deploy to Environments"
+  dependsOn: Infrastructure
+  jobs:
+  - deployment: DeployWeb
+    displayName: "Deploy to Azure App Service"
+    environment: 'staging'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            # Azure Login & Deploy
+            - task: AzureWebApp@1
+              inputs:
+                azureSubscription: 'AzureServiceConnection'   # Configure service connection
+                appName: 'itassethq-auth2-staging'
+                package: '$(Pipeline.Workspace)/drop/publish'
+
+            # Secrets from Key Vault
+            - task: AzureKeyVault@2
+              inputs:
+                azureSubscription: 'AzureServiceConnection'
+                KeyVaultName: 'ITAssetHQKeyVault'
+                SecretsFilter: '*'
+
+            # Smoke Test
+            - script: |
+                echo "Running smoke test..."
+                curl -f https://itassethq-auth2-staging.azurewebsites.net/health || exit 1
+              displayName: "Smoke Test Health Endpoint"
+
+# ------------------------------
+# 5. Notifications & Monitoring
+# ------------------------------
+- stage: Notify
+  displayName: "Notifications & Monitoring"
+  dependsOn: Deploy
+  jobs:
+  - job: NotifyJob
+    steps:
+      - script: |
+          echo "Sending notifications..."
+          # Example: Slack / Teams integration
+        displayName: "Notify Slack/Teams"
+
+      - script: |
+          echo "Monitoring hooks here (Prometheus/Grafana/Azure Monitor)"
+        displayName: "Monitoring Integration"
