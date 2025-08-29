@@ -25,9 +25,15 @@ stages:
       # Dependency Installation
       - task: NuGetToolInstaller@1
 
-      - task: NuGetCommand@2
+      #- task: NuGetCommand@2
+      #  inputs:
+      #    restoreSolution: '$(projectSolution)'
+
+      - task: DotNetCoreCLI@2
+        displayName: "Restore with dotnet"
         inputs:
-          restoreSolution: '$(projectSolution)'
+          command: 'restore'
+          projects: '$(projectSolution)'
 
       # SonarCloud Prepare
       - task: SonarCloudPrepare@1
