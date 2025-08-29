@@ -33,10 +33,10 @@ stages:
       - task: SonarCloudPrepare@1
         inputs:
           SonarCloud: 'SonarAzure'   # Configure in Service Connections
-          organization: 'https://dev.azure.com/hrisikesh-kumar/'              # e.g., hriskumar
+          organization: 'hrisikeshkumar'              # e.g., hriskumar
           scannerMode: 'MSBuild'
-          projectKey: 'IT_Asset_HQ-Auth2.0'
-          projectName: 'IT_Asset_HQ-Auth2.0'
+          projectKey: 'hrisikeshkumar_azuredevops'
+          projectName: 'AzureDevops'
 
       # Build
       - task: DotNetCoreCLI@2
