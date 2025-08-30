@@ -39,15 +39,18 @@ stages:
         inputs:
           versionSpec: '>=5.8.0'
 
-      #- task: NuGetCommand@2
-      #  inputs:
-      #    restoreSolution: '$(projectSolution)'
+      - task: NuGetAuthenticate@1
+        displayName: "Authenticate with NuGet Feeds"
 
-      - task: DotNetCoreCLI@2
-        displayName: "Restore with dotnet"
+      - task: NuGetCommand@2
         inputs:
-          command: 'restore'
-          projects: '$(projectSolution)'
+          restoreSolution: '$(projectSolution)'
+
+      #- task: DotNetCoreCLI@2
+      #  displayName: "Restore with dotnet"
+      #  inputs:
+      #    command: 'restore'
+      #    projects: '$(projectSolution)'
 
       # SonarCloud Prepare
       - task: SonarCloudPrepare@1
