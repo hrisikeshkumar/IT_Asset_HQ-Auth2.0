@@ -1,6 +1,6 @@
 {
     "sdk": {
-    "version": "7.0.20",   // Example: lock to .NET Core 3.1.x
+    "version": "6.0.36",   // Example: lock to .NET Core 3.1.x
     "rollForward": "latestFeature"
   }
 }
