@@ -24,10 +24,10 @@ stages:
 
       # Ensure correct .NET SDK is installed (important!)
       - task: UseDotNet@2
-        displayName: "Use .NET Core SDK 6.0.36"
+        displayName: "Use .NET Core SDK 6.0.x"
         inputs:
           packageType: 'sdk'
-          version: '6.0.36'
+          version: '6.0.x'
           installationPath: $(Agent.ToolsDirectory)/dotnet
 
       # Check which SDK is actually in use
