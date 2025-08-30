@@ -36,6 +36,8 @@ stages:
 
       # Dependency Installation
       - task: NuGetToolInstaller@1
+        inputs:
+          versionSpec: '>=5.8.0'
 
       #- task: NuGetCommand@2
       #  inputs:
