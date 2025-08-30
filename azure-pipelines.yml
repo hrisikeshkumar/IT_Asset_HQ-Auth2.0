@@ -107,17 +107,44 @@ stages:
   jobs:
   - job: PackageJob
     steps:
-      # Always start fresh on self-hosted agents
+      # Start clean on self-hosted agents
       - checkout: self
         clean: true
 
-      # Ensure correct .NET SDK (uses the one installed in Build stage)
+      # Ensure correct .NET SDK is installed
+      - task: UseDotNet@2
+        displayName: "Use .NET Core SDK 8.0.x"
+        inputs:
+          packageType: 'sdk'
+          version: '8.0.x'
+          installationPath: $(Agent.ToolsDirectory)/dotnet
+
+      # Force pipeline to use the installed SDK
       - script: |
           echo "##vso[task.setvariable variable=DOTNET_ROOT]$(Agent.ToolsDirectory)/dotnet"
           echo "##vso[task.setvariable variable=PATH]$(Agent.ToolsDirectory)/dotnet;$(PATH)"
         displayName: "Set DOTNET_ROOT"
 
-      # Publish the project
+      # Check which SDK is actually active
+      - script: dotnet --info
+        displayName: "Check .NET SDK Version"
+
+      # Install a compatible NuGet version
+      - task: NuGetToolInstaller@1
+        inputs:
+          versionSpec: '>=5.8.0'
+
+      # Authenticate to NuGet feeds (if private feeds exist)
+      - task: NuGetAuthenticate@1
+        displayName: "Authenticate with NuGet Feeds"
+
+      # Restore dependencies using NuGetCommand@2
+      - task: NuGetCommand@2
+        displayName: "NuGet Restore"
+        inputs:
+          restoreSolution: '$(projectSolution)'
+
+      # Publish the solution
       - task: DotNetCoreCLI@2
         displayName: "Publish"
         inputs:
@@ -125,14 +152,14 @@ stages:
           projects: '$(projectSolution)'
           arguments: '--configuration $(buildConfiguration) --output $(publishDir)'
 
-      # Upload artifacts so Deploy stage can use them
+      # Upload artifacts for Deploy stage
       - task: PublishBuildArtifacts@1
         displayName: "Publish Artifacts"
         inputs:
           pathToPublish: '$(publishDir)'
           artifactName: 'drop'
           publishLocation: 'Container'
-
+          
 # ------------------------------
 # 3. Deploy to Azure (staging)
 # ------------------------------
