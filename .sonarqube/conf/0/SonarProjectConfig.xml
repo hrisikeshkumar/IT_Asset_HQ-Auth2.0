@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SonarProjectConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/analyzer/2021/1">
+  <AnalysisConfigPath>D:\Software Projects\Git Repo\IT_Asset_HQ-Auth-ReportB\.sonarqube\conf\SonarQubeAnalysisConfig.xml</AnalysisConfigPath>
+  <ProjectPath>D:\Software Projects\Git Repo\IT_Asset_HQ-Auth-ReportB\IT_Hardware.csproj</ProjectPath>
+  <FilesToAnalyzePath>D:\Software Projects\Git Repo\IT_Asset_HQ-Auth-ReportB\.sonarqube\conf\0\FilesToAnalyze.txt</FilesToAnalyzePath>
+  <OutPath>D:\Software Projects\Git Repo\IT_Asset_HQ-Auth-ReportB\.sonarqube\out\0</OutPath>
+  <ProjectType>Product</ProjectType>
+  <TargetFramework>net6.0</TargetFramework>
+</SonarProjectConfig>
