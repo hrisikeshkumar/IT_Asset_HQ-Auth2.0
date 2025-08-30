@@ -24,10 +24,10 @@ stages:
 
       # Ensure correct .NET SDK is installed (important!)
       - task: UseDotNet@2
-        displayName: "Use .NET Core SDK 8.0.x"
+        displayName: "Use .NET Core SDK 9.0.x"
         inputs:
           packageType: 'sdk'
-          version: '8.0.x'
+          version: '9.0.x'
           installationPath: $(Agent.ToolsDirectory)/dotnet
 
       # Check which SDK is actually in use
@@ -113,10 +113,10 @@ stages:
 
       # Ensure correct .NET SDK is installed
       - task: UseDotNet@2
-        displayName: "Use .NET Core SDK 8.0.x"
+        displayName: "Use .NET Core SDK 9.0.x"
         inputs:
           packageType: 'sdk'
-          version: '8.0.x'
+          version: '9.0.x'
           installationPath: $(Agent.ToolsDirectory)/dotnet
 
       # Force pipeline to use the installed SDK
