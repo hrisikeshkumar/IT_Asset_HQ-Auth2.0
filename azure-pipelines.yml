@@ -52,6 +52,19 @@ stages:
       #    command: 'restore'
       #    projects: '$(projectSolution)'
 
+
+      # Force agent to use the correct dotnet path
+      #- script: |
+      #    echo "##vso[task.setvariable variable=DOTNET_ROOT]$(Agent.ToolsDirectory)/dotnet"
+      #    echo "##vso[task.setvariable variable=PATH]$(Agent.ToolsDirectory)/dotnet;$(PATH)"
+      #    displayName: "Set DOTNET_ROOT"
+
+      # Check which SDK is actually in use
+      #- script: dotnet --info
+      # displayName: "Check .NET SDK Version"
+
+
+
       # SonarCloud Prepare
       - task: SonarCloudPrepare@1
         inputs:
@@ -94,6 +107,17 @@ stages:
   jobs:
   - job: PackageJob
     steps:
+      # Always start fresh on self-hosted agents
+      - checkout: self
+        clean: true
+
+      # Ensure correct .NET SDK (uses the one installed in Build stage)
+      - script: |
+          echo "##vso[task.setvariable variable=DOTNET_ROOT]$(Agent.ToolsDirectory)/dotnet"
+          echo "##vso[task.setvariable variable=PATH]$(Agent.ToolsDirectory)/dotnet;$(PATH)"
+        displayName: "Set DOTNET_ROOT"
+
+      # Publish the project
       - task: DotNetCoreCLI@2
         displayName: "Publish"
         inputs:
@@ -101,7 +125,9 @@ stages:
           projects: '$(projectSolution)'
           arguments: '--configuration $(buildConfiguration) --output $(publishDir)'
 
+      # Upload artifacts so Deploy stage can use them
       - task: PublishBuildArtifacts@1
+        displayName: "Publish Artifacts"
         inputs:
           pathToPublish: '$(publishDir)'
           artifactName: 'drop'
