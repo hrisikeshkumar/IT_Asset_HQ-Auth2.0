@@ -30,7 +30,18 @@ stages:
           version: '9.0.x'
           installationPath: $(Agent.ToolsDirectory)/dotnet
 
-      # Check which SDK is actually in use
+      - script: dotnet --list-sdks
+        displayName: "List installed .NET SDKs"
+
+      - script: dotnet workload install wasm-tools
+        displayName: "Install Web workload"
+        # 👆 required because Microsoft.NET.Sdk.Web comes from ASP.NET Core workload
+
+      - script: |
+          echo "##vso[task.setvariable variable=DOTNET_ROOT]$(Agent.ToolsDirectory)/dotnet"
+          echo "##vso[task.setvariable variable=PATH]$(Agent.ToolsDirectory)/dotnet;$(PATH)"
+        displayName: "Set DOTNET_ROOT"
+
       - script: dotnet --info
         displayName: "Check .NET SDK Version"
 
