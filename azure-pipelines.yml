@@ -1,0 +1,198 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pool: Laptop
+
+variables:
+  buildConfiguration: 'Release'
+  projectSolution: '**/IT_Hardware.sln'
+  publishDir: '$(Build.ArtifactStagingDirectory)/publish'
+
+stages:
+# ------------------------------
+# 1. Build & Test + SonarCloud
+# ------------------------------
+- stage: BuildAndTest
+  displayName: "Build, Test & SonarCloud"
+  jobs:
+  - job: Build
+    steps:
+      # Code Checkout
+      - checkout: self
+
+      # Ensure correct .NET SDK is installed (important!)
+      - task: UseDotNet@2
+        displayName: "Use .NET Core SDK 9.0.x"
+        inputs:
+          packageType: 'sdk'
+          version: '9.0.x'
+          installationPath: $(Agent.ToolsDirectory)/dotnet
+
+      - script: dotnet --list-sdks
+        displayName: "List installed .NET SDKs"
+
+    #  - script: dotnet workload install wasm-tools
+    #    displayName: "Install Web workload"
+        # 👆 required because Microsoft.NET.Sdk.Web comes from ASP.NET Core workload
+
+      - script: |
+          echo "##vso[task.setvariable variable=DOTNET_ROOT]$(Agent.ToolsDirectory)/dotnet"
+          echo "##vso[task.setvariable variable=PATH]$(Agent.ToolsDirectory)/dotnet;$(PATH)"
+        displayName: "Set DOTNET_ROOT"
+
+      - script: dotnet --info
+        displayName: "Check .NET SDK Version"
+
+      # Dependency Installation
+      - task: NuGetToolInstaller@1
+        inputs:
+          versionSpec: '>=5.8.0'
+
+      - task: NuGetAuthenticate@1
+        displayName: "Authenticate with NuGet Feeds"
+
+      - task: NuGetCommand@2
+        inputs:
+          restoreSolution: '$(projectSolution)'
+
+      #- task: DotNetCoreCLI@2
+      #  displayName: "Restore with dotnet"
+      #  inputs:
+      #    command: 'restore'
+      #    projects: '$(projectSolution)'
+
+
+      # Force agent to use the correct dotnet path
+      #- script: |
+      #    echo "##vso[task.setvariable variable=DOTNET_ROOT]$(Agent.ToolsDirectory)/dotnet"
+      #    echo "##vso[task.setvariable variable=PATH]$(Agent.ToolsDirectory)/dotnet;$(PATH)"
+      #    displayName: "Set DOTNET_ROOT"
+
+      # Check which SDK is actually in use
+      #- script: dotnet --info
+      # displayName: "Check .NET SDK Version"
+
+
+
+      # SonarCloud Prepare
+      - task: SonarCloudPrepare@1
+        inputs:
+          SonarCloud: 'SonarAzure'   # Configure in Service Connections
+          organization: 'hrisikeshkumar'              # e.g., hriskumar
+          scannerMode: 'MSBuild'
+          projectKey: 'hrisikeshkumar_azuredevops'
+          projectName: 'AzureDevops'
+
+      # Build
+      - task: DotNetCoreCLI@2
+        displayName: "Build"
+        inputs:
+          command: 'build'
+          projects: '$(projectSolution)'
+          arguments: '--configuration $(buildConfiguration)'
+
+      # Unit Tests
+      - task: DotNetCoreCLI@2
+        displayName: "Run Tests"
+        inputs:
+          command: 'test'
+          projects: '**/*Tests.csproj'
+          arguments: '--configuration $(buildConfiguration) --no-build'
+
+      # SonarCloud Analyze
+      - task: SonarCloudAnalyze@1
+
+      # SonarCloud Publish
+      - task: SonarCloudPublish@1
+        inputs:
+          pollingTimeoutSec: '300'
+
+# ------------------------------
+# 2. Package & Publish Artifacts
+# ------------------------------
+- stage: Package
+  displayName: "Package & Publish"
+  dependsOn: BuildAndTest
+  jobs:
+  - job: PackageJob
+    steps:
+      # Start clean on self-hosted agents
+      - checkout: self
+        clean: true
+
+      # Ensure correct .NET SDK is installed
+      - task: UseDotNet@2
+        displayName: "Use .NET Core SDK 9.0.x"
+        inputs:
+          packageType: 'sdk'
+          version: '9.0.x'
+          installationPath: $(Agent.ToolsDirectory)/dotnet
+
+      # Force pipeline to use the installed SDK
+      - script: |
+          echo "##vso[task.setvariable variable=DOTNET_ROOT]$(Agent.ToolsDirectory)/dotnet"
+          echo "##vso[task.setvariable variable=PATH]$(Agent.ToolsDirectory)/dotnet;$(PATH)"
+        displayName: "Set DOTNET_ROOT"
+
+      # Check which SDK is actually active
+      - script: dotnet --info
+        displayName: "Check .NET SDK Version"
+
+      # Install a compatible NuGet version
+      - task: NuGetToolInstaller@1
+        inputs:
+          versionSpec: '>=5.8.0'
+
+      # Authenticate to NuGet feeds (if private feeds exist)
+      - task: NuGetAuthenticate@1
+        displayName: "Authenticate with NuGet Feeds"
+
+      # Restore dependencies using NuGetCommand@2
+      - task: NuGetCommand@2
+        displayName: "NuGet Restore"
+        inputs:
+          restoreSolution: '$(projectSolution)'
+
+      # Publish the solution
+      - task: DotNetCoreCLI@2
+        displayName: "Publish"
+        inputs:
+          command: 'publish'
+          projects: '$(projectSolution)'
+          arguments: '--configuration $(buildConfiguration) --output $(publishDir)'
+
+      # Upload artifacts for Deploy stage
+      - task: PublishBuildArtifacts@1
+        displayName: "Publish Artifacts"
+        inputs:
+          pathToPublish: '$(publishDir)'
+          artifactName: 'drop'
+          publishLocation: 'Container'
+          
+# ------------------------------
+# 3. Deploy to Azure (staging)
+# ------------------------------
+- stage: Deploy
+  displayName: "Deploy to Azure App Service"
+  dependsOn: Package
+  jobs:
+  - deployment: DeployWeb
+    environment: 'staging'   # 👈 FIXED (completed string)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - task: DownloadBuildArtifacts@0
+              inputs:
+                artifactName: 'drop'
+                downloadPath: '$(Pipeline.Workspace)'
+
+            - task: AzureWebApp@1
+              displayName: 'Deploy to Azure WebApp (Staging)'
+              inputs:
+                azureSubscription: 'Azure_RG'
+                appName: 'rajaicsi'
+                package: '$(Pipeline.Workspace)/drop'
+
