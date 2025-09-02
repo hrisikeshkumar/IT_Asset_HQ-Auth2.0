@@ -46,7 +46,6 @@ namespace IT_Hardware.Areas.Admin.Controllers
             return View( mod_data);
         }
 
-     
         public ActionResult Find_Amc_To_Renew()
         {
             return View();

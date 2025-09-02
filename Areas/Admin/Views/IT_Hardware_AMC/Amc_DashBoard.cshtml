@@ -5,7 +5,6 @@
 }
 
 
-
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 @*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>*@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -27,35 +26,43 @@
     {
 
          <table class=" table-hover table-striped shadow " style="width:100%">
-
-
-
                 <tr>
                     <td style="width:20%; font-weight:bold">
                         Particulars
                     </td>
-                    <td style="width: 20%; text-align: center; font-weight: bold">
+                    <td style="width: 15%; text-align: center; font-weight: bold">
+                        Toatal Quantity
+                    </td>
+                    <td style="width: 15%; text-align: center; font-weight: bold">
                         Item Under AMC
                     </td>
-                    <td style="width: 20%; text-align: center; font-weight: bold">
+                    <td style="width: 15%; text-align: center; font-weight: bold">
                         Item Under Warranty
                     </td>
-                    <td style="width: 40%; text-align: center; font-weight: bold">
+                    <td style="width: 15%; text-align: center; font-weight: bold">
+                        Not In AMC / Warranty
+                    </td>
+                    <td style="width: 20%; text-align: center; font-weight: bold">
                         Action
                     </td>
                 </tr>
                 <tr>
-                    <td >
+                    <td>
                        Desktop PC
                     </td>
                     <td style="text-align:center">
-
+                        <h5>
+                            <a href="@Url.Action("Get_List_AMC", null, new { area = string.Empty, controller = "IT_Hardware_AMC"  , Types ="Desktop" })">
+                                0
+                            </a>
+                        </h5>
+                    </td>
+                    <td style="text-align:center">
                         <h5>
                             <a href="@Url.Action("Get_List_AMC", null, new { area = string.Empty, controller = "IT_Hardware_AMC"  , Types ="Desktop" })">
                                 @Model.PC_AMC
                             </a>
                         </h5>
-
                     </td>
                     <td style="text-align:center">
                         <h5>
@@ -65,11 +72,16 @@
                         </h5>
                     </td>
                     <td style="text-align:center">
-
+                        <h5>
+                            <a href="@Url.Action("Get_List_AMC", null, new { area = string.Empty, controller = "IT_Hardware_AMC"  , Types ="Desktop" })">
+                               
+                            </a>
+                        </h5>
+                    </td>
+                    <td style="text-align:center">
                         <ul style="list-style-type: none;">
-                            <li> <a href="@Url.Action("Find_Warranty_Expired", null, new { area = string.Empty, controller = "IT_Hardware_AMC"  , Types ="Desktop" })">Find Warranrty to be expired and Not in AMC</a> </li>
-                               </ul>
-
+                            <li> <a href="@Url.Action("Find_Warranty_Expired", null, new { area = string.Empty, controller = "IT_Hardware_AMC"  , Types ="Desktop" })">Find Warranrty to be expired</a> </li>
+                        </ul>
                     </td>
                 </tr>
                 <tr>
@@ -79,7 +91,14 @@
                     <td style="text-align:center">
                         <h5>
                             <a href="@Url.Action("Get_List_AMC", null, new { area = string.Empty, controller = "IT_Hardware_AMC"   , Types ="Laptop" })">
-                                @Model.Laptop_AMC
+                                
+                            </a>
+                        </h5>
+                    </td>
+                    <td style="text-align:center">
+                        <h5>
+                            <a href="@Url.Action("Get_List_AMC", null, new { area = string.Empty, controller = "IT_Hardware_AMC"   , Types ="Laptop" })">
+                                
                             </a>
                         </h5>
                     </td>
@@ -91,18 +110,30 @@
                         </h5>
                     </td>
                     <td style="text-align:center">
+                        <h5>
+                            <a href="@Url.Action("Get_List_AMC", null, new { area = string.Empty, controller = "IT_Hardware_AMC"   , Types ="Laptop" })">
+                                @Model.Laptop_AMC
+                            </a>
+                        </h5>
+                    </td>
+                    <td style="text-align:center">
 
                         <ul style="list-style-type: none;">
-                            <li  > <a href="@Url.Action("Find_Warranty_Expired", null, new { area = string.Empty, controller = "IT_Hardware_AMC"  , Types ="Laptop"   })">Find Warranrty to be expired and Not in AMC</a> </li>
+                            <li  > <a href="@Url.Action("Find_Warranty_Expired", null, new { area = string.Empty, controller = "IT_Hardware_AMC"  , Types ="Laptop"   })">Find Warranrty to be expired</a> </li>
                               </ul>
 
                     </td>
                 </tr>
                 <tr>
                     <td>
-              
-                            Printer
-    
+                           Printer
+                    </td>
+                    <td style="text-align:center">
+                        <h5>
+                            <a href="@Url.Action("Get_List_AMC", null, new { area = string.Empty, controller = "IT_Hardware_AMC"   , Types ="Laptop" })">
+                                
+                            </a>
+                        </h5>
                     </td>
                     <td style="text-align:center">
                         <h5>
@@ -119,24 +150,37 @@
                         </h5>
                     </td>
                     <td style="text-align:center">
+                        <h5>
+                            <a href="@Url.Action("Get_List_AMC", null, new { area = string.Empty, controller = "IT_Hardware_AMC"   , Types ="Laptop" })">
+                                
+                            </a>
+                        </h5>
+                    </td>
+                    <td style="text-align:center">
 
                         <ul style="list-style-type: none;">
                             <li> <a href="@Url.Action("Find_Warranty_Expired", null, new { area = string.Empty, controller = "IT_Hardware_AMC"  , Types ="Printer"  })">Find Warranrty to be expired and Not in AMC</a> </li>
-                             </ul>
+                        </ul>
 
                     </td>
                 </tr>
                 <tr>
                     <td>
-                            Scanner
+                          Scanner
                     </td>
                     <td style="text-align:center">
                         <h5>
                             <a href="@Url.Action("Get_List_AMC", null, new { area = string.Empty, controller = "IT_Hardware_AMC"  , Types ="Scanner" })">
-                                @Model.Scanner_AMC
+                                
                             </a>
                         </h5>
-
+                    </td>
+                    <td style="text-align:center">
+                        <h5>
+                            <a href="@Url.Action("Get_List_AMC", null, new { area = string.Empty, controller = "IT_Hardware_AMC"   , Types ="Laptop" })">
+                                @Model.Laptop_AMC
+                            </a>
+                        </h5>
                     </td>
                     <td style="text-align:center">
                         <h5>
@@ -146,23 +190,34 @@
                         </h5>
                     </td>
                     <td style="text-align:center">
-
+                        <h5>
+                            <a href="@Url.Action("Get_List_AMC", null, new { area = string.Empty, controller = "IT_Hardware_AMC"   , Types ="Laptop" })">
+                                
+                            </a>
+                        </h5>
+                    </td>
+                    <td style="text-align:center">
                         <ul style="list-style-type: none;">
                             <li> <a href="@Url.Action("Find_Warranty_Expired", null, new { area = string.Empty, controller = "IT_Hardware_AMC" , Types ="Scanner"  })">Find Warranrty to be expired and Not in AMC</a> </li>
-                             </ul>
-
+                        </ul>
                     </td>
                 </tr>
                 <tr>
                     <td>
-               
                         UPS 
                     </td>
                     <td style="text-align:center">
                         <h5>
-                        <a href="@Url.Action("Get_List_AMC", null, new { area = string.Empty, controller = "IT_Hardware_AMC" , Types ="Ups"})">
-                            @Model.Ups_AMC
-                        </a>
+                            <a href="@Url.Action("Get_List_AMC", null, new { area = string.Empty, controller = "IT_Hardware_AMC"   , Types ="Laptop" })">
+                                
+                            </a>
+                        </h5>
+                    </td>
+                    <td style="text-align:center">
+                        <h5>
+                            <a href="@Url.Action("Get_List_AMC", null, new { area = string.Empty, controller = "IT_Hardware_AMC" , Types ="Ups"})">
+                                @Model.Ups_AMC
+                            </a>
                         </h5>
                     </td>
                     <td style="text-align:center">
@@ -173,25 +228,23 @@
                         </h5>
                     </td>
                     <td style="text-align:center">
+                        <h5>
+                            <a href="@Url.Action("Get_List_AMC", null, new { area = string.Empty, controller = "IT_Hardware_AMC"   , Types ="Laptop" })">
+                                
+                            </a>
+                        </h5>
+                    </td>
+                    <td style="text-align:center">
 
                         <ul style="list-style-type: none;">
                             <li> <a href="@Url.Action("Find_Warranty_Expired", null, new { area = string.Empty, controller = "IT_Hardware_AMC" , Types ="Ups" })">Find Warranrty to be expired and Not in AMC</a> </li>
-                             </ul>
-
-                
-
+                        </ul>
                     </td>
                 </tr>
-
-
-
             </table>
-
     }
 
 </div>
-
-
 @if (TempData["Message"] != null && TempData["Message"] != "" && TempData["Message"] != string.Empty)
 {
     <script type="text/javascript">
